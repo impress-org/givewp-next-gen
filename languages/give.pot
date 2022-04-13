@@ -1,0 +1,80 @@
+# Copyright (C) 2022 Give - Next Gen
+# This file is distributed under the same license as the Give - Next Gen package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Give - Next Gen\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Econdig: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: GiveWP <info@givewp.com>\n"
+"MIME-Version: 1.0\n"
+"Project-Id-Version: Give - Next Gen\n"
+"Report-Msgid-Bugs-To: https://github.com/impress-org/give-next-gen/issues/new\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/Addon/Links.php:18
+msgid "Settings"
+msgstr ""
+
+#: src/NextGen/Gateways/TestGatewayNextGen.php:38, src/NextGen/Gateways/TestGatewayNextGen.php:46
+msgid "Test Gateway Next Gen"
+msgstr ""
+
+#: src/NextGen/DonationForm/Blocks/DonationFormBlock/Block.php:114
+msgid "Donation Amount"
+msgstr ""
+
+#: src/NextGen/DonationForm/Blocks/DonationFormBlock/Block.php:111
+msgid "Donation Details"
+msgstr ""
+
+#: src/NextGen/DonationForm/Blocks/DonationFormBlock/Block.php:123
+msgid "First Name"
+msgstr ""
+
+#: src/NextGen/DonationForm/Blocks/DonationFormBlock/Block.php:127
+msgid "Last Name"
+msgstr ""
+
+#: src/NextGen/DonationForm/Blocks/DonationFormBlock/Block.php:131
+msgid "Email"
+msgstr ""
+
+#: src/NextGen/DonationForm/Blocks/DonationFormBlock/Block.php:120
+msgid "Donor Details"
+msgstr ""
+
+#: src/NextGen/DonationForm/Blocks/DonationFormBlock/Block.php:137
+msgid "Payment Details"
+msgstr ""
+
+#: src/Addon/resources/views/admin/notices/give-inactive.php:7, src/Addon/resources/views/admin/notices/give-version-error.php:6
+msgid "Activation Error:"
+msgstr ""
+
+#: src/Addon/resources/views/admin/notices/give-inactive.php:9
+msgid "You must have the"
+msgstr ""
+
+#: src/Addon/resources/views/admin/notices/give-inactive.php:12
+msgid "plugin installed and activated for the %s add-on to activate"
+msgstr ""
+
+#: src/Addon/resources/views/admin/notices/give-version-error.php:9
+msgid "You must have"
+msgstr ""
+
+#: src/Addon/resources/views/admin/notices/give-version-error.php:11
+msgid "version"
+msgstr ""
+
+#: src/Addon/resources/views/admin/notices/give-version-error.php:14
+msgid "for the %1$s add-on to activate"
+msgstr ""
