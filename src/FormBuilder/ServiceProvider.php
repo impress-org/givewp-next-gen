@@ -2,6 +2,7 @@
 
 namespace Give\FormBuilder;
 
+use Give\Addon\View;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -33,28 +34,17 @@ class ServiceProvider implements ServiceProviderInterface
                     $manifest = json_decode( file_get_contents( GIVE_NEXT_GEN_DIR . 'packages/form-builder/build/asset-manifest.json' ) );
                     list( $css, $js ) = $manifest->entrypoints;
 
-                    ?>
-                    <div id="app">
-                        <div id="root" style="z-index: 9999999999; background-color: white; position: fixed; top: 0; right: 0; bottom: 0; left: 0;"></div>
-                        <style id="shadowStyles"><?php echo file_get_contents( trailingslashit(GIVE_NEXT_GEN_DIR) . 'packages/form-builder/build/' . $css ); ?>></style>
-                        <script>
-                            window.storage = {
-                                save: () => {
-                                    return new Promise((resolve, reject) => {
-                                        reject(new Error("Save not implemented!!!!"));
-                                    })
-                                },
-                                load: () => null,
-                            }
-                        </script>
-                    </div>
-                    <?php
+                    View::render( 'FormBuilder.admin-form-builder', [
+                        'shadowDomStyles' => file_get_contents( trailingslashit(GIVE_NEXT_GEN_DIR) . 'packages/form-builder/build/' . $css ),
+                    ]);
+
+                    wp_enqueue_script( '@givewp/form-builder/storage', trailingslashit(GIVE_NEXT_GEN_URL) . 'src/FormBuilder/resources/js/storage.js' );
 
                     wp_enqueue_script( '@givewp/form-builder/script', trailingslashit(GIVE_NEXT_GEN_URL) . 'packages/form-builder/build/' . $js, [], false, true );
                     wp_add_inline_script( '@givewp/form-builder/script', "
                         document.getElementById('app').attachShadow({mode: 'open'})
                             .appendChild( document.getElementById('root') )
-                            .appendChild( document.getElementById('shadowStyles') )
+                            .appendChild( document.getElementById('shadowDomStyles') )
                     ");
                 },
                 1
