@@ -17,6 +17,8 @@ import '@wordpress/block-editor/build-style/style.css';
 
 import './App.scss';
 
+import Storage from './components/storage'
+
 function App() {
 
     const {
@@ -29,10 +31,21 @@ function App() {
         toggle: toggleShowSidebar
     } = useToggleState( true )
 
-    const [ blocks, updateBlocks ] = useState(parse(`
+    const initialBlocks =  Storage.load();
+    if (initialBlocks instanceof Error ) {
+        alert( 'Unable to load initial blocks.' )
+        console.error(initialBlocks);
+    }
+
+    const [ blocks, updateBlocks ] = useState( initialBlocks || parse(`
         <!-- wp:custom-block-editor/donation-amount /-->
         <!-- wp:custom-block-editor/donor-info /-->
     `));
+
+    const saveCallback = () => {
+        return Storage.save( blocks )
+            .catch(error => alert(error.message));
+    }
 
     return (
         <ShortcutProvider>
@@ -47,6 +60,7 @@ function App() {
                     </Sidebar.InspectorFill>
                     <InterfaceSkeleton
                         header={ <Header
+                            saveCallback={saveCallback}
                             toggleSecondarySidebar={toggleSecondarySidebar}
                             toggleShowSidebar={toggleShowSidebar}
                         /> }

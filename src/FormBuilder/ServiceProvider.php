@@ -37,6 +37,16 @@ class ServiceProvider implements ServiceProviderInterface
                     <div id="app">
                         <div id="root" style="z-index: 9999999999; background-color: white; position: fixed; top: 0; right: 0; bottom: 0; left: 0;"></div>
                         <style id="shadowStyles"><?php echo file_get_contents( trailingslashit(GIVE_NEXT_GEN_DIR) . 'packages/form-builder/build/' . $css ); ?>></style>
+                        <script>
+                            window.storage = {
+                                save: () => {
+                                    return new Promise((resolve, reject) => {
+                                        reject(new Error("Save not implemented!!!!"));
+                                    })
+                                },
+                                load: () => null,
+                            }
+                        </script>
                     </div>
                     <?php
 
