@@ -1,8 +1,19 @@
 window.storage = {
-    save: () => {
+    save: ( blockData ) => {
         return new Promise((resolve, reject) => {
-            reject(new Error("Save not implemented!!!!"));
+            jQuery.post( window.storageData.resourceURL, {
+                blockData: JSON.stringify(blockData)
+            } )
+                .done(() => {
+                    resolve()
+                })
+                .fail(() => {
+                    reject(new Error("Save not implemented!!!!"))
+                })
         })
     },
-    load: () => null,
+    load: () => {
+        console.log( JSON.parse(window.storageData.blockData) )
+        return JSON.parse(window.storageData.blockData);
+    },
 }
