@@ -13,7 +13,10 @@ window.storage = {
         })
     },
     load: () => {
-        console.log( JSON.parse(window.storageData.blockData) )
-        return JSON.parse(window.storageData.blockData);
+        if( window.storageData.blockData ) {
+            console.log( JSON.parse(window.storageData.blockData) )
+            return JSON.parse(window.storageData.blockData)
+        }
+        return null;
     },
 }

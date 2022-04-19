@@ -69,9 +69,19 @@ class ServiceProvider implements ServiceProviderInterface
 
                     if( ! isset( $_GET['donationFormID'] ) ) {
                         $currentURL = add_query_arg( $_SERVER['QUERY_STRING'], '', admin_url( 'edit.php') );
+                        $forms = get_posts([
+                            'numberposts' => -1,
+                            'post_type'=>'give_forms'
+                        ]);
+                        echo '<ul>';
+                        foreach( $forms as $form ) {
                         ?>
-                        <a href="<?php echo add_query_arg( 'donationFormID', 1, $currentURL); ?>">Donation Form</a>
-                        <?php
+                            <li>
+                        <a href="<?php echo add_query_arg( 'donationFormID', $form->ID, $currentURL); ?>"><?php echo $form->post_title; ?></a>
+                            </li>
+                            <?php
+                        }
+                        echo '</ul>';
                         return;
                     }
 
