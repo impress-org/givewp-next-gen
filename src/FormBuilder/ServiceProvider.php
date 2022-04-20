@@ -64,7 +64,7 @@ class ServiceProvider implements ServiceProviderInterface
                 __( 'Form Builder', 'givewp' ),
                 __( 'Form Builder', 'givewp' ),
                 'manage_options',
-                'givenburg',
+                'givenberg',
                 function() {
 
                     if( ! isset( $_GET['donationFormID'] ) ) {
