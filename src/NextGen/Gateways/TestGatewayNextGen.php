@@ -1,6 +1,7 @@
 <?php
 namespace Give\NextGen\Gateways;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
@@ -88,4 +89,6 @@ class TestGatewayNextGen extends PaymentGateway
     {
         return Group::make($this->getId());
     }
+
+    public function refundDonation(Donation $donation) {}
 }
