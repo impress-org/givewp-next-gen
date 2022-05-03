@@ -22,7 +22,7 @@ export default function Edit( props ) {
 
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px', outline: '3px solid lightgray', padding: '0 20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px',  outline: '3px solid lightgray', padding: '20px' }}>
                 <header>
                     <RichText
                         tagName="h2"
@@ -38,9 +38,7 @@ export default function Edit( props ) {
                 </header>
 
                 <InnerBlocks
-                    template={[
-                        [ 'custom-block-editor/donation-amount-levels', { lock: { remove: true } }  ],
-                    ]}
+                    template={ props.attributes.innerBlocksTemplate }
                     renderAppender={ !! props.isSelected && InnerBlocks.ButtonBlockAppender}
                 />
 

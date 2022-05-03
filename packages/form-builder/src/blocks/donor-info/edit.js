@@ -22,7 +22,7 @@ export default function Edit( props ) {
 
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px',  outline: '3px solid lightgray', padding: '0 20px' }}>
                 <header>
                     <RichText
                         tagName="h2"
@@ -42,7 +42,7 @@ export default function Edit( props ) {
                         [ 'custom-block-editor/name-field-group', { lock: { remove: true } }  ],
                         [ 'custom-block-editor/email-field' ],
                     ]}
-                    renderAppender={InnerBlocks.ButtonBlockAppender}
+                    renderAppender={ !! props.isSelected && InnerBlocks.ButtonBlockAppender}
                 />
 
             </div>

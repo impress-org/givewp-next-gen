@@ -17,6 +17,8 @@ import './blocks/donation-amount/style.scss'
 
 import './blocks/donation-amount-levels/index'
 
+import './blocks/section/index'
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
