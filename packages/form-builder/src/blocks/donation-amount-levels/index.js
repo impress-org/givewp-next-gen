@@ -3,9 +3,9 @@ import {InspectorControls} from "@wordpress/block-editor";
 import {PanelBody, PanelRow, TextControl, Button} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 
-registerBlockType( 'custom-block-editor/donation-levels', {
+registerBlockType( 'custom-block-editor/donation-amount-levels', {
 
-    title: __( 'Donation Levels', 'custom-block-editor' ),
+    title: __( 'Donation Amount and Levels', 'custom-block-editor' ),
 
     supports: {
         html: false, // Removes support for an HTML mode.
@@ -34,6 +34,9 @@ registerBlockType( 'custom-block-editor/donation-levels', {
         return (
             <>
                 <div>
+                    <div>
+                        <input style={{width: '100%'}} type="text" />
+                    </div>
                     { props.attributes.levels.length > 0 && (
                         <div style={{ textAlign: 'center', display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr 1fr' }}>
                             {

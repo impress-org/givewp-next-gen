@@ -103,14 +103,3 @@ registerBlockType( 'custom-block-editor/email-field', {
     } />,
 } );
 
-registerBlockType( 'custom-block-editor/amount-field', {
-    ...settings,
-    title: __('Amount Field', 'custom-block-editor'),
-    supports: {
-        multiple: false,
-    },
-    attributes: {
-        lock: {remove: true},
-    },
-});
-

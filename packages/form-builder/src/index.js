@@ -15,7 +15,7 @@ import './blocks/nameFieldGroup/style.scss'
 import './blocks/donation-amount/index'
 import './blocks/donation-amount/style.scss'
 
-import './blocks/donation-levels/index'
+import './blocks/donation-amount-levels/index'
 
 ReactDOM.render(
   <React.StrictMode>

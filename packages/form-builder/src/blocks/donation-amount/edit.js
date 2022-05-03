@@ -39,8 +39,7 @@ export default function Edit( props ) {
 
                 <InnerBlocks
                     template={[
-                        [ 'custom-block-editor/amount-field', { lock: { remove: true } }  ],
-                        [ 'custom-block-editor/donation-levels', { lock: { remove: true } }  ],
+                        [ 'custom-block-editor/donation-amount-levels', { lock: { remove: true } }  ],
                     ]}
                     renderAppender={InnerBlocks.ButtonBlockAppender}
                 />
