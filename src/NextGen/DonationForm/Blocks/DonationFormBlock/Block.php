@@ -62,7 +62,7 @@ class Block
         $exports = [
             'attributes' => $attributes,
             'form' => $donationForm->jsonSerialize(),
-            'donateUrl' => $donateUrl,
+            'donateUrl' => $donateUrl
         ];
 
         // enqueue front-end scripts

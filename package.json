@@ -55,6 +55,7 @@
         "iframe-resizer": "^4.2.10",
         "joi": "^17.6.0",
         "prop-types": "^15.7.2",
+        "react-frame-component": "^5.2.1",
         "react-hook-form": "^7.28.1",
         "swr": "^1.2.0"
     },
