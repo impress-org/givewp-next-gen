@@ -53,7 +53,7 @@ class Block
      * @return string
      * @throws EmptyNameException
      */
-    public function render($attributes)
+    public function render(array $attributes): string
     {
         $donationForm = $this->createForm($attributes);
 
@@ -94,7 +94,7 @@ class Block
      * @return Form
      * @throws EmptyNameException
      */
-    private function createForm($attributes)
+    private function createForm($attributes): Form
     {
         $gatewayOptions = [];
         foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
@@ -106,7 +106,7 @@ class Block
         $donationForm->append(
             Section::make('donationDetails')
                 ->label(__('Donation Details', 'give'))
-                ->append(
+                ->addFields(
                     Text::make('amount')
                         ->label(__('Donation Amount', 'give'))
                         ->defaultValue(50)
@@ -115,7 +115,7 @@ class Block
 
             Section::make('donorDetails')
                 ->label(__('Donor Details', 'give'))
-                ->append(
+                ->addFields(
                     Text::make('firstName')
                         ->label(__('First Name', 'give'))
                         ->required(),
@@ -132,7 +132,7 @@ class Block
 
             Section::make('paymentDetails')
                 ->label(__('Payment Details', 'give'))
-                ->append(...$gatewayOptions),
+                ->addFields(...$gatewayOptions),
 
             Hidden::make('formId')
                 ->defaultValue($attributes['formId']),
