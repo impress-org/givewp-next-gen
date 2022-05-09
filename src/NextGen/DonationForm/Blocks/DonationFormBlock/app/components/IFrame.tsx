@@ -1,24 +1,25 @@
 import Frame from 'react-frame-component';
-import {ReactChild, useRef, useState} from 'react';
+import {Fragment, ReactChild, ReactNode, useRef, useState} from 'react';
+import getWindowData from '../utilities/getWindowData';
 
-const initialContent = `
-<!doctype html>
-<html lang="en-us">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel='stylesheet' id='twenty-twenty-one-style-css'  href='https://givewp.test/wp-content/themes/twentytwentyone/style.css?ver=1.5' media='all' />
-    </head>
-    <body>
-        <div></div>
-    </body>
-</html>`;
+const [stylesheets] = getWindowData('stylesheets');
+
+const Head = () => (
+    <Fragment>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {stylesheets.map(({id, href}) => {
+            return <link rel="stylesheet" id={id} href={href} media="all" key={id} />;
+        })}
+    </Fragment>
+);
 
 type Props = {
-    children: ReactChild,
-}
+    children: ReactChild;
+    head: ReactNode;
+};
 
-export default function IFrame({children, ...props}: Props) {
+export default function IFrame({children, head, ...props}: Props) {
     const [height, setHeight] = useState<number>();
     const iframeRef = useRef<HTMLIFrameElement>();
 
@@ -36,9 +37,10 @@ export default function IFrame({children, ...props}: Props) {
                     overflowY: 'hidden',
                     border: 'none',
                 }}
-                initialContent={initialContent}
                 ref={iframeRef}
                 contentDidMount={() => setHeight(iframeRef.current.contentDocument.body.offsetHeight)}
+                contentDidUpdate={() => setHeight(iframeRef.current.contentDocument.body.offsetHeight)}
+                head={head}
                 {...props}
             >
                 {children}

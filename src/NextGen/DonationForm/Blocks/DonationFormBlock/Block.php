@@ -53,7 +53,7 @@ class Block
      * @return string
      * @throws EmptyNameException
      */
-    public function render($attributes)
+    public function render(array $attributes): string
     {
         $donationForm = $this->createForm($attributes);
 
@@ -62,7 +62,15 @@ class Block
         $exports = [
             'attributes' => $attributes,
             'form' => $donationForm->jsonSerialize(),
-            'donateUrl' => $donateUrl
+            'donateUrl' => $donateUrl,
+            'stylesheets' => [
+                [
+                    'id' => 'view-css',
+                    'href' => trailingslashit(
+                            GIVE_NEXT_GEN_URL
+                        ) . 'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.css'
+                ]
+            ]
         ];
 
         // enqueue front-end scripts
@@ -94,7 +102,7 @@ class Block
      * @return Form
      * @throws EmptyNameException
      */
-    private function createForm($attributes)
+    private function createForm(array $attributes): Form
     {
         $gatewayOptions = [];
         foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
@@ -153,7 +161,7 @@ class Block
     /**
      * @return PaymentGateway[]
      */
-    public function getEnabledPaymentGateways($formId)
+    public function getEnabledPaymentGateways($formId): array
     {
         $gateways = [];
 
