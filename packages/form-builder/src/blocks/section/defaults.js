@@ -5,8 +5,6 @@ import {Icon} from "@wordpress/icons";
 
 export default {
 
-    title: __( 'Section', 'custom-block-editor' ),
-
     category: 'layout',
 
     icon: () => <Icon icon={
