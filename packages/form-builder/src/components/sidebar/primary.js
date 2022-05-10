@@ -1,5 +1,4 @@
-import {TabPanel, Panel, createSlotFill, PanelHeader} from '@wordpress/components';
-import { __experimentalListView } from '@wordpress/block-editor';
+import {createSlotFill, PanelHeader} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(

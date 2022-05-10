@@ -12,4 +12,6 @@ const fallbackStorage = {
 debug( process.env.NODE_ENV )
 debug( fallbackStorage )
 
-export default Storage = window.storage || fallbackStorage
+const Storage = window.storage || fallbackStorage
+
+export default Storage

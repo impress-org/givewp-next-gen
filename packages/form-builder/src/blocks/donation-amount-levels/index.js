@@ -1,6 +1,6 @@
 import {registerBlockType} from "@wordpress/blocks";
 import {InspectorControls} from "@wordpress/block-editor";
-import {PanelBody, PanelRow, TextControl, Button} from "@wordpress/components";
+import {PanelBody, TextControl, Button} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 
 registerBlockType( 'custom-block-editor/donation-amount-levels', {
@@ -25,11 +25,6 @@ registerBlockType( 'custom-block-editor/donation-amount-levels', {
     },
 
     edit: function( props ) {
-
-        const {
-            attributes: { levels },
-            setAttributes,
-        } = props;
 
         return (
             <>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { parse } from '@wordpress/blocks'
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
-import {__experimentalListView, BlockEditorProvider, BlockInspector} from '@wordpress/block-editor';
+import { BlockEditorProvider, BlockInspector} from '@wordpress/block-editor';
 import { SlotFillProvider, Popover } from '@wordpress/components';
 import { InterfaceSkeleton } from "@wordpress/interface";
 

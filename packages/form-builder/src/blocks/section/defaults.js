@@ -1,9 +1,6 @@
-import {InspectorControls} from "@wordpress/block-editor";
-import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
-import { __ } from "@wordpress/i18n"
 import {Icon} from "@wordpress/icons";
 
-export default {
+const defaults = {
 
     category: 'layout',
 
@@ -38,3 +35,5 @@ export default {
     }
 
 }
+
+export default defaults

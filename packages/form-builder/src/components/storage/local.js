@@ -1,4 +1,4 @@
-export default {
+const localStorageDriver = {
     save: ( blocks ) => {
         console.log( 'Saving to local storage...' )
         console.log( blocks )
@@ -17,3 +17,5 @@ export default {
         return JSON.parse( value )
     },
 }
+
+export default localStorageDriver

@@ -1,4 +1,4 @@
-export default {
+const nullStorageDriver = {
     save: () => {
         return new Promise((resolve, reject) => {
             resolve()
@@ -6,3 +6,5 @@ export default {
     },
     load: () => null,
 }
+
+export default nullStorageDriver

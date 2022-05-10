@@ -2,7 +2,7 @@ import {InspectorControls} from "@wordpress/block-editor";
 import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
 import { __ } from "@wordpress/i18n"
 
-export default {
+const settings = {
 
     title: __( 'Field', 'custom-block-editor' ),
 
@@ -56,3 +56,5 @@ export default {
         return null; // Save as attributes - not rendered HTML.
     }
 }
+
+export default settings

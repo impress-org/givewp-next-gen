@@ -1,12 +1,14 @@
-import { TabPanel, PanelHeader, createSlotFill } from '@wordpress/components';
+import { PanelHeader, createSlotFill } from '@wordpress/components';
 import { __experimentalListView } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 
-const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
+const { Fill: InspectorFill } = createSlotFill(
     'StandAloneBlockEditorSidebarInspector'
 );
 
 function Sidebar() {
+
+    /* eslint-disable react/jsx-pascal-case */
     return (
         <div
             className="givewp-next-gen-sidebar givewp-next-gen-sidebar-secondary"
@@ -16,6 +18,7 @@ function Sidebar() {
         >
             <PanelHeader label={__('Fields')} />
             <__experimentalListView showNestedBlocks={true} expandNested={true} />
+
         </div>
     );
 }
