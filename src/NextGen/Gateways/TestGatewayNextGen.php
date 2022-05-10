@@ -69,11 +69,11 @@ class TestGatewayNextGen extends PaymentGateway
     {
         $transactionId = "test-gateway-transaction-id-{$paymentData->donationId}";
 
-         give_update_payment_status($paymentData->donationId);
+        give_update_payment_status($paymentData->donationId);
 
-         give_set_payment_transaction_id($paymentData->donationId, $transactionId);
+        give_set_payment_transaction_id($paymentData->donationId, $transactionId);
 
-         //return new PaymentComplete();
+        //return new PaymentComplete();
 
         return new RespondToBrowser([
             'donationId' => $paymentData->donationId,
@@ -90,5 +90,12 @@ class TestGatewayNextGen extends PaymentGateway
         return Group::make($this->getId());
     }
 
-    public function refundDonation(Donation $donation) {}
+    /**
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
+        // TODO: Implement refundDonation() method.
+    }
+
 }
