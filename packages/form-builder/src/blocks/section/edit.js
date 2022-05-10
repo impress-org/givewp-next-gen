@@ -28,7 +28,7 @@ export default function Edit( props ) {
 
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px',  outline: '1px solid ' + borderColor, borderRadius: '5px', padding: '0 40px 40px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px',  outline: '1px solid ' + borderColor, borderRadius: '5px', padding: '0 40px' }}>
                 <header>
                     <RichText
                         tagName="h2"
