@@ -35,7 +35,7 @@ registerBlockType( 'custom-block-editor/donation-amount-levels', {
             <>
                 <div>
                     <div>
-                        <input style={{width: '100%'}} type="text" />
+                        <input style={{width: '100%', marginBottom: '20px'}} type="text" />
                     </div>
                     { props.attributes.levels.length > 0 && (
                         <div style={{ textAlign: 'center', display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr 1fr' }}>

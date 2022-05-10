@@ -13,6 +13,8 @@ import {
     TextareaControl,
 } from "@wordpress/components";
 
+import { useSelect } from '@wordpress/data';
+
 export default function Edit( props ) {
 
     const {
@@ -20,9 +22,13 @@ export default function Edit( props ) {
         setAttributes,
     } = props;
 
+    const isParentOfSelectedBlock = useSelect( ( select ) => select( 'core/block-editor' ).hasSelectedInnerBlock( props.clientId, true ) );
+    const isSelectedOrIsInnerBlockSelected = props.isSelected || isParentOfSelectedBlock;
+    const borderColor = isSelectedOrIsInnerBlockSelected ? '#66bb6a' : 'lightgray';
+
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px',  outline: '3px solid lightgray', padding: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px',  outline: '1px solid ' + borderColor, borderRadius: '5px', padding: '0 40px 40px' }}>
                 <header>
                     <RichText
                         tagName="h2"
@@ -39,7 +45,7 @@ export default function Edit( props ) {
 
                 <InnerBlocks
                     template={ props.attributes.innerBlocksTemplate }
-                    renderAppender={ !! props.isSelected && InnerBlocks.ButtonBlockAppender}
+                    renderAppender={ !! isSelectedOrIsInnerBlockSelected && InnerBlocks.ButtonBlockAppender}
                 />
 
             </div>

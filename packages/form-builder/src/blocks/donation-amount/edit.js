@@ -12,6 +12,7 @@ import {
     TextControl,
     TextareaControl,
 } from "@wordpress/components";
+import {useSelect} from "@wordpress/data";
 
 export default function Edit( props ) {
 
@@ -20,9 +21,13 @@ export default function Edit( props ) {
         setAttributes,
     } = props;
 
+    const isParentOfSelectedBlock = useSelect( ( select ) => select( 'core/block-editor' ).hasSelectedInnerBlock( props.clientId, true ) );
+    const isSelectedOrIsInnerBlockSelected = props.isSelected || isParentOfSelectedBlock;
+    const borderColor = isSelectedOrIsInnerBlockSelected ? '#66bb6a' : 'lightgray';
+
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px', outline: '3px solid lightgray', padding: '0 20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '20px', outline: '1px solid ' + borderColor, borderRadius: '5px', padding: '0 40px' }}>
                 <header>
                     <RichText
                         tagName="h2"
@@ -41,7 +46,7 @@ export default function Edit( props ) {
                     template={[
                         [ 'custom-block-editor/donation-amount-levels', { lock: { remove: true } }  ],
                     ]}
-                    renderAppender={ !! props.isSelected && InnerBlocks.ButtonBlockAppender}
+                    renderAppender={ !! isSelectedOrIsInnerBlockSelected && InnerBlocks.ButtonBlockAppender}
                 />
 
             </div>
