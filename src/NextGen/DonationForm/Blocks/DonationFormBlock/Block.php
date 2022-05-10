@@ -106,7 +106,7 @@ class Block
         $donationForm->append(
             Section::make('donationDetails')
                 ->label(__('Donation Details', 'give'))
-                ->addFields(
+                ->append(
                     Text::make('amount')
                         ->label(__('Donation Amount', 'give'))
                         ->defaultValue(50)
@@ -115,7 +115,7 @@ class Block
 
             Section::make('donorDetails')
                 ->label(__('Donor Details', 'give'))
-                ->addFields(
+                ->append(
                     Text::make('firstName')
                         ->label(__('First Name', 'give'))
                         ->required(),
@@ -132,7 +132,7 @@ class Block
 
             Section::make('paymentDetails')
                 ->label(__('Payment Details', 'give'))
-                ->addFields(...$gatewayOptions),
+                ->append(...$gatewayOptions),
 
             Hidden::make('formId')
                 ->defaultValue($attributes['formId']),
@@ -153,7 +153,7 @@ class Block
     /**
      * @return PaymentGateway[]
      */
-    public function getEnabledPaymentGateways($formId)
+    public function getEnabledPaymentGateways($formId): array
     {
         $gateways = [];
 
