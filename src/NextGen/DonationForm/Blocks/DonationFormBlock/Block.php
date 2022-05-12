@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Html;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
@@ -103,33 +104,14 @@ class Block
 
         $donationForm = new Form('DonationForm');
 
+        $formBlockData = json_decode( get_post( $attributes['formId'])->post_content );
+
+        foreach( $formBlockData as $block ) {
+            $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
+        }
+
+
         $donationForm->append(
-            Section::make('donationDetails')
-                ->label(__('Donation Details', 'give'))
-                ->append(
-                    Text::make('amount')
-                        ->label(__('Donation Amount', 'give'))
-                        ->defaultValue(50)
-                        ->required()
-                ),
-
-            Section::make('donorDetails')
-                ->label(__('Donor Details', 'give'))
-                ->append(
-                    Text::make('firstName')
-                        ->label(__('First Name', 'give'))
-                        ->required(),
-
-                    Text::make('lastName')
-                        ->label(__('Last Name', 'give'))
-                        ->required(),
-
-                    Email::make('email')
-                        ->label(__('Email', 'give'))
-                        ->required()
-                        ->emailTag('email')
-                ),
-
             Section::make('paymentDetails')
                 ->label(__('Payment Details', 'give'))
                 ->append(...$gatewayOptions),
@@ -146,6 +128,8 @@ class Block
             Hidden::make('currency')
                 ->defaultValue(give_get_currency($attributes['formId']))
         );
+
+        ray( $donationForm );
 
         return $donationForm;
     }
@@ -171,5 +155,20 @@ class Block
         }
 
         return $gateways;
+    }
+
+    protected function convertFormBlockDataToFieldsAPI( $block ) {
+        if( $block->innerBlocks ) {
+            $section = Section::make($block->clientId);
+            if( property_exists( $block->attributes, 'title' ) ) $section->label( $block->attributes->title );
+            foreach( $block->innerBlocks as $innerBlock ) {
+                $section->append( $this->convertFormBlockDataToFieldsAPI( $innerBlock ));
+            }
+            return $section;
+        }
+
+        $field = Text::make( $block->clientId);
+        if( property_exists( $block->attributes, 'label' ) ) $field->label( $block->attributes->label );
+        return $field;
     }
 }
