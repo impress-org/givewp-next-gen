@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock;
 
 use Give\Framework\EnqueueScript;
+use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
@@ -89,11 +90,9 @@ class Block
     /**
      * @unreleased
      *
-     * @param  array  $attributes
-     * @return Form
      * @throws EmptyNameException
      */
-    private function createForm($attributes): Form
+    private function createForm(array $attributes): Form
     {
         $gatewayOptions = [];
         foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
@@ -102,13 +101,12 @@ class Block
 
         $donationForm = new Form('DonationForm');
 
-        $formBlockData = json_decode( get_post( $attributes['formId'])->post_content );
+        $formBlockData = json_decode(get_post($attributes['formId'])->post_content, false);
 
         foreach( $formBlockData as $block ) {
             $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
         }
-
-
+        
         $donationForm->append(
             Section::make('paymentDetails')
                 ->label(__('Payment Details', 'give'))
@@ -153,18 +151,45 @@ class Block
         return $gateways;
     }
 
-    protected function convertFormBlockDataToFieldsAPI( $block ) {
-        if( $block->innerBlocks ) {
+    /**
+     * @unreleased
+     *
+     * @param  object  $block
+     * @return Section|Text
+     * @throws EmptyNameException
+     */
+    protected function convertFormBlockDataToFieldsAPI($block)
+    {
+        if ($block->innerBlocks) {
             $section = Section::make($block->clientId);
-            if( property_exists( $block->attributes, 'title' ) ) $section->label( $block->attributes->title );
-            foreach( $block->innerBlocks as $innerBlock ) {
-                $section->append( $this->convertFormBlockDataToFieldsAPI( $innerBlock ));
+
+            if (property_exists($block->attributes, 'title')) {
+                $section->label($block->attributes->title);
             }
+
+            foreach ($block->innerBlocks as $innerBlock) {
+                $section->append($this->convertFormBlockDataToFieldsAPI($innerBlock));
+            }
+
             return $section;
         }
 
-        $field = Text::make( $block->clientId);
-        if( property_exists( $block->attributes, 'label' ) ) $field->label( $block->attributes->label );
+        if ($block->name === "custom-block-editor/donation-amount-levels") {
+            $field = Text::make('amount')->required();
+        } elseif ($block->name === "custom-block-editor/first-name-field") {
+            $field = Text::make('firstName')->required();
+        } elseif ($block->name === "custom-block-editor/last-name-field") {
+            $field = Text::make('lastName')->required();
+        } elseif ($block->name === "custom-block-editor/email-field") {
+            $field = Email::make('email')->required()->emailTag('email');
+        } else {
+            $field = Text::make($block->clientId);
+        }
+
+        if (property_exists($block->attributes, 'label')) {
+            $field->label($block->attributes->label);
+        }
+
         return $field;
     }
 }
