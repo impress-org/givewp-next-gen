@@ -3,11 +3,9 @@
 namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock;
 
 use Give\Framework\EnqueueScript;
-use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
-use Give\Framework\FieldsAPI\Html;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
