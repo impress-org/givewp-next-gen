@@ -129,8 +129,6 @@ class Block
                 ->defaultValue(give_get_currency($attributes['formId']))
         );
 
-        ray( $donationForm );
-
         return $donationForm;
     }
 
