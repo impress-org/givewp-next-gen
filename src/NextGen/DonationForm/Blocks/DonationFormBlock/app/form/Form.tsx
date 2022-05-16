@@ -16,7 +16,7 @@ import {useGiveDonationFormStore} from '../store';
 
 const messages = getFieldErrorMessages();
 
-const [donateUrl] = getWindowData('donateUrl');
+const {donateUrl} = getWindowData();
 
 const schema = Joi.object({
     firstName: Joi.string().required().label('First Name').messages(messages),
