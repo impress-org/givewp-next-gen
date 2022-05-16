@@ -1,11 +1,11 @@
 import {useFormState} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
 import PaymentGatewayOption from './PaymentGatewayOption';
-import PaymentGateway from '../value-objects/PaymentGateway';
 
 interface GatewayNode {
-    name: PaymentGateway;
+    id: string;
     label: string;
+    fields: Function
 }
 
 type Props = {
@@ -23,8 +23,8 @@ export default function PaymentDetails({name, label, fields}: Props) {
                 <h2 id={name}>{label}</h2>
             </div>
             <ul style={{listStyleType: 'none', padding: 0}}>
-                {fields.map(({name, label}: GatewayNode, index) => (
-                    <PaymentGatewayOption name={name} label={label} index={index} key={name} />
+                {fields.map(({id, label, fields}: GatewayNode, index) => (
+                    <PaymentGatewayOption fields={fields} id={id} label={label} index={index}/>
                 ))}
             </ul>
 

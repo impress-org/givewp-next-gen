@@ -13,6 +13,7 @@ import PaymentDetails from '../fields/PaymentDetails';
 import FieldInterface from '../types/FieldInterface';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
+import Gateway from "../types/Gateway";
 
 const messages = getFieldErrorMessages();
 
@@ -30,16 +31,6 @@ const schema = Joi.object({
     userId: Joi.number().required(),
 }).unknown();
 
-const handleSubmitRequest = async (values: any) => {
-    const request = await axios.post(donateUrl, {
-        ...values,
-    });
-
-    if (request.status === 200) {
-        alert('Thank You!');
-    }
-};
-
 type PropTypes = {
     fields: FieldInterface[];
     defaultValues: object;
@@ -53,8 +44,26 @@ type FormInputs = {
     gatewayId: string;
 };
 
+const handleSubmitRequest = async (values, gateway: Gateway) => {
+    const gatewayResponse = gateway.createPayment(values);
+
+    if (!gatewayResponse) {
+        return;
+    }
+
+    const request = await axios.post(donateUrl, {
+        ...values,
+    });
+
+    if (request.status === 200) {
+        alert('Thank You!');
+    }
+}
+
 export default function Form({fields, defaultValues}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
+    const getGateway = (gatewayId) => gateways.find(({id}) => id === gatewayId);
+
     const methods = useForm<FormInputs>({
         defaultValues,
         resolver: joiResolver(schema),
@@ -67,6 +76,8 @@ export default function Form({fields, defaultValues}: PropTypes) {
         formState: {errors, isSubmitting, isSubmitSuccessful},
         reset,
     } = methods;
+
+    console.log(errors);
 
     // useEffect(() => {
     //     reset();
@@ -91,14 +102,15 @@ export default function Form({fields, defaultValues}: PropTypes) {
 
     return (
         <FormProvider {...methods}>
-            <form id="give-next-gen" onSubmit={handleSubmit(handleSubmitRequest)}>
+            <form id="give-next-gen"
+                  onSubmit={handleSubmit((values) => handleSubmitRequest(values, getGateway(values.gatewayId)))}>
                 {fields.map(({type, name, label, readOnly, validationRules, nodes}: FieldInterface) => {
                     if (name === 'paymentDetails') {
-                        return <PaymentDetails fields={nodes} name={name} label={label} key={name} />;
+                        return <PaymentDetails fields={gateways} name={name} label={label}/>;
                     }
 
                     if (type === 'section' && nodes) {
-                        return <FieldSection fields={nodes} name={name} label={label} key={name} />;
+                        return <FieldSection fields={nodes} name={name} label={label} key={name}/>;
                     }
 
                     return (

@@ -14,6 +14,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Stripe\PaymentIntent;
 
 class Block
 {
@@ -59,10 +60,23 @@ class Block
 
         $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
 
+        $formId = $attributes['formId'];
+
+        /**
+         * Mocking Stripe intent for testing start of front-end gateway api
+         * The gateway will eventually be responsible for doing this
+         */
+        $stripePublishableKey = give_stripe_get_publishable_key($formId);
+        $stripeConnectedAccountKey = give_stripe_get_connected_account_id($formId);
+        $stripePaymentIntent = $this->generateStripePaymentIntent($stripeConnectedAccountKey);
+
         $exports = [
             'attributes' => $attributes,
             'form' => $donationForm->jsonSerialize(),
             'donateUrl' => $donateUrl,
+            'stripeKey' => $stripePublishableKey,
+            'stripeClientSecret' => $stripePaymentIntent->client_secret,
+            'stripeConnectedAccountKey' => $stripeConnectedAccountKey
         ];
 
         // enqueue front-end scripts
@@ -171,5 +185,22 @@ class Block
         }
 
         return $gateways;
+    }
+
+
+    /**
+     * Mocking Stripe intent for testing start of front-end gateway api
+     * The gateway will eventually be responsible for doing this
+     */
+    private function generateStripePaymentIntent($accountId)
+    {
+        return PaymentIntent::create(
+            [
+                'amount' => 1099,
+                'currency' => 'usd',
+                'automatic_payment_methods' => ['enabled' => true],
+            ],
+            ['stripe_account' => $accountId]
+        );
     }
 }

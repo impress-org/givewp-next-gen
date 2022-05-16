@@ -1,9 +1,10 @@
 import ReactDOM from 'react-dom';
 import getDefaultValuesFromFieldsCollection from './utilities/getDefaultValuesFromFieldsCollection';
 import Form from './form/Form';
-import getPaymentGateways from './utilities/getPaymentGateways';
 import {GiveDonationFormStoreProvider} from './store';
 import getWindowData from './utilities/getWindowData';
+import TestGatewayFields from "./fields/TestGatewayFields";
+import stripeGateway from './gateways/StripeGateway';
 
 /**
  * Get data from the server
@@ -14,7 +15,23 @@ const {attributes, form} = getWindowData();
  * Prepare default values for form
  */
 const defaultValues = getDefaultValuesFromFieldsCollection(form.nodes);
-const gateways = getPaymentGateways(form.nodes.find(({name}) => name === 'paymentDetails').nodes);
+//const gateways = getPaymentGateways(form.nodes.find(({name}) => name === 'paymentDetails').nodes);
+
+const testGateway = {
+    id: 'test-gateway',
+    label: 'Test Gateway',
+    createPayment: (values) => {
+
+    },
+    fields() {
+        return <TestGatewayFields/>
+    }
+}
+
+const gateways = [
+    stripeGateway,
+    testGateway
+]
 
 const initialState = {
     gateways

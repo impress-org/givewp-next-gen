@@ -6,6 +6,9 @@ type giveNextGenExports = {
     };
     attributes: object;
     donateUrl: string;
+    stripeKey: string;
+    stripeConnectAccountId: string;
+    stripeClientSecret: string;
 };
 
 export default giveNextGenExports;
