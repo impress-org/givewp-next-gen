@@ -74,6 +74,7 @@ class Block
             'attributes' => $attributes,
             'form' => $donationForm->jsonSerialize(),
             'donateUrl' => $donateUrl,
+            'successUrl' => give_get_success_page_uri(),
             'stripeKey' => $stripePublishableKey,
             'stripeClientSecret' => $stripePaymentIntent->client_secret,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey

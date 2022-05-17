@@ -1,4 +1,4 @@
-import giveNextGenExports from '../types/giveNextGenExports';
+import type {giveNextGenExports} from '../types/giveNextGenExports';
 
 declare global {
     interface Window {

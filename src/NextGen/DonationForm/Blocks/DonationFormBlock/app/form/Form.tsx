@@ -62,6 +62,7 @@ const handleSubmitRequest = async (values, gateway: Gateway) => {
 
 export default function Form({fields, defaultValues}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
+
     const getGateway = (gatewayId) => gateways.find(({id}) => id === gatewayId);
 
     const methods = useForm<FormInputs>({
@@ -106,7 +107,7 @@ export default function Form({fields, defaultValues}: PropTypes) {
                   onSubmit={handleSubmit((values) => handleSubmitRequest(values, getGateway(values.gatewayId)))}>
                 {fields.map(({type, name, label, readOnly, validationRules, nodes}: FieldInterface) => {
                     if (name === 'paymentDetails') {
-                        return <PaymentDetails fields={gateways} name={name} label={label}/>;
+                        return <PaymentDetails gateways={gateways} name={name} label={label} key={name}/>;
                     }
 
                     if (type === 'section' && nodes) {
