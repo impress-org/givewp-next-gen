@@ -3,8 +3,7 @@ import getDefaultValuesFromFieldsCollection from './utilities/getDefaultValuesFr
 import Form from './form/Form';
 import {GiveDonationFormStoreProvider} from './store';
 import getWindowData from './utilities/getWindowData';
-import TestGatewayFields from "./fields/TestGatewayFields";
-import stripeGateway from './gateways/StripeGateway';
+import {StripeGateway, TestGateway} from './gateways';
 
 /**
  * Get data from the server
@@ -17,21 +16,12 @@ const {attributes, form} = getWindowData();
 const defaultValues = getDefaultValuesFromFieldsCollection(form.nodes);
 //const gateways = getPaymentGateways(form.nodes.find(({name}) => name === 'paymentDetails').nodes);
 
-const testGateway = {
-    id: 'test-gateway',
-    label: 'Test Gateway',
-    createPayment: (values) => {
-
-    },
-    fields() {
-        return <TestGatewayFields/>
-    }
-}
-
 const gateways = [
-    stripeGateway,
-    testGateway
+    StripeGateway,
+    TestGateway
 ]
+
+console.log(window.givewp.gateways);
 
 const initialState = {
     gateways

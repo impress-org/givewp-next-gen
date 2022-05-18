@@ -96,6 +96,7 @@ class Block
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
+        <script>window.givewp = <?= wp_json_encode(['gateways' => ['stripe-gateway']]) ?>;</script>
         <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
 
         <?php

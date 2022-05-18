@@ -3,6 +3,9 @@ import type {giveNextGenExports} from '../types/giveNextGenExports';
 declare global {
     interface Window {
         giveNextGenExports: giveNextGenExports;
+        givewp: {
+            gateways
+        }
     }
 }
 
