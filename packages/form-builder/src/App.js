@@ -9,6 +9,7 @@ import { InterfaceSkeleton } from "@wordpress/interface";
 import Header from './components/header'
 import { Sidebar, SecondarySidebar } from './components/sidebar'
 import Content from './components/content'
+import { FormSettingsContextProvider } from './context/formSettings'
 
 import { useToggleState } from "./hooks";
 
@@ -18,6 +19,7 @@ import '@wordpress/block-editor/build-style/style.css';
 import './App.scss';
 
 import Storage from './components/storage'
+
 
 function App() {
 
@@ -48,30 +50,32 @@ function App() {
     }
 
     return (
-        <ShortcutProvider>
-            <BlockEditorProvider
-                value={ blocks }
-                onInput={ ( blocks ) => updateBlocks( blocks ) }
-                onChange={ ( blocks ) => updateBlocks( blocks ) }
-            >
-                <SlotFillProvider>
-                    <Sidebar.InspectorFill>
-                        <BlockInspector />
-                    </Sidebar.InspectorFill>
-                    <InterfaceSkeleton
-                        header={ <Header
-                            saveCallback={saveCallback}
-                            toggleSecondarySidebar={toggleSecondarySidebar}
-                            toggleShowSidebar={toggleShowSidebar}
-                        /> }
-                        content={ <Content /> }
-                        sidebar={ !! showSidebar && <Sidebar /> }
-                        secondarySidebar={ !! showSecondarySidebar && <SecondarySidebar /> }
-                    />
-                    <Popover.Slot />
-                </SlotFillProvider>
-            </BlockEditorProvider>
-        </ShortcutProvider>
+        <FormSettingsContextProvider>
+            <ShortcutProvider>
+                <BlockEditorProvider
+                    value={ blocks }
+                    onInput={ ( blocks ) => updateBlocks( blocks ) }
+                    onChange={ ( blocks ) => updateBlocks( blocks ) }
+                >
+                    <SlotFillProvider>
+                        <Sidebar.InspectorFill>
+                            <BlockInspector />
+                        </Sidebar.InspectorFill>
+                        <InterfaceSkeleton
+                            header={ <Header
+                                saveCallback={saveCallback}
+                                toggleSecondarySidebar={toggleSecondarySidebar}
+                                toggleShowSidebar={toggleShowSidebar}
+                            /> }
+                            content={ <Content /> }
+                            sidebar={ !! showSidebar && <Sidebar /> }
+                            secondarySidebar={ !! showSecondarySidebar && <SecondarySidebar /> }
+                        />
+                        <Popover.Slot />
+                    </SlotFillProvider>
+                </BlockEditorProvider>
+            </ShortcutProvider>
+        </FormSettingsContextProvider>
     );
 }
 
