@@ -13,7 +13,7 @@ import PaymentDetails from '../fields/PaymentDetails';
 import FieldInterface from '../types/FieldInterface';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
-import Gateway from "../types/Gateway";
+import type {Gateway} from "../types/Gateway";
 
 const messages = getFieldErrorMessages();
 

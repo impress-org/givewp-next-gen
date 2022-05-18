@@ -13,9 +13,26 @@ mix
     .js(`${donationFormBlockPath}/block.js`, `${donationFormBlockPath}/build/editor.js`)
 
     /**
+     * PaymentGatewayRegistrar
+     */
+    .js('src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.js', 'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.build.js')
+
+    /**
      * DonationFormBlock - view
      */
-    .ts(`${donationFormBlockPath}/app/App.tsx`, `${donationFormBlockPath}/build/view.js`);
+    .ts(`${donationFormBlockPath}/app/App.tsx`, `${donationFormBlockPath}/build/view.js`)
+
+    /**
+     * NextGenTestGateway
+     */
+    .js('src/NextGen/Gateways/NextGenTestGateway/index.jsx', 'src/NextGen/Gateways/NextGenTestGateway/build.js')
+
+    /**
+     * NextGenStripeGateway
+     */
+    .js('src/NextGen/Gateways/Stripe/NextGenCreditCardGateway/index.jsx', 'src/NextGen/Gateways/Stripe/NextGenCreditCardGateway/build.js');
+    
+mix.extract(['react']);
 
 /**
  * Extend the config to use DependencyExtractionWebpackPlugin for WP scripts asset dependencies

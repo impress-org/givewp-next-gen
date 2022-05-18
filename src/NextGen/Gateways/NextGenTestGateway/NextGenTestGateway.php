@@ -1,19 +1,19 @@
 <?php
-namespace Give\NextGen\Gateways;
+namespace Give\NextGen\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\EnqueueScript;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * @unreleased
  */
-class TestGatewayNextGen extends PaymentGateway
+class NextGenTestGateway extends PaymentGateway
 {
     /**
      * @inheritDoc
@@ -45,6 +45,22 @@ class TestGatewayNextGen extends PaymentGateway
     public function getPaymentMethodLabel(): string
     {
         return __('Test Gateway Next Gen', 'give');
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return EnqueueScript
+     */
+    public function enqueueScript(): EnqueueScript
+    {
+        return new EnqueueScript(
+            $this->getId(),
+            'src/NextGen/Gateways/NextGenTestGateway/build.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
     }
 
     /**

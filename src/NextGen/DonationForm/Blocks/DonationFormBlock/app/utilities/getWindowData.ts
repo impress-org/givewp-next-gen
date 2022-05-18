@@ -1,10 +1,12 @@
 import type {giveNextGenExports} from '../types/giveNextGenExports';
+import type {Gateway} from "../types/Gateway";
 
 declare global {
     interface Window {
         giveNextGenExports: giveNextGenExports;
-        givewp: {
-            gateways
+        GivePaymentGatewayRegistrar: {
+            gateways: Gateway[],
+            registerGateway: Function
         }
     }
 }

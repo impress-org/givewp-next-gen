@@ -82,7 +82,7 @@ class Block
 
         // enqueue front-end scripts
         // since this is using render_callback viewScript in blocks.json will not work.
-        $enqueueScripts = new EnqueueScript(
+        $enqueueBlockScript = new EnqueueScript(
             'give-next-gen-donation-form-block-js',
             'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.js',
             GIVE_NEXT_GEN_DIR,
@@ -90,13 +90,49 @@ class Block
             'give'
         );
 
-        $enqueueScripts->loadInFooter()->enqueue();
+        $manifest = new EnqueueScript(
+            'manifest',
+            'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/manifest.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+
+        $vendor = new EnqueueScript(
+            'vendor',
+            'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/vendor.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+
+        $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
+            'give-payment-gateway-registrar-js',
+            'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.build.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+        ?>
+
+        <?php
+        $manifest->loadInFooter()->enqueue();
+        $vendor->loadInFooter()->enqueue();
+
+        $enqueuePaymentGatewayRegistrarScript->loadInFooter()->enqueue();
+
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
+            if (method_exists($gateway, 'enqueueScript')) {
+                $gateway->enqueueScript()->loadInFooter()->enqueue();
+            }
+        }
+
+        $enqueueBlockScript->loadInFooter()->enqueue();
 
         ob_start(); ?>
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
-        <script>window.givewp = <?= wp_json_encode(['gateways' => ['stripe-gateway']]) ?>;</script>
         <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
 
         <?php

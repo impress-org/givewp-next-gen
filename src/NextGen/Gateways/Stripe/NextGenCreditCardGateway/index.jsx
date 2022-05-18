@@ -1,12 +1,10 @@
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from "@stripe/react-stripe-js";
-import getWindowData from "../utilities/getWindowData";
-import type {Gateway} from "../types/Gateway";
 
 /**
  * Get data from the server
  */
-const {stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl} = getWindowData();
+const {stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl} = window.giveNextGenExports;
 
 /**
  * Create the Stripe object and pass our api keys
@@ -29,7 +27,7 @@ const StripeFields = ({gateway}) => {
     return <PaymentElement/>
 }
 
-const stripeGateway: Gateway = {
+const stripeGateway = {
     id: 'stripe',
     label: 'Stripe',
     createPayment: async function (values) {
@@ -69,4 +67,4 @@ const stripeGateway: Gateway = {
     }
 }
 
-export default stripeGateway;
+window.GivePaymentGatewayRegistrar.registerGateway(stripeGateway);

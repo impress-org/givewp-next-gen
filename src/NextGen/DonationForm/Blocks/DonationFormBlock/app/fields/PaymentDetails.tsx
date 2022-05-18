@@ -1,7 +1,7 @@
 import {useFormState} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
 import PaymentGatewayOption from './PaymentGatewayOption';
-import Gateway from "../types/Gateway";
+import type {Gateway} from "../types/Gateway";
 
 interface GatewayNode {
     id: string;
