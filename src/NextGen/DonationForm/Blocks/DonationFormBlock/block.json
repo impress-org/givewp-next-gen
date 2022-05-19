@@ -16,5 +16,5 @@
         }
     },
     "textdomain": "give",
-    "editorScript": "file:build/block.js"
+    "editorScript": "file:./build/block.js"
 }
