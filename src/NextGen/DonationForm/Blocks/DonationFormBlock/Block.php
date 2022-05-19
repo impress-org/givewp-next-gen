@@ -40,7 +40,7 @@ class Block
      */
     public function register()
     {
-        register_block_type_from_metadata(
+        register_block_type(
             __DIR__,
             ['render_callback' => [$this, 'render']]
         );
@@ -84,7 +84,7 @@ class Block
         // since this is using render_callback viewScript in blocks.json will not work.
         $enqueueBlockScript = new EnqueueScript(
             'give-next-gen-donation-form-block-js',
-            'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.js',
+            'build/DonationFormBlockApp.tsx.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
@@ -92,7 +92,7 @@ class Block
 
         $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
             'give-payment-gateway-registrar-js',
-            'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar/build.js',
+            'build/paymentGatewayRegistrar.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'

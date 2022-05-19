@@ -67,4 +67,4 @@ const stripeGateway = {
     }
 }
 
-window.GivePaymentGatewayRegistrar.registerGateway(stripeGateway);
+window.givewp.gateways.registerGateway(stripeGateway);

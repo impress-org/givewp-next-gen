@@ -36,4 +36,4 @@ const NextGenTestGateway = {
     }
 }
 
-window.GivePaymentGatewayRegistrar.registerGateway(NextGenTestGateway);
+window.givewp.gateways.registerGateway(NextGenTestGateway);

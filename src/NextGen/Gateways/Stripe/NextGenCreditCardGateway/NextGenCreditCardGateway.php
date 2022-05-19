@@ -51,7 +51,7 @@ class NextGenCreditCardGateway extends CreditCardGateway
     {
         return new EnqueueScript(
             $this->getId(),
-            'src/NextGen/Gateways/Stripe/NextGenCreditCardGateway/build.js',
+            'build/nextGenCreditCardGateway.jsx.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'

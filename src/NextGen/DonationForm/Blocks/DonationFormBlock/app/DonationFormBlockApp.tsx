@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import {render} from '@wordpress/element';
 import getDefaultValuesFromFieldsCollection from './utilities/getDefaultValuesFromFieldsCollection';
 import Form from './form/Form';
 import {GiveDonationFormStoreProvider} from './store';
@@ -16,7 +16,7 @@ const defaultValues = getDefaultValuesFromFieldsCollection(form.nodes);
 //const gateways = getPaymentGateways(form.nodes.find(({name}) => name === 'paymentDetails').nodes);
 
 const initialState = {
-    gateways: window.GivePaymentGatewayRegistrar.gateways
+    gateways: window.givewp.gateways.getAll()
 }
 
 function App() {
@@ -27,4 +27,4 @@ function App() {
     );
 }
 
-ReactDOM.render(<App/>, document.getElementById('root-give-next-gen-donation-form-block'));
+render(<App/>, document.getElementById('root-give-next-gen-donation-form-block'));

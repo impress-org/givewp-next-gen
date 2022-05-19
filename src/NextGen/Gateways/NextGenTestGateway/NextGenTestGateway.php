@@ -56,7 +56,7 @@ class NextGenTestGateway extends PaymentGateway
     {
         return new EnqueueScript(
             $this->getId(),
-            'src/NextGen/Gateways/NextGenTestGateway/build.js',
+            'build/nextGenTestGateway.jsx.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
