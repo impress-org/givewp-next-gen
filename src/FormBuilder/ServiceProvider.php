@@ -32,6 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
                         'formTitle' => get_post( $request->get_param('id') )->post_title,
                     ];
                 },
+                'permission_callback' => '__return_true',
                 'args' => [
                     'id' => [
                         'validate_callback' => function($param, $request, $key) {
@@ -49,6 +50,7 @@ class ServiceProvider implements ServiceProviderInterface
                         'post_title' => $request->get_param('formTitle'),
                     ]);
                 },
+                'permission_callback' => '__return_true',
                 'args' => [
                     'id' => [
                         'validate_callback' => function($param, $request, $key) {
@@ -62,6 +64,34 @@ class ServiceProvider implements ServiceProviderInterface
             ) );
         } );
 
+        add_action( 'admin_init', function() {
+            if( isset( $_GET['page']) && 'givenberg' === $_GET['page'] ) {
+                if( ! isset( $_GET['donationFormID'] ) ) {
+                    wp_redirect( 'edit.php?post_type=give_forms&page=give-forms' );
+                    exit();
+                }
+                if( 'new' === $_GET['donationFormID'] ) {
+                    $newPostID = wp_insert_post([
+                        'post_type' => 'give_forms',
+                        'post_title' => 'Next Gen Donation Form',
+                        'post_content' => json_encode(null),
+                    ]);
+                    wp_redirect( 'edit.php?post_type=give_forms&page=givenberg&donationFormID=' . $newPostID );
+                    exit();
+                }
+            }
+        });
+
+        add_action( 'admin_init', function() {
+           if( isset( $_GET[ 'post' ] ) && isset( $_GET[ 'action' ] ) && 'edit' === $_GET[ 'action' ] ) {
+               $post = get_post( abs( $_GET[ 'post' ] ) );
+               if( $post->post_content ){
+                   wp_redirect( 'edit.php?post_type=give_forms&page=givenberg&donationFormID=' . $post->ID );
+                   exit();
+               }
+           }
+        });
+
         add_action( 'admin_menu', function (){
             add_submenu_page(
                 'edit.php?post_type=give_forms',
@@ -70,24 +100,6 @@ class ServiceProvider implements ServiceProviderInterface
                 'manage_options',
                 'givenberg',
                 function() {
-
-                    if( ! isset( $_GET['donationFormID'] ) ) {
-                        $currentURL = add_query_arg( $_SERVER['QUERY_STRING'], '', admin_url( 'edit.php') );
-                        $forms = get_posts([
-                            'numberposts' => -1,
-                            'post_type'=>'give_forms'
-                        ]);
-                        echo '<ul>';
-                        foreach( $forms as $form ) {
-                        ?>
-                            <li>
-                        <a href="<?php echo add_query_arg( 'donationFormID', $form->ID, $currentURL); ?>"><?php echo $form->post_title; ?></a>
-                            </li>
-                            <?php
-                        }
-                        echo '</ul>';
-                        return;
-                    }
 
                     $manifest = json_decode( file_get_contents( GIVE_NEXT_GEN_DIR . 'packages/form-builder/build/asset-manifest.json' ) );
                     list( $css, $js ) = $manifest->entrypoints;
