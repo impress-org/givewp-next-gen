@@ -1,7 +1,7 @@
 const gateways = [];
 
 const paymentGatewayRegistrar = {
-    registerGateway(gatewayLocalizedClassName, gateway) {
+    register(gatewayLocalizedClassName, gateway) {
         gateway.id = gatewayLocalizedClassName.id;
         gateway.label = gatewayLocalizedClassName.label;
 
