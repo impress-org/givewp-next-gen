@@ -45,8 +45,6 @@ class NextGenCreditCardGateway extends CreditCardGateway
 
      /**
      * @unreleased
-     *
-     * @return EnqueueScript
      */
     public function enqueueScript(): EnqueueScript
     {
@@ -59,6 +57,9 @@ class NextGenCreditCardGateway extends CreditCardGateway
         );
     }
 
+    /**
+     * @unreleased
+     */
     public function formSettings($formId): array
     {
         $stripePublishableKey = give_stripe_get_publishable_key($formId);
@@ -74,8 +75,9 @@ class NextGenCreditCardGateway extends CreditCardGateway
     }
 
     /**
-     * Mocking Stripe intent for testing start of front-end gateway api
-     * The gateway will eventually be responsible for doing this
+     * Mocking Payment Intent while building out api
+     *
+     * @unreleased
      */
     private function generateStripePaymentIntent($accountId): PaymentIntent
     {
