@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import {createSlotFill, TabPanel, PanelHeader, PanelBody, PanelRow, TextControl} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import {InspectorControls} from "@wordpress/block-editor";
-import {FormSettingsContext} from "../../context/formSettings";
+import {FormTitleContext} from "../../context/formTitle";
 
 const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
     'StandAloneBlockEditorSidebarInspector'
@@ -14,18 +14,13 @@ const tabs = [
         name: 'form',
         title: __('Form'),
         className: 'tab-form',
-        content: ({ formSettings, setFormSettings }) => (
+        content: ({ formTitle, setFormTitle }) => (
             <PanelBody title={ __( 'Form Settings', 'give' ) } initialOpen={true}>
                 <PanelRow>
                     <TextControl
                         label={__('Form Title')}
-                        value={ formSettings.formTitle }
-                        onChange={ ( formTitle ) => {
-                            setFormSettings({
-                                ...formSettings,
-                                formTitle: formTitle,
-                            })
-                        } }
+                        value={ formTitle }
+                        onChange={ setFormTitle }
                     />
                 </PanelRow>
             </PanelBody>
@@ -44,7 +39,7 @@ const tabs = [
 ]
 
 function Sidebar() {
-    const [formSettings, setFormSettings] = useContext(FormSettingsContext)
+    const [formTitle, setFormTitle] = useContext(FormTitleContext)
     return (
         <div
             className="givewp-next-gen-sidebar givewp-next-gen-sidebar-primary"
@@ -57,7 +52,7 @@ function Sidebar() {
                 activeClass="active-tab"
                 tabs={ tabs }
             >
-                { ( tab ) => <tab.content formSettings={formSettings} setFormSettings={setFormSettings} /> }
+                { ( tab ) => <tab.content formTitle={formTitle} setFormTitle={setFormTitle} /> }
             </TabPanel>
         </div>
     );

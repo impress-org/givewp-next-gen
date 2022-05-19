@@ -9,7 +9,7 @@ import { InterfaceSkeleton } from "@wordpress/interface";
 import Header from './components/header'
 import { Sidebar, SecondarySidebar } from './components/sidebar'
 import Content from './components/content'
-import { FormSettingsContextProvider } from './context/formSettings'
+import { FormTitleProvider } from './context/formTitle'
 
 import { useToggleState } from "./hooks";
 
@@ -50,7 +50,7 @@ function App() {
     }
 
     return (
-        <FormSettingsContextProvider>
+        <FormTitleProvider>
             <ShortcutProvider>
                 <BlockEditorProvider
                     value={ blocks }
@@ -75,7 +75,7 @@ function App() {
                     </SlotFillProvider>
                 </BlockEditorProvider>
             </ShortcutProvider>
-        </FormSettingsContextProvider>
+        </FormTitleProvider>
     );
 }
 
