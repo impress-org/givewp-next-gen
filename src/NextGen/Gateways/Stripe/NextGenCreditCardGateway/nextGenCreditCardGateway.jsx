@@ -1,3 +1,4 @@
+/** @constant NextGenCreditCardGateway */
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from "@stripe/react-stripe-js";
 
@@ -28,8 +29,6 @@ const StripeFields = ({gateway}) => {
 }
 
 const stripeGateway = {
-    id: 'stripe',
-    label: 'Stripe',
     createPayment: async function (values) {
         window.alert('create payment with gateway');
 
@@ -67,4 +66,4 @@ const stripeGateway = {
     }
 }
 
-window.givewp.gateways.registerGateway(stripeGateway);
+window.givewp.gateways.register(NextGenCreditCardGateway, stripeGateway);

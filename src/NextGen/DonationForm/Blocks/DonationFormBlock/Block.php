@@ -14,6 +14,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use ReflectionClass;
 use Stripe\PaymentIntent;
 
 class Block
@@ -104,7 +105,13 @@ class Block
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {
-                $gateway->enqueueScript()->loadInFooter()->enqueue();
+                $gateway->enqueueScript()->registerLocalizeData(
+                    (new ReflectionClass($gateway))->getShortName(),
+                    [
+                        'id' => $gateway->getId(),
+                        'label' => $gateway->getPaymentMethodLabel()
+                    ]
+                )->loadInFooter()->enqueue();
             }
         }
 

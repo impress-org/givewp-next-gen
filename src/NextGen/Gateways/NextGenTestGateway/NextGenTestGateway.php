@@ -3,8 +3,6 @@ namespace Give\NextGen\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
-use Give\Framework\FieldsAPI\Contracts\Node;
-use Give\Framework\FieldsAPI\Group;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -96,14 +94,6 @@ class NextGenTestGateway extends PaymentGateway
             'redirectUrl' => give_get_success_page_uri(),
             'status' => "Complete"
         ]);
-    }
-
-    /**
-     * @return Node
-     */
-    public function getPaymentFields()
-    {
-        return Group::make($this->getId());
     }
 
     /**

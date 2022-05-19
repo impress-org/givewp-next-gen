@@ -1,8 +1,7 @@
+/** @constant NextGenTestGateway */
 import {__} from '@wordpress/i18n';
 
-const NextGenTestGateway = {
-    id: 'next-gen-test-gateway',
-    label: 'Next Gen Test Gateway',
+window.givewp.gateways.register(NextGenTestGateway, {
     fields() {
         return (
             <fieldset className="no-fields">
@@ -34,6 +33,4 @@ const NextGenTestGateway = {
             </fieldset>
         )
     }
-}
-
-window.givewp.gateways.registerGateway(NextGenTestGateway);
+});
