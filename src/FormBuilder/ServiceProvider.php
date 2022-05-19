@@ -27,7 +27,10 @@ class ServiceProvider implements ServiceProviderInterface
             register_rest_route( 'givewp/next-gen', '/form/(?P<id>\d+)', array(
                 'methods' => 'GET',
                 'callback' => function( \WP_REST_Request $request ) {
-                    return get_post( $request->get_param('id') )->post_content;
+                    return [
+                        'blocks' => get_post( $request->get_param('id') )->post_content,
+                        'formTitle' => get_post( $request->get_param('id') )->post_title,
+                    ];
                 },
                 'args' => [
                     'id' => [
@@ -42,7 +45,8 @@ class ServiceProvider implements ServiceProviderInterface
                 'callback' => function( \WP_REST_Request $request ) {
                     return wp_update_post([
                         'ID'           => $request->get_param('id'),
-                        'post_content' => $request->get_param('blockData'),
+                        'post_content' => $request->get_param('blocks'),
+                        'post_title' => $request->get_param('formTitle'),
                     ]);
                 },
                 'args' => [
@@ -96,6 +100,7 @@ class ServiceProvider implements ServiceProviderInterface
                     wp_localize_script( '@givewp/form-builder/storage', 'storageData', [
                         'resourceURL' => rest_url( 'givewp/next-gen/form/' . abs( $_GET['donationFormID'] ) ),
                         'blockData' => get_post( abs( $_GET['donationFormID'] ) )->post_content,
+                        'formTitle' => get_post( abs( $_GET['donationFormID'] ) )->post_title,
                     ]);
 
                     wp_enqueue_script( '@givewp/form-builder/script', trailingslashit(GIVE_NEXT_GEN_URL) . 'packages/form-builder/build/' . $js, [], false, true );

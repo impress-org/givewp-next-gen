@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { parse } from '@wordpress/blocks'
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
@@ -33,11 +33,13 @@ function App() {
         toggle: toggleShowSidebar
     } = useToggleState( true )
 
-    const initialBlocks =  Storage.load();
+    const { blocks: initialBlocks, formTitle: initialFormTitle } =  Storage.load();
     if (initialBlocks instanceof Error ) {
         alert( 'Unable to load initial blocks.' )
         console.error(initialBlocks);
     }
+
+    const [formTitle, setFormTitle] = useState( initialFormTitle || 'Donation Form' )
 
     const [ blocks, updateBlocks ] = useState( initialBlocks || parse(`
         <!-- wp:custom-block-editor/donation-amount /-->
@@ -45,12 +47,12 @@ function App() {
     `));
 
     const saveCallback = () => {
-        return Storage.save( blocks )
+        return Storage.save( { blocks, formTitle } )
             .catch(error => alert(error.message));
     }
 
     return (
-        <FormTitleProvider>
+        <FormTitleProvider formTitle={formTitle} setFormTitle={setFormTitle}>
             <ShortcutProvider>
                 <BlockEditorProvider
                     value={ blocks }

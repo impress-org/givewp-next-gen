@@ -1,8 +1,9 @@
 window.storage = {
-    save: ( blockData ) => {
+    save: ( { blocks, formTitle } ) => {
         return new Promise((resolve, reject) => {
             jQuery.post( window.storageData.resourceURL, {
-                blockData: JSON.stringify(blockData)
+                blocks: JSON.stringify(blocks),
+                formTitle: formTitle,
             } )
                 .done(() => {
                     resolve()
@@ -13,10 +14,9 @@ window.storage = {
         })
     },
     load: () => {
-        if( window.storageData.blockData ) {
-            console.log( JSON.parse(window.storageData.blockData) )
-            return JSON.parse(window.storageData.blockData)
-        }
-        return null;
+        return {
+            blocks: JSON.parse(window.storageData.blockData),
+            formTitle: window.storageData.formTitle,
+        };
     },
 }
