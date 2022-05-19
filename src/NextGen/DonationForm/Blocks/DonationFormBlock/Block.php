@@ -90,22 +90,6 @@ class Block
             'give'
         );
 
-        $manifest = new EnqueueScript(
-            'manifest',
-            'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/manifest.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        );
-
-        $vendor = new EnqueueScript(
-            'vendor',
-            'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/vendor.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        );
-
         $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
             'give-payment-gateway-registrar-js',
             'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.build.js',
@@ -116,9 +100,6 @@ class Block
         ?>
 
         <?php
-        $manifest->loadInFooter()->enqueue();
-        $vendor->loadInFooter()->enqueue();
-
         $enqueuePaymentGatewayRegistrarScript->loadInFooter()->enqueue();
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {

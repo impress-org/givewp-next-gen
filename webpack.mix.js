@@ -31,8 +31,6 @@ mix
      * NextGenStripeGateway
      */
     .js('src/NextGen/Gateways/Stripe/NextGenCreditCardGateway/index.jsx', 'src/NextGen/Gateways/Stripe/NextGenCreditCardGateway/build.js');
-    
-mix.extract(['react']);
 
 /**
  * Extend the config to use DependencyExtractionWebpackPlugin for WP scripts asset dependencies
