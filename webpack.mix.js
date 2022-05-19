@@ -15,7 +15,7 @@ mix
     /**
      * PaymentGatewayRegistrar
      */
-    .js('src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.js', 'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.build.js')
+    .js('src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.js', 'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar/build.js')
 
     /**
      * DonationFormBlock - view

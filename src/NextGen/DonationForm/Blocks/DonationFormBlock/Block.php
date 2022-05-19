@@ -92,7 +92,7 @@ class Block
 
         $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
             'give-payment-gateway-registrar-js',
-            'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar.build.js',
+            'src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar/build.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
