@@ -7,7 +7,7 @@ declare global {
         givewp: {
             gateways: {
                 getAll(): Gateway[]
-                register(gatewayLocalizedClassName: object, gateway: Gateway): Function
+                register(gatewayLocalizedClassName: object, gateway: object): Function
             },
         }
     }

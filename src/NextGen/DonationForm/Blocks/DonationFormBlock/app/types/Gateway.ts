@@ -1,6 +1,6 @@
 export type Gateway = {
     id: string;
     label: string;
-    fields: Function;
-    createPayment?: Function;
+    fields(): string;
+    createPayment?(): boolean;
 };
