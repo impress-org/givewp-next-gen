@@ -1,10 +1,16 @@
 window.storage = {
     save: ( { blocks, formTitle } ) => {
         return new Promise((resolve, reject) => {
-            jQuery.post( window.storageData.resourceURL, {
-                blocks: JSON.stringify(blocks),
-                formTitle: formTitle,
-            } )
+            jQuery.post( {
+                url: window.storageData.resourceURL,
+                headers: {
+                    "X-WP-Nonce": window.storageData.nonce,
+                },
+                data: {
+                    blocks: JSON.stringify(blocks),
+                    formTitle: formTitle,
+                }
+            })
                 .done(() => {
                     resolve()
                 })

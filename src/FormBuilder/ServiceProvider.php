@@ -32,7 +32,9 @@ class ServiceProvider implements ServiceProviderInterface
                         'formTitle' => get_post( $request->get_param('id') )->post_title,
                     ];
                 },
-                'permission_callback' => '__return_true',
+                'permission_callback' => function() {
+                    return current_user_can( 'manage_options' );
+                },
                 'args' => [
                     'id' => [
                         'validate_callback' => function($param, $request, $key) {
@@ -50,7 +52,9 @@ class ServiceProvider implements ServiceProviderInterface
                         'post_title' => $request->get_param('formTitle'),
                     ]);
                 },
-                'permission_callback' => '__return_true',
+                'permission_callback' => function() {
+                    return current_user_can( 'manage_options' );
+                },
                 'args' => [
                     'id' => [
                         'validate_callback' => function($param, $request, $key) {
@@ -111,6 +115,7 @@ class ServiceProvider implements ServiceProviderInterface
                     wp_enqueue_script( '@givewp/form-builder/storage', trailingslashit(GIVE_NEXT_GEN_URL) . 'src/FormBuilder/resources/js/storage.js' );
                     wp_localize_script( '@givewp/form-builder/storage', 'storageData', [
                         'resourceURL' => rest_url( 'givewp/next-gen/form/' . abs( $_GET['donationFormID'] ) ),
+                        'nonce' => wp_create_nonce( 'wp_rest' ),
                         'blockData' => get_post( abs( $_GET['donationFormID'] ) )->post_content,
                         'formTitle' => get_post( abs( $_GET['donationFormID'] ) )->post_title,
                     ]);
