@@ -14,8 +14,6 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
-use ReflectionClass;
-use Stripe\PaymentIntent;
 
 class Block
 {
@@ -63,22 +61,19 @@ class Block
 
         $formId = $attributes['formId'];
 
-        /**
-         * Mocking Stripe intent for testing start of front-end gateway api
-         * The gateway will eventually be responsible for doing this
-         */
-        $stripePublishableKey = give_stripe_get_publishable_key($formId);
-        $stripeConnectedAccountKey = give_stripe_get_connected_account_id($formId);
-        $stripePaymentIntent = $this->generateStripePaymentIntent($stripeConnectedAccountKey);
+        $formDataGateways = [];
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
+            if (method_exists($gateway, 'formSettings')) {
+                $formDataGateways[$gateway->getId()] = $gateway->formSettings($attributes['formId']);
+            }
+        }
 
         $exports = [
             'attributes' => $attributes,
             'form' => $donationForm->jsonSerialize(),
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
-            'stripeKey' => $stripePublishableKey,
-            'stripeClientSecret' => $stripePaymentIntent->client_secret,
-            'stripeConnectedAccountKey' => $stripeConnectedAccountKey
+            'gateways' => $formDataGateways
         ];
 
         // enqueue front-end scripts
@@ -100,13 +95,15 @@ class Block
         );
         ?>
 
+        <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
+
         <?php
         $enqueuePaymentGatewayRegistrarScript->loadInFooter()->enqueue();
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {
                 $gateway->enqueueScript()->registerLocalizeData(
-                    (new ReflectionClass($gateway))->getShortName(),
+                    (new \ReflectionClass($gateway))->getShortName(),
                     [
                         'id' => $gateway->getId(),
                         'label' => $gateway->getPaymentMethodLabel()
@@ -121,8 +118,6 @@ class Block
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
-        <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
-
         <?php
         return ob_get_clean();
     }
@@ -130,14 +125,14 @@ class Block
     /**
      * @unreleased
      *
-     * @param  array  $attributes
-     * @return Form
      * @throws EmptyNameException
      */
-    private function createForm($attributes): Form
+    private function createForm(array $attributes): Form
     {
+        $formId = $attributes['formId'];
+
         $gatewayOptions = [];
-        foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
         }
 
@@ -175,7 +170,7 @@ class Block
                 ->append(...$gatewayOptions),
 
             Hidden::make('formId')
-                ->defaultValue($attributes['formId']),
+                ->defaultValue($formId),
 
             Hidden::make('formTitle')
                 ->defaultValue('Give Next Gen Form'),
@@ -184,7 +179,7 @@ class Block
                 ->defaultValue(get_current_user_id()),
 
             Hidden::make('currency')
-                ->defaultValue(give_get_currency($attributes['formId']))
+                ->defaultValue(give_get_currency($formId))
         );
 
         return $donationForm;
@@ -211,22 +206,5 @@ class Block
         }
 
         return $gateways;
-    }
-
-
-    /**
-     * Mocking Stripe intent for testing start of front-end gateway api
-     * The gateway will eventually be responsible for doing this
-     */
-    private function generateStripePaymentIntent($accountId)
-    {
-        return PaymentIntent::create(
-            [
-                'amount' => 1099,
-                'currency' => 'usd',
-                'automatic_payment_methods' => ['enabled' => true],
-            ],
-            ['stripe_account' => $accountId]
-        );
     }
 }

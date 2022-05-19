@@ -2,6 +2,9 @@
 import {__} from '@wordpress/i18n';
 
 window.givewp.gateways.register(NextGenTestGateway, {
+    initialize() {
+
+    },
     fields() {
         return (
             <fieldset className="no-fields">

@@ -2,22 +2,6 @@
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from "@stripe/react-stripe-js";
 
-/**
- * Get data from the server
- */
-const {stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl} = window.giveNextGenExports;
-
-/**
- * Create the Stripe object and pass our api keys
- */
-const stripePromise = loadStripe(stripeKey, {
-    stripeAccount: stripeConnectAccountId,
-});
-
-const stripeElementOptions = {
-    clientSecret: stripeClientSecret,
-};
-
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -26,9 +10,26 @@ const StripeFields = ({gateway}) => {
     gateway.elements = elements;
 
     return <PaymentElement/>
-}
+};
+
+let stripePromise = null;
+let stripeElementOptions = null;
 
 const stripeGateway = {
+    initialize({stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}) {
+        /**
+         * Create the Stripe object and pass our api keys
+         */
+        stripePromise = loadStripe(stripeKey, {
+            stripeAccount: stripeConnectAccountId,
+        });
+
+        stripeElementOptions = {
+            clientSecret: stripeClientSecret,
+        };
+
+        this.successUrl = successUrl;
+    },
     createPayment: async function (values) {
         window.alert('create payment with gateway');
 
@@ -42,7 +43,7 @@ const stripeGateway = {
             elements: this.elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: successUrl
+                return_url: this.successUrl
             },
         });
 
