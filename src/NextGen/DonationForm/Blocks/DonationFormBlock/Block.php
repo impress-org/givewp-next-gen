@@ -6,6 +6,7 @@ use Give\Framework\EnqueueScript;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
@@ -106,7 +107,7 @@ class Block
         foreach( $formBlockData as $block ) {
             $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
         }
-        
+
         $donationForm->append(
             Section::make('paymentDetails')
                 ->label(__('Payment Details', 'give'))
@@ -161,7 +162,9 @@ class Block
     protected function convertFormBlockDataToFieldsAPI($block)
     {
         if ($block->innerBlocks) {
-            $section = Section::make($block->clientId);
+            $section = ($block->name === "custom-block-editor/name-field-group")
+                ? Group::make('name-group')
+                : Section::make($block->clientId);
 
             if (property_exists($block->attributes, 'title')) {
                 $section->label($block->attributes->title);
@@ -173,6 +176,19 @@ class Block
 
             return $section;
         }
+
+
+        /*
+         * I'm considering refactoring the `namespace/block-type` to be
+         * used as `field-category/block-type` for easier parsing.
+         *
+         * For example:
+         *  `section/donor-information`
+         *      `group/donor-name`
+         *          `text/donor-first-name`
+         *          `text/donor-last-name`
+         *      `email/donor-email`
+         */
 
         if ($block->name === "custom-block-editor/donation-amount-levels") {
             $field = Text::make('amount')->required();
