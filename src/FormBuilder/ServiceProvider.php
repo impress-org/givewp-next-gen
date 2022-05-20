@@ -77,6 +77,7 @@ class ServiceProvider implements ServiceProviderInterface
                 if( 'new' === $_GET['donationFormID'] ) {
                     $newPostID = wp_insert_post([
                         'post_type' => 'give_forms',
+                        'post_status' => 'publish',
                         'post_title' => 'Next Gen Donation Form',
                         'post_content' => json_encode(null),
                     ]);
