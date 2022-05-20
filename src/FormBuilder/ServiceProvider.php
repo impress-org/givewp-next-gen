@@ -98,7 +98,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action( 'admin_menu', function (){
             add_submenu_page(
-                'edit.php?post_type=give_forms',
+                null,
                 __( 'Form Builder', 'givewp' ),
                 __( 'Form Builder', 'givewp' ),
                 'manage_options',
