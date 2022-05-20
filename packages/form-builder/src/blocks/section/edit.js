@@ -22,8 +22,6 @@ export default function Edit( props ) {
         setAttributes,
     } = props;
 
-    console.log( props.attributes.allowedBlocks )
-
     const isParentOfSelectedBlock = useSelect( ( select ) => select( 'core/block-editor' ).hasSelectedInnerBlock( props.clientId, true ) );
     const isSelectedOrIsInnerBlockSelected = props.isSelected || isParentOfSelectedBlock;
     const borderColor = isSelectedOrIsInnerBlockSelected ? '#66bb6a' : 'lightgray';
