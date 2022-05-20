@@ -4,7 +4,7 @@
         "build": "wp-scripts build src/NextGen/DonationForm/Blocks/DonationFormBlock/block.js --output-path=src/NextGen/DonationForm/Blocks/DonationFormBlock/build/ && wp-scripts build src/NextGen/DonationForm/Blocks/DonationFormBlock/app/DonationFormBlockApp.tsx src/NextGen/Gateways/Stripe/NextGenCreditCardGateway/nextGenCreditCardGateway.jsx src/NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.jsx src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar/paymentGatewayRegistrar.js",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip",
-        "start": "wp-scripts start"
+        "start": "wp-scripts start src/NextGen/DonationForm/Blocks/DonationFormBlock/block.js --output-path=src/NextGen/DonationForm/Blocks/DonationFormBlock/build/ && wp-scripts start src/NextGen/DonationForm/Blocks/DonationFormBlock/app/DonationFormBlockApp.tsx src/NextGen/Gateways/Stripe/NextGenCreditCardGateway/nextGenCreditCardGateway.jsx src/NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.jsx src/Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar/paymentGatewayRegistrar.js"
     },
     "workspaces": [
         "packages/form-builder"

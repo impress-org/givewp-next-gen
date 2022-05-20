@@ -10,7 +10,7 @@ const paymentGatewayRegistrar = {
         gateway.id = gatewayLocalizedClassName.id;
         gateway.label = gatewayLocalizedClassName.label;
 
-        gateway.initialize(formDataGateways[gateway.id]);
+        gateway?.initialize(formDataGateways[gateway.id]);
 
         gateways.push(gateway);
     },

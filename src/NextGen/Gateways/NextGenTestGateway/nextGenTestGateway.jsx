@@ -2,8 +2,18 @@
 import {__} from '@wordpress/i18n';
 
 window.givewp.gateways.register(NextGenTestGateway, {
-    initialize() {
+    createPayment(values) {
+        if (values.firstName === 'error') {
+            throw new Error('Failed in some way');
+        }
 
+        return {
+            values: {
+                testGatewayIntent: 'test-gateway-intent'
+            }
+        };
+    },
+    initialize() {
     },
     fields() {
         return (

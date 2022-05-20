@@ -7,7 +7,4 @@ export type giveNextGenExports = {
     attributes: object;
     donateUrl: string;
     successUrl: string;
-    stripeKey: string;
-    stripeConnectAccountId: string;
-    stripeClientSecret: string;
 };

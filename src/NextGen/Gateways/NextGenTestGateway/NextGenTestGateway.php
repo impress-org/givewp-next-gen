@@ -2,9 +2,11 @@
 namespace Give\NextGen\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
@@ -13,6 +15,8 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
  */
 class NextGenTestGateway extends PaymentGateway
 {
+    use HasRequest;
+
     /**
      * @inheritDoc
      */
@@ -81,18 +85,17 @@ class NextGenTestGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation)
     {
+        $intent = $this->request()->get('testGatewayIntent');
         $transactionId = "test-gateway-transaction-id-{$donation->id}";
 
-        give_update_payment_status($donation->id);
-
-        give_set_payment_transaction_id($donation->id, $transactionId);
-
-        //return new PaymentComplete();
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->gatewayTransactionId = $transactionId;
+        $donation->save();
 
         return new RespondToBrowser([
-            'donationId' => $donation->id,
+            'donation' => $donation->toArray(),
             'redirectUrl' => give_get_success_page_uri(),
-            'status' => "Complete"
+            'intent' => $intent
         ]);
     }
 

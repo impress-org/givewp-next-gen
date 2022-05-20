@@ -44,8 +44,14 @@ type FormInputs = {
     gatewayId: string;
 };
 
-const handleSubmitRequest = async (values, gateway: Gateway) => {
-    const gatewayResponse = gateway.createPayment(values);
+const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
+    let gatewayResponse = null;
+
+    try {
+        gatewayResponse = gateway?.createPayment(values);
+    } catch (error) {
+        return setError('FORM_ERROR', {message: error.message});
+    }
 
     if (!gatewayResponse) {
         return;
@@ -53,7 +59,10 @@ const handleSubmitRequest = async (values, gateway: Gateway) => {
 
     const request = await axios.post(donateUrl, {
         ...values,
+        ...gatewayResponse?.values
     });
+
+    console.log(request.data);
 
     if (request.status === 200) {
         alert('Thank You!');
@@ -104,7 +113,7 @@ export default function Form({fields, defaultValues}: PropTypes) {
     return (
         <FormProvider {...methods}>
             <form id="give-next-gen"
-                  onSubmit={handleSubmit((values) => handleSubmitRequest(values, getGateway(values.gatewayId)))}>
+                  onSubmit={handleSubmit((values) => handleSubmitRequest(values, setError, getGateway(values.gatewayId)))}>
                 {fields.map(({type, name, label, readOnly, validationRules, nodes}: FieldInterface) => {
                     if (name === 'paymentDetails') {
                         return <PaymentDetails gateways={gateways} name={name} label={label} key={name}/>;
