@@ -162,7 +162,11 @@ class Block
     protected function convertFormBlockDataToFieldsAPI($block)
     {
         if ($block->innerBlocks) {
-            $section = ($block->name === "custom-block-editor/name-field-group")
+
+            /**
+             * @todo Currently re-purposing sections for groups so that they render for the prototype.
+             */
+            $section = (false && $block->name === "custom-block-editor/name-field-group")
                 ? Group::make('name-group')
                 : Section::make($block->clientId);
 
