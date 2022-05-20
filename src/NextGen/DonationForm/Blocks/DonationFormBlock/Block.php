@@ -108,10 +108,16 @@ class Block
             $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
         }
 
+        /**
+         * @todo for some reason, `getNodeByName()` isn't working...
+         */
+        foreach( $donationForm->all() as $node ) {
+            if( 'paymentDetails' === $node->getName() ) {
+                $node->append(...$gatewayOptions);
+            }
+        }
+
         $donationForm->append(
-            Section::make('paymentDetails')
-                ->label(__('Payment Details', 'give'))
-                ->append(...$gatewayOptions),
 
             Hidden::make('formId')
                 ->defaultValue($attributes['formId']),
@@ -161,6 +167,11 @@ class Block
      */
     protected function convertFormBlockDataToFieldsAPI($block)
     {
+        if( 'custom-block-editor/payment-gateways' === $block->name ) {
+            return Section::make('paymentDetails')
+                    ->label($block->attributes->title);
+        }
+
         if ($block->innerBlocks) {
 
             /**
