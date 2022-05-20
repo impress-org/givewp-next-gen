@@ -100,7 +100,7 @@ class Block
             $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
         }
 
-        $donationForm = new Form('DonationForm');
+        $donationForm = new Form($attributes['formId']);
 
         $formBlockData = json_decode(get_post($attributes['formId'])->post_content, false);
 
