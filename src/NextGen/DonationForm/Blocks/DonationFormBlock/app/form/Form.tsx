@@ -53,10 +53,6 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         return setError('FORM_ERROR', {message: error.message});
     }
 
-    if (!gatewayResponse) {
-        return;
-    }
-
     const request = await axios.post(donateUrl, {
         ...values,
         ...gatewayResponse?.values
@@ -87,7 +83,7 @@ export default function Form({fields, defaultValues}: PropTypes) {
         reset,
     } = methods;
 
-    console.log(errors);
+    console.log({errors});
 
     // useEffect(() => {
     //     reset();

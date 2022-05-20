@@ -80,7 +80,7 @@ class Block
         // since this is using render_callback viewScript in blocks.json will not work.
         $enqueueBlockScript = new EnqueueScript(
             'give-next-gen-donation-form-block-js',
-            'build/DonationFormBlockApp.tsx.js',
+            'build/donationFormBlockApp.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
