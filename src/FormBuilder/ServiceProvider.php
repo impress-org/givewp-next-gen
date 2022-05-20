@@ -89,7 +89,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action( 'admin_init', function() {
            if( isset( $_GET[ 'post' ] ) && isset( $_GET[ 'action' ] ) && 'edit' === $_GET[ 'action' ] ) {
                $post = get_post( abs( $_GET[ 'post' ] ) );
-               if( $post->post_content ){
+               if( 'give_forms' === $post->post_type && $post->post_content ){
                    wp_redirect( 'edit.php?post_type=give_forms&page=givenberg&donationFormID=' . $post->ID );
                    exit();
                }
