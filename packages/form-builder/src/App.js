@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { parse } from '@wordpress/blocks'
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';

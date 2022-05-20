@@ -1,8 +1,7 @@
 import { useContext } from 'react'
 
-import {createSlotFill, TabPanel, PanelHeader, PanelBody, PanelRow, TextControl} from '@wordpress/components';
+import {createSlotFill, TabPanel, PanelBody, PanelRow, TextControl} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import {InspectorControls} from "@wordpress/block-editor";
 import {FormTitleContext} from "../../context/formTitle";
 
 const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
