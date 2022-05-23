@@ -20,7 +20,7 @@ jobs:
                   npm ci
                   npm run dev
             - name: Deploy to Github Pages
-              uses: peaceiris/actions-gh-pages@v3
+              uses: JamesIves/github-pages-deploy-action@v4.3.3
               with:
-                  deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-                  publish_dir: ./packages/form-builder/build
+                  branch: gh-pages
+                  folder: ./packages/form-builder/build
