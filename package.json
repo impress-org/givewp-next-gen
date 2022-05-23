@@ -1,10 +1,11 @@
 {
     "private": true,
     "scripts": {
-        "build": "wp-scripts build",
+        "build": "wp-scripts build && npm run build --workspaces",
         "start": "wp-scripts start",
         "packages-update": "wp-scripts packages-update",
-        "plugin-zip": "wp-scripts plugin-zip"
+        "plugin-zip": "wp-scripts plugin-zip",
+        "env": "wp-env"
     },
     "workspaces": [
         "packages/form-builder"
