@@ -30,7 +30,7 @@ const stripeGateway = {
 
         this.successUrl = successUrl;
     },
-    createPayment: async function (values) {
+    beforeCreatePayment: async function (values) {
         window.alert('create payment with gateway');
 
         if (!this.stripe || !this.elements) {

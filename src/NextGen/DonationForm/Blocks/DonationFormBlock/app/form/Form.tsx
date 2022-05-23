@@ -48,7 +48,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let gatewayResponse = null;
 
     try {
-        gatewayResponse = gateway?.createPayment(values);
+        gatewayResponse = gateway?.beforeCreatePayment(values);
     } catch (error) {
         return setError('FORM_ERROR', {message: error.message});
     }

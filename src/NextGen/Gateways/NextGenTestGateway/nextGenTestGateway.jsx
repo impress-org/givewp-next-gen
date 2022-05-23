@@ -2,7 +2,9 @@
 import {__} from '@wordpress/i18n';
 
 window.givewp.gateways.register(NextGenTestGateway, {
-    createPayment(values) {
+    initialize() {
+    },
+    beforeCreatePayment(values) {
         if (values.firstName === 'error') {
             throw new Error('Failed in some way');
         }
@@ -12,8 +14,6 @@ window.givewp.gateways.register(NextGenTestGateway, {
                 testGatewayIntent: 'test-gateway-intent'
             }
         };
-    },
-    initialize() {
     },
     fields() {
         return (
