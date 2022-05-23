@@ -16,6 +16,8 @@ let stripePromise = null;
 let stripeElementOptions = null;
 
 const stripeGateway = {
+    id: 'next-gen-stripe',
+    label: 'Next Gen Stripe - Credit Card',
     initialize({stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}) {
         /**
          * Create the Stripe object and pass our api keys
@@ -67,4 +69,4 @@ const stripeGateway = {
     }
 }
 
-window.givewp.gateways.register(NextGenCreditCardGateway, stripeGateway);
+window.givewp.gateways.register(stripeGateway);

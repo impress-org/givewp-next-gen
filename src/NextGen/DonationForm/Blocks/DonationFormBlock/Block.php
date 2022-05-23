@@ -103,13 +103,7 @@ class Block
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {
-                $gateway->enqueueScript()->registerLocalizeData(
-                    (new \ReflectionClass($gateway))->getShortName(),
-                    [
-                        'id' => $gateway->getId(),
-                        'label' => $gateway->getPaymentMethodLabel()
-                    ]
-                )->loadInFooter()->enqueue();
+                $gateway->enqueueScript()->loadInFooter()->enqueue();
             }
         }
 
