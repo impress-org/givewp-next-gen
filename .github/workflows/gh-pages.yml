@@ -5,7 +5,7 @@ on:
         branches: [ develop, feature/gh-pages ]
 
 jobs:
-    build_test:
+    build_deploy:
         runs-on: ubuntu-latest
 
         steps:
@@ -14,10 +14,11 @@ jobs:
               uses: actions/setup-node@v2
               with:
                   node-version: 12.x
-            - name: Build Form Builder Application
+            - name: Build Workspace Packages
               run: |
+                  npm install -g npm@7
                   npm ci
-                  npm run build --workspaces
+                  npm run dev
             - name: Deploy to Github Pages
               uses: peaceiris/actions-gh-pages@v3
               with:
