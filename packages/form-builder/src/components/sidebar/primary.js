@@ -18,6 +18,23 @@ const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
     'StandAloneBlockEditorSidebarInspector'
 );
 
+const FormTitle = () => {
+
+    const [formTitle, setFormTitle] = useContext(FormTitleContext)
+
+    return (
+        <PanelBody>
+            <PanelRow>
+                <TextControl
+                    label={__('Form Title')}
+                    value={ formTitle }
+                    onChange={ setFormTitle }
+                />
+            </PanelRow>
+        </PanelBody>
+    )
+}
+
 const DonationGoalSettings = () => {
 
     const {
@@ -102,17 +119,9 @@ const tabs = [
         name: 'form',
         title: __('Form'),
         className: 'tab-form',
-        content: ({ formTitle, setFormTitle }) => (
+        content: () => (
             <>
-                <PanelBody title={ __( 'Form Settings', 'give' ) } initialOpen={true}>
-                    <PanelRow>
-                        <TextControl
-                            label={__('Form Title')}
-                            value={ formTitle }
-                            onChange={ setFormTitle }
-                        />
-                    </PanelRow>
-                </PanelBody>
+                <FormTitle />
                 <DonationGoalSettings />
             </>
         )
@@ -130,7 +139,7 @@ const tabs = [
 ]
 
 function Sidebar() {
-    const [formTitle, setFormTitle] = useContext(FormTitleContext)
+
     return (
         <div
             className="givewp-next-gen-sidebar givewp-next-gen-sidebar-primary"
@@ -143,7 +152,7 @@ function Sidebar() {
                 activeClass="active-tab"
                 tabs={ tabs }
             >
-                { ( tab ) => <tab.content formTitle={formTitle} setFormTitle={setFormTitle} /> }
+                { ( tab ) => <tab.content /> }
             </TabPanel>
         </div>
     );
