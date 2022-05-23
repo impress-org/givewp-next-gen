@@ -1,6 +1,6 @@
 /**
  * Get data from the server
- * @todo: update file to Typscript and define gateway types within framework
+ * @todo: update file to Typescript and define gateway types within framework
  */
 const {gateways: formDataGateways} = window.giveNextGenExports;
 

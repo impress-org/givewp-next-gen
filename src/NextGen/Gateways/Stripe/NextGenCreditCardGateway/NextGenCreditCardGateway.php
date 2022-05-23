@@ -3,6 +3,7 @@
 namespace Give\NextGen\Gateways\Stripe\NextGenCreditCardGateway;
 
 use Give\Framework\EnqueueScript;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
 use Stripe\PaymentIntent;
 
@@ -64,7 +65,13 @@ class NextGenCreditCardGateway extends CreditCardGateway
     {
         $stripePublishableKey = give_stripe_get_publishable_key($formId);
         $stripeConnectedAccountKey = give_stripe_get_connected_account_id($formId);
-        $stripePaymentIntent = $this->generateStripePaymentIntent($stripeConnectedAccountKey);
+        $currency = give_get_currency($formId);
+        $formDefaultAmount = give_get_default_form_amount($formId);
+        $defaultAmount = Money::fromDecimal(!empty($formDefaultAmount) ? $formDefaultAmount : '50', $currency);
+        $stripePaymentIntent = $this->generateStripePaymentIntent(
+            $stripeConnectedAccountKey,
+            $defaultAmount
+        );
 
         return [
             'stripeKey' => $stripePublishableKey,
@@ -79,12 +86,12 @@ class NextGenCreditCardGateway extends CreditCardGateway
      *
      * @unreleased
      */
-    private function generateStripePaymentIntent($accountId): PaymentIntent
+    private function generateStripePaymentIntent($accountId, Money $amount): PaymentIntent
     {
         return PaymentIntent::create(
             [
-                'amount' => 1099,
-                'currency' => 'usd',
+                'amount' => $amount->formatToMinorAmount(),
+                'currency' => $amount->getCurrency()->getCode(),
                 'automatic_payment_methods' => ['enabled' => true],
             ],
             ['stripe_account' => $accountId]
