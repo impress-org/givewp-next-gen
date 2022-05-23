@@ -71,7 +71,7 @@ const DonationGoalSettings = () => {
     const [ goalAmount, setGoalAmount ] = useState( 10000 );
 
     return (
-        <PanelBody title={ __( 'Donation Goal', 'give' ) } initialOpen={true}>
+        <PanelBody title={ __( 'Donation Goal', 'give' ) } initialOpen={false}>
             <PanelRow>
                 <ToggleControl
                     label={ __('Enable Donation Goal', 'give') }
@@ -114,6 +114,47 @@ const DonationGoalSettings = () => {
     )
 }
 
+const OfflineDonations = () => {
+
+    const {
+        state: enableOfflineDonations,
+        toggle: toggleOfflineDonations
+    } = useToggleState( false )
+
+    const {
+        state: enableBillingFields,
+        toggle: toggleBillingFields
+    } = useToggleState( false )
+
+    return (
+        <PanelBody title={ __( 'Offline Donations', 'give' ) } initialOpen={false}>
+            <PanelRow>
+                <ToggleControl
+                    label={ __('Enable Offline Donations', 'give') }
+                    help={ __('Do you want to customize the donation instructions for this form?', 'give') }
+                    checked={enableOfflineDonations}
+                    onChange={toggleOfflineDonations}
+                />
+            </PanelRow>
+            { enableOfflineDonations && (
+                <>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __('Enable Billing Fields', 'give') }
+                            help={ __('DThis option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give') }
+                            checked={enableBillingFields}
+                            onChange={toggleBillingFields}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        [DONATION INSTRUCTIONS HERE]
+                    </PanelRow>
+                </>
+            )}
+        </PanelBody>
+    )
+}
+
 const tabs = [
     {
         name: 'form',
@@ -123,6 +164,7 @@ const tabs = [
             <>
                 <FormTitle />
                 <DonationGoalSettings />
+                <OfflineDonations />
             </>
         )
     },
