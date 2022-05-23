@@ -1,5 +1,6 @@
 /**
  * Get data from the server
+ * @todo: update file to Typscript and define gateway types within framework
  */
 const {gateways: formDataGateways} = window.giveNextGenExports;
 
@@ -19,6 +20,10 @@ const paymentGatewayRegistrar = {
     }
 }
 
-window.givewp = {
-    gateways: paymentGatewayRegistrar
+if (!window.givewp) {
+    window.givewp = {};
 }
+
+window.givewp.gateways = paymentGatewayRegistrar;
+
+
