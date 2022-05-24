@@ -58,8 +58,6 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         ...gatewayResponse?.values
     });
 
-    console.log(request.data);
-
     if (request.status === 200) {
         alert('Thank You!');
     }
@@ -82,8 +80,6 @@ export default function Form({fields, defaultValues}: PropTypes) {
         formState: {errors, isSubmitting, isSubmitSuccessful},
         reset,
     } = methods;
-
-    console.log({errors});
 
     // useEffect(() => {
     //     reset();
