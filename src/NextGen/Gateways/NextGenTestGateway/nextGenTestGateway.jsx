@@ -1,10 +1,9 @@
-/** @constant NextGenTestGateway */
 import {__} from '@wordpress/i18n';
 
 window.givewp.gateways.register({
     id: 'test-gateway-next-gen',
-    label: 'Test Gateway Next Gen',
-    initialize() {
+    initialize({label}) {
+        this.label = label;
     },
     beforeCreatePayment(values) {
         if (values.firstName === 'error') {

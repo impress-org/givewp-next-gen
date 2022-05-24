@@ -74,6 +74,7 @@ class NextGenCreditCardGateway extends CreditCardGateway
         );
 
         return [
+            'label' => $this->getName(),
             'stripeKey' => $stripePublishableKey,
             'stripeClientSecret' => $stripePaymentIntent->client_secret,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,

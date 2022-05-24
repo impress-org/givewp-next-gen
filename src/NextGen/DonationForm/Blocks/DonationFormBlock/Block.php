@@ -64,9 +64,12 @@ class Block
 
         $formDataGateways = [];
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
-            if (method_exists($gateway, 'formSettings')) {
-                $formDataGateways[$gateway->getId()] = $gateway->formSettings($attributes['formId']);
-            }
+            $formDataGateways[$gateway->getId()] = array_merge(
+                [
+                    'label' => $gateway->getPaymentMethodLabel()
+                ],
+                method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
+            );
         }
 
         $exports = [
