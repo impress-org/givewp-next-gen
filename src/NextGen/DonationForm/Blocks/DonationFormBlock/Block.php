@@ -131,9 +131,9 @@ class Block
             $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
         }
 
-        $donationForm = new Form($attributes['formId']);
+        $donationForm = new Form($formId);
 
-        $formBlockData = json_decode(get_post($attributes['formId'])->post_content, false);
+        $formBlockData = json_decode(get_post($formId)->post_content, false);
 
         foreach( $formBlockData as $block ) {
             $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
