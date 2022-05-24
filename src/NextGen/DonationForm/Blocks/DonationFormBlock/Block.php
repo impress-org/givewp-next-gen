@@ -62,17 +62,7 @@ class Block
 
         $formId = $attributes['formId'];
 
-        $formDataGateways = [];
-        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
-            $gatewayId = $gateway->getId();
-            
-            $formDataGateways[$gatewayId] = array_merge(
-                [
-                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel()
-                ],
-                method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
-            );
-        }
+        $formDataGateways = $this->getFormDataGateways($formId);
 
         $exports = [
             'attributes' => $attributes,
@@ -258,5 +248,26 @@ class Block
         }
 
         return $field;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getFormDataGateways(int $formId): array
+    {
+        $formDataGateways = [];
+
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
+            $gatewayId = $gateway->getId();
+
+            $formDataGateways[$gatewayId] = array_merge(
+                [
+                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel()
+                ],
+                method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
+            );
+        }
+
+        return $formDataGateways;
     }
 }

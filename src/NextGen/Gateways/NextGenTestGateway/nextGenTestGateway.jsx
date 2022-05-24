@@ -2,9 +2,6 @@ import {__} from '@wordpress/i18n';
 
 window.givewp.gateways.register({
     id: 'test-gateway-next-gen',
-    initialize({label}) {
-        this.label = label;
-    },
     beforeCreatePayment(values) {
         if (values.firstName === 'error') {
             throw new Error('Failed in some way');

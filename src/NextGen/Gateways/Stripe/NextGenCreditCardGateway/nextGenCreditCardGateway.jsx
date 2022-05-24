@@ -16,10 +16,9 @@ let stripeElementOptions = null;
 
 const stripeGateway = {
     id: 'next-gen-stripe',
-    initialize({label, stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}) {
-        this.label = label;
+    initialize({stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}) {
         this.successUrl = successUrl;
-        
+
         /**
          * Create the Stripe object and pass our api keys
          */

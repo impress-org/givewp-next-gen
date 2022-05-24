@@ -8,7 +8,10 @@ const gateways = [];
 
 const paymentGatewayRegistrar = {
     register(gateway) {
-        gateway?.initialize(formDataGateways[gateway.id]);
+        const gatewaySettings = formDataGateways[gateway.id];
+
+        gateway.label = gatewaySettings.label;
+        gateway.initialize?.(gatewaySettings);
 
         gateways.push(gateway);
     },
