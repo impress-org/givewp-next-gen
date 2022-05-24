@@ -24,7 +24,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        add_action('give_register_payment_gateway', function (PaymentGatewayRegister $registrar) {
+        add_action('givewp_register_payment_gateway', function (PaymentGatewayRegister $registrar) {
             $registrar->registerGateway(NextGenTestGateway::class);
             $registrar->registerGateway(NextGenCreditCardGateway::class);
         });
