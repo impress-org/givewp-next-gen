@@ -3,6 +3,20 @@ import getDefaultValuesFromFieldsCollection from './utilities/getDefaultValuesFr
 import Form from './form/Form';
 import {GiveDonationFormStoreProvider} from './store';
 import getWindowData from './utilities/getWindowData';
+import type {giveNextGenExports} from './types/giveNextGenExports';
+import type {Gateway} from "./types/Gateway";
+
+declare global {
+    interface Window {
+        giveNextGenExports: giveNextGenExports;
+        givewp: {
+            gateways: {
+                getAll(): Gateway[]
+                register(gateway: object): void
+            },
+        }
+    }
+}
 
 /**
  * Get data from the server

@@ -78,12 +78,7 @@ export default function Form({fields, defaultValues}: PropTypes) {
         setError,
         getValues,
         formState: {errors, isSubmitting, isSubmitSuccessful},
-        reset,
     } = methods;
-
-    // useEffect(() => {
-    //     reset();
-    // }, [isSubmitSuccessful]);
 
     if (isSubmitSuccessful) {
         const {amount, firstName, lastName, email, gatewayId} = getValues();

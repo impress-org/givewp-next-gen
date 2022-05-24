@@ -3,12 +3,6 @@ import {ErrorMessage} from '@hookform/error-message';
 import PaymentGatewayOption from './PaymentGatewayOption';
 import type {Gateway} from "../types/Gateway";
 
-interface GatewayNode {
-    id: string;
-    label: string;
-    fields: Function
-}
-
 type Props = {
     name: string;
     label: string;
