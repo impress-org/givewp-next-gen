@@ -49,13 +49,17 @@ class Block
     /**
      * @unreleased
      *
-     * @param  array  $attributes
      *
      * @return string|null
      * @throws EmptyNameException
      */
-    public function render(array $attributes)
+    public function render($attributes)
     {
+        // return early if we're still inside the editor to avoid server side effects
+        if (!empty($_REQUEST)) {
+            return null;
+        }
+
         $donationForm = $this->createForm($attributes);
 
         $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
@@ -72,38 +76,14 @@ class Block
             'gateways' => $formDataGateways
         ];
 
-        // enqueue front-end scripts
-        // since this is using render_callback viewScript in blocks.json will not work.
-        $enqueueBlockScript = new EnqueueScript(
-            'give-next-gen-donation-form-block-js',
-            'build/donationFormBlockApp.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        );
-
-        $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
-            'give-payment-gateway-registrar-js',
-            'build/paymentGatewayRegistrar.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        );
-
-        ob_start(); ?>
+        ob_start();
+        ?>
 
         <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
 
         <?php
-        $enqueuePaymentGatewayRegistrarScript->loadInFooter()->enqueue();
-
-        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
-            if (method_exists($gateway, 'enqueueScript')) {
-                $gateway->enqueueScript()->loadInFooter()->enqueue();
-            }
-        }
-
-        $enqueueBlockScript->loadInFooter()->enqueue(); ?>
+        $this->enqueueScripts($formId);
+        ?>
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
@@ -268,5 +248,41 @@ class Block
         }
 
         return $formDataGateways;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function enqueueScripts(int $formId)
+    {
+        // enqueue front-end scripts
+        // since this is using render_callback viewScript in blocks.json will not work.
+        $enqueueBlockScript = new EnqueueScript(
+            'give-next-gen-donation-form-block-js',
+            'build/donationFormBlockApp.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+
+        $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
+            'give-payment-gateway-registrar-js',
+            'build/paymentGatewayRegistrar.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+
+        $enqueuePaymentGatewayRegistrarScript->loadInFooter()->enqueue();
+
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
+            if (method_exists($gateway, 'enqueueScript')) {
+                $gateway->enqueueScript()->loadInFooter()->enqueue();
+            }
+        }
+
+        $enqueueBlockScript->loadInFooter()->enqueue();
     }
 }
