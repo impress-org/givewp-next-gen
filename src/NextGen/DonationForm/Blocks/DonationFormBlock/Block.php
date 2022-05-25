@@ -56,10 +56,6 @@ class Block
      */
     public function render(array $attributes)
     {
-        if (empty($attributes)) {
-            return null;
-        }
-
         $donationForm = $this->createForm($attributes);
 
         $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
