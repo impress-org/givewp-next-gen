@@ -51,11 +51,15 @@ class Block
      *
      * @param  array  $attributes
      *
-     * @return string
+     * @return string|null
      * @throws EmptyNameException
      */
-    public function render(array $attributes): string
+    public function render(array $attributes)
     {
+        if (empty($attributes)) {
+            return null;
+        }
+
         $donationForm = $this->createForm($attributes);
 
         $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
@@ -89,7 +93,8 @@ class Block
             GIVE_NEXT_GEN_URL,
             'give'
         );
-        ?>
+
+        ob_start(); ?>
 
         <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
 
@@ -102,9 +107,7 @@ class Block
             }
         }
 
-        $enqueueBlockScript->loadInFooter()->enqueue();
-
-        ob_start(); ?>
+        $enqueueBlockScript->loadInFooter()->enqueue(); ?>
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
