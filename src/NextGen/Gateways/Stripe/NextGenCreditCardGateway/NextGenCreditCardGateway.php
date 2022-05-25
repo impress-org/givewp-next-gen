@@ -63,6 +63,8 @@ class NextGenCreditCardGateway extends CreditCardGateway
      */
     public function formSettings($formId): array
     {
+        give_stripe_set_app_info($formId);
+
         $stripePublishableKey = give_stripe_get_publishable_key($formId);
         $stripeConnectedAccountKey = give_stripe_get_connected_account_id($formId);
         $currency = give_get_currency($formId);
