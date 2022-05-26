@@ -1,4 +1,4 @@
-import type {Gateway} from '../types/Gateway';
+import type {Gateway} from '@givewp/forms/types';
 
 type PropTypes = {
     firstName: string;

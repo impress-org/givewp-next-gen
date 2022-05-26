@@ -1,19 +1,25 @@
 import {__} from '@wordpress/i18n';
+import type {Gateway, FormData} from '@givewp/forms/types';
 
-window.givewp.gateways.register({
+const gateway: Gateway = {
     id: 'test-gateway-next-gen',
-    beforeCreatePayment(values) {
+    label: 'Test Gateway',
+    supportsRecurring: true,
+    supportsCurrency(currency: string): boolean {
+        return true;
+    },
+    async beforeCreatePayment(values: FormData) {
         if (values.firstName === 'error') {
             throw new Error('Failed in some way');
         }
 
         return {
             values: {
-                testGatewayIntent: 'test-gateway-intent'
-            }
+                testGatewayIntent: 'test-gateway-intent',
+            },
         };
     },
-    fields() {
+    Fields() {
         return (
             <fieldset className="no-fields">
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: 20 + 'px'}}>
@@ -26,7 +32,7 @@ window.givewp.gateways.register({
                         </g>
                         <defs>
                             <clipPath id="clip0">
-                                <rect width="83.75" height="67" fill="white"/>
+                                <rect width="83.75" height="67" fill="white" />
                             </clipPath>
                         </defs>
                     </svg>
@@ -42,6 +48,8 @@ window.givewp.gateways.register({
                     )}
                 </p>
             </fieldset>
-        )
-    }
-});
+        );
+    },
+};
+
+window.givewp.gateways.register(gateway);
