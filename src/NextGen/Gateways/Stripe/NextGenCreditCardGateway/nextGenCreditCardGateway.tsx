@@ -1,6 +1,6 @@
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
-import type {Gateway} from '@givewp/forms/types';
+import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
@@ -15,12 +15,12 @@ const StripeFields = ({gateway}) => {
 let stripePromise = null;
 let stripeElementOptions = null;
 
-type FormSettings = {
+interface StripeSettings extends GatewaySettings {
     stripeKey: string;
     stripeConnectAccountId: string;
     stripeClientSecret: string;
     successUrl: string;
-};
+}
 
 const stripeGateway: Gateway = {
     id: 'next-gen-stripe',
@@ -29,7 +29,7 @@ const stripeGateway: Gateway = {
     supportsCurrency(currency: string): boolean {
         return true;
     },
-    initialize({stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}: FormSettings) {
+    initialize({stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}: StripeSettings) {
         this.successUrl = successUrl;
 
         /**
