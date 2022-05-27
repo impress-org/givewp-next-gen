@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {Fill} from "@wordpress/components";
 import {RichText} from "@wordpress/block-editor/build/components";
 

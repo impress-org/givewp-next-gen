@@ -2,7 +2,6 @@ import { useContext, useState } from 'react'
 
 import {
     Slot,
-    Fill,
     createSlotFill,
     TabPanel,
     PanelBody,
@@ -15,10 +14,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import {FormTitleContext} from "../../context/formTitle";
 import {useToggleState} from "../../hooks";
-import {BlockEditorProvider, RichText} from "@wordpress/block-editor/build/components";
-import {parse} from "@wordpress/blocks";
 import Popout from "./popout";
-import {FlexContext} from "@wordpress/components/build/flex/context";
 
 const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
     'StandAloneBlockEditorSidebarInspector'
