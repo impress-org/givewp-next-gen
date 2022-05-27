@@ -159,7 +159,7 @@ const OfflineDonations = () => {
 
 function DonationInstructions() {
 
-    const { state: showPopout, update: setShowPopout, toggle: toggleShowPopout } = useToggleState()
+    const { state: showPopout, toggle: toggleShowPopout } = useToggleState()
 
     const [ content, setContent ] = useState(`
             <p>You can customize instructions in the form settings.</p>
