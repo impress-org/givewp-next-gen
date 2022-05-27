@@ -9,8 +9,8 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
-            - name: Debug
-              run: "${{ env.GITHUB_REF_NAME }}"
+            - name: Set env.BRANCH
+              run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
             - name: Setup Node.js
               uses: actions/setup-node@v2
               with:
@@ -25,4 +25,4 @@ jobs:
               with:
                   branch: gh-pages
                   folder: ./packages/form-builder/build
-                  target-folder: 'nested'
+                  target-folder: env.BRANCH
