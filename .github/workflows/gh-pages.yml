@@ -3,6 +3,9 @@ name: Deploy Github Pages
 on:
     push:
         branches: [ develop ]
+        pull_request:
+            branches:
+                - develop
 
 jobs:
     deploy:
@@ -24,3 +27,4 @@ jobs:
               with:
                   branch: gh-pages
                   folder: ./packages/form-builder/build
+                  target-folder: ${{ $GITHUB_REF_NAME }}
