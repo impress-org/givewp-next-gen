@@ -10,7 +10,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Debug
-                  - echo "${{ env.GITHUB_REF_NAME }}"
+              run: "${{ env.GITHUB_REF_NAME }}"
             - name: Setup Node.js
               uses: actions/setup-node@v2
               with:
