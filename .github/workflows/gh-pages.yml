@@ -25,4 +25,4 @@ jobs:
               with:
                   branch: gh-pages
                   folder: ./packages/form-builder/build
-                  target-folder: env.BRANCH
+                  target-folder: ${{ env.BRANCH }}
