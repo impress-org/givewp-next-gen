@@ -21,10 +21,10 @@ export default class Registrar implements GatewayRegistrar {
 
     public register(gateway: Gateway): void {
         const settings: GatewaySettings = gatewaySettings[gateway.id];
-        gateway.label = settings.label;
+        gateway.settings = settings;
 
         if (gateway.initialize) {
-            gateway.initialize(settings);
+            gateway.initialize();
         }
 
         this.gateways.push(gateway);

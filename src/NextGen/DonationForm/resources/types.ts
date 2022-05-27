@@ -46,15 +46,15 @@ export interface Gateway {
     id: string;
 
     /**
-     * The default label of the gateway to as displayed to the user
+     * Settings for the gateway as sent from the back-end
      */
-    label: string;
+    settings?: GatewaySettings;
 
     /**
      * Initialize function for the gateway. The settings are passed to the gateway
      * from the server. This is called once before the form is rendered.
      */
-    initialize?(settings: GatewaySettings): void;
+    initialize?(): void;
 
     /**
      * The component to render when the gateway is selected

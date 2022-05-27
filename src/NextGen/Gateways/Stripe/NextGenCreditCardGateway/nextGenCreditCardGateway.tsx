@@ -1,4 +1,4 @@
-import {loadStripe} from '@stripe/stripe-js';
+import {loadStripe, Stripe, StripeElements} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
@@ -22,15 +22,20 @@ interface StripeSettings extends GatewaySettings {
     successUrl: string;
 }
 
-const stripeGateway: Gateway = {
+interface StripeGateway extends Gateway {
+    stripe?: Stripe;
+    elements?: StripeElements;
+    settings?: StripeSettings;
+}
+
+const stripeGateway: StripeGateway = {
     id: 'next-gen-stripe',
-    label: 'Stripe - Credit Card',
     supportsRecurring: true,
     supportsCurrency(currency: string): boolean {
         return true;
     },
-    initialize({stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}: StripeSettings) {
-        this.successUrl = successUrl;
+    initialize() {
+        const {stripeKey, stripeConnectAccountId, stripeClientSecret} = this.settings;
 
         /**
          * Create the Stripe object and pass our api keys
@@ -56,7 +61,7 @@ const stripeGateway: Gateway = {
             elements: this.elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: this.successUrl,
+                return_url: this.settings.successUrl,
             },
         });
 
@@ -68,7 +73,7 @@ const stripeGateway: Gateway = {
         if (error.type === 'card_error' || error.type === 'validation_error') {
             console.log(error.message);
         } else {
-            console.log('An unexpected error occured.');
+            console.log('An unexpected error occurred.');
         }
     },
     Fields() {

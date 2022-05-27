@@ -3,7 +3,6 @@ import type {FormData, Gateway} from '@givewp/forms/types';
 
 const gateway: Gateway = {
     id: 'test-gateway-next-gen',
-    label: 'Test Gateway',
     supportsRecurring: true,
     supportsCurrency(currency: string): boolean {
         return true;

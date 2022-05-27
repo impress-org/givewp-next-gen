@@ -37,7 +37,7 @@ export default function DonationReceipt({firstName, lastName, email, status, gat
                             <b>Payment Status:</b> {status}
                         </li>
                         <li>
-                            <b>Payment Method:</b> {gateway.label}
+                            <b>Payment Method:</b> {gateway.settings.label}
                         </li>
                         <li>
                             <b>Donation Amount:</b> {amount}

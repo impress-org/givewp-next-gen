@@ -18,7 +18,7 @@ export default function PaymentGatewayOption({gateway, index}: Props) {
                 value={gateway.id}
                 defaultChecked={index === 0}
             />
-            <label htmlFor={gateway.id}> Donate with {gateway.label}</label>
+            <label htmlFor={gateway.id}> Donate with {gateway.settings.label}</label>
             <div style={{paddingBottom: '20px'}}>
                 <Fields />
             </div>
