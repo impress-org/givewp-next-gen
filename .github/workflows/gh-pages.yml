@@ -1,7 +1,8 @@
-name: Deploy Github Pages 🧐
+name: Deploy Github Pages 📖
 
 on:
-    push:
+    pull_request:
+        types: [ opened, synchronize ]
 
 jobs:
     deploy:
@@ -29,5 +30,6 @@ jobs:
                   commit-message: "Deploy ${{ env.BRANCH }}"
             - uses: mshick/add-pr-comment@v1
               with:
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
                   message: "A build of this branch is available at https://impress-org.github.io/givewp-next-gen/${{ env.BRANCH }}"
                   allow-repeats: false # This is the default
