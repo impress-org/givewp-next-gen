@@ -8,6 +8,8 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - name: Debug
+              - echo "${{ env.GITHUB_REF_NAME }}"
             - uses: actions/checkout@v2
             - name: Setup Node.js
               uses: actions/setup-node@v2
@@ -23,4 +25,4 @@ jobs:
               with:
                   branch: gh-pages
                   folder: ./packages/form-builder/build
-                  target-folder: ${{ env.GITHUB_REF_NAME }}
+                  target-folder: 'nested'
