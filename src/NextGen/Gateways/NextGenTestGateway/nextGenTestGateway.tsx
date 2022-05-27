@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import type {Gateway, FormData} from '@givewp/forms/types';
+import type {FormData, Gateway} from '@givewp/forms/types';
 
 const gateway: Gateway = {
     id: 'test-gateway-next-gen',
@@ -14,9 +14,7 @@ const gateway: Gateway = {
         }
 
         return {
-            values: {
-                testGatewayIntent: 'test-gateway-intent',
-            },
+            testGatewayIntent: 'test-gateway-intent',
         };
     },
     Fields() {
