@@ -44,7 +44,7 @@ function App() {
     const [ blocks, updateBlocks ] = useState( initialBlocks || parse(`
         <!-- wp:custom-block-editor/donation-amount /-->
         <!-- wp:custom-block-editor/donor-info /-->
-        <!-- wp:custom-block-editor/payment-gateways /-->
+        <!-- wp:custom-block-editor/payment-details /-->
     `));
 
     const saveCallback = () => {
