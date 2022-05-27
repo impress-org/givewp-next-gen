@@ -8,9 +8,9 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Debug
-              - echo "${{ env.GITHUB_REF_NAME }}"
             - uses: actions/checkout@v2
+            - name: Debug
+                  - echo "${{ env.GITHUB_REF_NAME }}"
             - name: Setup Node.js
               uses: actions/setup-node@v2
               with:
