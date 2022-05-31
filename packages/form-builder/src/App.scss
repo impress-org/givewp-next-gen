@@ -71,3 +71,7 @@ select {
 .components-toolbar__control.components-button {
     width: 100px;
 }
+
+.components-form-toggle.is-checked .components-form-toggle__track {
+    background-color: #68BF6B;
+}
