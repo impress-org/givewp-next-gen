@@ -12,7 +12,7 @@ import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
-import type {Gateway, Field as FieldInterface} from '@givewp/forms/types';
+import type {Field as FieldInterface, Gateway} from '@givewp/forms/types';
 
 const messages = getFieldErrorMessages();
 
@@ -44,11 +44,11 @@ type FormInputs = {
 };
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
-    let gatewayResponse = {};
+    let beforeCreatePaymentGatewayResponse = {};
 
     try {
         if (gateway.beforeCreatePayment) {
-            gatewayResponse = await gateway.beforeCreatePayment(values);
+            beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
     } catch (error) {
         return setError('FORM_ERROR', {message: error.message});
@@ -56,11 +56,19 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
 
     const request = await axios.post(donateUrl, {
         ...values,
-        ...gatewayResponse,
+        ...beforeCreatePaymentGatewayResponse,
     });
 
-    if (request.status === 200) {
-        alert('Thank You!');
+    if (request.status !== 200) {
+        return setError('FORM_ERROR', "An error occurred");
+    }
+
+    try {
+        if (gateway.afterCreatePayment) {
+            await gateway.afterCreatePayment(values);
+        }
+    } catch (error) {
+        return setError('FORM_ERROR', {message: error.message});
     }
 };
 
