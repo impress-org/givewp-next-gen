@@ -4,7 +4,6 @@ import {__} from '@wordpress/i18n';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
-import Field from '../fields/Field';
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import FieldSection from '../fields/FieldSection';
 import axios from 'axios';
@@ -12,7 +11,7 @@ import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
-import type {Gateway, Field as FieldInterface} from '@givewp/forms/types';
+import type {Gateway, Section} from '@givewp/forms/types';
 
 const messages = getFieldErrorMessages();
 
@@ -31,7 +30,7 @@ const schema = Joi.object({
 }).unknown();
 
 type PropTypes = {
-    fields: FieldInterface[];
+    sections: Section[];
     defaultValues: object;
 };
 
@@ -64,7 +63,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     }
 };
 
-export default function Form({fields, defaultValues}: PropTypes) {
+export default function Form({sections, defaultValues}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
     const getGateway = (gatewayId) => gateways.find(({id}) => id === gatewayId);
@@ -104,25 +103,12 @@ export default function Form({fields, defaultValues}: PropTypes) {
                 id="give-next-gen"
                 onSubmit={handleSubmit((values) => handleSubmitRequest(values, setError, getGateway(values.gatewayId)))}
             >
-                {fields.map(({type, name, label, readOnly, validationRules, nodes}: FieldInterface) => {
-                    if (name === 'paymentDetails') {
-                        return <PaymentDetails gateways={gateways} name={name} label={label} key={name} />;
+                {sections.map((section) => {
+                    if (section.name === 'paymentDetails') {
+                        return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
                     }
 
-                    if (type === 'section' && nodes) {
-                        return <FieldSection fields={nodes} name={name} label={label} key={name} />;
-                    }
-
-                    return (
-                        <Field
-                            key={name}
-                            label={label}
-                            type={type}
-                            name={name}
-                            readOnly={readOnly}
-                            required={validationRules?.required}
-                        />
-                    );
+                    return <FieldSection key={section.name} {...section} />;
                 })}
 
                 <ErrorMessage
