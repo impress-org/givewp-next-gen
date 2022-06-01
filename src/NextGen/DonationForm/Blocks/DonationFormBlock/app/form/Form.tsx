@@ -65,7 +65,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
 
     try {
         if (gateway.afterCreatePayment) {
-            await gateway.afterCreatePayment(values);
+            await gateway.afterCreatePayment({...request.data.data});
         }
     } catch (error) {
         return setError('FORM_ERROR', {message: error.message});

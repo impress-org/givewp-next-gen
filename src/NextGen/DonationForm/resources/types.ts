@@ -79,7 +79,7 @@ export interface Gateway {
     /**
      * A hook before the form is submitted.
      */
-    afterCreatePayment?(values: FormData): Promise<void> | Error;
+    afterCreatePayment?(response: object): Promise<void> | Error;
 }
 
 export interface Template {}

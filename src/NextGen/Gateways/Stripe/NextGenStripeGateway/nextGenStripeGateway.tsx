@@ -1,7 +1,6 @@
 import {loadStripe, Stripe, StripeElements} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
-import axios from 'axios';
 
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
@@ -21,7 +20,6 @@ interface StripeSettings extends GatewaySettings {
     stripeConnectAccountId: string;
     stripeClientSecret: string;
     successUrl: string;
-    updatePaymentIntentUrl: string;
     stripePaymentIntentId: string;
 }
 
@@ -58,25 +56,19 @@ const stripeGateway: StripeGateway = {
             return;
         }
 
-        // update the payment intent on the server
-        const updatePaymentIntentResponse = await axios.post(this.settings.updatePaymentIntentUrl, {
-            ...values
-        });
-
-        // tell elements to fetch updates
-        if (updatePaymentIntentResponse.data.data.status === 'requires_payment_method') {
-            const {error} = await this.elements.fetchUpdates();
-
-            if (error) {
-                throw new Error(error.message);
+        return {
+            ...this.settings
+        }
+    },
+    afterCreatePayment: async function (response: { status: string, intentStatus: string }): Promise<void> {
+        if (response.intentStatus === 'requires_payment_method') {
+            const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
+            
+            if (fetchUpdatesError) {
+                throw new Error(fetchUpdatesError.message);
             }
         }
 
-        return {
-            stripePaymentIntentId: this.settings.stripePaymentIntentId
-        }
-    },
-    afterCreatePayment: async function (values): Promise<void> {
         const {error} = await this.stripe.confirmPayment({
             elements: this.elements,
             confirmParams: {

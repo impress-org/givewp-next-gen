@@ -5,7 +5,6 @@ namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Framework\EnqueueScript;
-use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -14,10 +13,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Stripe\Customer;
-use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
-
-use function Give\Framework\Http\Response\response;
 
 /**
  * @unreleased
@@ -99,13 +95,6 @@ class NextGenStripeGateway extends PaymentGateway
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
             'successUrl' => give_get_success_page_uri(),
             'stripePaymentIntentId' => $stripePaymentIntent->id,
-            'updatePaymentIntentUrl' => $this->generateGatewayRouteUrl(
-                'updatePaymentIntent',
-                [
-                    'stripePaymentIntentId' => $stripePaymentIntent->id,
-                    'stripeConnectedAccountKey' => $stripeConnectedAccountKey
-                ]
-            )
         ];
     }
 
@@ -124,49 +113,6 @@ class NextGenStripeGateway extends PaymentGateway
             ],
             ['stripe_account' => $accountId]
         );
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws ApiErrorException
-     */
-    public function updatePaymentIntent(array $queryParams): JsonResponse
-    {
-        /**
-         * Get data from client request
-         */
-        $request = $this->request();
-
-        $stripeConnectedAccountKey = $queryParams['stripeConnectedAccountKey'];
-        $stripePaymentIntentId = $queryParams['stripePaymentIntentId'];
-        $amount = $request->get('amount') * 100;
-        $firstName = $request->get('firstName');
-        $lastName = $request->get('lastName');
-        $email = $request->get('email');
-        $customerId = give_stripe_get_customer_id($email) ?? '';
-
-        /**
-         * Get or create a Stripe customer
-         */
-        $customer = $this->getOrCreateStripeCustomer(
-            $customerId,
-            $stripeConnectedAccountKey,
-            $email,
-            "$firstName $lastName"
-        );
-
-        $intent = $this->updateStripePaymentIntent(
-            $stripePaymentIntentId,
-            [
-                'amount' => $amount,
-                'customer' => $customer->id
-            ]
-        );
-
-        return response()->json([
-            'status' => $intent->status
-        ]);
     }
 
     /**
@@ -204,26 +150,39 @@ class NextGenStripeGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation): GatewayCommand
     {
-        $stripePaymentIntentId = $this->request()->get('stripePaymentIntentId');
+        /**
+         * Get data from client request
+         */
+        $request = $this->request();
+
+        $stripeConnectedAccountKey = $request->get('stripeConnectedAccountKey');
+        $stripePaymentIntentId = $request->get('stripePaymentIntentId');
+        $amount = $request->get('amount') * 100;
+        $firstName = $request->get('firstName');
+        $lastName = $request->get('lastName');
+        $email = $request->get('email');
+        $customerId = give_stripe_get_customer_id($email) ?? '';
+
+        /**
+         * Get or create a Stripe customer
+         */
+        $customer = $this->getOrCreateStripeCustomer(
+            $customerId,
+            $stripeConnectedAccountKey,
+            $email,
+            "$firstName $lastName"
+        );
+
         $donation->gatewayTransactionId = $stripePaymentIntentId;
         $donation->save();
-
-        // @todo: payment method may need to be saved on the webhook side
-        $paymentIntent = PaymentIntent::retrieve($stripePaymentIntentId);
-        $paymentMethodId = $paymentIntent->payment_method;
-
-        give_update_meta($donation->id, '_give_stripe_source_id', $paymentMethodId);
-
-        DonationNote::create([
-            'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethodId)
-        ]);
 
         $donationSummary = Call::invoke(SaveDonationSummary::class, $donation);
 
         $intent = $this->updateStripePaymentIntent(
             $stripePaymentIntentId,
             [
+                'amount' => $amount,
+                'customer' => $customer->id,
                 'description' => $donationSummary->getSummaryWithDonor(),
                 'metadata' => give_stripe_prepare_metadata($donation->id),
             ]
@@ -246,7 +205,8 @@ class NextGenStripeGateway extends PaymentGateway
         );
 
         return new RespondToBrowser([
-            'status' => 200
+            'status' => 200,
+            'intentStatus' => $intent->status
         ]);
     }
 
