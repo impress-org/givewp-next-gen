@@ -7,12 +7,12 @@ import Joi from 'joi';
 import Field from '../fields/Field';
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import FieldSection from '../fields/FieldSection';
-import axios from 'axios';
 import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
 import type {Field as FieldInterface, Gateway} from '@givewp/forms/types';
+import postData from "../utilities/postData";
 
 const messages = getFieldErrorMessages();
 
@@ -54,18 +54,18 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         return setError('FORM_ERROR', {message: error.message});
     }
 
-    const request = await axios.post(donateUrl, {
+    const request = await postData(donateUrl, {
         ...values,
         ...beforeCreatePaymentGatewayResponse,
     });
 
-    if (request.status !== 200) {
+    if (!request.response.ok) {
         return setError('FORM_ERROR', "An error occurred");
     }
 
     try {
         if (gateway.afterCreatePayment) {
-            await gateway.afterCreatePayment({...request.data.data});
+            await gateway.afterCreatePayment(request.data);
         }
     } catch (error) {
         return setError('FORM_ERROR', {message: error.message});

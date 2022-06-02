@@ -77,7 +77,7 @@ export interface Gateway {
     beforeCreatePayment?(values: FormData): Promise<object> | Error;
 
     /**
-     * A hook before the form is submitted.
+     * A hook after the form is submitted.
      */
     afterCreatePayment?(response: object): Promise<void> | Error;
 }
