@@ -60,7 +60,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     });
 
     if (!request.response.ok) {
-        return setError('FORM_ERROR', "An error occurred");
+        return setError('FORM_ERROR', {message: "Something went wrong, please try again or contact support."});
     }
 
     try {
