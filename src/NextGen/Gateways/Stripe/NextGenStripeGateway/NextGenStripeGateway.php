@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Framework\Support\ValueObjects\Money;
@@ -14,7 +15,7 @@ use Stripe\Exception\ApiErrorException;
 /**
  * @unreleased
  */
-class NextGenStripeGateway extends PaymentGateway
+class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
     use HasRequest;
     use NextGenStripeRepository;
@@ -69,7 +70,7 @@ class NextGenStripeGateway extends PaymentGateway
      * @unreleased
      * @throws ApiErrorException
      */
-    public function formSettings($formId): array
+    public function formSettings(int $formId): array
     {
         give_stripe_set_app_info($formId);
 
