@@ -7,12 +7,13 @@
  * @return {*}
  */
 import {Section} from '@givewp/forms/types';
+import {getGroupFields} from './groups';
 
 export default function getDefaultValuesFromSections(sections: Section[]) {
     return sections.reduce((values, section) => {
-        section.nodes.map(({name, defaultValue = null}) => {
-            values[name] = defaultValue;
-        });
+        const fields = getGroupFields(section);
+
+        fields.forEach((field) => (values[field.name] = field.defaultValue));
 
         return values;
     }, {});

@@ -8,6 +8,7 @@ use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
@@ -106,23 +107,33 @@ class Block
 
         $donationForm = new Form($formId);
 
-        $formBlockData = json_decode(get_post($formId)->post_content, false);
+//        $formBlockData = json_decode(get_post($formId)->post_content, false);
 
-        foreach( $formBlockData as $block ) {
-            $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
-        }
-
-        /**
-         * @todo for some reason, `getNodeByName()` isn't working...
-         */
-        foreach( $donationForm->all() as $node ) {
-            if( 'paymentDetails' === $node->getName() ) {
-                $node->append(...$gatewayOptions);
-            }
-        }
+//        foreach( $formBlockData as $block ) {
+//            $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
+//        }
 
         $donationForm->append(
+            Section::make('personalInformation')
+                ->label('Personal Information')
+                ->description('Tell us about yourself!')
+                ->append(
+                    Name::make('name'),
+                    Email::make('email')
+                        ->label('Email')
+                ),
 
+            Section::make('paymentDetails')
+                ->label('Payment Details')
+                ->description('How would you like to pay?')
+        );
+
+        /** @var Section $paymentDetails */
+        $paymentDetails = $donationForm->getNodeByName('paymentDetails');
+
+        $paymentDetails->append(...$gatewayOptions);
+
+        $paymentDetails->append(
             Hidden::make('formId')
                 ->defaultValue($formId),
 

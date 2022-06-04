@@ -29,7 +29,7 @@ export interface FormServerExports {
         [key: string]: GatewaySettings; // key is the gateway ID
     };
     form: {
-        sections: Section[];
+        nodes: Section[];
     };
     attributes: object;
     donateUrl: string;

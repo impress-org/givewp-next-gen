@@ -12,7 +12,7 @@ const {attributes, form} = getWindowData();
 /**
  * Prepare default values for form
  */
-const defaultValues = getDefaultValuesFromSections(form.sections);
+const defaultValues = getDefaultValuesFromSections(form.nodes);
 
 const initialState = {
     gateways: window.givewp.gateways.getAll(),
@@ -21,7 +21,7 @@ const initialState = {
 function App() {
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
-            <Form sections={form.sections} defaultValues={defaultValues} />
+            <Form sections={form.nodes} defaultValues={defaultValues} />
         </GiveDonationFormStoreProvider>
     );
 }
