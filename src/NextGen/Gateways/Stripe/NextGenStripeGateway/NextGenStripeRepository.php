@@ -6,7 +6,6 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Call;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\PaymentGateways\Stripe\ApplicationFee;
@@ -97,7 +96,7 @@ trait NextGenStripeRepository {
         $intentArgs = [
             'amount' => $donation->amount->formatToMinorAmount(),
             'customer' => $customer->id,
-            'description' => (Call::invoke(SaveDonationSummary::class, $donation))->getSummaryWithDonor(),
+            'description' => (new SaveDonationSummary)($donation)->getSummaryWithDonor(),
             'metadata' => give_stripe_prepare_metadata($donation->id),
         ];
 
