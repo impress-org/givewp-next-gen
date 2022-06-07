@@ -13,6 +13,7 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import {FormTitleContext} from "../../context/formTitle";
+import {FormSettingsContext} from "../../context/formSettings";
 import {useToggleState} from "../../hooks";
 import Popout from "./popout";
 
@@ -39,15 +40,14 @@ const FormTitle = () => {
 
 const DonationGoalSettings = () => {
 
-    const {
-        state: enableDonationGoal,
-        toggle: toggleDonationGoal
-    } = useToggleState( false )
-
-    const {
-        state: enableAutoClose,
-        toggle: toggleAutoClose
-    } = useToggleState( false )
+    const [formSettings, setFormSettings] = useContext(FormSettingsContext)
+    const { enableDonationGoal, enableAutoClose, goalFormat, goalAmount } = formSettings
+    const setFormSetting = ( newSettings ) => {
+        setFormSettings({
+            ...formSettings,
+            ...newSettings,
+        })
+    }
 
     const goalFormatOptions = [
         {
@@ -68,10 +68,6 @@ const DonationGoalSettings = () => {
         },
     ]
 
-    const [ goalFormat, setGoalFormat ] = useState( goalFormatOptions[0].value );
-
-    const [ goalAmount, setGoalAmount ] = useState( 10000 );
-
     return (
         <PanelBody title={ __( 'Donation Goal', 'give' ) } initialOpen={false}>
             <PanelRow>
@@ -79,7 +75,9 @@ const DonationGoalSettings = () => {
                     label={ __('Enable Donation Goal', 'give') }
                     help={ __('Do you want to set a donation goal for this form?', 'give') }
                     checked={enableDonationGoal}
-                    onChange={toggleDonationGoal}
+                    onChange={() => {
+                        setFormSetting( { enableDonationGoal: ! enableDonationGoal } )
+                    }}
                 />
             </PanelRow>
 
@@ -90,7 +88,7 @@ const DonationGoalSettings = () => {
                             label={ __('Auto-Close Form', 'give') }
                             help={ __('Do you want to close the donation forms and stop accepting donations once this goal has been met?', 'give') }
                             checked={enableAutoClose}
-                            onChange={toggleAutoClose}
+                            onChange={() => setFormSetting( { enableAutoClose: ! enableAutoClose } )}
                         />
                     </PanelRow>
                     <PanelRow>
@@ -98,7 +96,7 @@ const DonationGoalSettings = () => {
                             label={ __('Goal Amount', 'give') }
                             min={ 0 }
                             value={ goalAmount }
-                            onChange={ setGoalAmount }
+                            onChange={ ( goalAmount ) => setFormSetting( { goalAmount: goalAmount } ) }
                         />
                     </PanelRow>
                     <PanelRow>
@@ -107,7 +105,7 @@ const DonationGoalSettings = () => {
                             help={ __('Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".', 'give') }
                             selected={ goalFormat }
                             options={ goalFormatOptions }
-                            onChange={ setGoalFormat }
+                            onChange={ ( goalFormat ) => setFormSetting( { goalFormat: goalFormat } ) }
                         />
                     </PanelRow>
                 </>
@@ -118,15 +116,14 @@ const DonationGoalSettings = () => {
 
 const OfflineDonations = () => {
 
-    const {
-        state: enableOfflineDonations,
-        toggle: toggleOfflineDonations
-    } = useToggleState( false )
-
-    const {
-        state: enableBillingFields,
-        toggle: toggleBillingFields
-    } = useToggleState( false )
+    const [formSettings, setFormSettings] = useContext(FormSettingsContext)
+    const { enableOfflineDonations, enableBillingFields, donationInstructions } = formSettings
+    const setFormSetting = ( newSettings ) => {
+        setFormSettings({
+            ...formSettings,
+            ...newSettings,
+        })
+    }
 
     return (
         <PanelBody title={ __( 'Offline Donations', 'give' ) } initialOpen={false}>
@@ -135,7 +132,7 @@ const OfflineDonations = () => {
                     label={ __('Enable Offline Donations', 'give') }
                     help={ __('Do you want to customize the donation instructions for this form?', 'give') }
                     checked={enableOfflineDonations}
-                    onChange={toggleOfflineDonations}
+                    onChange={ () => setFormSetting( { enableOfflineDonations: ! enableOfflineDonations } ) }
                 />
             </PanelRow>
             { enableOfflineDonations && (
@@ -145,7 +142,7 @@ const OfflineDonations = () => {
                             label={ __('Enable Billing Fields', 'give') }
                             help={ __('DThis option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give') }
                             checked={enableBillingFields}
-                            onChange={toggleBillingFields}
+                            onChange={ () => setFormSetting( { enableBillingFields: ! enableBillingFields } ) }
                         />
                     </PanelRow>
                     <PanelRow>
