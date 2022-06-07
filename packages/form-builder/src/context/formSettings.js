@@ -20,4 +20,5 @@ export const defaultFormSettings = {
     formTitle: 'My Default Donation Form Title',
     enableDonationGoal: false,
     enableAutoClose: false,
+    registration: 'none',
 }

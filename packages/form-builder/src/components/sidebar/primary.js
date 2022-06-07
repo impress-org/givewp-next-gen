@@ -9,6 +9,7 @@ import {
     TextControl,
     ToggleControl,
     RadioControl,
+    SelectControl,
     __experimentalNumberControl as NumberControl, Button,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -180,6 +181,66 @@ function DonationInstructions() {
     )
 }
 
+const FormFields = () => {
+
+    const [formSettings, setFormSettings] = useContext(FormSettingsContext)
+    const { registration, anonymousDonations, guestDonations } = formSettings
+    const setFormSetting = ( newSettings ) => {
+        setFormSettings({
+            ...formSettings,
+            ...newSettings,
+        })
+    }
+
+    const registrationOptions = [
+        {
+            value: 'none',
+            label: __( 'None', 'give' ),
+        },
+        {
+            value: 'registration',
+            label: __( 'Registration', 'give' ),
+        },
+        {
+            value: 'login',
+            label: __( 'Login', 'give' ),
+        },
+        {
+            value: 'register_and_login',
+            label: __( 'Registration + Login', 'give' ),
+        },
+    ]
+
+    return (
+        <PanelBody title={ __( 'Form Fields', 'give' ) } initialOpen={false}>
+            <PanelRow>
+                <SelectControl
+                    labelPosition={'left'}
+                    label={ __('Registration', 'give') }
+                    help={ __('Display the registration and/or login forms in the payment section for non-logged-in users.', 'give') }
+                    value={ registration }
+                    options={ registrationOptions }
+                    onChange={ ( registration ) => setFormSetting( { registration: registration } ) }
+                />
+            </PanelRow>
+            <PanelRow>
+                <ToggleControl
+                    label={ __('Anonymous Donations', 'give') }
+                    checked={anonymousDonations}
+                    onChange={ () => setFormSetting( { anonymousDonations: ! anonymousDonations } ) }
+                />
+            </PanelRow>
+            <PanelRow>
+                <ToggleControl
+                    label={ __('Allow Guest Donations', 'give') }
+                    checked={guestDonations}
+                    onChange={ () => setFormSetting( { guestDonations: ! guestDonations } ) }
+                />
+            </PanelRow>
+        </PanelBody>
+    )
+}
+
 const tabs = [
     {
         name: 'form',
@@ -190,6 +251,7 @@ const tabs = [
                 <FormTitle />
                 <DonationGoalSettings />
                 <OfflineDonations />
+                <FormFields />
             </>
         )
     },
