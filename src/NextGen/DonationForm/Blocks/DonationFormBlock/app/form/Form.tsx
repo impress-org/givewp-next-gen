@@ -6,12 +6,12 @@ import Joi from 'joi';
 
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import FieldSection from '../fields/FieldSection';
-import axios from 'axios';
 import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
+import postData from "../utilities/postData";
 
 const messages = getFieldErrorMessages();
 
@@ -43,23 +43,31 @@ type FormInputs = {
 };
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
-    let gatewayResponse = {};
+    let beforeCreatePaymentGatewayResponse = {};
 
     try {
         if (gateway.beforeCreatePayment) {
-            gatewayResponse = await gateway.beforeCreatePayment(values);
+            beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
     } catch (error) {
         return setError('FORM_ERROR', {message: error.message});
     }
 
-    const request = await axios.post(donateUrl, {
+    const request = await postData(donateUrl, {
         ...values,
-        ...gatewayResponse,
+        ...beforeCreatePaymentGatewayResponse,
     });
 
-    if (request.status === 200) {
-        alert('Thank You!');
+    if (!request.response.ok) {
+        return setError('FORM_ERROR', {message: "Something went wrong, please try again or contact support."});
+    }
+
+    try {
+        if (gateway.afterCreatePayment) {
+            await gateway.afterCreatePayment(request.data);
+        }
+    } catch (error) {
+        return setError('FORM_ERROR', {message: error.message});
     }
 };
 
