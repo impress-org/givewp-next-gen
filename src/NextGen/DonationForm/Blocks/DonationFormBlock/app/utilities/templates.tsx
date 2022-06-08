@@ -1,7 +1,7 @@
 import type {UseFormRegisterReturn} from 'react-hook-form';
 import type {FC, ReactNode} from 'react';
 import {applyFilters} from '@wordpress/hooks';
-import {Node, Field, Element, Group} from '@givewp/forms/types';
+import {Node, Field, Element, Group, Section} from '@givewp/forms/types';
 import {findNode} from './groups';
 
 export interface FieldProps extends Field {
@@ -76,6 +76,8 @@ function NameGroup({type, nodeType, nodes, inputProps}: GroupProps) {
         </>
     );
 }
+
+function Section(section: Section) {}
 
 const templates = {
     fields: {
