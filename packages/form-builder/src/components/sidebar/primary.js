@@ -1,225 +1,16 @@
-import { useContext, useState } from 'react'
-
 import {
     Slot,
     createSlotFill,
     TabPanel,
-    PanelBody,
-    PanelRow,
-    TextControl,
-    ToggleControl,
-    RadioControl,
-    SelectControl,
-    __experimentalNumberControl as NumberControl, Button,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import {FormTitleContext} from "../../context/formTitle";
-import {useFormSettings} from "../../context/formSettings";
-import {useToggleState} from "../../hooks";
-import Popout from "./popout";
+
+import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings} from '../../settings'
+import FormFields from "../../settings/form-fields";
 
 const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
     'StandAloneBlockEditorSidebarInspector'
 );
-
-const FormTitle = () => {
-
-    const [formTitle, setFormTitle] = useContext(FormTitleContext)
-
-    return (
-        <PanelBody>
-            <PanelRow>
-                <TextControl
-                    label={__('Form Title')}
-                    value={ formTitle }
-                    onChange={ setFormTitle }
-                />
-            </PanelRow>
-        </PanelBody>
-    )
-}
-
-const DonationGoalSettings = () => {
-
-    const [ { enableDonationGoal, enableAutoClose, goalFormat, goalAmount }, updateSetting ] = useFormSettings()
-
-    const goalFormatOptions = [
-        {
-            value: 'amount-raised',
-            label: __( 'Amount Raised', 'give' ),
-        },
-        {
-            value: 'percentage-raised',
-            label: __( 'Percentage Raised', 'give' ),
-        },
-        {
-            value: 'number-donations',
-            label: __( 'Number of Donations', 'give' ),
-        },
-        {
-            value: 'number-donors',
-            label: __( 'Number of Donors', 'give' ),
-        },
-    ]
-
-    return (
-        <PanelBody title={ __( 'Donation Goal', 'give' ) } initialOpen={false}>
-            <PanelRow>
-                <ToggleControl
-                    label={ __('Enable Donation Goal', 'give') }
-                    help={ __('Do you want to set a donation goal for this form?', 'give') }
-                    checked={enableDonationGoal}
-                    onChange={() => {
-                        updateSetting( { enableDonationGoal: ! enableDonationGoal } )
-                    }}
-                />
-            </PanelRow>
-
-            { enableDonationGoal && (
-                <>
-                    <PanelRow>
-                        <ToggleControl
-                            label={ __('Auto-Close Form', 'give') }
-                            help={ __('Do you want to close the donation forms and stop accepting donations once this goal has been met?', 'give') }
-                            checked={enableAutoClose}
-                            onChange={() => updateSetting( { enableAutoClose: ! enableAutoClose } )}
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <NumberControl
-                            label={ __('Goal Amount', 'give') }
-                            min={ 0 }
-                            value={ goalAmount }
-                            onChange={ ( goalAmount ) => updateSetting( { goalAmount: goalAmount } ) }
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <RadioControl
-                            label={ __('Goal Format', 'give') }
-                            help={ __('Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".', 'give') }
-                            selected={ goalFormat }
-                            options={ goalFormatOptions }
-                            onChange={ ( goalFormat ) => updateSetting( { goalFormat: goalFormat } ) }
-                        />
-                    </PanelRow>
-                </>
-            )}
-        </PanelBody>
-    )
-}
-
-const OfflineDonations = () => {
-
-    const [ { enableOfflineDonations, enableBillingFields }, updateSetting ] = useFormSettings()
-
-    return (
-        <PanelBody title={ __( 'Offline Donations', 'give' ) } initialOpen={false}>
-            <PanelRow>
-                <ToggleControl
-                    label={ __('Enable Offline Donations', 'give') }
-                    help={ __('Do you want to customize the donation instructions for this form?', 'give') }
-                    checked={enableOfflineDonations}
-                    onChange={ () => updateSetting( { enableOfflineDonations: ! enableOfflineDonations } ) }
-                />
-            </PanelRow>
-            { enableOfflineDonations && (
-                <>
-                    <PanelRow>
-                        <ToggleControl
-                            label={ __('Enable Billing Fields', 'give') }
-                            help={ __('DThis option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give') }
-                            checked={enableBillingFields}
-                            onChange={ () => updateSetting( { enableBillingFields: ! enableBillingFields } ) }
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <DonationInstructions />
-                    </PanelRow>
-                </>
-            )}
-        </PanelBody>
-    )
-}
-
-function DonationInstructions() {
-
-    const { state: showPopout, toggle: toggleShowPopout } = useToggleState()
-
-    const [ content, setContent ] = useState(`
-            <p>You can customize instructions in the form settings.</p>
-            <p>Please make checks payable to <strong>"{sitename}"</strong>.</p>
-            <p>Your donation is greatly appreciated!</p>
-        `)
-
-    return (
-        <>
-            <div style={{ marginTop: '10px', width: '100%', display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                Donation Instructions
-                <Button onClick={toggleShowPopout} style={{color:'white',backgroundColor:'#68BF6B'}}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round"
-                              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
-                    </svg>
-                </Button>
-            </div>
-            { showPopout && <Popout content={content} setContent={setContent} /> }</>
-    )
-}
-
-const FormFields = () => {
-
-    const [ { registration, anonymousDonations, guestDonations }, updateSetting ] = useFormSettings()
-
-
-    const registrationOptions = [
-        {
-            value: 'none',
-            label: __( 'None', 'give' ),
-        },
-        {
-            value: 'registration',
-            label: __( 'Registration', 'give' ),
-        },
-        {
-            value: 'login',
-            label: __( 'Login', 'give' ),
-        },
-        {
-            value: 'register_and_login',
-            label: __( 'Registration + Login', 'give' ),
-        },
-    ]
-
-    return (
-        <PanelBody title={ __( 'Form Fields', 'give' ) } initialOpen={false}>
-            <PanelRow>
-                <SelectControl
-                    labelPosition={'left'}
-                    label={ __('Registration', 'give') }
-                    help={ __('Display the registration and/or login forms in the payment section for non-logged-in users.', 'give') }
-                    value={ registration }
-                    options={ registrationOptions }
-                    onChange={ ( registration ) => updateSetting( { registration: registration } ) }
-                />
-            </PanelRow>
-            <PanelRow>
-                <ToggleControl
-                    label={ __('Anonymous Donations', 'give') }
-                    checked={anonymousDonations}
-                    onChange={ () => updateSetting( { anonymousDonations: ! anonymousDonations } ) }
-                />
-            </PanelRow>
-            <PanelRow>
-                <ToggleControl
-                    label={ __('Allow Guest Donations', 'give') }
-                    checked={guestDonations}
-                    onChange={ () => updateSetting( { guestDonations: ! guestDonations } ) }
-                />
-            </PanelRow>
-        </PanelBody>
-    )
-}
 
 const tabs = [
     {
@@ -228,9 +19,9 @@ const tabs = [
         className: 'tab-form',
         content: () => (
             <>
-                <FormTitle />
+                <FormTitleSettings />
                 <DonationGoalSettings />
-                <OfflineDonations />
+                <OfflineDonationsSettings />
                 <FormFields />
             </>
         )
