@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, {createContext, useContext} from 'react';
 
 export const FormSettingsContext = createContext();
 
@@ -14,6 +14,20 @@ export const FormSettingsProvider = ({formSettings, setFormSettings, children}) 
             {children}
         </FormSettingsContext.Provider>
     )
+}
+
+export const useFormSettings = () => {
+    const [formSettings, setFormSettings] = useContext(FormSettingsContext)
+    const updateSetting = ( newSettings ) => {
+        setFormSettings({
+            ...formSettings,
+            ...newSettings,
+        })
+    }
+    return [
+        formSettings,
+        updateSetting,
+    ]
 }
 
 export const defaultFormSettings = {
