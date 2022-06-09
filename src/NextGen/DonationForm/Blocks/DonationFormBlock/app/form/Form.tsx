@@ -1,17 +1,17 @@
 import {FormProvider, useForm} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
-import {__} from '@wordpress/i18n';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
-import FieldSection from '../fields/FieldSection';
+import SectionNodes from '../fields/SectionNodes';
 import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
-import postData from "../utilities/postData";
+import postData from '../utilities/postData';
+import {getFormTemplate, getTemplateSection} from '../utilities/templates';
 
 const messages = getFieldErrorMessages();
 
@@ -35,6 +35,7 @@ type PropTypes = {
 };
 
 type FormInputs = {
+    FORM_ERROR: string;
     amount: number;
     firstName: string;
     lastName: string;
@@ -59,7 +60,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     });
 
     if (!request.response.ok) {
-        return setError('FORM_ERROR', {message: "Something went wrong, please try again or contact support."});
+        return setError('FORM_ERROR', {message: 'Something went wrong, please try again or contact support.'});
     }
 
     try {
@@ -105,37 +106,37 @@ export default function Form({sections, defaultValues}: PropTypes) {
         );
     }
 
+    const renderedSections = sections.map((section) => {
+        if (section.name === 'paymentDetails') {
+            return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
+        }
+
+        const Section = getTemplateSection();
+
+        return (
+            <Section section={section}>
+                <SectionNodes key={section.name} {...section} />
+            </Section>
+        );
+    });
+
+    const Form = getFormTemplate();
+
     return (
         <FormProvider {...methods}>
-            <form
-                id="give-next-gen"
-                onSubmit={handleSubmit((values) => handleSubmitRequest(values, setError, getGateway(values.gatewayId)))}
+            <button onClick={() => setError('FORM_ERROR', {message: 'Oh no!'})}>Error</button>
+            <Form
+                formProps={{
+                    id: 'give-next-gen',
+                    onSubmit: handleSubmit((values) =>
+                        handleSubmitRequest(values, setError, getGateway(values.gatewayId))
+                    ),
+                }}
+                isSubmitting={isSubmitting}
+                formError={errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null}
             >
-                {sections.map((section) => {
-                    if (section.name === 'paymentDetails') {
-                        return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
-                    }
-
-                    return <FieldSection key={section.name} {...section} />;
-                })}
-
-                <ErrorMessage
-                    errors={errors}
-                    name="FORM_ERROR"
-                    render={({message}) => (
-                        <div style={{textAlign: 'center'}}>
-                            <p className="give-next-gen__error-message">
-                                {__('The following error occurred when submitting the form:', 'give')}
-                            </p>
-                            <p className="give-next-gen__error-message">{message}</p>
-                        </div>
-                    )}
-                />
-
-                <button type="submit" disabled={isSubmitting} className="give-next-gen__submit-button">
-                    {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
-                </button>
-            </form>
+                {renderedSections}
+            </Form>
         </FormProvider>
     );
 }

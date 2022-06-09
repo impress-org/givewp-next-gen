@@ -1,8 +1,10 @@
-import type {UseFormRegisterReturn} from 'react-hook-form';
-import type {FC, ReactNode} from 'react';
+import type {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
+import type {FC, FormHTMLAttributes, ReactNode} from 'react';
 import {applyFilters} from '@wordpress/hooks';
 import {Node, Field, Element, Group, Section} from '@givewp/forms/types';
 import {findNode} from './groups';
+import {__} from '@wordpress/i18n';
+import {ErrorMessage} from '@hookform/error-message';
 
 export interface FieldProps extends Field {
     inputProps: UseFormRegisterReturn;
@@ -28,7 +30,7 @@ function withWrapper(NodeComponent) {
     );
 }
 
-function TextField({label, type, nodeType, inputProps}: FieldProps) {
+function TextField({label, inputProps}: FieldProps) {
     return (
         <label>
             {label}
@@ -37,7 +39,7 @@ function TextField({label, type, nodeType, inputProps}: FieldProps) {
     );
 }
 
-function EmailField({label, type, nodeType, inputProps}: FieldProps) {
+function EmailField({label, inputProps}: FieldProps) {
     return (
         <label>
             {label}
@@ -63,7 +65,7 @@ function HtmlElement({html}: {html: string}) {
     return <div dangerouslySetInnerHTML={{__html: html}} />;
 }
 
-function NameGroup({type, nodeType, nodes, inputProps}: GroupProps) {
+function NameGroup({nodes, inputProps}: GroupProps) {
     const firstName = findNode('firstName', nodes) as Field;
     const lastName = findNode('lastName', nodes) as Field | null;
     const honorific = findNode('honorific', nodes) as Field | null;
@@ -77,7 +79,48 @@ function NameGroup({type, nodeType, nodes, inputProps}: GroupProps) {
     );
 }
 
-function Section(section: Section) {}
+interface SectionProps {
+    section: Section;
+    children: ReactNode;
+}
+
+function SectionLayout({section: {name, label, description}, children}: SectionProps) {
+    return (
+        <fieldset aria-labelledby={name}>
+            <div>
+                <h2 id={name}>{label}</h2>
+                <em>{description}</em>
+            </div>
+            <div className="givewp-section-nodes">{children}</div>
+        </fieldset>
+    );
+}
+
+interface FormProps {
+    formProps: FormHTMLAttributes<unknown>;
+    children: ReactNode;
+    formError: string | null;
+    isSubmitting: boolean;
+}
+
+function Form({children, formProps, formError, isSubmitting}: FormProps) {
+    return (
+        <form {...formProps}>
+            {children}
+            {formError && (
+                <div className="givewp-error" style={{textAlign: 'center'}}>
+                    <p className="givewp-error__label">
+                        {__('The following error occurred when submitting the form:', 'give')}
+                    </p>
+                    <p className="givewp-error__message">{formError}</p>
+                </div>
+            )}
+            <button type="submit" disabled={isSubmitting} className="give-next-gen__submit-button">
+                {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
+            </button>
+        </form>
+    );
+}
 
 const templates = {
     fields: {
@@ -92,7 +135,10 @@ const templates = {
     groups: {
         name: NameGroup,
     },
-    layouts: {},
+    layouts: {
+        section: SectionLayout,
+        form: Form,
+    },
 };
 
 function getTemplate<NodeProps>(type: string, section: string): FC<NodeProps> {
@@ -118,6 +164,14 @@ export function getTemplateElement(type: string): FC<ElementProps> {
 
 export function getTemplateGroup(type: string): FC<GroupProps> {
     return getTemplate<GroupProps>(type, 'groups');
+}
+
+export function getTemplateSection(): FC<SectionProps> {
+    return getTemplate<SectionProps>('section', 'layouts');
+}
+
+export function getFormTemplate(): FC<FormProps> {
+    return getTemplate<FormProps>('form', 'layouts');
 }
 
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {

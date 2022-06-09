@@ -3,14 +3,11 @@ import {RegisterOptions, useFormContext, UseFormRegisterReturn} from 'react-hook
 import {Section, Field, isField, isElement, isGroup, Node} from '@givewp/forms/types';
 import {getTemplateElement, getTemplateField, getTemplateGroup} from '../utilities/templates';
 
-export default function FieldSection({name, label, nodes}: Section) {
+export default function SectionNodes({nodes}: Section) {
     const {register} = useFormContext();
 
     return (
-        <fieldset aria-labelledby={name}>
-            <div>
-                <h2 id={name}>{label}</h2>
-            </div>
+        <>
             {nodes.map((node) => {
                 if (isField(node)) {
                     const Field = getTemplateField(node.type);
@@ -38,7 +35,7 @@ export default function FieldSection({name, label, nodes}: Section) {
                     return null;
                 }
             })}
-        </fieldset>
+        </>
     );
 }
 
