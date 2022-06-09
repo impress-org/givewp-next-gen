@@ -1,4 +1,4 @@
-# Form Settings Context
+# Form Settings
 
 ## useFormSettings hook
 

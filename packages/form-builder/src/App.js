@@ -9,8 +9,7 @@ import { InterfaceSkeleton } from "@wordpress/interface";
 import Header from './components/header'
 import { Sidebar, SecondarySidebar } from './components/sidebar'
 import Content from './components/content'
-import { FormTitleProvider } from './context/formTitle'
-import { FormSettingsProvider, defaultFormSettings } from './context/formSettings';
+import { FormSettingsProvider, defaultFormSettings } from './settings/context';
 
 import { useToggleState } from "./hooks";
 
@@ -34,19 +33,16 @@ function App() {
         toggle: toggleShowSidebar
     } = useToggleState( true )
 
-    const { blocks: initialBlocks, formTitle: initialFormTitle, formSettings: initialFormSettings } =  Storage.load();
+    const { blocks: initialBlocks, settings: initialFormSettings } =  Storage.load();
     if (initialBlocks instanceof Error ) {
         alert( 'Unable to load initial blocks.' )
         console.error(initialBlocks);
     }
 
-    const [formTitle, setFormTitle] = useState( initialFormTitle || 'Donation Form' )
     const [formSettings, setFormSettings] = useState( {
-        ...initialFormSettings,
         ...defaultFormSettings,
+        ...initialFormSettings,
     } )
-
-    console.log( formSettings )
 
     const [ blocks, updateBlocks ] = useState( initialBlocks || parse(`
         <!-- wp:custom-block-editor/donation-amount /-->
@@ -55,38 +51,36 @@ function App() {
     `));
 
     const saveCallback = () => {
-        return Storage.save( { blocks, formTitle } )
+        return Storage.save( { blocks, formSettings } )
             .catch(error => alert(error.message));
     }
 
     return (
         <FormSettingsProvider formSettings={formSettings} setFormSettings={setFormSettings}>
-            <FormTitleProvider formTitle={formTitle} setFormTitle={setFormTitle}>
-                <ShortcutProvider>
-                    <BlockEditorProvider
-                        value={ blocks }
-                        onInput={ ( blocks ) => updateBlocks( blocks ) }
-                        onChange={ ( blocks ) => updateBlocks( blocks ) }
-                    >
-                        <SlotFillProvider>
-                            <Sidebar.InspectorFill>
-                                <BlockInspector />
-                            </Sidebar.InspectorFill>
-                            <InterfaceSkeleton
-                                header={ <Header
-                                    saveCallback={saveCallback}
-                                    toggleSecondarySidebar={toggleSecondarySidebar}
-                                    toggleShowSidebar={toggleShowSidebar}
-                                /> }
-                                content={ <Content /> }
-                                sidebar={ !! showSidebar && <Sidebar /> }
-                                secondarySidebar={ !! showSecondarySidebar && <SecondarySidebar /> }
-                            />
-                            <Popover.Slot />
-                        </SlotFillProvider>
-                    </BlockEditorProvider>
-                </ShortcutProvider>
-            </FormTitleProvider>
+            <ShortcutProvider>
+                <BlockEditorProvider
+                    value={ blocks }
+                    onInput={ ( blocks ) => updateBlocks( blocks ) }
+                    onChange={ ( blocks ) => updateBlocks( blocks ) }
+                >
+                    <SlotFillProvider>
+                        <Sidebar.InspectorFill>
+                            <BlockInspector />
+                        </Sidebar.InspectorFill>
+                        <InterfaceSkeleton
+                            header={ <Header
+                                saveCallback={saveCallback}
+                                toggleSecondarySidebar={toggleSecondarySidebar}
+                                toggleShowSidebar={toggleShowSidebar}
+                            /> }
+                            content={ <Content /> }
+                            sidebar={ !! showSidebar && <Sidebar /> }
+                            secondarySidebar={ !! showSecondarySidebar && <SecondarySidebar /> }
+                        />
+                        <Popover.Slot />
+                    </SlotFillProvider>
+                </BlockEditorProvider>
+            </ShortcutProvider>
         </FormSettingsProvider>
     );
 }

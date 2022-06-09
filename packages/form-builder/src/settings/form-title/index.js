@@ -1,11 +1,10 @@
-import {useContext} from "react";
-import {FormTitleContext} from "../../context/formTitle";
 import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
+import {useFormSettings} from "../context";
 
 const FormTitleSettings = () => {
 
-    const [formTitle, setFormTitle] = useContext(FormTitleContext)
+    const [ { formTitle }, updateFormSetting ] = useFormSettings();
 
     return (
         <PanelBody>
@@ -13,7 +12,7 @@ const FormTitleSettings = () => {
                 <TextControl
                     label={__('Form Title')}
                     value={ formTitle }
-                    onChange={ setFormTitle }
+                    onChange={ ( formTitle ) => updateFormSetting( { formTitle: formTitle } ) }
                 />
             </PanelRow>
         </PanelBody>

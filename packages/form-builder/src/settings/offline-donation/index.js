@@ -1,4 +1,4 @@
-import {useFormSettings} from "../../context/formSettings";
+import {useFormSettings} from "../context";
 import {PanelBody, PanelRow, ToggleControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import DonationInstructions from './donation-instructions'
