@@ -124,7 +124,6 @@ export default function Form({sections, defaultValues}: PropTypes) {
 
     return (
         <FormProvider {...methods}>
-            <button onClick={() => setError('FORM_ERROR', {message: 'Oh no!'})}>Error</button>
             <Form
                 formProps={{
                     id: 'give-next-gen',
