@@ -27,7 +27,7 @@ const DonationInstructions = () => {
                 </Button>
             </div>
             { showPopout && (
-                <Popout content={content} setContent={setContent}>
+                <Popout>
                     <PopoutContainer>
                         <div style={{width: '400px'}}>
                             <header style={{padding:'15px 10px', borderBottom: '1px solid lightgray'}}>
