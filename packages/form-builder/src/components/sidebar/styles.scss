@@ -44,8 +44,7 @@
     padding: 20px;
 
     position: absolute;
-    left: -125%; // Left offset should match the width.
-    width: 125%;
+    right: calc(100% + 25px); // Position beside the sidebar.
     height: 100%;
 
     display: flex;
@@ -53,10 +52,11 @@
     align-items: flex-end;
     justify-content: center;
 
-    color: black;
 
-    > * {
-        outline: 1px solid lightgray;
-        background-color: white;
-    }
+}
+
+.givewp-next-gen-inspector-popout--container {
+    color: black;
+    outline: 1px solid lightgray;
+    background-color: white;
 }

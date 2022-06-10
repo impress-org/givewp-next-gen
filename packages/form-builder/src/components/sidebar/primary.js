@@ -38,14 +38,6 @@ const tabs = [
     },
 ]
 
-function InspectorPopout() {
-    return (
-        <div className="givewp-next-gen-inspector-popout">
-            <Slot name="InspectorPopout" />
-        </div>
-    )
-}
-
 function Sidebar() {
 
     return (
@@ -55,7 +47,7 @@ function Sidebar() {
             aria-label={ __( 'Standalone Block Editor advanced settings.' ) }
             tabIndex="-1"
         >
-            <InspectorPopout />
+            <Slot name="InspectorPopout" />
             <TabPanel
                 className="sidebar-panel"
                 activeClass="active-tab"
