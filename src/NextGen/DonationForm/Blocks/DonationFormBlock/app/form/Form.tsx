@@ -1,4 +1,4 @@
-import {FormProvider, useForm} from 'react-hook-form';
+import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
@@ -40,6 +40,10 @@ type FormInputs = {
     lastName: string;
     email: string;
     gatewayId: string;
+};
+
+window.givewp.form = {
+    useFormContext: useFormContext,
 };
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
@@ -106,14 +110,14 @@ export default function Form({sections, defaultValues}: PropTypes) {
     }
 
     const renderedSections = sections.map((section) => {
-        if (section.name === 'paymentDetails') {
+        if (section.name === 'payment-gateways') {
             return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
         }
 
         const Section = getSectionTemplate();
 
         return (
-            <Section section={section}>
+            <Section key={section.name} section={section}>
                 <SectionNodes key={section.name} {...section} />
             </Section>
         );

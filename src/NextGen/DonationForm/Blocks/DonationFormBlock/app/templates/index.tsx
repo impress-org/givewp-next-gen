@@ -10,6 +10,7 @@ import HtmlElement from './elements/Html';
 import NameGroup from './groups/Name';
 import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
+import AmountField from './fields/Amount';
 
 export interface FieldProps extends Field {
     inputProps: UseFormRegisterReturn;
@@ -39,6 +40,7 @@ function withWrapper(NodeComponent, section, type) {
 
 const templates = {
     fields: {
+        amount: AmountField,
         text: TextField,
         textarea: TextAreaField,
         email: EmailField,
