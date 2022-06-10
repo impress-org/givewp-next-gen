@@ -1,7 +1,7 @@
-import {RegisterOptions, useFormContext, UseFormRegisterReturn} from 'react-hook-form';
+import {RegisterOptions, useFormContext} from 'react-hook-form';
 
 import {Section, Field, isField, isElement, isGroup, Node} from '@givewp/forms/types';
-import {getTemplateElement, getTemplateField, getTemplateGroup} from '../utilities/templates';
+import {getElementTemplate, getFieldTemplate, getGroupTemplate} from '../templates';
 
 export default function SectionNodes({nodes}: Section) {
     const {register} = useFormContext();
@@ -10,15 +10,15 @@ export default function SectionNodes({nodes}: Section) {
         <>
             {nodes.map((node) => {
                 if (isField(node)) {
-                    const Field = getTemplateField(node.type);
+                    const Field = getFieldTemplate(node.type);
                     const inputProps = register(node.name, buildRegisterValidationOptions(node.validationRules));
 
                     return <Field key={node.name} inputProps={inputProps} {...node} />;
                 } else if (isElement(node)) {
-                    const Element = getTemplateElement(node.type);
+                    const Element = getElementTemplate(node.type);
                     return <Element key={node.name} {...node} />;
                 } else if (isGroup(node)) {
-                    const Group = getTemplateGroup(node.type);
+                    const Group = getGroupTemplate(node.type);
                     const fields = node.nodes.reduce(getGroupFields, []);
 
                     const inputProps = fields.reduce((inputProps, field) => {

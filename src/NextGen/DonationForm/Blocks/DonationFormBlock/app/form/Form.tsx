@@ -1,5 +1,4 @@
 import {FormProvider, useForm} from 'react-hook-form';
-import {ErrorMessage} from '@hookform/error-message';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
@@ -11,7 +10,7 @@ import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
 import postData from '../utilities/postData';
-import {getFormTemplate, getTemplateSection} from '../utilities/templates';
+import {getFormTemplate, getSectionTemplate} from '../templates';
 
 const messages = getFieldErrorMessages();
 
@@ -111,7 +110,7 @@ export default function Form({sections, defaultValues}: PropTypes) {
             return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
         }
 
-        const Section = getTemplateSection();
+        const Section = getSectionTemplate();
 
         return (
             <Section section={section}>
