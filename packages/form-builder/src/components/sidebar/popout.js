@@ -1,5 +1,4 @@
 import {Fill, Slot} from "@wordpress/components";
-import {RichText} from "@wordpress/block-editor/build/components";
 
 export default function Popout({ children }) {
 

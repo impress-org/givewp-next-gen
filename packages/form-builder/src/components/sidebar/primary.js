@@ -1,5 +1,4 @@
 import {
-    Slot,
     createSlotFill,
     TabPanel,
 } from '@wordpress/components';
