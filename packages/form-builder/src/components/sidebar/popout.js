@@ -1,4 +1,4 @@
-import {Fill} from "@wordpress/components";
+import {Fill, Slot} from "@wordpress/components";
 import {RichText} from "@wordpress/block-editor/build/components";
 
 export default function Popout({ children, content, setContent }) {
@@ -12,6 +12,6 @@ export default function Popout({ children, content, setContent }) {
     )
 }
 
-export function PopoutContainer({ children }) {
-    return <div className="givewp-next-gen-inspector-popout--container">{ children }</div>
-}
+export const PopoutSlot = () => <Slot name="InspectorPopout" />
+
+export const PopoutContainer = ({ children }) => <div className="givewp-next-gen-inspector-popout--container">{ children }</div>

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
 
 import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings} from '../../settings'
 import FormFields from "../../settings/form-fields";
+import {PopoutSlot} from "./popout";
 
 const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
     'StandAloneBlockEditorSidebarInspector'
@@ -47,7 +48,7 @@ function Sidebar() {
             aria-label={ __( 'Standalone Block Editor advanced settings.' ) }
             tabIndex="-1"
         >
-            <Slot name="InspectorPopout" />
+            <PopoutSlot />
             <TabPanel
                 className="sidebar-panel"
                 activeClass="active-tab"
