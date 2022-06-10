@@ -12,7 +12,7 @@ const FormTitleSettings = () => {
                 <TextControl
                     label={__('Form Title')}
                     value={ formTitle }
-                    onChange={ ( formTitle ) => updateFormSetting( { formTitle: formTitle } ) }
+                    onChange={ ( formTitle ) => updateFormSetting( { formTitle } ) }
                 />
             </PanelRow>
         </PanelBody>

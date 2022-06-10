@@ -12,7 +12,7 @@ const Component = () => {
                 <RichText
                     tagName="h1"
                     value={ formTitle }
-                    onChange={ ( formTitle ) => updateFormSetting( { formTitle: formTitle }) }
+                    onChange={ ( formTitle ) => updateFormSetting( formTitle ) }
                     style={{ margin: '40px' }}
                 />
                 <ObserveTyping>
