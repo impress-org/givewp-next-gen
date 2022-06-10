@@ -35,4 +35,5 @@ export const defaultFormSettings = {
     enableDonationGoal: false,
     enableAutoClose: false,
     registration: 'none',
+    goalFormat: 'amount-raised',
 }
