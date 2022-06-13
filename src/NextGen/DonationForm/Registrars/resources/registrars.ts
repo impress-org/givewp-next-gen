@@ -18,6 +18,13 @@ declare global {
             template: TemplateRegistrar;
             form: {
                 useFormContext(): UseFormReturn;
+                useWatch(options: {
+                    name: string | string[];
+                    defaultValue?: any;
+                    control?: object;
+                    disabled?: boolean;
+                    exact?: boolean;
+                }): any;
             };
         };
         giveNextGenExports: FormServerExports;

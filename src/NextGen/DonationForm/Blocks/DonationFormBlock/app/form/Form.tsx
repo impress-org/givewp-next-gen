@@ -1,4 +1,4 @@
-import {FormProvider, useForm, useFormContext} from 'react-hook-form';
+import {FormProvider, useForm, useFormContext, useWatch} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
@@ -43,7 +43,8 @@ type FormInputs = {
 };
 
 window.givewp.form = {
-    useFormContext: useFormContext,
+    useFormContext,
+    useWatch,
 };
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {

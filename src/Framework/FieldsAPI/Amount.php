@@ -18,6 +18,11 @@ class Amount extends Field
      */
     protected $allowCustomAmount = false;
 
+    /**
+     * Set the preset donation levels. Provide levels in minor units.
+     *
+     * @unreleased
+     */
     public function levels(int ...$levels): self
     {
         $this->levels = $levels;
@@ -25,11 +30,17 @@ class Amount extends Field
         return $this;
     }
 
+    /**
+     * @unreleased
+     */
     public function getLevels(): array
     {
         return $this->levels;
     }
 
+    /**
+     * @unreleased
+     */
     public function allowCustomAmount($allow = true): self
     {
         $this->allowCustomAmount = $allow;
@@ -37,6 +48,9 @@ class Amount extends Field
         return $this;
     }
 
+    /**
+     * @unreleased
+     */
     public function customAmountAllowed(): bool
     {
         return $this->allowCustomAmount;
