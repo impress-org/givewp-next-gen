@@ -11,6 +11,7 @@ import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {getFormTemplate, getSectionTemplate} from '../templates';
+import {useCallback} from "react";
 
 const messages = getFieldErrorMessages();
 
@@ -67,7 +68,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
 export default function Form({sections, defaultValues}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
-    const getGateway = (gatewayId) => gateways.find(({id}) => id === gatewayId);
+    const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
 
     const methods = useForm<FormInputs>({
         defaultValues,
