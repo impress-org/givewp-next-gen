@@ -16,6 +16,8 @@ const messages = getFieldErrorMessages();
 
 const {donateUrl} = getWindowData();
 
+const FormTemplate = getFormTemplate();
+
 const schema = Joi.object({
     firstName: Joi.string().required().label('First Name').messages(messages),
     lastName: Joi.string().required().label('Last Name').messages(messages),
@@ -27,20 +29,6 @@ const schema = Joi.object({
     formTitle: Joi.string().required(),
     userId: Joi.number().required(),
 }).unknown();
-
-type PropTypes = {
-    sections: Section[];
-    defaultValues: object;
-};
-
-type FormInputs = {
-    FORM_ERROR: string;
-    amount: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    gatewayId: string;
-};
 
 window.givewp.form = {
     useFormContext,
@@ -124,11 +112,9 @@ export default function Form({sections, defaultValues}: PropTypes) {
         );
     });
 
-    const Form = getFormTemplate();
-
     return (
         <FormProvider {...methods}>
-            <Form
+            <FormTemplate
                 formProps={{
                     id: 'give-next-gen',
                     onSubmit: handleSubmit((values) =>
@@ -139,7 +125,21 @@ export default function Form({sections, defaultValues}: PropTypes) {
                 formError={errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null}
             >
                 {renderedSections}
-            </Form>
+            </FormTemplate>
         </FormProvider>
     );
 }
+
+type PropTypes = {
+    sections: Section[];
+    defaultValues: object;
+};
+
+type FormInputs = {
+    FORM_ERROR: string;
+    amount: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    gatewayId: string;
+};
