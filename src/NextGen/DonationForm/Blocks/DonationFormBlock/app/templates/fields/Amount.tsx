@@ -24,7 +24,7 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
             {levels.map((levelAmount) => {
                 const label = formatter.format(levelAmount);
                 return (
-                    <button onClick={() => setValue(name, levelAmount)} key={label}>
+                    <button type="button" onClick={() => setValue(name, levelAmount)} key={label}>
                         {label}
                     </button>
                 );
