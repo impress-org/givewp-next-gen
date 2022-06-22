@@ -83,9 +83,9 @@ class NextGenTestGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation)
+    public function createPayment(Donation $donation, $gatewayData)
     {
-        $intent = $this->request()->get('testGatewayIntent');
+        $intent = $gatewayData['testGatewayIntent'];
         $transactionId = "test-gateway-transaction-id-{$donation->id}";
 
         $donation->status = DonationStatus::COMPLETE();
