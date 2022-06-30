@@ -65,6 +65,8 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     }
 };
 
+const SectionTemplate = getSectionTemplate();
+
 export default function Form({sections, defaultValues}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
@@ -104,12 +106,10 @@ export default function Form({sections, defaultValues}: PropTypes) {
             return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
         }
 
-        const Section = getSectionTemplate();
-
         return (
-            <Section key={section.name} section={section}>
+            <SectionTemplate key={section.name} section={section}>
                 <SectionNodes key={section.name} {...section} />
-            </Section>
+            </SectionTemplate>
         );
     });
 

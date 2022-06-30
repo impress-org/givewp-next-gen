@@ -110,6 +110,7 @@ export interface Field extends Node {
     };
     readOnly: boolean;
     defaultValue: any;
+    fieldError: string | null;
 }
 
 export interface Group extends Node {

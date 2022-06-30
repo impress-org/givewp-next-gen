@@ -13,14 +13,14 @@ export default function Form({children, formProps, formError, isSubmitting}: For
         <form {...formProps}>
             {children}
             {formError && (
-                <div className="givewp-error" style={{textAlign: 'center'}}>
-                    <p className="givewp-error__label">
+                <div style={{textAlign: 'center'}}>
+                    <p>
                         {__('The following error occurred when submitting the form:', 'give')}
                     </p>
-                    <p className="givewp-error__message">{formError}</p>
+                    <p>{formError}</p>
                 </div>
             )}
-            <button type="submit" disabled={isSubmitting} className="give-next-gen__submit-button">
+            <button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
             </button>
         </form>

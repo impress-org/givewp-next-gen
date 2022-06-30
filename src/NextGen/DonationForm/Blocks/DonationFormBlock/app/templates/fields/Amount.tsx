@@ -6,7 +6,7 @@ interface AmountProps extends FieldProps {
     allowCustomAmount: boolean;
 }
 
-export default function Amount({name, label, inputProps, levels, allowCustomAmount}: AmountProps) {
+export default function Amount({name, label, inputProps, levels, allowCustomAmount, fieldError}: AmountProps) {
     const {useFormContext, useWatch} = window.givewp.form;
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
@@ -33,6 +33,7 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                 {label}
                 <input type={allowCustomAmount ? 'text' : 'hidden'} {...inputProps} />
             </label>
+            {fieldError && <p>{fieldError}</p>}
         </div>
     );
 }
