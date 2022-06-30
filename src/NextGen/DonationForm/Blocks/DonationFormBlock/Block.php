@@ -8,7 +8,6 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Radio;
