@@ -2,7 +2,10 @@
 
 namespace Give\NextGen;
 
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\NextGen\Framework\FormTemplates\Actions\RegisterFormTemplates;
+use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -17,10 +20,12 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
+        give()->singleton(FormTemplateRegistrar::class);
     }
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function boot()
     {
@@ -28,5 +33,16 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(NextGenTestGateway::class);
             $registrar->registerGateway(NextGenStripeGateway::class);
         });
+
+        $this->registerFormTemplates();
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    private function registerFormTemplates()
+    {
+        (new RegisterFormTemplates())();
     }
 }
