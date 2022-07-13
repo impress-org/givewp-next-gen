@@ -68,10 +68,10 @@ class TestFormTemplateRegistrar extends TestCase
     /**
      * @unreleased
      */
-    public function testGetFormTemplates()
+    public function testGetFormTemplatesShouldReturnArrayOfRegisteredTemplates()
     {
         $this->registrar->registerTemplate(MockFormTemplate::class);
-        $this->assertEquals(['mock-form-template' => MockFormTemplate::class], $this->registrar->getTemplates());
+        $this->assertSame(['mock-form-template' => MockFormTemplate::class], $this->registrar->getTemplates());
     }
 }
 
