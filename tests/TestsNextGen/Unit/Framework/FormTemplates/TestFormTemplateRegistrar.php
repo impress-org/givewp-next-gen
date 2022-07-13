@@ -9,11 +9,11 @@ use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use TestsNextGen\TestCase;
 
 /**
- * @unreleased 
+ * @unreleased
  */
-class TestFormTemplate extends TestCase
+class TestFormTemplateRegistrar extends TestCase
 {
-    /** @var FormTemplateRegistrar  */
+    /** @var FormTemplateRegistrar */
     public $registrar;
 
     /**
