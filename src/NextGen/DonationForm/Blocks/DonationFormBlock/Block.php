@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
+use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
@@ -15,7 +16,6 @@ use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Helpers\Call;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use stdClass;
@@ -54,7 +54,7 @@ class Block
      * @unreleased
      *
      * @return string|null
-     * @throws EmptyNameException
+     * @throws EmptyNameException|TypeNotSupported
      */
     public function render(array $attributes)
     {
@@ -68,7 +68,7 @@ class Block
 
         $donationForm = $this->createForm($formId);
 
-        $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
+        $donateUrl = (new GenerateDonateRouteUrl())();
 
         $formDataGateways = $this->getFormDataGateways($formId);
 
@@ -98,7 +98,7 @@ class Block
     /**
      * @unreleased
      *
-     * @throws EmptyNameException
+     * @throws EmptyNameException|TypeNotSupported
      */
     private function createForm(int $formId): Form
     {
