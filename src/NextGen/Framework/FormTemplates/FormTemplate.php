@@ -23,7 +23,7 @@ abstract class FormTemplate implements FormTemplateInterface {
      */
     public function getId(): string
     {
-        return self::id();
+        return static::id();
     }
 
     /**
@@ -31,6 +31,22 @@ abstract class FormTemplate implements FormTemplateInterface {
      */
     public function getName(): string
     {
-        return self::name();
+        return static::name();
+    }
+
+    /**
+     * @return string|bool
+     */
+    public function css()
+    {
+        return false;
+    }
+
+    /**
+     * @return string|false
+     */
+    public function js()
+    {
+        return false;
     }
 }

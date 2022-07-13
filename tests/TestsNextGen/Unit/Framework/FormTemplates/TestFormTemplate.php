@@ -11,6 +11,9 @@ use TestsNextGen\TestCase;
  */
 class TestFormTemplate extends TestCase
 {
+    /**
+     * @unreleased
+     */
     public function testFormTemplateImplementsInterface()
     {
         $this->assertContains(

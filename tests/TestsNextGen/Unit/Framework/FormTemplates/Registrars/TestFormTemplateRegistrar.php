@@ -17,7 +17,7 @@ class TestFormTemplateRegistrar extends TestCase
     public $registrar;
 
     /**
-     * @return void
+     * @unreleased
      */
     public function setUp()
     {

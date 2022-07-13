@@ -17,6 +17,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use stdClass;
 
 class Block
@@ -62,11 +63,12 @@ class Block
             return null;
         }
 
-        $donationForm = $this->createForm($attributes);
+        $formId = $attributes['formId'];
+        $formTemplateId = $attributes['formTemplateId'];
+
+        $donationForm = $this->createForm($formId);
 
         $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
-
-        $formId = $attributes['formId'];
 
         $formDataGateways = $this->getFormDataGateways($formId);
 
@@ -84,7 +86,7 @@ class Block
         <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
 
         <?php
-        $this->enqueueScripts($formId);
+        $this->enqueueScripts($formId, $formTemplateId);
         ?>
 
         <div id="root-give-next-gen-donation-form-block"></div>
@@ -98,10 +100,8 @@ class Block
      *
      * @throws EmptyNameException
      */
-    private function createForm(array $attributes): Form
+    private function createForm(int $formId): Form
     {
-        $formId = $attributes['formId'];
-
         $gatewayOptions = [];
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
@@ -180,6 +180,7 @@ class Block
             $field = Amount::make('amount')
                 ->levels(...array_map('absint', $block->attributes->levels))
                 ->allowCustomAmount()
+                ->defaultValue(50)
                 ->required();
         } elseif ($block->name === "custom-block-editor/name-field-group") {
             $field = Name::make('name');
@@ -222,18 +223,9 @@ class Block
      *
      * @return void
      */
-    private function enqueueScripts(int $formId)
+    private function enqueueScripts(int $formId, string $formTemplateId)
     {
-        // enqueue front-end scripts
-        // since this is using render_callback viewScript in blocks.json will not work.
-        $enqueueBlockScript = new EnqueueScript(
-            'give-next-gen-donation-form-block-js',
-            'build/donationFormBlockApp.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        );
-
+        // load registrars
         (new EnqueueScript(
             'give-donation-form-registrars-js',
             'build/donationFormRegistrars.js',
@@ -242,6 +234,17 @@ class Block
             'give'
         ))->loadInFooter()->enqueue();
 
+        // load template
+        /** @var FormTemplateRegistrar $formTemplateRegistrar */
+        $formTemplateRegistrar = give(FormTemplateRegistrar::class);
+        $template = $formTemplateRegistrar->getTemplate($formTemplateId);
+
+        if ($template->css()) {
+            wp_register_style($template->getId(), $template->css());
+            wp_enqueue_style($template->getId());
+        }
+
+        // load gateways
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {
                 /** @var EnqueueScript $script */
@@ -253,6 +256,13 @@ class Block
             }
         }
 
-        $enqueueBlockScript->dependencies(['give-donation-form-registrars-js'])->loadInFooter()->enqueue();
+        // load block - since this is using render_callback viewScript in blocks.json will not work.
+        (new EnqueueScript(
+            'give-next-gen-donation-form-block-js',
+            'build/donationFormBlockApp.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        ))->dependencies(['give-donation-form-registrars-js'])->loadInFooter()->enqueue();
     }
 }

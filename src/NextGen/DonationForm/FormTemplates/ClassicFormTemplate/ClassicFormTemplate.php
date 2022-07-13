@@ -27,16 +27,8 @@ class ClassicFormTemplate extends FormTemplate {
     /**
      * @unreleased
      */
-    public function css()
+    public function css(): string
     {
-       //
-    }
-
-    /**
-     * @unreleased
-     */
-    public function js()
-    {
-        //
+        return GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/FormTemplates/ClassicFormTemplate/template.css';
     }
 }
