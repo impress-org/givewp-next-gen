@@ -1,9 +1,10 @@
 import GiveIcon from "./give-icon";
 import React, {useState} from "react";
 import {ListIcon, SettingsIcon} from "../icons";
-import PublishButton from "./buttons/publish";
 import {useFormSettings} from "../../settings/context";
 import {RichText} from "@wordpress/block-editor";
+import {Button} from "@wordpress/components";
+import {__} from "@wordpress/i18n";
 
 const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, showSidebar, toggleShowSidebar}) => {
 
@@ -36,7 +37,7 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
                         </a>
                     </div>
                 </div>
-                <ListIcon onClick={toggleSecondarySidebar} isActive={showSecondarySidebar}/>
+                <ListIcon onClick={toggleSecondarySidebar} isActive={showSecondarySidebar} />
             </section>
             <section>
                 <RichText
@@ -47,8 +48,10 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
                 />
             </section>
             <section style={{marginRight: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
-                <PublishButton onClick={onSave} isBusy={isSaving}/>
-                <SettingsIcon onClick={toggleShowSidebar} isActive={showSidebar}/>
+                <Button onClick={onSave} disabled={isSaving} variant="primary">
+                    {isSaving ? __('Publishing...', 'give') : __('Publish', 'give')}
+                </Button>
+                <SettingsIcon onClick={toggleShowSidebar} isActive={showSidebar} />
             </section>
         </header>
     );
