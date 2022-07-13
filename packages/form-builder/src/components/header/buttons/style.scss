@@ -1,7 +1,9 @@
-.components-button.components-button-publish {
+@import '../../../sass/bootstrap';
 
-    color: #68BF6B;
-    border: 1px solid #5BA65E;
+
+.components-button.components-button-publish {
+    color: $color-green-700;
+    border: 1px solid $color-green-700;
     border-radius: 2px;
 
     &:hover,
