@@ -1,0 +1,12 @@
+.components-button.components-button-publish {
+
+    color: #68BF6B;
+    border: 1px solid #5BA65E;
+    border-radius: 2px;
+
+    &:hover,
+    &.components-button-publish--busy {
+        color: white;
+        background-color: #5BA65E;
+    }
+}

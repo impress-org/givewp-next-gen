@@ -70,7 +70,9 @@ function App() {
                         <InterfaceSkeleton
                             header={<Header
                                 saveCallback={saveCallback}
+                                showSecondarySidebar={showSecondarySidebar}
                                 toggleSecondarySidebar={toggleSecondarySidebar}
+                                showSidebar={showSidebar}
                                 toggleShowSidebar={toggleShowSidebar}
                             />}
                             content={<Content/>}

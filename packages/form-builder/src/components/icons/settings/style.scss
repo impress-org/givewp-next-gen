@@ -1,0 +1,22 @@
+.icons-settings {
+
+    border-radius: 2px;
+
+    path {
+        fill: #000C00;
+    }
+
+    &:hover {
+        path {
+            fill: #68BF6B;
+        }
+    }
+
+    &.icons-settings--active {
+        background-color: #3D5A66;
+
+        path {
+            fill: #FFFFFF;
+        }
+    }
+}
