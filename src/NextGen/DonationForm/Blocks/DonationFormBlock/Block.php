@@ -244,6 +244,10 @@ class Block
             wp_enqueue_style($template->getId());
         }
 
+        if ($template->js()) {
+            wp_enqueue_script($template->getId(), $template->js(), ['give-donation-form-registrars-js'], false, true);
+        }
+
         // load gateways
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {

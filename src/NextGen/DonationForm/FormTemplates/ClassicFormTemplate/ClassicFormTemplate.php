@@ -31,4 +31,12 @@ class ClassicFormTemplate extends FormTemplate {
     {
         return GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/FormTemplates/ClassicFormTemplate/template.css';
     }
+
+    /**
+     * @unreleased
+     */
+    public function js(): string
+    {
+        return GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/FormTemplates/ClassicFormTemplate/template.js';
+    }
 }
