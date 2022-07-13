@@ -1,3 +1,19 @@
+:root {
+    --give-green-500: #68BF6B;
+    --give-green-500--rgb: 104, 191, 107;
+    --give-green-700: #5BA65E;
+    --give-green-700--rgb: 91, 166, 94;
+    --give-green-800: #3F7341;
+    --give-green-800--rgb: 653, 115, 65;
+    --wp-admin-theme-color: var(--give-green-500);
+    --wp-admin-theme-color--rgb: var(--give-green-500--rgb);
+    --wp-admin-theme-color-darker-10: var(--give-green-700);
+    --wp-admin-theme-color-darker-10--rgb: var(--give-green-700--rgb);
+    --wp-admin-theme-color-darker-20: var(--give-green-800);
+    --wp-admin-theme-color-darker-20--rgb: var(--give-green-800--rgb);
+    --wp-admin-border-width-focus: 2px;
+}
+
 .interface-interface-skeleton__editor {
     //height: 60px;
     background-color: white;
@@ -84,18 +100,4 @@ select {
 .components-select-control__input {
     padding: 8px;
     font-weight: normal;
-}
-
-.components-button.is-primary {
-
-    color: white;
-    background-color: #68BF6B;
-
-    border: 1px solid #5BA65E;
-    border-radius: 2px;
-
-    &:hover,
-    &:disabled {
-        background-color: #3F7341 !important;
-    }
 }
