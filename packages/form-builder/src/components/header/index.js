@@ -10,14 +10,14 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
     const [{formTitle}, updateFormSetting] = useFormSettings();
 
 
-    const [isSaving, setSaving] = useState(false)
+    const [isSaving, setSaving] = useState(false);
 
     const onSave = () => {
-        setSaving(true)
+        setSaving(true);
         saveCallback().finally(() => {
-            setSaving(false)
-        })
-    }
+            setSaving(false);
+        });
+    };
 
     return (
         <header style={{height: '60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -28,11 +28,11 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
                     backgroundColor: '#FFF',
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
                 }}>
                     <div style={{marginLeft: '-7px'}}>
                         <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
-                            <GiveIcon/>
+                            <GiveIcon />
                         </a>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
                 <SettingsIcon onClick={toggleShowSidebar} isActive={showSidebar}/>
             </section>
         </header>
-    )
-}
+    );
+};
 
-export default Component
+export default Component;
