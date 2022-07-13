@@ -4,7 +4,7 @@ namespace Give\NextGen;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\Framework\FormTemplates\Actions\RegisterFormTemplates;
+use Give\NextGen\DonationForm\FormTemplates\ClassicFormTemplate\ClassicFormTemplate;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
@@ -20,7 +20,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton(FormTemplateRegistrar::class);
+        //
     }
 
     /**
@@ -34,15 +34,8 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(NextGenStripeGateway::class);
         });
 
-        $this->registerFormTemplates();
-    }
-
-    /**
-     * @unreleased
-     * @throws Exception
-     */
-    private function registerFormTemplates()
-    {
-        (new RegisterFormTemplates())();
+        add_action('givewp_register_form_template', function (FormTemplateRegistrar $formTemplateRegistrar) {
+            $formTemplateRegistrar->registerTemplate(ClassicFormTemplate::class);
+        });
     }
 }

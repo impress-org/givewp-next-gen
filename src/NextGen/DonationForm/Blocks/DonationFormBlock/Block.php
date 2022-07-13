@@ -237,15 +237,25 @@ class Block
         // load template
         /** @var FormTemplateRegistrar $formTemplateRegistrar */
         $formTemplateRegistrar = give(FormTemplateRegistrar::class);
-        $template = $formTemplateRegistrar->getTemplate($formTemplateId);
 
-        if ($template->css()) {
-            wp_register_style($template->getId(), $template->css());
-            wp_enqueue_style($template->getId());
-        }
+        // silently fail if template is missing for some reason
+        if ($formTemplateRegistrar->hasTemplate($formTemplateId)) {
+            $template = $formTemplateRegistrar->getTemplate($formTemplateId);
 
-        if ($template->js()) {
-            wp_enqueue_script($template->getId(), $template->js(), ['give-donation-form-registrars-js'], false, true);
+            if ($template->css()) {
+                wp_register_style($template->getId(), $template->css());
+                wp_enqueue_style($template->getId());
+            }
+
+            if ($template->js()) {
+                wp_enqueue_script(
+                    $template->getId(),
+                    $template->js(),
+                    ['give-donation-form-registrars-js'],
+                    false,
+                    true
+                );
+            }
         }
 
         // load gateways
