@@ -18,7 +18,7 @@ const Component = () => {
                 </ObserveTyping>
             </WritingFlow>
         </BlockTools>
-    )
-}
+    );
+};
 
-export default Component
+export default Component;
