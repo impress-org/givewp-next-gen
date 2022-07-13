@@ -37,7 +37,7 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
                         </a>
                     </div>
                 </div>
-                <ListIcon onClick={toggleSecondarySidebar} isActive={showSecondarySidebar} />
+                <Button onClick={toggleSecondarySidebar} isPressed={showSecondarySidebar} icon={<ListIcon />} />
             </section>
             <section>
                 <RichText
@@ -51,7 +51,7 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
                 <Button onClick={onSave} disabled={isSaving} variant="primary">
                     {isSaving ? __('Publishing...', 'give') : __('Publish', 'give')}
                 </Button>
-                <SettingsIcon onClick={toggleShowSidebar} isActive={showSidebar} />
+                <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon />} />
             </section>
         </header>
     );

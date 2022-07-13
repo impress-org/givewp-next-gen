@@ -96,3 +96,8 @@ select {
     padding: 8px;
     font-weight: normal;
 }
+
+
+.components-button.has-icon.is-pressed {
+    background-color: var(--give-neutral-100);
+}
