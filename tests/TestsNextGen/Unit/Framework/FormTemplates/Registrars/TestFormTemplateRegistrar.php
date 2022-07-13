@@ -1,6 +1,6 @@
 <?php
 
-namespace TestsNextGen\Unit\Framework\FormTemplates;
+namespace TestsNextGen\Unit\Framework\FormTemplates\Registrars;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
