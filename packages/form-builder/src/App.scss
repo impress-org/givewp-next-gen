@@ -97,11 +97,16 @@ select {
     font-weight: normal;
 }
 
+.components-button {
+    &.has-icon {
+        padding: 0 6px;
 
-.components-button.has-icon.is-pressed {
-    background-color: var(--give-neutral-100);
+        &.is-pressed {
+            background-color: var(--give-neutral-100);
 
-    &:hover {
-        background-color: var(--give-neutral-110);
+            &:hover {
+                background-color: var(--give-neutral-110);
+            }
+        }
     }
 }
