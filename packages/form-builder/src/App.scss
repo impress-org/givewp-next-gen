@@ -100,4 +100,8 @@ select {
 
 .components-button.has-icon.is-pressed {
     background-color: var(--give-neutral-100);
+
+    &:hover {
+        background-color: var(--give-neutral-110);
+    }
 }
