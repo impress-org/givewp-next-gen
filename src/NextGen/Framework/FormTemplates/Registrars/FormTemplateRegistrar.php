@@ -2,9 +2,9 @@
 
 namespace Give\NextGen\Framework\FormTemplates\Registrars;
 
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
+use Give\Log\Log;
 use Give\NextGen\Framework\FormTemplates\FormTemplate;
 
 /**
@@ -49,10 +49,38 @@ class FormTemplateRegistrar
 
     /**
      * @unreleased
-     *
-     * @throws OverflowException|InvalidArgumentException|Exception
      */
     public function registerTemplate(string $templateClass)
+    {
+        try {
+            $this->register($templateClass);
+        } catch (InvalidArgumentException $invalidArgumentException) {
+            Log::error('Form Template Registration', ['data' => $invalidArgumentException->getMessage()]);
+            throw $invalidArgumentException;
+        } catch (OverflowException $overflowException) {
+            Log::error('Form Template Registration ', ['data' => $overflowException->getMessage()]);
+            throw $overflowException;
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function unregisterTemplate(string $templateId)
+    {
+        if (isset($this->templates[$templateId])) {
+            unset($this->templates[$templateId]);
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws OverflowException|InvalidArgumentException
+     */
+    private function register(string $templateClass)
     {
         if (!is_subclass_of($templateClass, FormTemplate::class)) {
             throw new InvalidArgumentException(
@@ -73,15 +101,5 @@ class FormTemplateRegistrar
         $this->templates[$templateId] = $templateClass;
 
         give()->singleton($templateClass);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function unregisterTemplate(string $templateId)
-    {
-        if (isset($this->templates[$templateId])) {
-            unset($this->templates[$templateId]);
-        }
     }
 }

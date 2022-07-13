@@ -1,0 +1,101 @@
+<?php
+
+namespace TestsNextGen\Unit\Framework\FormTemplates;
+
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\PaymentGateways\Exceptions\OverflowException;
+use Give\NextGen\Framework\FormTemplates\FormTemplate;
+use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
+use TestsNextGen\TestCase;
+
+/**
+ * @unreleased 
+ */
+class TestFormTemplate extends TestCase
+{
+    /** @var FormTemplateRegistrar  */
+    public $registrar;
+
+    /**
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->registrar = new FormTemplateRegistrar();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testRegisterFormTemplateShouldAddTemplate()
+    {
+        $this->registrar->registerTemplate(MockFormTemplate::class);
+
+        $this->assertTrue($this->registrar->hasTemplate(MockFormTemplate::id()));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testUnRegisterFormTemplateShouldRemoveTemplate()
+    {
+        $this->registrar->registerTemplate(MockFormTemplate::class);
+        $this->registrar->unregisterTemplate(MockFormTemplate::id());
+
+        $this->assertFalse($this->registrar->hasTemplate(MockFormTemplate::id()));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldThrowInvalidArgumentExceptionIfNotExtendingFormTemplateClass()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->registrar->registerTemplate(MockFormTemplateDoesNotExtendFormTemplate::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldThrowOverFlowExceptionIfFormTemplateIdIsTaken()
+    {
+        $this->expectException(OverflowException::class);
+        $this->registrar->registerTemplate(MockFormTemplate::class);
+        $this->registrar->registerTemplate(MockFormTemplate::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetFormTemplates()
+    {
+        $this->registrar->registerTemplate(MockFormTemplate::class);
+        $this->assertEquals(['mock-form-template' => MockFormTemplate::class], $this->registrar->getTemplates());
+    }
+}
+
+class MockFormTemplate extends FormTemplate {
+
+    public static function id(): string
+    {
+        return 'mock-form-template';
+    }
+
+    public static function name(): string
+    {
+        return 'Mock Form Template';
+    }
+}
+
+class MockFormTemplateDoesNotExtendFormTemplate {
+    public static function id(): string
+    {
+        return 'mock-form-template';
+    }
+
+    public static function name(): string
+    {
+        return 'Mock Form Template';
+    }
+}
