@@ -21,37 +21,54 @@ const Component = ({saveCallback, showSecondarySidebar, toggleSecondarySidebar, 
     };
 
     return (
-        <header style={{height: '60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <section style={{display: 'flex', gap: '20px', alignItems: 'center'}}>
+        <header style={{
+            height: '60px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingLeft: '1rem',
+            paddingRight: '1rem'
+        }}>
+            <section style={{
+                display: 'flex',
+                gap: '1rem',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                flexBasis: '20%'
+            }}>
                 <div style={{
                     height: '60px',
                     width: '60px',
                     backgroundColor: '#FFF',
                     display: 'flex',
-                    justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                    <div style={{marginLeft: '-7px'}}>
+                    <div>
                         <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
-                            <GiveIcon />
+                            <GiveIcon/>
                         </a>
                     </div>
                 </div>
-                <Button onClick={toggleSecondarySidebar} isPressed={showSecondarySidebar} icon={<ListIcon />} />
+                <Button onClick={toggleSecondarySidebar} isPressed={showSecondarySidebar} icon={<ListIcon/>}/>
             </section>
             <section>
                 <RichText
                     tagName="div"
                     value={formTitle}
                     onChange={(value) => updateFormSetting({formTitle: value})}
-                    style={{margin: '40px'}}
                 />
             </section>
-            <section style={{marginRight: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
+            <section style={{
+                display: 'flex',
+                gap: '0.5rem',
+                alignItems: 'center',
+                flexBasis: '20%',
+                justifyContent: 'flex-end',
+            }}>
                 <Button onClick={onSave} disabled={isSaving} variant="primary">
                     {isSaving ? __('Publishing...', 'give') : __('Publish', 'give')}
                 </Button>
-                <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon />} />
+                <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon/>}/>
             </section>
         </header>
     );
