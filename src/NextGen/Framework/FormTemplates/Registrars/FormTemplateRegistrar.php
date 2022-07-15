@@ -3,9 +3,9 @@
 namespace Give\NextGen\Framework\FormTemplates\Registrars;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Log\Log;
 use Give\NextGen\Framework\FormTemplates\FormTemplate;
+use OverflowException;
 
 /**
  * @unreleased

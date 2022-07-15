@@ -3,9 +3,9 @@
 namespace TestsNextGen\Unit\Framework\FormTemplates\Registrars;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\NextGen\Framework\FormTemplates\FormTemplate;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
+use OverflowException;
 use TestsNextGen\TestCase;
 
 /**
