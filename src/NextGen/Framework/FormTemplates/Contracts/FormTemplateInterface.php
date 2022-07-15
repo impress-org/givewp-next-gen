@@ -3,6 +3,8 @@
 namespace Give\NextGen\Framework\FormTemplates\Contracts;
 
 /**
+ * The structure of a GiveWP FormTemplate
+ *
  * @unreleased
  */
 interface FormTemplateInterface

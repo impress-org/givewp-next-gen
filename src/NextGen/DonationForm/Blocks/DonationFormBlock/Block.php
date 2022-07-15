@@ -219,6 +219,8 @@ class Block
     }
 
     /**
+     * Loads scripts in order: [Registrars, Template, Gateways, Block]
+     *
      * @unreleased
      *
      * @return void
@@ -243,13 +245,12 @@ class Block
             $template = $formTemplateRegistrar->getTemplate($formTemplateId);
 
             if ($template->css()) {
-                wp_register_style($template->getId(), $template->css());
-                wp_enqueue_style($template->getId());
+                wp_enqueue_style('givewp-form-template-' . $template->getId(), $template->css());
             }
 
             if ($template->js()) {
                 wp_enqueue_script(
-                    $template->getId(),
+                    'givewp-form-template-' . $template->getId(),
                     $template->js(),
                     ['give-donation-form-registrars-js'],
                     false,
