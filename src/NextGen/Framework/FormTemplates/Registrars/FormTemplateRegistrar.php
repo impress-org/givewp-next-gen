@@ -4,14 +4,17 @@ namespace Give\NextGen\Framework\FormTemplates\Registrars;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Log\Log;
+use Give\NextGen\Framework\FormTemplates\Exceptions\OverflowException;
 use Give\NextGen\Framework\FormTemplates\FormTemplate;
-use OverflowException;
 
 /**
  * @unreleased
  */
 class FormTemplateRegistrar
 {
+    /**
+     * @var array
+     */
     protected $templates = [];
 
     /**
