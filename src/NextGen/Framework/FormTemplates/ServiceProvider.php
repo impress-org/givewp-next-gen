@@ -17,7 +17,14 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton(FormTemplateRegistrar::class);
+        give()->singleton(FormTemplateRegistrar::class, function () {
+            $registrar = new FormTemplateRegistrar();
+
+            Hooks::doAction('givewp_register_form_template', $registrar);
+            Hooks::doAction('givewp_unregister_form_template', $registrar);
+
+            return $registrar;
+        });
     }
 
     /**
@@ -25,9 +32,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        $formTemplateRegistrar = give(FormTemplateRegistrar::class);
-
-        Hooks::doAction('givewp_register_form_template', $formTemplateRegistrar);
-        Hooks::doAction('givewp_unregister_form_template', $formTemplateRegistrar);
+        //
     }
 }
