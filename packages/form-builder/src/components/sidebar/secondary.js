@@ -53,9 +53,8 @@ function Sidebar(props) {
         sections[block.category].blocks.push(block);
         return sections;
     }, {
+        input: {name: 'input', label: __('Input Fields', 'give'), blocks: []},
         custom: {name: 'custom', label: __('Custom Fields', 'give'), blocks: []},
-        donor: {name: 'donor', label: __('Donor Fields', 'give'), blocks: []},
-        payments: {name: 'payments', label: __('Payment Fields', 'give'), blocks: []},
     });
     console.log(blocksBySection);
 
