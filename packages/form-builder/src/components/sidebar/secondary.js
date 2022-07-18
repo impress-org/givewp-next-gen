@@ -44,7 +44,7 @@ function Sidebar(props) {
             "icon": {
                 "src": blockData.settings.icon ?? "block-default",
             },
-            "isDisabled": !blockData.settings.supports.multiple && blocksInUse.includes(blockData.name),
+            "isDisabled": !(blockData.settings.supports.multiple ?? true) && blocksInUse.includes(blockData.name),
             // "frecency": ?,
         };
     });
