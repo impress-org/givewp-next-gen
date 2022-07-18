@@ -10,6 +10,7 @@ import DonorName from "./donorName";
 const fieldBlocks = [
     {
         name: 'custom-block-editor/field',
+        category: 'custom',
         settings: {
             ...settings,
             title: __('Custom Field', 'custom-block-editor'),
@@ -17,6 +18,7 @@ const fieldBlocks = [
     },
     {
         name: 'custom-block-editor/company-field',
+        category: 'donor',
         settings: {
             ...settings,
             title: __('Company', 'custom-block-editor'),
@@ -39,6 +41,7 @@ const fieldBlocks = [
     },
     {
         name: 'custom-block-editor/donor-name',
+        category: 'donor',
         settings: {
             ...settings,
             title: __('Donor Name', 'custom-block-editor'),
@@ -65,6 +68,7 @@ const fieldBlocks = [
     },
     {
         name: 'custom-block-editor/email-field',
+        category: 'donor',
         settings: {
             ...settings,
             title: __('Email', 'custom-block-editor'),
@@ -87,6 +91,7 @@ const fieldBlocks = [
     },
     {
         name: 'custom-block-editor/payment-gateways',
+        category: 'payments',
         settings: {
             ...settings,
             title: __('Payment Gateways', 'custom-block-editor'),
