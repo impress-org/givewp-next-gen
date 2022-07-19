@@ -49,7 +49,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
 
     const request = await postData(donateUrl, {
         ...values,
-        ...beforeCreatePaymentGatewayResponse,
+        gatewayData: beforeCreatePaymentGatewayResponse,
     });
 
     if (!request.response.ok) {
