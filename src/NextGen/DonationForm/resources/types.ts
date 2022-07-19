@@ -85,6 +85,11 @@ export interface Gateway {
 
 export interface Template {
     id: string;
+    fields: object;
+    elements: object;
+    layouts: object;
+    groups: object;
+
 }
 
 export interface VisibilityCondition {

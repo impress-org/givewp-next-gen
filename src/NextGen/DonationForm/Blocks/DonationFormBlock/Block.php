@@ -252,7 +252,10 @@ class Block
                 wp_enqueue_script(
                     'givewp-form-template-' . $template->getId(),
                     $template->js(),
-                    ['give-donation-form-registrars-js'],
+                    array_merge(
+                        ['give-donation-form-registrars-js'],
+                        $template->dependencies()
+                    ),
                     false,
                     true
                 );

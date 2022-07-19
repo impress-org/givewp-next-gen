@@ -38,7 +38,7 @@ function withWrapper(NodeComponent, section, type) {
     };
 }
 
-const templates = {
+const defaultTemplate = {
     fields: {
         amount: AmountField,
         text: TextField,
@@ -58,8 +58,29 @@ const templates = {
     },
 };
 
+const activeTemplate = window.givewp.template.get();
+
+const template = {
+    fields: {
+        ...defaultTemplate.fields,
+        ...activeTemplate?.fields
+    },
+    elements: {
+        ...defaultTemplate.elements,
+        ...activeTemplate?.elements
+    },
+    groups: {
+        ...defaultTemplate.groups,
+        ...activeTemplate?.groups
+    },
+    layouts: {
+        ...defaultTemplate.layouts,
+        ...activeTemplate?.layouts
+    },
+}
+
 function getTemplate<NodeProps>(type: string, section: string): FC<NodeProps> {
-    const Node = templates[section].hasOwnProperty(type) ? withWrapper(templates[section][type], section, type) : null;
+    const Node = template[section].hasOwnProperty(type) ? withWrapper(template[section][type], section, type) : (defaultTemplate[section].hasOwnProperty(type) ? withWrapper(defaultTemplate[section][type], section, type) : null);
 
     let FilteredNode = applyFilters(`givewp/form/${section}/${type}`, Node);
     FilteredNode = applyFilters(`givewp/form/${section}`, Node, type);
