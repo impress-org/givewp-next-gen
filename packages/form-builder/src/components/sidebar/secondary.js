@@ -66,7 +66,7 @@ function Sidebar(props) {
                         color: 'var( --give-gray-50 )',
                         margin: '20px',
                         textTransform: 'uppercase',
-                        fontSize: '.9em',
+                        fontSize: '.8em',
                         fontWeight: 500,
                     }}>{label}</div>
                     <BlockTypesList key={name} items={blocks} />
