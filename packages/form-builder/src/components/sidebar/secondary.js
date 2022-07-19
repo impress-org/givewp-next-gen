@@ -1,38 +1,20 @@
-import {PanelHeader, createSlotFill, SearchControl} from '@wordpress/components';
-import {__experimentalListView, store} from '@wordpress/block-editor';
+import {PanelHeader} from '@wordpress/components';
+import {__experimentalListView as ListView} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import BlockTypesList from "@wordpress/block-editor/build/components/block-types-list";
 import fieldBlocks from "../../blocks/fields";
-import {select, useSelect} from "@wordpress/data";
+import {useSelect} from "@wordpress/data";
 import {store as blockEditorStore} from "@wordpress/block-editor/build/store";
-import {useState} from "react";
-import {useImperativeHandle, useRef} from "@wordpress/element";
-
-// const {Fill: InspectorFill} = createSlotFill(
-//     'StandAloneBlockEditorSidebarInspector',
-// );
 
 function Sidebar(props) {
 
-    console.log('HERE');
-    console.log(props);
-    // console.log(store.getInsertUsage('custom-block-editor/donor-name'));
-
-    const [blockSearch, setBlockSearch] = useState('');
-
-    const searchRef = useRef();
-
-    const foo = useSelect(select => {
+    const store = useSelect(select => {
         return select(blockEditorStore);
     });
 
-    const blocksInUse = foo.getBlocks().map(block => {
+    const blocksInUse = store.getBlocks().map(block => {
         return block.innerBlocks.map(innerBlock => innerBlock.name).flat();
     }).flat();
-
-    console.log(blocksInUse);
-    console.log(blocksInUse.includes('custom-block-editor/donor-name'));
-    console.log(blocksInUse.includes('custom-block-editor/company-field'));
 
     const blocks = fieldBlocks.map(blockData => {
         console.log(blockData);
@@ -45,7 +27,7 @@ function Sidebar(props) {
                 "src": blockData.settings.icon ?? "block-default",
             },
             "isDisabled": !(blockData.settings.supports.multiple ?? true) && blocksInUse.includes(blockData.name),
-            // "frecency": ?,
+            // "frecency": ?, // Note: This is not FreQuency, but rather FreCency with combines Frequency with Recency for search ranking.
         };
     });
 
@@ -56,7 +38,6 @@ function Sidebar(props) {
         input: {name: 'input', label: __('Input Fields', 'give'), blocks: []},
         custom: {name: 'custom', label: __('Custom Fields', 'give'), blocks: []},
     });
-    console.log(blocksBySection);
 
     const BlockSectionTypesList = () => {
         return Object.values(blocksBySection).map(({name, label, blocks}) => {
@@ -79,7 +60,7 @@ function Sidebar(props) {
         add: () => <BlockSectionTypesList />,
         list: () => <>
             <PanelHeader label={__('List View', 'give')} />
-            <__experimentalListView showNestedBlocks={true} expandNested={true} />
+            <ListView showNestedBlocks={true} expandNested={true} />
         </>,
     };
     const Panel = content[props.selected];
@@ -96,7 +77,5 @@ function Sidebar(props) {
         </div>
     );
 }
-
-// Sidebar.InspectorFill = InspectorFill;
 
 export default Sidebar;
