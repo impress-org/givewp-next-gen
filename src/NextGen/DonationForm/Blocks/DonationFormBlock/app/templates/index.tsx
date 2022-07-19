@@ -80,7 +80,7 @@ const template = {
 }
 
 function getTemplate<NodeProps>(type: string, section: string): FC<NodeProps> {
-    const Node = template[section].hasOwnProperty(type) ? withWrapper(template[section][type], section, type) : (defaultTemplate[section].hasOwnProperty(type) ? withWrapper(defaultTemplate[section][type], section, type) : null);
+    const Node = template[section].hasOwnProperty(type) ? withWrapper(template[section][type], section, type) : null;
 
     let FilteredNode = applyFilters(`givewp/form/${section}/${type}`, Node);
     FilteredNode = applyFilters(`givewp/form/${section}`, Node, type);
