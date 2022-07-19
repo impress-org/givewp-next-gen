@@ -32,6 +32,7 @@ const FieldTypesList = () => {
         sections[block.category].blocks.push(block);
         return sections;
     }, {
+        // @todo: Figure out how to handle third-party (or add-on) field categories.
         input: {name: 'input', label: __('Input Fields', 'give'), blocks: []},
         custom: {name: 'custom', label: __('Custom Fields', 'give'), blocks: []},
     });
