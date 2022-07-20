@@ -3,8 +3,12 @@ import {store as blockEditorStore} from "@wordpress/block-editor/build/store";
 import fieldBlocks from "../../../blocks/fields";
 import {__} from "@wordpress/i18n";
 import BlockTypesList from "@wordpress/block-editor/build/components/block-types-list";
+import {SearchControl} from "@wordpress/components";
+import {useState} from "react";
 
 const FieldTypesList = () => {
+
+    const [searchValue, setSearchValue] = useState('');
 
     const store = useSelect(select => {
         return select(blockEditorStore);
@@ -28,7 +32,9 @@ const FieldTypesList = () => {
         };
     });
 
-    const blocksBySection = blocks.reduce((sections, block) => {
+    const blocksFiltered = blocks.filter(block => block.name.includes(searchValue.toLowerCase().replace(' ', '-')));
+
+    const blocksBySection = blocksFiltered.reduce((sections, block) => {
         sections[block.category].blocks.push(block);
         return sections;
     }, {
@@ -37,14 +43,21 @@ const FieldTypesList = () => {
         custom: {name: 'custom', label: __('Custom Fields', 'give'), blocks: []},
     });
 
-    return Object.values(blocksBySection).map(({name, label, blocks}) => {
-        return (
-            <>
-                <FieldTypeSectionHeader text={label} />
-                <BlockTypesList key={name} items={blocks} />
-            </>
-        );
-    });
+    return (
+        <>
+            <div style={{margin: '20px'}}>
+                <SearchControl value={searchValue} onChange={setSearchValue} />
+            </div>
+            {Object.values(blocksBySection).filter(section => section.blocks.length).map(({name, label, blocks}) => {
+                return (
+                    <>
+                        <FieldTypeSectionHeader text={label} />
+                        <BlockTypesList key={name} items={blocks} />
+                    </>
+                );
+            })}
+        </>
+    );
 };
 
 const FieldTypeSectionHeader = ({text}) => {
