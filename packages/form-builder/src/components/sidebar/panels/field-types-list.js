@@ -51,26 +51,20 @@ const FieldTypesList = () => {
             {Object.values(blocksBySection).filter(section => section.blocks.length).map(({name, label, blocks}) => {
                 return (
                     <>
-                        <FieldTypeSectionHeader text={label} />
+                        <h3 style={{
+                            color: 'var( --give-gray-50 )',
+                            margin: '20px',
+                            textTransform: 'uppercase',
+                            fontSize: '.8em',
+                            fontWeight: 500,
+                        }}>
+                            {label}
+                        </h3>
                         <BlockTypesList key={name} items={blocks} />
                     </>
                 );
             })}
         </>
-    );
-};
-
-const FieldTypeSectionHeader = ({text}) => {
-    return (
-        <h3 style={{
-            color: 'var( --give-gray-50 )',
-            margin: '20px',
-            textTransform: 'uppercase',
-            fontSize: '.8em',
-            fontWeight: 500,
-        }}>
-            {text}
-        </h3>
     );
 };
 
