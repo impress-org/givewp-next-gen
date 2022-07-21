@@ -3,7 +3,7 @@ import {useMemo} from 'react';
 
 export default function Amount({name, label, inputProps, levels, allowCustomAmount, fieldError}) {
     const {useFormContext, useWatch} = window.givewp.form;
-    const {setValue} = useFormContext();
+    const {setValue, setFocus} = useFormContext();
     const currency = useWatch({name: 'currency'});
     const amount = useWatch({name: 'amount'});
     const formatter = useMemo(
@@ -44,7 +44,10 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                 <button
                     className={`givewp-amount-level givewp-amount-level-custom ${!levels.includes(Number(amount)) ? 'selected' : ''}`}
                     type="button"
-                    onClick={() => setValue(name, null)} key='custom'>
+                    onClick={() => {
+                        setValue(name, null);
+                        setFocus("amount", {shouldSelect: true})
+                    }} key='custom'>
                     {__('Custom Amount', 'give')}
                 </button>
             </div>
