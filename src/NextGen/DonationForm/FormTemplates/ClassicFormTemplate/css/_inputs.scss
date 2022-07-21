@@ -5,19 +5,30 @@
     flex-direction: column;
 }
 
-input[type="text"], input[type="email"] {
-    border: 1px solid gainsboro;
-    border-radius: 3px;
-    padding: 0.5rem 0;
+input[type="text"]:not(.givewp-amount-input), input[type="email"] {
+    border-width: 0.078rem;
+    border-style: solid;
+    border-color: rgb(102, 102, 102);
+    border-radius: 0.25rem;
+    padding: 1.1875rem;
     width: 100%;
     margin-bottom: 0.5rem;
+    box-sizing: inherit;
+    inline-size: 100%;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0.08em 0.4em inset;
+    background-color: rgb(255, 255, 255);
+    color: rgb(130, 131, 130);
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+
+    &.error {
+        border-color: red;
+    }
 }
 
 button[type="submit"] {
-    --give-primary-color: #1E8CBE;
-    --give-header-background-color--for-rgb: 30, 140, 190;
-    --give-header-stats-progressbar-color: #2bc253;
-    --give-primary-font: 'Montserrat';
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,4 +49,15 @@ button[type="submit"] {
     inline-size: 100%;
     width: 100%;
     margin: 1rem 0;
+}
+
+.input-error-message {
+    font-size: 1rem;
+    height: 1rem;
+    text-align: right;
+    visibility: hidden;
+
+    &.visible {
+        visibility: visible;
+    }
 }

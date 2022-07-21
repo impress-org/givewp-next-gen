@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {useMemo} from 'react';
 import classNames from 'classnames';
 
-export default function Amount({name, label, inputProps, levels, allowCustomAmount, fieldError}) {
+export default function AmountField({name, label, inputProps, levels, allowCustomAmount, fieldError}) {
     const {useFormContext, useWatch} = window.givewp.form;
     const {setValue, setFocus} = useFormContext();
     const currency = useWatch({name: 'currency'});

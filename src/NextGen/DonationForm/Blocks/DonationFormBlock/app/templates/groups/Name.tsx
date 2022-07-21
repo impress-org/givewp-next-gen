@@ -2,27 +2,32 @@ import {GroupProps} from '../index';
 import {findNode} from '../../utilities/groups';
 import Text from '../fields/Text';
 import {Field} from '@givewp/forms/types';
-import {useFormContext} from "react-hook-form";
 import getErrorByFieldName from "../../utilities/getErrorByFieldName";
+import {useFormContext} from 'react-hook-form';
 
 export default function Name({nodes, inputProps}: GroupProps) {
+    const {formState: {errors}} = useFormContext();
+
     const firstName = findNode('firstName', nodes) as Field;
     const lastName = findNode('lastName', nodes) as Field | null;
     const honorific = findNode('honorific', nodes) as Field | null;
-    const {formState: {errors}} = useFormContext();
+
+    const honorificError = getErrorByFieldName(errors, 'honorific');
+    const firstNameError = getErrorByFieldName(errors, 'firstName');
+    const lastNameError = getErrorByFieldName(errors, 'lastName');
 
     return (
         <>
             {honorific && <Text inputProps={inputProps['honorific']}
-                                fieldError={getErrorByFieldName(errors, 'honorific')}
+                                fieldError={honorificError}
                                 {...honorific}
             />}
             <Text inputProps={inputProps['firstName']}
-                  fieldError={getErrorByFieldName(errors, 'firstName')}
+                  fieldError={firstNameError}
                   {...firstName}
             />
             {lastName && <Text inputProps={inputProps['lastName']}
-                               fieldError={getErrorByFieldName(errors, 'lastName')}
+                               fieldError={lastNameError}
                                {...lastName}
             />}
         </>

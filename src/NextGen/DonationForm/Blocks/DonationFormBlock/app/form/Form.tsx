@@ -13,11 +13,18 @@ import postData from '../utilities/postData';
 import {getFormTemplate, getSectionTemplate} from '../templates';
 import {useCallback} from "react";
 
+window.givewp.form = {
+    useFormContext,
+    useWatch,
+};
+
 const messages = getFieldErrorMessages();
 
 const {donateUrl} = getWindowData();
 
 const FormTemplate = getFormTemplate();
+
+const SectionTemplate = getSectionTemplate();
 
 const schema = Joi.object({
     firstName: Joi.string().required().label('First Name').messages(messages),
@@ -30,11 +37,6 @@ const schema = Joi.object({
     formTitle: Joi.string().required(),
     userId: Joi.number().required(),
 }).unknown();
-
-window.givewp.form = {
-    useFormContext,
-    useWatch,
-};
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};
@@ -64,8 +66,6 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         return setError('FORM_ERROR', {message: error.message});
     }
 };
-
-const SectionTemplate = getSectionTemplate();
 
 export default function Form({sections, defaultValues}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
