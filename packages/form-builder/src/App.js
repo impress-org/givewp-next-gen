@@ -26,7 +26,7 @@ function App() {
         toggle: toggleShowSidebar,
     } = useToggleState(true);
 
-    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState(false);
+    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
     const toggleSelectedSecondarySidebar = (name) => setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false);
 
     const {blocks: initialBlocks, settings: initialFormSettings} = Storage.load();
