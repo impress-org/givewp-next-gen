@@ -1,4 +1,4 @@
-import AmountField from './js/fields/AmountField'
+import AmountField from './fields/AmountField'
 
 window.givewp.template.mount({
     id: 'classic',

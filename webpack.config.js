@@ -28,7 +28,8 @@ module.exports = {
             'NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'
         ),
         nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
-        classicTemplateJs: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/template.js'),
+        classicTemplateJs: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/js/template.js'),
+        classicTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/css/template.scss'),
     },
 };
 

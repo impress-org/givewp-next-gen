@@ -29,7 +29,7 @@ class ClassicFormTemplate extends FormTemplate {
      */
     public function css(): string
     {
-        return GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/FormTemplates/ClassicFormTemplate/template.css';
+        return GIVE_NEXT_GEN_URL . 'build/classicTemplateCss.css';
     }
 
     /**
