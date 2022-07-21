@@ -24,7 +24,7 @@
         "@wordpress/i18n": "^3.19.0",
         "@wordpress/server-side-render": "^3.1.3",
         "accounting": "latest",
-        "classnames": "^2.2.6",
+        "classnames": "^2.3.1",
         "iframe-resizer": "^4.2.10",
         "joi": "^17.6.0",
         "prop-types": "^15.7.2",
