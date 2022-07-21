@@ -1,4 +1,4 @@
-import {FC, ReactNode} from 'react';
+import {ElementType, FC, ReactNode} from 'react';
 import {applyFilters} from '@wordpress/hooks';
 import {Element, Field, Group} from '@givewp/forms/types';
 import {UseFormRegisterReturn} from 'react-hook-form';
@@ -24,14 +24,19 @@ export interface GroupProps extends Group {
     };
 }
 
-function NodeWrapper({type, nodeType, children}: {type: string; nodeType: string; children: ReactNode}) {
-    return <div className={`givewp-${nodeType} givewp-${nodeType}-${type}`}>{children}</div>;
+function NodeWrapper({
+                         type,
+                         nodeType,
+                         htmlTag: Element = 'div',
+                         children
+                     }: { type: string; nodeType: string; htmlTag?: ElementType; children: ReactNode }) {
+    return <Element className={`givewp-${nodeType} givewp-${nodeType}-${type}`}>{children}</Element>;
 }
 
-function withWrapper(NodeComponent, section, type) {
+function withWrapper(NodeComponent, section, type, htmlTag) {
     return (props) => {
         return (
-            <NodeWrapper type={type} nodeType={section}>
+            <NodeWrapper type={type} nodeType={section} htmlTag={htmlTag}>
                 <NodeComponent {...props} />
             </NodeWrapper>
         );
@@ -79,8 +84,8 @@ const template = {
     },
 }
 
-function getTemplate<NodeProps>(type: string, section: string): FC<NodeProps> {
-    const Node = template[section].hasOwnProperty(type) ? withWrapper(template[section][type], section, type) : null;
+function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string): FC<NodeProps> {
+    const Node = template[section].hasOwnProperty(type) ? withWrapper(template[section][type], section, type, htmlTag) : null;
 
     let FilteredNode = applyFilters(`givewp/form/${section}/${type}`, Node);
     FilteredNode = applyFilters(`givewp/form/${section}`, Node, type);
@@ -105,7 +110,7 @@ export function getGroupTemplate(type: string): FC<GroupProps> {
 }
 
 export function getSectionTemplate(): FC<SectionProps> {
-    return getTemplate<SectionProps>('section', 'layouts');
+    return getTemplate<SectionProps>('section', 'layouts', 'section');
 }
 
 export function getFormTemplate(): FC<FormProps> {
