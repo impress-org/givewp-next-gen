@@ -1,19 +1,14 @@
 import {FieldProps} from '../index';
-import classNames from 'classnames';
 
 export default function Text({label, fieldError, inputProps}: FieldProps) {
-    const {name} = inputProps;
-
     return (
-        <div className={classNames('input-container', {'error': fieldError})}>
-            <label htmlFor={name}>
-                {label}
-            </label>
+        <label>
+            <span>{label}</span>
+            <input type="text" aria-invalid={fieldError ? "true" : "false"} {...inputProps} />
 
-            <input className={classNames('input-text', {'error': fieldError})} type="text" id={name}
-                   aria-invalid={fieldError ? "true" : "false"} {...inputProps} />
-
-            <p className={classNames("input-error-message", {'visible': fieldError})}>{fieldError}</p>
-        </div>
+            <div className="error-message">
+                {fieldError && <p role="alert">{fieldError}</p>}
+            </div>
+        </label>
     );
 }

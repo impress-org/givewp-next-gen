@@ -13,7 +13,7 @@ export default function PaymentDetails({name, label, gateways}: Props) {
     const {errors} = useFormState();
 
     return (
-        <section className="givewp-layouts givewp-layouts-section">
+        <section className={`givewp-layouts givewp-layouts-section givewp-layouts-section-payment-gateways`}>
             <fieldset aria-labelledby={name}>
                 <div>
                     <legend id={name}>{label}</legend>

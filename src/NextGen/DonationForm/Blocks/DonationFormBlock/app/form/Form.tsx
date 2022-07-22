@@ -106,7 +106,7 @@ export default function Form({sections, defaultValues}: PropTypes) {
     }
 
     const renderedSections = sections.map((section) => {
-        if (section.name === 'payment-gateways') {
+        if (section.name === 'payment-details') {
             return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
         }
 

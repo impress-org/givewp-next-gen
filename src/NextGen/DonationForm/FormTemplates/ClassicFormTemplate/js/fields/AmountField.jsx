@@ -24,11 +24,18 @@ export default function AmountField({name, label, inputProps, levels, allowCusto
                 </label>
             }
 
-            <div className="givewp-amount-input-container">
+            <div>
+                <div className={classNames("givewp-amount-input-container", {'invalid': fieldError})}>
                     <span
                         className="givewp-currency-symbol">{formatter.formatToParts().find(({type}) => type === 'currency').value}</span>
-                <input className='givewp-amount-input' type={allowCustomAmount ? 'text' : 'hidden'}
-                       inputMode="numeric" {...inputProps} />
+                    <input className='givewp-amount-input' type={allowCustomAmount ? 'text' : 'hidden'}
+                           aria-invalid={fieldError ? "true" : "false"}
+                           inputMode="numeric" {...inputProps} />
+                </div>
+                
+                <div className="error-message">
+                    {fieldError && <p role="alert">{fieldError}</p>}
+                </div>
             </div>
 
             <div className="givewp-amount-levels-container">
@@ -59,8 +66,6 @@ export default function AmountField({name, label, inputProps, levels, allowCusto
                     {__('Custom Amount', 'give')}
                 </button>
             </div>
-
-            {fieldError && <p>{fieldError}</p>}
         </div>
     );
 }
