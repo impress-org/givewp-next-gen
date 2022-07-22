@@ -3,15 +3,13 @@ import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
-import SectionNodes from '../fields/SectionNodes';
 import getWindowData from '../utilities/getWindowData';
-import PaymentDetails from '../fields/PaymentDetails';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
-import type {Gateway, Section} from '@givewp/forms/types';
+import type {Gateway} from '@givewp/forms/types';
 import postData from '../utilities/postData';
-import {getFormTemplate, getSectionTemplate} from '../templates';
-import {useCallback} from "react";
+import {getFormTemplate} from '../templates';
+import {ReactNode, useCallback} from "react";
 
 window.givewp.form = {
     useFormContext,
@@ -23,8 +21,6 @@ const messages = getFieldErrorMessages();
 const {donateUrl} = getWindowData();
 
 const FormTemplate = getFormTemplate();
-
-const SectionTemplate = getSectionTemplate();
 
 const schema = Joi.object({
     firstName: Joi.string().required().label('First Name').messages(messages),
@@ -67,7 +63,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     }
 };
 
-export default function Form({sections, defaultValues}: PropTypes) {
+export default function Form({defaultValues, children}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
@@ -105,18 +101,6 @@ export default function Form({sections, defaultValues}: PropTypes) {
         );
     }
 
-    const renderedSections = sections.map((section) => {
-        if (section.name === 'payment-details') {
-            return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
-        }
-
-        return (
-            <SectionTemplate key={section.name} section={section}>
-                <SectionNodes key={section.name} {...section} />
-            </SectionTemplate>
-        );
-    });
-
     return (
         <FormProvider {...methods}>
             <FormTemplate
@@ -129,14 +113,14 @@ export default function Form({sections, defaultValues}: PropTypes) {
                 isSubmitting={isSubmitting}
                 formError={formError}
             >
-                {renderedSections}
+                {children}
             </FormTemplate>
         </FormProvider>
     );
 }
 
 type PropTypes = {
-    sections: Section[];
+    children: ReactNode;
     defaultValues: object;
 };
 

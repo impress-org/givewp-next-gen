@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 
 export interface FormProps {
     formProps: FormHTMLAttributes<unknown>;
-    children: ReactNode;
+    children?: ReactNode;
     formError: string | null;
     isSubmitting: boolean;
 }
