@@ -3,10 +3,10 @@ import {findNode} from '../../utilities/groups';
 import Text from '../fields/Text';
 import {Field} from '@givewp/forms/types';
 import getErrorByFieldName from "../../utilities/getErrorByFieldName";
-import {useFormContext} from 'react-hook-form';
+import {useFormState} from 'react-hook-form';
 
 export default function Name({nodes, inputProps}: GroupProps) {
-    const {formState: {errors}} = useFormContext();
+    const {errors} = useFormState();
 
     const firstName = findNode('firstName', nodes) as Field;
     const lastName = findNode('lastName', nodes) as Field | null;

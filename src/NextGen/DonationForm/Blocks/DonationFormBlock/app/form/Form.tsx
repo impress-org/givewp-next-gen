@@ -1,4 +1,4 @@
-import {FormProvider, useForm, useFormContext, useWatch} from 'react-hook-form';
+import {FormProvider, useForm, useFormContext, useFormState, useWatch} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
@@ -81,8 +81,12 @@ export default function Form({sections, defaultValues}: PropTypes) {
         handleSubmit,
         setError,
         getValues,
-        formState: {errors, isSubmitting, isSubmitSuccessful},
+        control
     } = methods;
+
+    const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
+
+    const formError = errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null;
 
     if (isSubmitSuccessful) {
         const {amount, firstName, lastName, email, gatewayId} = getValues();
@@ -123,7 +127,7 @@ export default function Form({sections, defaultValues}: PropTypes) {
                     ),
                 }}
                 isSubmitting={isSubmitting}
-                formError={errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null}
+                formError={formError}
             >
                 {renderedSections}
             </FormTemplate>
