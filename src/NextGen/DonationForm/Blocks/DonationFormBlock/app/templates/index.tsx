@@ -11,6 +11,7 @@ import NameGroup from './groups/Name';
 import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
 import AmountField from './fields/Amount';
+import classNames from "classnames";
 
 export interface FieldProps extends Field {
     inputProps: UseFormRegisterReturn;
@@ -24,16 +25,27 @@ export interface GroupProps extends Group {
     };
 }
 
-function NodeWrapper({
-                         type,
-                         nodeType,
-                         htmlTag: Element = 'div',
-                         children
-                     }: { type: string; nodeType: string; htmlTag?: ElementType; children: ReactNode }) {
-    return <Element className={`givewp-${nodeType} givewp-${nodeType}-${type}`}>{children}</Element>;
+export function NodeWrapper({
+                                type,
+                                nodeType,
+                                htmlTag: Element = 'div',
+                                name,
+                                children,
+                            }: { type: string; nodeType: string; htmlTag?: ElementType; name?: string; children: ReactNode }) {
+    return (
+        <Element className={
+            classNames(
+                `givewp-${nodeType}`,
+                `givewp-${nodeType}-${type}`,
+                {[`givewp-${nodeType}-${type}-${name}`]: name},
+            )
+        }>
+            {children}
+        </Element>
+    );
 }
 
-function withWrapper(NodeComponent, section, type, htmlTag) {
+export function withWrapper(NodeComponent, section, type, htmlTag) {
     return (props) => {
         return (
             <NodeWrapper type={type} nodeType={section} htmlTag={htmlTag}>

@@ -1,4 +1,4 @@
-import {GroupProps} from '../index';
+import {GroupProps, NodeWrapper} from '../index';
 import {findNode} from '../../utilities/groups';
 import Text from '../fields/Text';
 import {Field} from '@givewp/forms/types';
@@ -18,18 +18,29 @@ export default function Name({nodes, inputProps}: GroupProps) {
 
     return (
         <>
-            {honorific && <Text inputProps={inputProps['honorific']}
-                                fieldError={honorificError}
-                                {...honorific}
-            />}
-            <Text inputProps={inputProps['firstName']}
-                  fieldError={firstNameError}
-                  {...firstName}
-            />
-            {lastName && <Text inputProps={inputProps['lastName']}
-                               fieldError={lastNameError}
-                               {...lastName}
-            />}
+            {honorific &&
+                <NodeWrapper type={'text'} nodeType={'fields'} name={'honorific'}>
+                    <Text inputProps={inputProps['honorific']}
+                          fieldError={honorificError}
+                          {...honorific}
+                    />
+                </NodeWrapper>
+            }
+            <NodeWrapper type={'text'} nodeType={'fields'} name={'firstName'}>
+                <Text inputProps={inputProps['firstName']}
+                      fieldError={firstNameError}
+                      {...firstName}
+                />
+            </NodeWrapper>
+
+            {lastName &&
+                <NodeWrapper type={'text'} nodeType={'fields'} name={'lastName'}>
+                    <Text inputProps={inputProps['lastName']}
+                          fieldError={lastNameError}
+                          {...lastName}
+                    />
+                </NodeWrapper>
+            }
         </>
     );
 }
