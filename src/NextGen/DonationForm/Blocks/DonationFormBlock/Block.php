@@ -116,7 +116,7 @@ class Block
         }
 
         /** @var Section $paymentDetails */
-        $paymentDetails = $donationForm->getNodeByName('payment-gateways');
+        $paymentDetails = $donationForm->getNodeByName('payment-details');
 
         $paymentDetails->append(...$gatewayOptions);
 
@@ -182,7 +182,7 @@ class Block
                 ->allowCustomAmount()
                 ->defaultValue(50)
                 ->required();
-        } elseif ($block->name === "custom-block-editor/name-field-group") {
+        } elseif ($block->name === "custom-block-editor/donor-name") {
             $field = Name::make('name');
         } elseif ($block->name === "custom-block-editor/email-field") {
             $field = Email::make('email')->required()->emailTag('email');
