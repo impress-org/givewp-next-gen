@@ -1,17 +1,20 @@
-import {FormProvider, useForm, useFormContext, useWatch} from 'react-hook-form';
+import {FormProvider, useForm, useFormContext, useFormState, useWatch} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
-import SectionNodes from '../fields/SectionNodes';
 import getWindowData from '../utilities/getWindowData';
-import PaymentDetails from '../fields/PaymentDetails';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
-import type {Gateway, Section} from '@givewp/forms/types';
+import type {Gateway} from '@givewp/forms/types';
 import postData from '../utilities/postData';
-import {getFormTemplate, getSectionTemplate} from '../templates';
-import {useCallback} from "react";
+import {getFormTemplate} from '../templates';
+import {ReactNode, useCallback} from "react";
+
+window.givewp.form = {
+    useFormContext,
+    useWatch,
+};
 
 const messages = getFieldErrorMessages();
 
@@ -30,11 +33,6 @@ const schema = Joi.object({
     formTitle: Joi.string().required(),
     userId: Joi.number().required(),
 }).unknown();
-
-window.givewp.form = {
-    useFormContext,
-    useWatch,
-};
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};
@@ -65,9 +63,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     }
 };
 
-const SectionTemplate = getSectionTemplate();
-
-export default function Form({sections, defaultValues}: PropTypes) {
+export default function Form({defaultValues, children}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
@@ -81,8 +77,12 @@ export default function Form({sections, defaultValues}: PropTypes) {
         handleSubmit,
         setError,
         getValues,
-        formState: {errors, isSubmitting, isSubmitSuccessful},
+        control
     } = methods;
+
+    const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
+
+    const formError = errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null;
 
     if (isSubmitSuccessful) {
         const {amount, firstName, lastName, email, gatewayId} = getValues();
@@ -101,18 +101,6 @@ export default function Form({sections, defaultValues}: PropTypes) {
         );
     }
 
-    const renderedSections = sections.map((section) => {
-        if (section.name === 'payment-gateways') {
-            return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
-        }
-
-        return (
-            <SectionTemplate key={section.name} section={section}>
-                <SectionNodes key={section.name} {...section} />
-            </SectionTemplate>
-        );
-    });
-
     return (
         <FormProvider {...methods}>
             <FormTemplate
@@ -123,16 +111,16 @@ export default function Form({sections, defaultValues}: PropTypes) {
                     ),
                 }}
                 isSubmitting={isSubmitting}
-                formError={errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null}
+                formError={formError}
             >
-                {renderedSections}
+                {children}
             </FormTemplate>
         </FormProvider>
     );
 }
 
 type PropTypes = {
-    sections: Section[];
+    children: ReactNode;
     defaultValues: object;
 };
 

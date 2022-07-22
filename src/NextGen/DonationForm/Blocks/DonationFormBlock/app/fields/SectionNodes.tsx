@@ -1,11 +1,12 @@
-import {RegisterOptions, useFormContext} from 'react-hook-form';
+import {RegisterOptions, useFormContext, useFormState} from 'react-hook-form';
 
 import {Field, isElement, isField, isGroup, Node, Section} from '@givewp/forms/types';
 import {getElementTemplate, getFieldTemplate, getGroupTemplate} from '../templates';
 import getErrorByFieldName from "../utilities/getErrorByFieldName";
 
 export default function SectionNodes({nodes}: Section) {
-    const {register, formState: {errors}} = useFormContext();
+    const {register} = useFormContext();
+    const {errors} = useFormState();
 
     return (
         <>

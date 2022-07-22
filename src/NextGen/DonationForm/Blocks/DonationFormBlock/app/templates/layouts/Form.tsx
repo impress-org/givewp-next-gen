@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 
 export interface FormProps {
     formProps: FormHTMLAttributes<unknown>;
-    children: ReactNode;
+    children?: ReactNode;
     formError: string | null;
     isSubmitting: boolean;
 }
@@ -20,9 +20,11 @@ export default function Form({children, formProps, formError, isSubmitting}: For
                     <p>{formError}</p>
                 </div>
             )}
-            <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
-            </button>
+            <section className="givewp-layouts givewp-layouts-section">
+                <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
+                </button>
+            </section>
         </form>
     );
 }

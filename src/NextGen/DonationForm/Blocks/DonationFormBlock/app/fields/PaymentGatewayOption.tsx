@@ -19,8 +19,8 @@ export default function PaymentGatewayOption({gateway, index}: Props) {
                 defaultChecked={index === 0}
             />
             <label htmlFor={gateway.id}> Donate with {gateway.settings.label}</label>
-            <div style={{paddingBottom: '20px'}}>
-                <Fields />
+            <div className="givewp-fields-payment-gateway">
+                <Fields/>
             </div>
         </li>
     );
