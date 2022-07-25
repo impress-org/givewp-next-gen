@@ -16,6 +16,7 @@ export default function PaymentGatewayOption({gateway, index}: Props) {
                 {...register('gatewayId', {required: true})}
                 type="radio"
                 value={gateway.id}
+                id={gateway.id}
                 defaultChecked={index === 0}
             />
             <label htmlFor={gateway.id}> Donate with {gateway.settings.label}</label>

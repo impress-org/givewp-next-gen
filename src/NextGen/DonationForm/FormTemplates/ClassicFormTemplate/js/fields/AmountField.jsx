@@ -18,21 +18,19 @@ export default function AmountField({name, label, inputProps, levels, allowCusto
 
     return (
         <div className="givewp-fields-amount-container">
-            {label &&
-                <label>
-                    {label}
-                </label>
-            }
-
             <div>
+                <label htmlFor={name} aria-labelledby={name} style={{display: 'none'}}>
+                    {label ?? __('Donation Amount', 'give')}
+                </label>
                 <div className={classNames("givewp-amount-input-container", {'invalid': fieldError})}>
                     <span
                         className="givewp-currency-symbol">{formatter.formatToParts().find(({type}) => type === 'currency').value}</span>
                     <input className='givewp-amount-input' type={allowCustomAmount ? 'text' : 'hidden'}
                            aria-invalid={fieldError ? "true" : "false"}
+                           id={name}
                            inputMode="numeric" {...inputProps} />
                 </div>
-                
+
                 <div className="error-message">
                     {fieldError && <p role="alert">{fieldError}</p>}
                 </div>
