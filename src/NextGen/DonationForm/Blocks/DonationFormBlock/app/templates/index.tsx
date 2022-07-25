@@ -1,7 +1,7 @@
 import {ElementType, FC, ReactNode} from 'react';
 import {applyFilters} from '@wordpress/hooks';
-import {Element, Field, Group} from '@givewp/forms/types';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import type {Element} from '@givewp/forms/types';
+import type {ElementProps, FieldProps, GroupProps} from '@givewp/forms/propTypes';
 import TextField from './fields/Text';
 import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
@@ -12,18 +12,6 @@ import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
 import AmountField from './fields/Amount';
 import classNames from "classnames";
-
-export interface FieldProps extends Field {
-    inputProps: UseFormRegisterReturn;
-}
-
-export interface ElementProps extends Element {}
-
-export interface GroupProps extends Group {
-    inputProps: {
-        [key: string]: UseFormRegisterReturn;
-    };
-}
 
 export function NodeWrapper({
                                 type,

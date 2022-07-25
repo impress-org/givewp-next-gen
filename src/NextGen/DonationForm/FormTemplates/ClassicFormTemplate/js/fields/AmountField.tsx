@@ -1,8 +1,14 @@
 import {__} from '@wordpress/i18n';
 import {useMemo} from 'react';
 import classNames from 'classnames';
+import type {FieldProps} from '@givewp/forms/propTypes';
 
-export default function AmountField({name, label, inputProps, levels, allowCustomAmount, fieldError}) {
+interface AmountProps extends FieldProps {
+    levels: Number[];
+    allowCustomAmount: boolean;
+}
+
+export default function Amount({name, label, inputProps, levels, allowCustomAmount, fieldError}: AmountProps) {
     const {useFormContext, useWatch} = window.givewp.form;
     const {setValue, setFocus} = useFormContext();
     const currency = useWatch({name: 'currency'});
@@ -38,7 +44,7 @@ export default function AmountField({name, label, inputProps, levels, allowCusto
             </div>
             <div className="givewp-fields-amount__levels--container">
                 {levels.map((levelAmount) => {
-                    const label = formatter.format(levelAmount);
+                    const label = formatter.format(Number(levelAmount));
                     const selected = levelAmount === Number(amount);
                     return (
                         <button className={classNames('givewp-fields-amount__level', {'selected': selected})}
