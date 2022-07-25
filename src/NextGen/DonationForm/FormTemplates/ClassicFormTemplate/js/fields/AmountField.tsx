@@ -47,9 +47,10 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                     const label = formatter.format(Number(levelAmount));
                     const selected = levelAmount === Number(amount);
                     return (
-                        <button className={classNames('givewp-fields-amount__level', {'selected': selected})}
-                                type="button"
-                                onClick={() => setValue(name, levelAmount)} key={label}>
+                        <button
+                            className={classNames('givewp-fields-amount__level', {'givewp-fields-amount__level--selected': selected})}
+                            type="button"
+                            onClick={() => setValue(name, levelAmount)} key={label}>
                             {label}
                         </button>
                     );
@@ -59,7 +60,7 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                     className={classNames(
                         'givewp-fields-amount__level',
                         'givewp-fields-amount__level--custom',
-                        {'selected': !levels.includes(Number(amount))}
+                        {'givewp-fields-amount__level--selected': !levels.includes(Number(amount))}
                     )}
                     type="button"
                     onClick={() => {

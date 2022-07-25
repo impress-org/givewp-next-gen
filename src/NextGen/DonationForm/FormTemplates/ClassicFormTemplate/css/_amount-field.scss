@@ -71,6 +71,10 @@
         width: 100%;
         margin-bottom: 0.5rem;
 
+        &:hover {
+            filter: brightness(1.2);
+        }
+
         &--custom {
             word-spacing: 9999px;
             font-size: 1.5rem;
@@ -78,13 +82,9 @@
 
         }
 
-        &.selected {
+        &.--selected {
             background-color: rgb(255, 255, 255);
             color: var(--give-primary-color);
-        }
-
-        &:hover {
-            filter: brightness(1.2);
         }
     }
 }
