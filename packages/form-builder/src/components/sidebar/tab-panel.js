@@ -1,9 +1,11 @@
 /**
  * @note This is a fork of the WordPress component.
  *
- * Changes:
- *  - Update relative component imports.
+ * Substantive changes:
  *  - Replace useState hook with injected state for external control of the selected tab.
+ *
+ * Maintenance changes:
+ *  - Update relative component imports for NavigableMenu, Button.
  *  - Disabled eslint rule react-hooks/exhaustive-deps for useEffect in the TabPanel component.
  */
 
