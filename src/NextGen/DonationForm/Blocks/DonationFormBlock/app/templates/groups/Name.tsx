@@ -1,4 +1,5 @@
-import {GroupProps, NodeWrapper} from '../index';
+import {NodeWrapper} from '../index';
+import type {GroupProps} from '@givewp/forms/propTypes';
 import {findNode} from '../../utilities/groups';
 import Text from '../fields/Text';
 import {Field} from '@givewp/forms/types';

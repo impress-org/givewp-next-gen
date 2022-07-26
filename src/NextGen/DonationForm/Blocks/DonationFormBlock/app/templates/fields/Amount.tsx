@@ -1,4 +1,4 @@
-import {FieldProps} from '../index';
+import type {FieldProps} from '@givewp/forms/propTypes';
 import {useMemo} from 'react';
 import {useFormContext, useWatch} from 'react-hook-form';
 
