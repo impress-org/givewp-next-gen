@@ -3,7 +3,6 @@ import getDefaultValuesFromSections from './utilities/getDefaultValuesFromSectio
 import Form from './form/Form';
 import {GiveDonationFormStoreProvider} from './store';
 import getWindowData from './utilities/getWindowData';
-import FormSections from "./form/FormSections";
 
 /**
  * Get data from the server
@@ -22,9 +21,7 @@ const initialState = {
 function App() {
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
-            <Form defaultValues={defaultValues}>
-                <FormSections sections={form.nodes} gateways={initialState.gateways}/>
-            </Form>
+            <Form defaultValues={defaultValues} sections={form.nodes}/>
         </GiveDonationFormStoreProvider>
     );
 }

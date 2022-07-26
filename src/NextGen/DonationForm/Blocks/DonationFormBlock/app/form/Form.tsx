@@ -6,10 +6,12 @@ import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import getWindowData from '../utilities/getWindowData';
 import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
-import type {Gateway} from '@givewp/forms/types';
+import type {Gateway, Section} from '@givewp/forms/types';
 import postData from '../utilities/postData';
-import {getFormTemplate} from '../templates';
-import {ReactNode, useCallback} from "react";
+import {getFormTemplate, getSectionTemplate} from '../templates';
+import {useCallback} from "react";
+import PaymentDetails from "../fields/PaymentDetails";
+import SectionNode from "../fields/SectionNode";
 
 window.givewp.form = {
     useFormContext,
@@ -21,6 +23,7 @@ const messages = getFieldErrorMessages();
 const {donateUrl} = getWindowData();
 
 const FormTemplate = getFormTemplate();
+const FormSectionTemplate = getSectionTemplate();
 
 const schema = Joi.object({
     firstName: Joi.string().required().label('First Name').messages(messages),
@@ -63,7 +66,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     }
 };
 
-export default function Form({defaultValues, children}: PropTypes) {
+export default function Form({defaultValues, sections}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
@@ -113,14 +116,26 @@ export default function Form({defaultValues, children}: PropTypes) {
                 isSubmitting={isSubmitting}
                 formError={formError}
             >
-                {children}
+                <>
+                    {sections.map((section) => {
+                        if (section.name === 'payment-details') {
+                            return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
+                        }
+
+                        return (
+                            <FormSectionTemplate key={section.name} section={section}>
+                                {section.nodes.map((node) => <SectionNode key={node.name} node={node}/>)}
+                            </FormSectionTemplate>
+                        );
+                    })}
+                </>
             </FormTemplate>
         </FormProvider>
     );
 }
 
 type PropTypes = {
-    children: ReactNode;
+    sections: Section[];
     defaultValues: object;
 };
 
