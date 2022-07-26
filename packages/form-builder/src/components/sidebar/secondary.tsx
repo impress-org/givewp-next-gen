@@ -2,11 +2,11 @@ import {__} from '@wordpress/i18n';
 import FieldTypesList from "./panels/field-types-list";
 import BlockListTree from "./panels/block-list-tree";
 
-interface Props {
-    selected: 'text'
+type PropTypes = {
+    selected: string
 }
 
-const Sidebar: React.FC<Props> = ({selected}) => {
+const Sidebar = ({selected}: PropTypes) => {
 
     const panels = {
         add: () => <FieldTypesList />,
