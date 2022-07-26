@@ -5,14 +5,14 @@ import getErrorByFieldName from "../utilities/getErrorByFieldName";
 import {useFormContext, useFormState} from "react-hook-form";
 import {useMemo} from "react";
 
-export default function FieldNode({node}: {node: Field}) {
+export default function FieldNode({node}: { node: Field }) {
     const {register} = useFormContext();
     const {errors} = useFormState();
-    const Field = useMemo(() => getFieldTemplate(node.type),[node.type]);
+    const Field = useMemo(() => getFieldTemplate(node.type), [node.type]);
     const inputProps = register(node.name, buildRegisterValidationOptions(node.validationRules));
 
     return <Field key={node.name} inputProps={inputProps}
-                      fieldError={getErrorByFieldName(errors, node.name)}
-                      {...node} />;
+                  fieldError={getErrorByFieldName(errors, node.name)}
+                  {...node} />;
 }
 
