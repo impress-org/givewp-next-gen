@@ -4,6 +4,7 @@
  * Changes:
  *  - Update relative component imports.
  *  - Replace useState hook with injected state for external control of the selected tab.
+ *  - Disabled eslint rule react-hooks/exhaustive-deps for useEffect in the TabPanel component.
  */
 
 import _extends from "@babel/runtime/helpers/esm/extends";
@@ -86,7 +87,7 @@ export default function TabPanel(_ref2) {
         if (!newSelectedTab) {
             setSelected(initialTabName || (tabs.length > 0 ? tabs[0].name : null));
         }
-    }, [tabs]);
+    }, [tabs]); // eslint-disable-line react-hooks/exhaustive-deps
     return createElement("div", {
         className: className,
     }, createElement(NavigableMenu, {
