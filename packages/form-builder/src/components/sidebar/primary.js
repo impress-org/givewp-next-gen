@@ -60,7 +60,7 @@ function Sidebar() {
         () => {
             if (selectedBlocks.length) setSelectedTab('block');
         }
-        , [selectedBlocks], // only run effect when workspaceID changes
+        , [selectedBlocks], // only run effect when selectedBlocks changes
     );
 
     return (
