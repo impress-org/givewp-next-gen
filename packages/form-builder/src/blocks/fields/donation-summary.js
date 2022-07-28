@@ -38,7 +38,7 @@ const DonationSummary = {
                         marginBottom: '40px',
                         padding: '20px',
                         display: 'flex',
-                        gap: '30px',
+                        gap: '16px',
                         flexDirection: 'column',
                         border: '1px dashed var(--give-gray-100)',
                         borderRadius: '5px',
