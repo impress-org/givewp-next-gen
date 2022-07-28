@@ -2,7 +2,6 @@ import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
 import settings from "./settings";
 
-import './donation-summary.scss';
 import {InspectorControls, RichText} from "@wordpress/block-editor";
 import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
 
@@ -22,63 +21,44 @@ const DonationSummary = {
                 source: 'attribute',
                 default: __('Donation Summary', 'give'),
             },
+            description: {
+                type: 'string',
+                source: 'attribute',
+                default: __('Here is what you are about to donate', 'give'),
+            },
         },
         edit: (props) => {
             const {
-                attributes: {label},
+                attributes: {label, description},
                 setAttributes,
             } = props;
             return (
                 <>
-                    <div className="give-donation-summary-section">
-                        <div className="give-donation-summary-table-wrapper">
-
-                            <table>
-                                <thead>
-                                <tr>
-                                    <RichText
-                                        tagName="th"
-                                        value={label}
-                                        onChange={(val) => setAttributes({label: val})}
-                                        style={{borderBottom: '0.0625rem solid #ddd'}}
-                                    />
-                                    <th>{/* this section intentionally left blank */}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                {/*PAYMENT AMOUNT*/}
-                                <tr>
-                                    <td>
-                                        <div>{__('Payment Amount', 'give')}</div>
-                                    </td>
-                                    <td data-tag="amount">{'{' + __('amount', 'give') + '}'}</td>
-                                </tr>
-
-
-                                {/*GIVING FREQUENCY*/}
-                                <tr>
-                                    <td>
-                                        <div>{__('Giving Frequency', 'give')}</div>
-                                    </td>
-                                    <td>
-                                        <span data-tag="recurring"></span>
-                                        <span data-tag="frequency">{'{' + __('frequency', 'give') + '}'}</span>
-                                    </td>
-                                </tr>
-
-                                {/*COVER DONATION FEES GOES HERE*/}
-
-                                </tbody>
-                                <tfoot>
-                                {/*TOTAL DONATION AMOUNT (INCLUDING FEES)*/}
-                                <tr>
-                                    <th>{__('Donation Total', 'give')}</th>
-                                    <th data-tag="total">{'{' + __('total', 'give') + '}'}</th>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                    <div style={{
+                        marginBottom: '40px',
+                        padding: '20px',
+                        display: 'flex',
+                        gap: '30px',
+                        flexDirection: 'column',
+                        border: '1px dashed var(--give-gray-100)',
+                        borderRadius: '5px',
+                        backgroundColor: 'var(--give-gray-10)',
+                    }}>
+                        <RichText
+                            tagName="div"
+                            value={description}
+                            onChange={(val) => setAttributes({description: val})}
+                            style={{fontSize: '18px', fontWeight: 500, textAlign: 'center'}}
+                        />
+                        <RichText
+                            tagName="div"
+                            value={label}
+                            onChange={(val) => setAttributes({label: val})}
+                            style={{fontSize: '18px', fontWeight: 500}}
+                        />
+                        <LineItem label={__('Payment amount', 'give')} />
+                        <LineItem label={__('Giving frequency', 'give')} />
+                        <LineItem label={__('Donation Total', 'give')} style={{fontWeight: 'bold'}} />
                     </div>
                     <InspectorControls>
                         <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
@@ -87,6 +67,13 @@ const DonationSummary = {
                                     label={'Label'}
                                     value={label}
                                     onChange={(val) => setAttributes({label: val})}
+                                />
+                            </PanelRow>
+                            <PanelRow>
+                                <TextControl
+                                    label={'Description'}
+                                    value={description}
+                                    onChange={(val) => setAttributes({description: val})}
                                 />
                             </PanelRow>
                         </PanelBody>
@@ -102,6 +89,15 @@ const DonationSummary = {
             </svg>
         } />,
     },
+};
+
+const LineItem = ({label, style}) => {
+    return (
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div {...style}>{label}</div>
+            <div style={{height: '20px', width: '120px', backgroundColor: 'var(--give-gray-30)'}}></div>
+        </div>
+    );
 };
 
 export default DonationSummary;
