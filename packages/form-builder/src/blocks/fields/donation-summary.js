@@ -36,7 +36,7 @@ const DonationSummary = {
                 <>
                     <div style={{
                         marginBottom: '40px',
-                        padding: '20px',
+                        padding: '30px 20px',
                         display: 'flex',
                         gap: '16px',
                         flexDirection: 'column',
