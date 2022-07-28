@@ -8,15 +8,16 @@ import ConfirmButton from './components/ConfirmButton';
 import Logo from './components/Logo';
 import {BlockEditProps} from "@wordpress/blocks";
 
+
 /**
  * @since 1.0.0
  */
 export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
     const {formId} = attributes;
-    const {formOptions} = useFormOptions();
-    
+    const formOptions = useFormOptions();
+
     useEffect(() => {
-        if (!formId) {
+        if (!formId && formOptions) {
             setAttributes({formId: formOptions[0].value})
         }
     }, [JSON.stringify(formOptions)]);
@@ -32,7 +33,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                             value={formId}
                             options={formOptions}
                             onChange={(newFormId) => {
-                                setAttributes({formId: Number(newFormId)});
+                                setAttributes({formId: newFormId});
                             }}
                         />
                     </PanelRow>
@@ -48,6 +49,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                         id="formId"
                         label={__('Choose a donation form', 'give')}
                         options={formOptions}
+                        defaultValue={formId}
                         onChange={(event) => {
                             setAttributes({formId: (event.target as HTMLSelectElement).value});
                         }}
