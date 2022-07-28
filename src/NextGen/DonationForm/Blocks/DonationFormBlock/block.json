@@ -20,5 +20,6 @@
         }
     },
     "textdomain": "give",
+    "editorStyle": "file:../../../../../build/donationFormBlockStyle.css",
     "editorScript": "file:../../../../../build/donationFormBlock.js"
 }

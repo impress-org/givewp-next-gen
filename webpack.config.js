@@ -23,6 +23,7 @@ module.exports = {
     },
     entry: {
         donationFormBlock: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/block.js'),
+        donationFormBlockStyle: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/editor/styles/index.scss'),
         donationFormBlockApp: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/app/DonationFormBlockApp.tsx'),
         donationFormRegistrars: srcPath('NextGen/DonationForm/Registrars/resources/registrars.ts'),
         nextGenStripeGateway: srcPath(
