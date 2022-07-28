@@ -3,7 +3,6 @@ import {useSelect} from '@wordpress/data';
 
 /**
  * @since 1.0.0
- * @returns {{formOptions: (*|[{label: string, value: number}])}}
  */
 export default function useFormOptions() {
     const forms = useSelect((select) => {

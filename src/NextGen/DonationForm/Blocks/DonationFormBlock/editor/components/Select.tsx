@@ -1,4 +1,6 @@
-const Select = ({id, label, options, onChange}) => {
+import {ChangeEventHandler} from "react";
+
+export default function Select({id, label, options, onChange}: PropTypes) {
     return <div className="givewp-form-block__select--container">
         <label className="givewp-form-block__select--label">
             <span>{label}</span>
@@ -15,4 +17,14 @@ const Select = ({id, label, options, onChange}) => {
     </div>
 }
 
-export default Select;
+type Option = {
+    value: string;
+    label: string;
+}
+
+type PropTypes = {
+    id: string;
+    label: string;
+    options: Option[];
+    onChange: ChangeEventHandler
+}

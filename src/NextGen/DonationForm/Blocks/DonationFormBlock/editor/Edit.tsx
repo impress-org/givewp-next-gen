@@ -3,24 +3,18 @@ import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {Fragment, useEffect} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
-import logo from './images/givewp-logo.svg';
-import usePostState from './hooks/usePostState';
 import Select from './components/Select';
-
-const savePost = () => wp.data.dispatch('core/editor').savePost();
+import ConfirmButton from './components/ConfirmButton';
+import Logo from './components/Logo';
+import {BlockEditProps} from "@wordpress/blocks";
 
 /**
  * @since 1.0.0
- * @param attributes
- * @param setAttributes
- * @returns {JSX.Element}
- * @constructor
  */
-export default function Edit({attributes, setAttributes}) {
+export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
     const {formId} = attributes;
     const {formOptions} = useFormOptions();
-    const {isSaving, isDisabled} = usePostState();
-
+    
     useEffect(() => {
         if (!formId) {
             setAttributes({formId: formOptions[0].value})
@@ -47,32 +41,19 @@ export default function Edit({attributes, setAttributes}) {
 
             {/*block preview*/}
             <div {...useBlockProps()}>
-                <div
-                    className="givewp-form-block--container">
-                    <div className="givewp-form-block__logo--container" style={{
-                        textAlign: 'center',
-                    }}>
-                        <img className="givewp-form-block__logo" src={logo} alt="givewp-logo"/>
-                    </div>
+                <div className="givewp-form-block--container">
+                    <Logo/>
 
                     <Select
                         id="formId"
                         label={__('Choose a donation form', 'give')}
                         options={formOptions}
                         onChange={(event) => {
-                            setAttributes({formId: event.target.value});
+                            setAttributes({formId: (event.target as HTMLSelectElement).value});
                         }}
                     />
 
-                    <div className="givewp-form-block__submit-button--container">
-                        <button
-                            className="givewp-form-block__submit-button"
-                            type="button"
-                            disabled={isSaving || isDisabled}
-                            onClick={savePost}>
-                            {__('Confirm', 'give')}
-                        </button>
-                    </div>
+                    <ConfirmButton/>
                 </div>
             </div>
         </Fragment>

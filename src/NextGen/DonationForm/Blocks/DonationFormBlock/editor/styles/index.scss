@@ -38,7 +38,12 @@
         border: 0;
         transition: 0.2s;
 
-        &:hover {
+        &:disabled {
+            background-color: #e0e0e0;
+        }
+
+        &:hover:not(:disabled) {
+            cursor: pointer;
             filter: brightness(1.2);
         }
 
