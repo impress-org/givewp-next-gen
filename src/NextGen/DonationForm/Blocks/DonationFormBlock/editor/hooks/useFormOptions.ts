@@ -5,9 +5,7 @@ import type {Option} from "../types";
 
 
 /**
- * @since 1.0.0
- *
- * TODO: replace with useEntityRecords when available
+ * @unreleased
  */
 export default function useFormOptions(): { formOptions: Option[] | null, isResolving: boolean } {
     const {forms, isResolving} = useSelect((select) => {

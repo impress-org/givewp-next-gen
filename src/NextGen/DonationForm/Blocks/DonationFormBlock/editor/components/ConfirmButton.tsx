@@ -1,7 +1,8 @@
 import {__} from '@wordpress/i18n';
 import usePostState from '../hooks/usePostState';
+import {dispatch} from '@wordpress/data';
 
-const savePost = () => wp.data.dispatch('core/editor').savePost();
+const savePost = () => dispatch('core/editor').savePost();
 
 export default function ConfirmButton() {
     const {isSaving, isDisabled} = usePostState();
