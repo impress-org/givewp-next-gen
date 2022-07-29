@@ -7,7 +7,7 @@ import type {Option} from "../types";
 /**
  * @unreleased
  */
-export default function useFormOptions(): { formOptions: Option[] | null, isResolving: boolean } {
+export default function useFormOptions(): { formOptions: Option[] | [], isResolving: boolean } {
     const {forms, isResolving} = useSelect((select) => {
         return {
             forms: select('core').getEntityRecords<Post[]>('postType', 'give_forms')?.filter(({excerpt}) => excerpt.rendered.length > 0),
