@@ -8,6 +8,11 @@ interface Option {
      * the value passed to `onChange` when the option is selected.
      */
     value: string;
+
+    /**
+     * Disabled attribute on option element
+     */
+    disabled?: boolean;
 }
 
 export type {
