@@ -89,9 +89,14 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                                 }),
                                 option: (provided, state) => ({
                                     ...provided,
-                                    paddingTop: '1rem',
-                                    paddingBottom: '1rem',
+                                    paddingTop: '0.8rem',
+                                    paddingBottom: '0.8rem',
+                                    fontSize: '1rem'
                                 }),
+                                control: (provided, state) => ({
+                                    ...provided,
+                                    fontSize: '1rem'
+                                })
                             }}
                         />
 
