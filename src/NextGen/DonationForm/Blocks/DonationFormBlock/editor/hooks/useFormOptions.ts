@@ -9,7 +9,7 @@ import type {Option} from "../types";
  *
  * TODO: replace with useEntityRecords when available
  */
-export default function useFormOptions(): Option[] | null {
+export default function useFormOptions(): { formOptions: Option[] | null, isResolving: boolean } {
     const {forms, isResolving} = useSelect((select) => {
         return {
             forms: select('core').getEntityRecords<Post[]>('postType', 'give_forms')?.filter(({excerpt}) => excerpt.rendered.length > 0),
@@ -24,12 +24,10 @@ export default function useFormOptions(): Option[] | null {
                 value: String(id),
             };
         })
-        : null;
+        : [];
 
-    return isResolving ? [
-        {
-            label: __('Loading Donation Forms...', 'give'),
-            value: null,
-        },
-    ] : formOptions
+    return {
+        isResolving,
+        formOptions
+    }
 }

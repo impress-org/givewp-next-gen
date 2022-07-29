@@ -3,10 +3,10 @@ import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {Fragment, useEffect} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
-import Select from './components/Select';
 import ConfirmButton from './components/ConfirmButton';
 import Logo from './components/Logo';
 import {BlockEditProps} from "@wordpress/blocks";
+import ReactSelect from 'react-select';
 
 
 /**
@@ -14,7 +14,7 @@ import {BlockEditProps} from "@wordpress/blocks";
  */
 export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
     const {formId} = attributes;
-    const formOptions = useFormOptions();
+    const {formOptions, isResolving} = useFormOptions();
 
     useEffect(() => {
         if (!formId && formOptions) {
@@ -45,15 +45,36 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                 <div className="givewp-form-block--container">
                     <Logo/>
 
-                    <Select
-                        id="formId"
-                        label={__('Choose a donation form', 'give')}
-                        options={formOptions}
-                        defaultValue={formId}
-                        onChange={(event) => {
-                            setAttributes({formId: (event.target as HTMLSelectElement).value});
-                        }}
-                    />
+                    <div className="givewp-form-block__select--container">
+                        <label
+                            htmlFor="formId"
+                            className="givewp-form-block__select--label">{__('Choose a donation form', 'give')}
+                        </label>
+
+                        <ReactSelect
+                            classNamePrefix="givewp-form-block__select"
+                            name="formId"
+                            inputId="formId"
+                            value={!isResolving && formOptions?.find(({value}) => value === formId)}
+                            placeholder={isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')}
+                            onChange={(option) => {
+                                setAttributes({formId: option.value});
+                            }}
+                            noOptionsMessage={() =>
+                                <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>}
+                            options={formOptions}
+                            loadingMessage={() => <>{__('Loading Donation Forms...', 'give')}</>}
+                            isLoading={isResolving}
+                            theme={(theme) => ({
+                                ...theme,
+                                colors: {
+                                    ...theme.colors,
+                                    primary: '#27ae60',
+                                },
+                            })}
+                        />
+
+                    </div>
 
                     <ConfirmButton/>
                 </div>
