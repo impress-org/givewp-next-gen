@@ -82,6 +82,17 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                                     primary: '#27ae60',
                                 },
                             })}
+                            styles={{
+                                input: (provided, state) => ({
+                                    ...provided,
+                                    height: '3rem'
+                                }),
+                                option: (provided, state) => ({
+                                    ...provided,
+                                    paddingTop: '1rem',
+                                    paddingBottom: '1rem',
+                                }),
+                            }}
                         />
 
                     </div>

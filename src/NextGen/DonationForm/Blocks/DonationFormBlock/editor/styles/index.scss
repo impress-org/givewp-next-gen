@@ -8,13 +8,11 @@
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     }
 
-    &__select {
-        min-width: 100%;
-        height: 56px;
-        font-size: 1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+    &__option {
+        height: 48px;
+    }
 
+    &__select {
         &__input {
             &:focus {
                 box-shadow: none !important;
