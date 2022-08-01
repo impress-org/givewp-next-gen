@@ -11,4 +11,8 @@
     padding: 15px 0;
     justify-content: space-between;
     border-block-start: 0.0625rem solid #ddd;
+
+    &:last-child {
+        font-weight: bold;
+    }
 }
