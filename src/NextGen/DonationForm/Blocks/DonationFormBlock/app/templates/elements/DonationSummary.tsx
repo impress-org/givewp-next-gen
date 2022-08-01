@@ -15,7 +15,7 @@ export default function DonationSummary() {
     )
 
     return <div>
-        <ul style={{listStyleType: 'none'}}>
+        <ul className="givewp-elements-donationsummary__list">
             <LineItem label={'Payment Amount'} value={formatter.format(Number(amount))} />
             <LineItem label={'Giving Frequency'} value={'One time'} />
             <LineItem label={'Donation Total'} value={formatter.format(Number(amount))} />
@@ -25,12 +25,7 @@ export default function DonationSummary() {
 
 const LineItem = ({label, value}) => {
     return (
-        <li style={{
-            display: 'flex',
-            padding: '15px 0',
-            justifyContent: 'space-between',
-            borderBlockStart: '0.0625rem solid #ddd',
-        }}>
+        <li className="givewp-elements-donationsummary__list-item">
             <div>{label}</div>
             <div>{value}</div>
         </li>
