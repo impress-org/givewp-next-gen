@@ -2,9 +2,6 @@ import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
 import settings from "./settings";
 
-import {InspectorControls, RichText} from "@wordpress/block-editor";
-import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
-
 const DonationSummary = {
     name: 'custom-block-editor/donation-summary',
     category: 'input',
