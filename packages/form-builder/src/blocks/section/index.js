@@ -95,7 +95,6 @@ const sectionBlocks = [
                 innerBlocksTemplate: {
                     default: [
                         ['custom-block-editor/payment-gateways', {lock: {remove: true}}],
-                        ['custom-block-editor/donation-summary', {lock: {remove: true}}],
                     ],
                 },
             },
