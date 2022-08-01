@@ -16,26 +16,11 @@ const DonationSummary = {
         },
         attributes: {
             lock: {remove: false},
-            label: {
-                type: 'string',
-                source: 'attribute',
-                default: __('Donation Summary', 'give'),
-            },
-            description: {
-                type: 'string',
-                source: 'attribute',
-                default: __('Here is what you are about to donate', 'give'),
-            },
         },
         edit: (props) => {
-            const {
-                attributes: {label, description},
-                setAttributes,
-            } = props;
             return (
                 <>
                     <div style={{
-                        marginBottom: '40px',
                         padding: '30px 20px',
                         display: 'flex',
                         gap: '16px',
@@ -44,40 +29,10 @@ const DonationSummary = {
                         borderRadius: '5px',
                         backgroundColor: 'var(--give-gray-10)',
                     }}>
-                        <RichText
-                            tagName="div"
-                            value={description}
-                            onChange={(val) => setAttributes({description: val})}
-                            style={{fontSize: '18px', fontWeight: 500, textAlign: 'center'}}
-                        />
-                        <RichText
-                            tagName="div"
-                            value={label}
-                            onChange={(val) => setAttributes({label: val})}
-                            style={{fontSize: '18px', fontWeight: 500}}
-                        />
                         <LineItem label={__('Payment amount', 'give')} />
                         <LineItem label={__('Giving frequency', 'give')} />
                         <LineItem label={__('Donation Total', 'give')} style={{fontWeight: 'bold'}} />
                     </div>
-                    <InspectorControls>
-                        <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
-                            <PanelRow>
-                                <TextControl
-                                    label={'Label'}
-                                    value={label}
-                                    onChange={(val) => setAttributes({label: val})}
-                                />
-                            </PanelRow>
-                            <PanelRow>
-                                <TextControl
-                                    label={'Description'}
-                                    value={description}
-                                    onChange={(val) => setAttributes({description: val})}
-                                />
-                            </PanelRow>
-                        </PanelBody>
-                    </InspectorControls>
                 </>
             );
         },
