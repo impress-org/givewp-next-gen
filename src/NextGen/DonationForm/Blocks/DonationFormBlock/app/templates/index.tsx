@@ -54,7 +54,7 @@ const defaultTemplate = {
     },
     elements: {
         html: HtmlElement,
-        donationsummary: DonationSummaryElement,
+        donationSummary: DonationSummaryElement,
     },
     groups: {
         name: NameGroup,

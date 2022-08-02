@@ -26,9 +26,9 @@ const DonationSummary = {
                         borderRadius: '5px',
                         backgroundColor: 'var(--give-gray-10)',
                     }}>
-                        <LineItem label={__('Payment amount', 'give')} />
-                        <LineItem label={__('Giving frequency', 'give')} />
-                        <LineItem label={__('Donation Total', 'give')} style={{fontWeight: 'bold'}} />
+                        <LineItem label={__('Payment Amount', 'give')}/>
+                        <LineItem label={__('Giving Frequency', 'give')}/>
+                        <LineItem label={__('Donation Total', 'give')} style={{fontWeight: 'bold'}}/>
                     </div>
                 </>
             );

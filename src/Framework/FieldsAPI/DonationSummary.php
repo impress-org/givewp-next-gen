@@ -6,5 +6,5 @@ namespace Give\Framework\FieldsAPI;
 
 class DonationSummary extends Element
 {
-    const TYPE = 'donationsummary';
+    const TYPE = 'donationSummary';
 }

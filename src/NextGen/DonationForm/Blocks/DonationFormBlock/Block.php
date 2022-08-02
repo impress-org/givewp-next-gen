@@ -9,15 +9,11 @@ use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
-use Give\Framework\FieldsAPI\Html;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
-use Give\Framework\FieldsAPI\Select;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -182,6 +178,7 @@ class Block
 
     /**
      * @unreleased
+     * @throws EmptyNameException
      */
     protected function convertBlockToNode(stdClass $block): Node
     {
@@ -201,7 +198,7 @@ class Block
             $node = Text::make($block->clientId);
         }
 
-        if ('field' === $node->getNodeType() && property_exists($block->attributes, 'label')) {
+        if (property_exists($block->attributes, 'label') && 'field' === $node->getNodeType()) {
             $node->label($block->attributes->label);
         }
 
