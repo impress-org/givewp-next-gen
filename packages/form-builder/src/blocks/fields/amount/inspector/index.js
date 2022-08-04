@@ -1,4 +1,4 @@
-import {PanelBody, TextControl} from "@wordpress/components";
+import {PanelBody} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
@@ -25,9 +25,23 @@ const Inspector = (props) => {
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
                                     }}>
-                                        <div>
-                                            <TextControl
-                                                style={{width: '150px'}}
+                                        <div style={{position: 'relative'}}>
+                                            <div
+                                                style={{
+                                                    position: 'absolute',
+                                                    height: '100%',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    paddingLeft: '13px',
+                                                    fontSize: '.8em',
+                                                }}>
+                                                <spann style={{marginBottom: '1px'}}>$</spann>
+                                            </div>
+                                            <input
+                                                style={{
+                                                    width: '140px',
+                                                    padding: '6px 0 6px 30px',
+                                                }}
                                                 value={label}
                                                 onChange={(val) => {
                                                     const levels = [...props.attributes.levels];
@@ -36,12 +50,10 @@ const Inspector = (props) => {
                                                 }}
                                             />
                                         </div>
-                                        <TextControlSiblingAlignmentWrapper>
-                                            <DeleteButton onClick={() => {
-                                                props.attributes.levels.splice(index, 1);
-                                                props.setAttributes({levels: props.attributes.levels.slice()});
-                                            }} />
-                                        </TextControlSiblingAlignmentWrapper>
+                                        <DeleteButton onClick={() => {
+                                            props.attributes.levels.splice(index, 1);
+                                            props.setAttributes({levels: props.attributes.levels.slice()});
+                                        }} />
                                     </li>
                                 );
                             })
@@ -55,16 +67,6 @@ const Inspector = (props) => {
                 }} />
             </PanelBody>
         </InspectorControls>
-    );
-};
-
-/**
- * The TextControl components internal wrapper adds a bottom margin.
- * This wrapper components matches that margin for alignment in a row.
- */
-const TextControlSiblingAlignmentWrapper = ({children}) => {
-    return (
-        <div style={{marginBottom: '8px'}}>{children}</div>
     );
 };
 
