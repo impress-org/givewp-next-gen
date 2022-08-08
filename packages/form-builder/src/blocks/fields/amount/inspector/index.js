@@ -4,11 +4,14 @@ import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
 import AddButton from "./add-button";
 
-const Inspector = (props) => {
+const Inspector = ({attributes, setAttributes}) => {
+
+    const {levels} = attributes;
+
     return (
         <InspectorControls>
             <PanelBody title={__('Donation Levels', 'give')} initialOpen={true}>
-                {props.attributes.levels.length > 0 && (
+                {levels.length > 0 && (
                     <ul style={{
                         listStyleType: 'none',
                         padding: 0,
@@ -17,7 +20,7 @@ const Inspector = (props) => {
                         gap: '16px',
                     }}>
                         {
-                            props.attributes.levels.map((label, index) => {
+                            levels.map((label, index) => {
                                 return (
                                     <li key={'level-option-inspector-' + index} style={{
                                         display: 'flex',
@@ -43,16 +46,16 @@ const Inspector = (props) => {
                                                     padding: '6px 0 6px 30px',
                                                 }}
                                                 value={label}
-                                                onChange={(val) => {
-                                                    const levels = [...props.attributes.levels];
-                                                    levels[index] = val;
-                                                    props.setAttributes({levels: levels});
+                                                onChange={(element) => {
+                                                    const newLevels = [...levels];
+                                                    newLevels[index] = element.target.value;
+                                                    setAttributes({levels: newLevels});
                                                 }}
                                             />
                                         </div>
                                         <DeleteButton onClick={() => {
-                                            props.attributes.levels.splice(index, 1);
-                                            props.setAttributes({levels: props.attributes.levels.slice()});
+                                            levels.splice(index, 1);
+                                            setAttributes({levels: levels.slice()});
                                         }} />
                                     </li>
                                 );
@@ -61,9 +64,9 @@ const Inspector = (props) => {
                     </ul>
                 )}
                 <AddButton onClick={() => {
-                    const levels = [...props.attributes.levels];
-                    levels.push('');
-                    props.setAttributes({levels: levels});
+                    const newLevels = [...levels];
+                    newLevels.push('');
+                    setAttributes({levels: newLevels});
                 }} />
             </PanelBody>
         </InspectorControls>
