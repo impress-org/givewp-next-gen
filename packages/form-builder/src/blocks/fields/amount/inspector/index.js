@@ -38,7 +38,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                                     paddingLeft: '13px',
                                                     fontSize: '.8em',
                                                 }}>
-                                                <spann style={{marginBottom: '1px'}}>$</spann>
+                                                <span style={{marginBottom: '1px'}}>$</span>
                                             </div>
                                             <input
                                                 style={{
