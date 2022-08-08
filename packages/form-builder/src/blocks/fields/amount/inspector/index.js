@@ -3,6 +3,7 @@ import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
 import AddButton from "./add-button";
+import {CurrencyControl} from "../../../../common/currency";
 
 const Inspector = ({attributes, setAttributes}) => {
 
@@ -20,7 +21,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         gap: '16px',
                     }}>
                         {
-                            levels.map((label, index) => {
+                            levels.map((amount, index) => {
                                 return (
                                     <li key={'level-option-inspector-' + index} style={{
                                         display: 'flex',
@@ -28,31 +29,14 @@ const Inspector = ({attributes, setAttributes}) => {
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
                                     }}>
-                                        <div style={{position: 'relative'}}>
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    height: '100%',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    paddingLeft: '13px',
-                                                    fontSize: '.8em',
-                                                }}>
-                                                <span style={{marginBottom: '1px'}}>$</span>
-                                            </div>
-                                            <input
-                                                style={{
-                                                    width: '140px',
-                                                    padding: '6px 0 6px 30px',
-                                                }}
-                                                value={label}
-                                                onChange={(element) => {
-                                                    const newLevels = [...levels];
-                                                    newLevels[index] = element.target.value;
-                                                    setAttributes({levels: newLevels});
-                                                }}
-                                            />
-                                        </div>
+                                        <CurrencyControl
+                                            value={amount}
+                                            onChange={(element) => {
+                                                const newLevels = [...levels];
+                                                newLevels[index] = element.target.value;
+                                                setAttributes({levels: newLevels});
+                                            }}
+                                        />
                                         <DeleteButton onClick={() => {
                                             levels.splice(index, 1);
                                             setAttributes({levels: levels.slice()});
