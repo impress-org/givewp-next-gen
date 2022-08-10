@@ -2,18 +2,10 @@ import CurrencyInput, {formatValue} from "react-currency-input-field";
 
 const {currency = 'USD'} = window.giveCurrency ?? {};
 
-const formatter = new Intl.NumberFormat(navigator.language, {
-    style: 'currency',
-    currency: currency,
-});
-
-const symbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
-
-const Currency = ({amount, prefix, locale}) => {
+const Currency = ({amount}) => {
     return formatValue({
         value: amount,
-        prefix: prefix ?? symbol, // @note prefix overrides intlConfig
-        intlConfig: {locale: locale ?? window.navigator.language},
+        intlConfig: {locale: window.navigator.language, currency},
     });
 
 };
@@ -21,35 +13,23 @@ const Currency = ({amount, prefix, locale}) => {
 const CurrencyControl = (props) => {
     return (
         <div style={{position: 'relative'}}>
-            <div
-                style={{
-                    position: 'absolute',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    paddingLeft: '13px',
-                    fontSize: '.8em',
-                }}>
-                <span style={{marginBottom: '1px'}}>{symbol}</span>
-            </div>
             <CurrencyInput
                 {...props}
                 style={{
                     ...props.style,
-                    width: '140px',
-                    padding: '6px 0 6px 30px',
+                    width: '150px',
+                    padding: '6px 0.5rem',
                 }}
                 allowDecimals={true}
                 allowNegativeValue={false}
                 maxLength={9}
-                intlConfig={{locale: window.navigator.language}}
+                intlConfig={{locale: window.navigator.language, currency}}
             />
         </div>
     );
 };
 
 export {
-    symbol,
     currency,
     Currency,
     CurrencyControl,

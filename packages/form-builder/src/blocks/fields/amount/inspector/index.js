@@ -31,9 +31,10 @@ const Inspector = ({attributes, setAttributes}) => {
                                     }}>
                                         <CurrencyControl
                                             value={amount}
-                                            onChange={(element) => {
+                                            onValueChange={(value) => {
                                                 const newLevels = [...levels];
-                                                newLevels[index] = element.target.value;
+
+                                                newLevels[index] = value;
                                                 setAttributes({levels: newLevels});
                                             }}
                                         />
