@@ -1,9 +1,13 @@
 import CurrencyInput, {formatValue} from "react-currency-input-field";
 
-const {
-    symbol = '$',
-    currency = 'USD',
-} = window.giveCurrency ?? {};
+const {currency = 'USD', symbol: symbolFromServer} = window.giveCurrency ?? {};
+
+const formatter = new Intl.NumberFormat(navigator.language, {
+    style: 'currency',
+    currency: currency,
+});
+
+const symbol = formatter.formatToParts().find(({type}) => type === 'currency')?.value ?? symbolFromServer;
 
 const Currency = ({amount, prefix, locale}) => {
     return formatValue({

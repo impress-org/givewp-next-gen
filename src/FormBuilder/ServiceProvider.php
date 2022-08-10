@@ -130,7 +130,6 @@ class ServiceProvider implements ServiceProviderInterface
                         trailingslashit(GIVE_NEXT_GEN_URL) . 'src/FormBuilder/resources/js/storage.js');
                     wp_localize_script('@givewp/form-builder/storage', 'giveCurrency', [
                         'currency' => give_get_currency(),
-                        'symbol' => give_currency_symbol(),
                     ]);
                     wp_localize_script('@givewp/form-builder/storage', 'storageData', [
                         'resourceURL' => rest_url('givewp/next-gen/form/' . abs($_GET['donationFormID'])),
