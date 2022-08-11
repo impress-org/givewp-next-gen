@@ -1,8 +1,9 @@
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
-import {FormTokenField, PanelBody, PanelRow, ToggleControl} from "@wordpress/components";
+import {FormTokenField, PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from "@wordpress/components";
 import settings from "./settings";
+import {useState} from "react";
 
 const donorName = {
     name: 'custom-block-editor/donor-name',
@@ -45,15 +46,26 @@ const donorName = {
             const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
             const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
+            const HonoriphicSelect = () => {
+                const [selectedTitle, setSelectedTitle] = useState(honoriphics[0] ?? '');
+                const honoriphicOptions = honoriphics.map(token => {
+                    return {
+                        label: titleLabelTransform(token),
+                        value: titleValueTransform(token),
+                    };
+                });
+                return <SelectControl label={__('Title', 'give')} options={honoriphicOptions} value={selectedTitle}
+                                      onChange={setSelectedTitle} />;
+            };
+
             return (
                 <>
-                    <div style={{display: 'flex', gap: '15px'}}>
-                        {!!showHonorific && (<select style={{width: '80px'}}>
-                            {honoriphics.map(title => <option
-                                value={titleLabelTransform(title)}>{titleLabelTransform(title)}</option>)}
-                        </select>)}
-                        <input type="text" placeholder={requiredText(__('First Name', 'give'))} />
-                        <input type="text" placeholder={requiredText(__('Last Name', 'give'), requireLastName)} />
+                    <div style={{display: 'grid', gridTemplateColumns: '1fr 3fr 3fr', gap: '15px'}}>
+                        {!!showHonorific && <HonoriphicSelect />}
+                        <TextControl label={__('First Name', 'give')} placeholder={''} required={true}
+                                     className={'give-is-required'} />
+                        <TextControl label={__('Last Name', 'give')} placeholder={''} required={requireLastName}
+                                     className={`${requireLastName ? 'give-is-required' : ''}`} />
                     </div>
 
                     <InspectorControls>
