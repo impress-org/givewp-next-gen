@@ -24,6 +24,26 @@ const donorName = {
                 type: 'array',
                 default: ['Mr', 'Ms', 'Mrs'],
             },
+            firstNameLabel: {
+                type: 'string',
+                source: 'attribute',
+                default: __('First name', 'give'),
+            },
+            firstNamePlaceholder: {
+                type: 'string',
+                source: 'attribute',
+                default: __('First name', 'give'),
+            },
+            lastNameLabel: {
+                type: 'string',
+                source: 'attribute',
+                default: __('First name', 'give'),
+            },
+            lastNamePlaceholder: {
+                type: 'string',
+                source: 'attribute',
+                default: __('Last name', 'give'),
+            },
             requireLastName: {
                 type: 'boolean',
                 default: false,
@@ -32,7 +52,15 @@ const donorName = {
         edit: (props) => {
 
             const {
-                attributes: {showHonorific, honoriphics, requireLastName},
+                attributes: {
+                    showHonorific,
+                    honoriphics,
+                    firstNameLabel,
+                    firstNamePlaceholder,
+                    lastNameLabel,
+                    lastNamePlaceholder,
+                    requireLastName,
+                },
                 setAttributes,
             } = props;
 
@@ -53,11 +81,11 @@ const donorName = {
 
             return (
                 <>
-                    <div style={{display: 'grid', gridTemplateColumns: '1fr 3fr 3fr', gap: '15px'}}>
+                    <div style={{display: 'grid', gridTemplateColumns: '4fr 7fr 7fr', gap: '15px'}}>
                         {!!showHonorific && <HonoriphicSelect />}
-                        <TextControl label={__('First Name', 'give')} placeholder={''} required={true}
+                        <TextControl label={firstNameLabel} placeholder={firstNamePlaceholder} required={true}
                                      className={'give-is-required'} />
-                        <TextControl label={__('Last Name', 'give')} placeholder={''} required={requireLastName}
+                        <TextControl label={lastNameLabel} placeholder={lastNamePlaceholder} required={requireLastName}
                                      className={`${requireLastName ? 'give-is-required' : ''}`} />
                     </div>
 
@@ -86,10 +114,28 @@ const donorName = {
                                 </div>
                             </PanelRow>
                         </PanelBody>
+                        <PanelBody title={__('First Name', 'give')} initialOpen={true}>
+                            <PanelRow>
+                                <TextControl label={__('Label')} value={firstNameLabel}
+                                             onChange={(value) => setAttributes({firstNameLabel: value})} />
+                            </PanelRow>
+                            <PanelRow>
+                                <TextControl label={__('Placeholder')} value={firstNamePlaceholder}
+                                             onChange={(value) => setAttributes({firstNamePlaceholder: value})} />
+                            </PanelRow>
+                        </PanelBody>
                         <PanelBody title={__('Last Name', 'give')} initialOpen={true}>
                             <PanelRow>
+                                <TextControl label={__('Label')} value={lastNameLabel}
+                                             onChange={(value) => setAttributes({lastNameLabel: value})} />
+                            </PanelRow>
+                            <PanelRow>
+                                <TextControl label={__('Placeholder')} value={lastNamePlaceholder}
+                                             onChange={(value) => setAttributes({lastNamePlaceholder: value})} />
+                            </PanelRow>
+                            <PanelRow>
                                 <ToggleControl
-                                    label={__('Require Last Name', 'give')}
+                                    label={__('Required', 'give')}
                                     checked={requireLastName}
                                     onChange={() => setAttributes({requireLastName: !requireLastName})}
                                     help={__('Do you want to force the Last Name field to be required?', 'give')}
