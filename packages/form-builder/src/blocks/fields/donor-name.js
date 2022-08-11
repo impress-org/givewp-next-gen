@@ -36,13 +36,6 @@ const donorName = {
                 setAttributes,
             } = props;
 
-            const requiredText = (text, isRequired = true) => {
-                if (isRequired) {
-                    return text + ' (' + __('required', 'give') + ')';
-                }
-                return text;
-            };
-
             const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
             const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
