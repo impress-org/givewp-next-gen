@@ -31,7 +31,7 @@
 }
 
 .interface-interface-skeleton__content {
-    width: 824px;
+    width: 720px;
     margin: auto;
     padding: 120px 0; /* Leave room for toolbar above first block. */
 
@@ -46,7 +46,7 @@
     .components-text-control__input,
     .components-select-control__input {
         inline-size: 100%;
-        padding: 1.1875rem;
+        padding: 16px;
 
         border: 1px solid var(--give-neutral-110) !important;
         border-radius: 5px;
@@ -59,12 +59,19 @@
     }
 
     .components-select-control__input {
-        height: 59px !important;
+        height: 55px !important;
 
-        & ~ .components-input-control__suffix svg {
-            height: 24px;
-            width: 24px;
-            fill: var(--give-gray-60);
+        & ~ .components-input-control__suffix {
+
+            & > div {
+                padding: 0 10px;
+            }
+
+            svg {
+                height: 24px;
+                width: 24px;
+                fill: var(--give-gray-60);
+            }
         }
     }
 
