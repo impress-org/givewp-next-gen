@@ -20,7 +20,7 @@ const donorName = {
                 type: 'boolean',
                 default: true,
             },
-            honoriphics: {
+            honorifics: {
                 type: 'array',
                 default: ['Mr', 'Ms', 'Mrs'],
             },
@@ -54,7 +54,7 @@ const donorName = {
             const {
                 attributes: {
                     showHonorific,
-                    honoriphics,
+                    honorifics,
                     firstNameLabel,
                     firstNamePlaceholder,
                     lastNameLabel,
@@ -68,14 +68,14 @@ const donorName = {
             const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
             const HonoriphicSelect = () => {
-                const [selectedTitle, setSelectedTitle] = useState(honoriphics[0] ?? '');
-                const honoriphicOptions = honoriphics.map(token => {
+                const [selectedTitle, setSelectedTitle] = useState(honorifics[0] ?? '');
+                const honorificOptions = honorifics.map(token => {
                     return {
                         label: titleLabelTransform(token),
                         value: titleValueTransform(token),
                     };
                 });
-                return <SelectControl label={__('Title', 'give')} options={honoriphicOptions} value={selectedTitle}
+                return <SelectControl label={__('Title', 'give')} options={honorificOptions} value={selectedTitle}
                                       onChange={setSelectedTitle} />;
             };
 
@@ -104,10 +104,10 @@ const donorName = {
                                     {!!showHonorific && (<FormTokenField
                                         tokenizeOnSpace={true}
                                         label={__('Title Prefixes', 'give')}
-                                        value={honoriphics}
+                                        value={honorifics}
                                         suggestions={['Mr', 'Ms', 'Mrs']}
                                         placeholder={__('Select some options', 'give')}
-                                        onChange={(tokens) => setAttributes({honoriphics: tokens})}
+                                        onChange={(tokens) => setAttributes({honorifics: tokens})}
                                         displayTransform={titleLabelTransform}
                                         saveTransform={titleValueTransform}
                                     />)}
