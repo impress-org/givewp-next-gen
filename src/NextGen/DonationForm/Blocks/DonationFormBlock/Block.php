@@ -184,22 +184,22 @@ class Block
                 ->defaultValue(50)
                 ->required();
         } elseif ($block->name === "custom-block-editor/donor-name") {
-            $node = Name::make('name')->tap(function ($firstName, $lastName, $honorific, $nameGroup) use ($block) {
-                $firstName
+            $node = Name::make('name')->tap(function ($group) use ($block) {
+                $group->firstName
                     ->label($block->attributes->firstNameLabel)
                     ->placeholder($block->attributes->firstNamePlaceholder);
 
-                $lastName
+                $group->lastName
                     ->label($block->attributes->lastNameLabel)
                     ->placeholder($block->attributes->lastNamePlaceholder)
                     ->required($block->attributes->requireLastName);
 
                 if ($block->attributes->showHonorific) {
-                    $honorific
+                    $group->honorific
                         ->label('Title')
                         ->options(...$block->attributes->honorifics);
                 } else {
-                    $nameGroup->remove('honorific');
+                    $group->remove('honorific');
                 }
             });
         } elseif ($block->name === "custom-block-editor/email-field") {

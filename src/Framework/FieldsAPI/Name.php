@@ -8,6 +8,13 @@ class Name extends Group
 {
     const TYPE = 'name';
 
+    public function __get($name)
+    {
+        if ($node = $this->getNodeByName($name)) {
+            return $node;
+        }
+    }
+
     public static function make($name)
     {
         return parent::make($name)
@@ -27,13 +34,7 @@ class Name extends Group
 
     public function tap(callable $callback)
     {
-        call_user_func(
-            $callback,
-            $this->getNodeByName('firstName'),
-            $this->getNodeByName('lastName'),
-            $this->getNodeByName('honorific'),
-            $this
-        );
+        call_user_func($callback, $this);
 
         return $this;
     }
