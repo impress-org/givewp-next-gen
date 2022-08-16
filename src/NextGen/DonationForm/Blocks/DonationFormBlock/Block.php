@@ -184,25 +184,24 @@ class Block
                 ->defaultValue(50)
                 ->required();
         } elseif ($block->name === "custom-block-editor/donor-name") {
-            $node = Name::make('name')->append(
-                Text::make('firstName')
+            $node = Name::make('name')->tap(function ($firstName, $lastName, $honorific, $nameGroup) use ($block) {
+                $firstName
                     ->label($block->attributes->firstNameLabel)
-                    ->placeholder($block->attributes->firstNamePlaceholder)
-                    ->required(),
+                    ->placeholder($block->attributes->firstNamePlaceholder);
 
-                Text::make('lastName')
+                $lastName
                     ->label($block->attributes->lastNameLabel)
                     ->placeholder($block->attributes->lastNamePlaceholder)
-                    ->required($block->attributes->requireLastName)
-            );
+                    ->required($block->attributes->requireLastName);
 
-            if ($block->attributes->showHonorific) {
-                $node->append(
-                    Select::make('honorific')
+                if ($block->attributes->showHonorific) {
+                    $honorific
                         ->label('Title')
-                        ->options(...$block->attributes->honorifics)
-                );
-            }
+                        ->options(...$block->attributes->honorifics);
+                } else {
+                    $nameGroup->remove('honorific');
+                }
+            });
         } elseif ($block->name === "custom-block-editor/email-field") {
             $node = Email::make('email')->emailTag('email');
         } elseif ($block->name === "custom-block-editor/donation-summary") {
