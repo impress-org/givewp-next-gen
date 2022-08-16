@@ -8,13 +8,6 @@ class Name extends Group
 {
     const TYPE = 'name';
 
-    public function __get($name)
-    {
-        if ($node = $this->getNodeByName($name)) {
-            return $node;
-        }
-    }
-
     public static function make($name)
     {
         return parent::make($name)

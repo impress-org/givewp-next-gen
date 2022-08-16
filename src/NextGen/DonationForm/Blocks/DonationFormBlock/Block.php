@@ -185,17 +185,17 @@ class Block
                 ->required();
         } elseif ($block->name === "custom-block-editor/donor-name") {
             $node = Name::make('name')->tap(function ($group) use ($block) {
-                $group->firstName
+                $group->getNodeByName('firstName')
                     ->label($block->attributes->firstNameLabel)
                     ->placeholder($block->attributes->firstNamePlaceholder);
 
-                $group->lastName
+                $group->getNodeByName('lastName')
                     ->label($block->attributes->lastNameLabel)
                     ->placeholder($block->attributes->lastNamePlaceholder)
                     ->required($block->attributes->requireLastName);
 
                 if ($block->attributes->showHonorific) {
-                    $group->honorific
+                    $group->getNodeByName('honorific')
                         ->label('Title')
                         ->options(...$block->attributes->honorifics);
                 } else {
