@@ -24,11 +24,4 @@ class Name extends Group
                     ->options('Mr.', 'Mrs.', 'Ms.')
             );
     }
-
-    public function tap(callable $callback)
-    {
-        call_user_func($callback, $this);
-
-        return $this;
-    }
 }
