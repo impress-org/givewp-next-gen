@@ -64,25 +64,10 @@ const donorName = {
                 setAttributes,
             } = props;
 
-            const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
-            const titleValueTransform = (token = '') => token.trim().toLowerCase();
-
-            const HonoriphicSelect = () => {
-                const [selectedTitle, setSelectedTitle] = useState(honorifics[0] ?? '');
-                const honorificOptions = honorifics.map(token => {
-                    return {
-                        label: titleLabelTransform(token),
-                        value: titleValueTransform(token),
-                    };
-                });
-                return <SelectControl label={__('Title', 'give')} options={honorificOptions} value={selectedTitle}
-                                      onChange={setSelectedTitle} />;
-            };
-
             return (
                 <>
                     <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr 2fr', gap: '15px'}}>
-                        {!!showHonorific && <HonoriphicSelect />}
+                        {!!showHonorific && <HonorificSelect honorifics={honorifics} />}
                         <TextControl label={firstNameLabel} placeholder={firstNamePlaceholder} required={true}
                                      className={'give-is-required'} />
                         <TextControl label={lastNameLabel} placeholder={lastNamePlaceholder} required={requireLastName}
@@ -156,5 +141,21 @@ const donorName = {
         } />,
     },
 };
+
+const HonorificSelect = ({honorifics}) => {
+    const [selectedTitle, setSelectedTitle] = useState(honorifics[0] ?? '');
+    const honorificOptions = honorifics.map(token => {
+        return {
+            label: titleLabelTransform(token),
+            value: titleValueTransform(token),
+        };
+    });
+    return <SelectControl label={__('Title', 'give')} options={honorificOptions} value={selectedTitle}
+                          onChange={setSelectedTitle} />;
+};
+
+
+const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
+const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
 export default donorName;
