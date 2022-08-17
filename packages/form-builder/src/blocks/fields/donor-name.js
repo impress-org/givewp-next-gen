@@ -66,7 +66,11 @@ const donorName = {
 
             return (
                 <>
-                    <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr 2fr', gap: '15px'}}>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: showHonorific ? '1fr 2fr 2fr' : '1fr 1fr',
+                        gap: '15px',
+                    }}>
                         {!!showHonorific && <HonorificSelect honorifics={honorifics} />}
                         <TextControl label={firstNameLabel} placeholder={firstNamePlaceholder} required={true}
                                      className={'give-is-required'} />
