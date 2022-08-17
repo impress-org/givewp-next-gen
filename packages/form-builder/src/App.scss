@@ -184,11 +184,13 @@
  * Set spacing between field sub-components, ie label and input
  */
 
-.components-select-control, // Select control has a different structure, apparently.
-.components-base-control__field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.interface-interface-skeleton__content {
+    .components-select-control, // Select control has a different structure, apparently.
+    .components-base-control__field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
 }
 
 /** ------------------------------- */
