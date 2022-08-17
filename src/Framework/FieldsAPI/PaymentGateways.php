@@ -6,13 +6,10 @@ namespace Give\Framework\FieldsAPI;
 
 class PaymentGateways extends Field
 {
+    const TYPE = 'gateways';
+
     public function getNodeType(): string
     {
         return 'layout';
-    }
-
-    public function getType(): string
-    {
-        return 'gateways';
     }
 }
