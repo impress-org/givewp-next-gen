@@ -16,7 +16,6 @@ const paymentGateways = {
         },
         edit: () => <div style={{
             padding: '20px',
-            margin: '20px 0',
             textAlign: 'center',
             border: '1px dashed var(--give-gray-100)',
             borderRadius: '5px',
