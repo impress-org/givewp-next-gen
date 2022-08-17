@@ -199,7 +199,7 @@ class Block
         } elseif ($block->name === "custom-block-editor/email-field") {
             $node = Email::make('email')->emailTag('email');
         } elseif ($block->name === "custom-block-editor/payment-gateways") {
-            $node = PaymentGateways::make('gateways');
+            $node = PaymentGateways::make('gatewayId');
         } elseif ($block->name === "custom-block-editor/donation-summary") {
             $node = DonationSummary::make('donation-summary');
         } elseif ($block->name === "custom-block-editor/company-field") {

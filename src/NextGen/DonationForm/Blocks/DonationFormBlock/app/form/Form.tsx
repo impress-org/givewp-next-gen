@@ -10,7 +10,6 @@ import type {Gateway, Section} from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {getFormTemplate, getSectionTemplate} from '../templates';
 import {useCallback} from 'react';
-import PaymentDetails from '../fields/PaymentDetails';
 import SectionNode from '../fields/SectionNode';
 
 window.givewp.form = {

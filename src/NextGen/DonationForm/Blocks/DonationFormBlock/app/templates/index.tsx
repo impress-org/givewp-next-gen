@@ -13,7 +13,7 @@ import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
 import AmountField from './fields/Amount';
 import classNames from 'classnames';
-import Gateways from './layouts/Gateways';
+import Gateways from './fields/Gateways';
 
 export function NodeWrapper({
     type,
@@ -56,6 +56,7 @@ const defaultTemplate = {
         textarea: TextAreaField,
         email: EmailField,
         hidden: HiddenField,
+        gateways: Gateways,
     },
     elements: {
         html: HtmlElement,
@@ -67,7 +68,6 @@ const defaultTemplate = {
     layouts: {
         section: SectionLayout,
         form: Form,
-        gateways: Gateways,
     },
 };
 
@@ -125,10 +125,6 @@ export function getSectionTemplate(): FC<SectionProps> {
 
 export function getFormTemplate(): FC<FormProps> {
     return getTemplate<FormProps>('form', 'layouts');
-}
-
-export function getGatewaysTemplate(): FC {
-    return getTemplate('gateways', 'layouts');
 }
 
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {

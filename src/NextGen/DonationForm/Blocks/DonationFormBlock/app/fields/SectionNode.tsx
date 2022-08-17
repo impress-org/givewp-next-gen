@@ -2,7 +2,6 @@ import {isElement, isField, isGroup, Node} from '@givewp/forms/types';
 import FieldNode from './FieldNode';
 import ElementNode from './ElementNode';
 import GroupNode from './GroupNode';
-import {getGatewaysTemplate} from '../templates';
 
 /**
  * Determine which node template to render
@@ -16,10 +15,6 @@ export default function SectionNode({node}: {node: Node}) {
         return <ElementNode node={node} />;
     } else if (isGroup(node)) {
         return <GroupNode node={node} />;
-    } else if (node.type === 'gateways') {
-        const Gateways = getGatewaysTemplate();
-
-        return <Gateways />;
     } else {
         return null;
     }
