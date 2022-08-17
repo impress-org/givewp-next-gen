@@ -37,7 +37,7 @@ const donorName = {
             lastNameLabel: {
                 type: 'string',
                 source: 'attribute',
-                default: __('First name', 'give'),
+                default: __('Last name', 'give'),
             },
             lastNamePlaceholder: {
                 type: 'string',
