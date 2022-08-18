@@ -190,13 +190,15 @@
  * Set spacing between field sub-components, ie label and input
  */
 
-.interface-interface-skeleton__content {
-    .components-select-control, // Select control has a different structure, apparently.
-    .components-base-control__field {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
+.components-base-control {
+    width: 100%;
+}
+
+.components-select-control, // Select control has a different structure, apparently.
+.components-base-control:not(.components-toggle-control) .components-base-control__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 /** ------------------------------- */
@@ -220,9 +222,20 @@
     input,
     textarea,
     .components-form-token-field__input-container {
+        width: 100%;
         box-sizing: border-box;
     }
 }
 
 /** ------------------------------- */
 
+/**
+ * Force full width on textareas
+ */
+
+.givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary textarea {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+/** ------------------------------- */
