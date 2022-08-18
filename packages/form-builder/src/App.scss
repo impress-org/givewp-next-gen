@@ -210,3 +210,12 @@
 }
 
 /** ------------------------------- */
+
+.givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary {
+
+    input,
+    textarea,
+    .components-form-token-field__input-container {
+        box-sizing: border-box;
+    }
+}
