@@ -211,6 +211,10 @@
 
 /** ------------------------------- */
 
+/**
+ * Add box-sizing so that input do not expand outside of the container
+ */
+
 .givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary {
 
     input,
@@ -219,3 +223,6 @@
         box-sizing: border-box;
     }
 }
+
+/** ------------------------------- */
+
