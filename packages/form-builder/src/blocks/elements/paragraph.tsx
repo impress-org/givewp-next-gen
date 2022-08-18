@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {RichText, RichTextToolbarButton} from '@wordpress/block-editor';
+import {RichText} from '@wordpress/block-editor';
 import {Icon} from '@wordpress/icons';
 
 const paragraph = {
