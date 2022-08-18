@@ -189,8 +189,7 @@
 /**
  * Set spacing between field sub-components, ie label and input
  */
-
-.components-base-control {
+.components-base-control:not(.components-search-control) {
     width: 100%;
 }
 
