@@ -22,9 +22,9 @@ module.exports = {
         },
     },
     entry: {
-        donationFormBlock: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/block.ts'),
-        donationFormBlockStyle: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/editor/styles/index.scss'),
-        donationFormBlockApp: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/app/DonationFormBlockApp.tsx'),
+        donationFormBlock: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/resources/block.ts'),
+        donationFormBlockStyle: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/resources/editor/styles/index.scss'),
+        donationFormBlockApp: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/resources/app/DonationFormBlockApp.tsx'),
         donationFormRegistrars: srcPath('NextGen/DonationForm/Registrars/resources/registrars.ts'),
         nextGenStripeGateway: srcPath(
             'NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'
