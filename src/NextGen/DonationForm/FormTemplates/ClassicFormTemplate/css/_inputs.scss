@@ -18,7 +18,9 @@
     display: none;
 }
 
-input[type="text"]:not([name="amount"]), input[type="email"] {
+input[type="text"]:not([name="amount"]),
+input[type="email"],
+select {
     border-width: 0.078rem;
     border-style: solid;
     border-color: rgb(102, 102, 102);

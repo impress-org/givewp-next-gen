@@ -63,14 +63,14 @@ class Block
     public function render(array $attributes)
     {
         // return early if we're still inside the editor to avoid server side effects
-        if ( ! empty($_REQUEST)) {
+        if (!empty($_REQUEST)) {
             return null;
         }
 
         $formId = $attributes['formId'] ?? null;
         $formTemplateId = $attributes['formTemplateId'] ?? null;
 
-        if ( ! $formId) {
+        if (!$formId) {
             return null;
         }
 
@@ -208,6 +208,11 @@ class Block
             $node = DonationSummary::make('donation-summary');
         } elseif ($block->name === "custom-block-editor/company-field") {
             $node = Text::make('company');
+        } elseif ($block->name === "custom-block-editor/select") {
+            $node = Select::make($block->clientId);
+            $node->options([
+                ['foo', 'Foo'],
+            ]);
         } else {
             $node = Text::make($block->clientId);
         }

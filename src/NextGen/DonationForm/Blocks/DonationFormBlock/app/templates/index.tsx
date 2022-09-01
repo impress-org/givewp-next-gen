@@ -15,14 +15,15 @@ import AmountField from './fields/Amount';
 import classNames from 'classnames';
 import Gateways from './fields/Gateways';
 import Paragraph from './elements/Paragraph';
+import SelectField from './fields/Select'
 
 export function NodeWrapper({
-    type,
-    nodeType,
-    htmlTag: Element = 'div',
-    name,
-    children,
-}: {
+                                type,
+                                nodeType,
+                                htmlTag: Element = 'div',
+                                name,
+                                children,
+                            }: {
     type: string;
     nodeType: string;
     htmlTag?: ElementType;
@@ -58,6 +59,7 @@ const defaultTemplate = {
         email: EmailField,
         hidden: HiddenField,
         gateways: Gateways,
+        select: SelectField,
     },
     elements: {
         paragraph: Paragraph,
