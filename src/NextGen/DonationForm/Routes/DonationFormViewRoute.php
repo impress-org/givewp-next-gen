@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Routes;
 
+use Give\NextGen\DonationForm\Controllers\DonationFormViewController;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
 
 /**
@@ -20,9 +21,7 @@ class DonationFormViewRoute
             // create DTO from GET request
             $routeData = DonationFormViewRouteData::fromRequest(give_clean($_GET));
 
-            echo $routeData->formId;
-            
-            exit;
+            return give(DonationFormViewController::class)->show($routeData);
         }
     }
 

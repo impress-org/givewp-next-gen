@@ -7,7 +7,7 @@ import getWindowData from './utilities/getWindowData';
 /**
  * Get data from the server
  */
-const {attributes, form} = getWindowData();
+const {form} = getWindowData();
 
 /**
  * Prepare default values for form

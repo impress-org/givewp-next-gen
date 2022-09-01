@@ -3,7 +3,6 @@
 namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
-use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 
 /**
@@ -12,20 +11,20 @@ use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 class DonationFormViewModel
 {
     /**
-     * @var BlockAttributes
-     */
-    private $attributes;
-    /**
      * @var int
      */
     private $formId;
+    /**
+     * @var string
+     */
+    private $formTemplateId;
 
     /**
      * @unreleased
      */
-    public function __construct(BlockAttributes $attributes)
+    public function __construct(int $formId)
     {
-        $this->attributes = $attributes;
+        $this->formId = $formId;
     }
 
     /**
@@ -37,15 +36,14 @@ class DonationFormViewModel
         $donationFormRepository = give(DonationFormRepository::class);
 
         $donateUrl = (new GenerateDonateRouteUrl())();
-        $donationForm = $donationFormRepository->createFieldsApiForm($this->attributes->formId);
-        $formDataGateways = $donationFormRepository->getFormDataGateways($this->attributes->formId);
+        $donationForm = $donationFormRepository->createFieldsApiForm($this->formId);
+        $formDataGateways = $donationFormRepository->getFormDataGateways($this->formId);
 
         return [
-            'attributes' => $this->attributes->toArray(),
             'form' => $donationForm->jsonSerialize(),
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
-            'gatewaySettings' => $formDataGateways,
+            'gatewaySettings' => $formDataGateways
         ];
     }
 }

@@ -11,6 +11,10 @@ class DonationFormViewRouteData
      * @var string
      */
     public $formId;
+    /**
+     * @var string|null
+     */
+    public $formTemplateId;
 
     /**
      * Convert data from request into DTO
@@ -22,6 +26,7 @@ class DonationFormViewRouteData
         $self = new static();
 
         $self->formId = $request['form-id'];
+        $self->formTemplateId = !empty($request['form-template-id']) ? $request['form-template-id'] : null;
 
         return $self;
     }
