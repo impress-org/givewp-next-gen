@@ -2,7 +2,9 @@
 
 namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects;
 
-class BlockAttributes
+use Give\Framework\Support\Contracts\Arrayable;
+
+class BlockAttributes implements Arrayable
 {
     /**
      * @var int|null
@@ -24,5 +26,13 @@ class BlockAttributes
         $self->formTemplateId = !empty($array['formTemplateId']) ? $array['formTemplateId'] : null;
 
         return $self;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 }

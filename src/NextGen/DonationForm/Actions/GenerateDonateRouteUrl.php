@@ -16,7 +16,7 @@ class GenerateDonateRouteUrl
      * @return string
      *
      */
-    public function __invoke()
+    public function __invoke(): string
     {
         $signature = new DonateRouteSignature('give-donate');
 
