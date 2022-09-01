@@ -14,13 +14,12 @@ use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
-use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
-use Give\Framework\FieldsAPI\Select;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use stdClass;
 
@@ -63,22 +62,21 @@ class Block
     public function render(array $attributes)
     {
         // return early if we're still inside the editor to avoid server side effects
-        if ( ! empty($_REQUEST)) {
+        if (!empty($_REQUEST)) {
             return null;
         }
 
-        $formId = $attributes['formId'] ?? null;
-        $formTemplateId = $attributes['formTemplateId'] ?? null;
+        $data = BlockAttributes::fromArray($attributes);
 
-        if ( ! $formId) {
+        if (!$data->formId) {
             return null;
         }
 
-        $donationForm = $this->createForm($formId);
+        $donationForm = $this->createForm($data->formId);
 
         $donateUrl = (new GenerateDonateRouteUrl())();
 
-        $formDataGateways = $this->getFormDataGateways($formId);
+        $formDataGateways = $this->getFormDataGateways($data->formId);
 
         $exports = [
             'attributes' => $attributes,
@@ -94,7 +92,7 @@ class Block
         <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
 
         <?php
-        $this->enqueueScripts($formId, $formTemplateId);
+        $this->enqueueScripts($data->formId, $data->formTemplateId);
         ?>
 
         <div id="root-give-next-gen-donation-form-block"></div>
