@@ -1,7 +1,6 @@
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
-import settings, {Edit} from "./settings";
-import {TextControl} from "@wordpress/components";
+import settings from "./settings";
 
 const field = {
     name: 'custom-block-editor/field',

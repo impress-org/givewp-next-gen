@@ -1,7 +1,8 @@
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
 import settings, {Edit} from "./settings";
-import {SelectControl, TextControl} from "@wordpress/components";
+import {PanelBody, PanelRow, SelectControl} from "@wordpress/components";
+import {InspectorControls} from "@wordpress/block-editor";
 
 const select = {
     name: 'custom-block-editor/select',
@@ -19,12 +20,23 @@ const select = {
                     fill="#000C00" />
             </svg>
         } />,
-        edit: (props) => <Edit {...props} renderInput={({label, placeholder, requiredClass}) => {
-            return <SelectControl label={label} className={requiredClass}>
-                <option value="" disabled selected>{placeholder}</option>
-                <option value="foo">Foo</option>
-            </SelectControl>;
-        }} />,
+        edit: (props) => {
+            return <>
+                <Edit {...props} renderInput={({label, placeholder, requiredClass}) => {
+                    return <SelectControl label={label} className={requiredClass}>
+                        <option value="" disabled selected>{placeholder}</option>
+                        <option value="foo">Foo</option>
+                    </SelectControl>;
+                }} />
+                <InspectorControls>
+                    <PanelBody title={__('Option Settings', 'give')} initialOpen={true}>
+                        <PanelRow>
+                            <div>HERE</div>
+                        </PanelRow>
+                    </PanelBody>
+                </InspectorControls>
+            </>;
+        },
     },
 };
 
