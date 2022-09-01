@@ -1,14 +1,14 @@
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
 import settings, {Edit} from "./settings";
-import {TextControl} from "@wordpress/components";
+import {SelectControl, TextControl} from "@wordpress/components";
 
-const field = {
-    name: 'custom-block-editor/field',
+const select = {
+    name: 'custom-block-editor/select',
     category: 'custom',
     settings: {
         ...settings,
-        title: __('Text', 'custom-block-editor'),
+        title: __('Select', 'custom-block-editor'),
         icon: () => <Icon icon={
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -19,7 +19,13 @@ const field = {
                     fill="#000C00" />
             </svg>
         } />,
+        edit: (props) => <Edit {...props} renderInput={({label, placeholder, requiredClass}) => {
+            return <SelectControl label={label} className={requiredClass}>
+                <option value="" disabled selected>{placeholder}</option>
+                <option value="foo">Foo</option>
+            </SelectControl>;
+        }} />,
     },
 };
 
-export default field;
+export default select;
