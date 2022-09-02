@@ -16,14 +16,12 @@ class DonationFormViewController {
     {
         $viewModel = new DonationFormViewModel($data->formId);
 
-        $exports = $viewModel->exports();
-
         ob_start();
         $this->head();
         $this->enqueueScripts($data->formId, $data->formTemplateId);
         ?>
 
-        <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
+        <script>window.giveNextGenExports = <?= wp_json_encode($viewModel->exports()) ?>;</script>
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
@@ -115,5 +113,18 @@ class DonationFormViewController {
             GIVE_NEXT_GEN_URL,
             'give'
         ))->dependencies(['give-donation-form-registrars-js'])->loadInFooter()->enqueue();
+
+        /**
+         * Load iframeResizer.contentWindow.min.js inside iframe
+         *
+         * @see https://github.com/davidjbradshaw/iframe-resizer
+         */
+        (new EnqueueScript(
+            'givewp-donation-form-embed-inside',
+            'build/donationFormEmbedInside.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        ))->loadInFooter()->enqueue();
     }
 }

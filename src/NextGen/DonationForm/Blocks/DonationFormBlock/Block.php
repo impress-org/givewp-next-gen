@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock;
 
+use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 
@@ -39,8 +40,26 @@ class Block
             return null;
         }
 
+        /**
+         * Load embed givewp script to resize iframe
+         *
+         * @see https://github.com/davidjbradshaw/iframe-resizer
+         */
+        (new EnqueueScript(
+            'givewp-donation-form-embed',
+            'build/donationFormEmbed.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        ))->loadInFooter()->enqueue();
+
         $viewUrl = (new GenerateDonationFormViewRouteUrl())($blockAttributes->formId, $blockAttributes->formTemplateId);
 
-        return "<div style='position: relative;width: 100%;height: 100%;overflow: hidden;margin: 0 auto;padding-top: 100%;'><iframe src='$viewUrl' style='position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;height: 100%;'></div>";
+        /**
+         * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
+         * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
+         */
+        return "<iframe data-givewp-embed src='$viewUrl'
+                style='width: 1px;min-width: 100%;border: 0;'></iframe>";
     }
 }
