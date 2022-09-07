@@ -34,7 +34,7 @@ trait DonationFormCRUD
      */
     public static function create(array $attributes): DonationForm
     {
-        $donationForm = new DonationForm($attributes);
+        $donationForm = new static($attributes);
 
         give(DonationFormRepository::class)->insert($donationForm);
 
