@@ -16,7 +16,9 @@ class Block
     {
         register_block_type(
             __DIR__,
-            ['render_callback' => [BlockRenderController::class, 'render']]
+            [
+                'render_callback' => [(new BlockRenderController()), 'render']
+            ]
         );
     }
 }
