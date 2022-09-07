@@ -16,7 +16,7 @@ class BlockRenderController
     public function render(array $attributes)
     {
         // return early if we're still inside the editor to avoid server side effects
-        if (!empty($_REQUEST)) {
+        if (!empty($_REQUEST['post']) || !empty($_REQUEST['action']) || !empty($_REQUEST['_locale'])) {
             return null;
         }
 
