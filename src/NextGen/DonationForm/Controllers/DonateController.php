@@ -3,9 +3,11 @@
 namespace Give\NextGen\DonationForm\Controllers;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
+use Give\NextGen\DonationForm\DataTransferObjects\LegacyPurchaseFormData;
 
 /**
  * @unreleased
@@ -36,7 +38,7 @@ class DonateController
         $donation = $formData->toDonation($donor->id);
         $donation->save();
 
-        $this->setSession($donation->id);
+        $this->setSession($donation, $donor);
 
         $registeredGateway->handleCreatePayment($donation);
     }
@@ -91,17 +93,22 @@ class DonateController
      *
      * @unreleased
      *
-     * @param $donationId
-     *
      * @return void
      */
-    private function setSession($donationId)
+    private function setSession(Donation $donation, Donor $donor)
     {
+        give()->session->maybe_start_session();
+
         $purchaseSession = (array)give()->session->get('give_purchase');
 
-        if ($purchaseSession && array_key_exists('purchase_key', $purchaseSession)) {
-            $purchaseSession['donation_id'] = $donationId;
+        if ($purchaseSession && array_key_exists('donation_id', $purchaseSession)) {
+            $purchaseSession['donation_id'] = $donation->id;
+
             give()->session->set('give_purchase', $purchaseSession);
+        } else {
+            $legacyPurchaseFormData = LegacyPurchaseFormData::fromArray(['donation' => $donation, 'donor' => $donor]);
+            
+            give_set_purchase_session($legacyPurchaseFormData->toPurchaseData());
         }
     }
 }
