@@ -6,6 +6,8 @@ use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 
 /**
+ * This DTO extracts the complexity of supplying an array for use in give_set_purchase_session()
+ *
  * @unreleased
  */
 class LegacyPurchaseFormData
@@ -20,9 +22,9 @@ class LegacyPurchaseFormData
     public $donor;
 
     /**
-     * @unreleased 
+     * @unreleased
      *
-     * @param array{donation: Donation, donor: Donation} $array
+     * @param  array{donation: Donation, donor: Donation}  $array
      * @return LegacyPurchaseFormData
      */
     public static function fromArray(array $array): LegacyPurchaseFormData
