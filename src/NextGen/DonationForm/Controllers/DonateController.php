@@ -38,6 +38,7 @@ class DonateController
         $donation = $formData->toDonation($donor->id);
         $donation->save();
 
+        // setting sessions is required for legacy receipts
         $this->setSession($donation, $donor);
 
         $registeredGateway->handleCreatePayment($donation);
@@ -89,7 +90,8 @@ class DonateController
     }
 
     /**
-     * Set donation id to purchase session for use in the donation receipt.
+     * This logic is intended to work with the legacy receipt functionality
+     * by setting and updating the give_purchase session.
      *
      * @unreleased
      *
@@ -107,7 +109,7 @@ class DonateController
             give()->session->set('give_purchase', $purchaseSession);
         } else {
             $legacyPurchaseFormData = LegacyPurchaseFormData::fromArray(['donation' => $donation, 'donor' => $donor]);
-            
+
             give_set_purchase_session($legacyPurchaseFormData->toPurchaseData());
         }
     }
