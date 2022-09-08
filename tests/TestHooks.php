@@ -3,15 +3,17 @@
 namespace TestsNextGen;
 
 /**
+ * A convenient facade for using WordPress test suite hooks.
+ *
  * @unreleased
  *
  * TODO: move into GiveWP Core
- *
  */
 class TestHooks
 {
-
     /**
+     * Load your plugin before WP testing environment boots
+     *
      * @unreleased
      *
      * @return void
@@ -24,6 +26,8 @@ class TestHooks
     }
 
     /**
+     * Extracts the WordPress tests_add_filter method for use in our bootstrapping process.
+     *
      * @unreleased
      */
     public static function addFilter(string $tag, \Closure $function_to_add, int $priority = 10, int $accepted_args = 1): bool
@@ -46,6 +50,9 @@ class TestHooks
 
 
     /**
+     *
+     * Fork from WordPress _test_filter_build_unique_id()
+     *
      * @unreleased
      *
      * @param $function
