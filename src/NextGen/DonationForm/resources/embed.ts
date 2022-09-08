@@ -1,3 +1,3 @@
 import {iframeResize} from 'iframe-resizer';
 
-iframeResize({log: true}, 'iframe[data-givewp-embed]');
+iframeResize({}, 'iframe[data-givewp-embed]');
