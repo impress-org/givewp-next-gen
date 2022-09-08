@@ -13,16 +13,20 @@ class DonationFormViewRoute
     /**
      * @unreleased
      *
-     * @return void
+     * @return string|void
      */
     public function __invoke()
     {
-        if ($this->isViewValid()) {
-            // create DTO from GET request
-            $routeData = DonationFormViewRouteData::fromRequest(give_clean($_GET));
-
-            return give(DonationFormViewController::class)->show($routeData);
+        // fail silently for use with template_redirect
+        if (!$this->isViewValid()) {
+            return;
         }
+
+        // create DTO from GET request
+        $routeData = DonationFormViewRouteData::fromRequest(give_clean($_GET));
+
+        // let the controller handle the request
+        return give(DonationFormViewController::class)->show($routeData);
     }
 
     /**
