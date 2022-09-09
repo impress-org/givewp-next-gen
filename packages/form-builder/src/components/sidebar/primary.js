@@ -1,15 +1,17 @@
-import {
-    createSlotFill,
-    TabPanel,
-} from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import {createSlotFill} from '@wordpress/components';
+import {__} from '@wordpress/i18n';
 
-import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings} from '../../settings'
+import TabPanel from './tab-panel';
+
+import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings} from '../../settings';
 import FormFields from "../../settings/form-fields";
 import {PopoutSlot} from "./popout";
+import {useState} from "@wordpress/element";
+import {useEffect} from "react";
+import useSelectedBlocks from "../../hooks/useSelectedBlocks";
 
-const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
-    'StandAloneBlockEditorSidebarInspector'
+const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill(
+    'StandAloneBlockEditorSidebarInspector',
 );
 
 const tabs = [
@@ -24,7 +26,7 @@ const tabs = [
                 <OfflineDonationsSettings />
                 <FormFields />
             </>
-        )
+        ),
     },
     {
         name: 'block',
@@ -34,26 +36,38 @@ const tabs = [
             <>
                 <InspectorSlot bubblesVirtually />
             </>
-        )
+        ),
     },
-]
+];
 
 function Sidebar() {
+
+    const [selectedTab, setSelectedTab] = useState(null);
+
+    const selectedBlocks = useSelectedBlocks();
+
+    useEffect(
+        () => {
+            if (selectedBlocks.length) setSelectedTab('block');
+        }
+        , [selectedBlocks], // only run effect when selectedBlocks changes
+    );
 
     return (
         <div
             className="givewp-next-gen-sidebar givewp-next-gen-sidebar-primary"
             role="region"
-            aria-label={ __( 'Standalone Block Editor advanced settings.' ) }
+            aria-label={__('Standalone Block Editor advanced settings.')}
             tabIndex="-1"
         >
             <PopoutSlot />
             <TabPanel
                 className="sidebar-panel"
                 activeClass="active-tab"
-                tabs={ tabs }
+                tabs={tabs}
+                state={[selectedTab, setSelectedTab]}
             >
-                { ( tab ) => <tab.content /> }
+                {(tab) => <tab.content />}
             </TabPanel>
         </div>
     );

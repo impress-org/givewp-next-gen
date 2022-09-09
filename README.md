@@ -1,76 +1,25 @@
-# GiveWP - Addon Boilerplate
-A demo plugin to serve as a boilerplate for developers to understand how to extend the GiveWP Donation
-plugin for WordPress.
+<h1><p align="center">GiveWP - Visual Donation Form Builder 💚</p></h1>
 
-## Setup & Installation
-1. Clone this repository to your local
-2. Remove the `.git` directory
-3. Run `php build.php` from the CLI
-4. Run `composer install` from the CLI
-5. Run `npm install` from the CLI
-6. Update this README (see below for a starting point)
-
-### Asset Compilation
-To compile your CSS & JS assets, run one of the following:
-- `npm run dev` — Compiles all assets for development one time
-- `npm run watch` — Compiles all assets for development one time and then watches for changes, supporting [BrowserSync](https://laravel-mix.com/docs/5.0/browsersync)
-- `npm run hot` — Compiles all assets for development one time and then watches for [hot replacement](https://laravel-mix.com/docs/5.0/hot-module-replacement)
-- `npm run dev` — Compiles all assets for production one time
-
-## Concepts
-
-GiveWP follows a domain-driven model both in core and in add-ons. Each business feature defines
-its own domain, including whatever it needs (settings, models, etc.) to do what it does. It's also
-important these domains are portable, that is, they are not bound to the plugin and could move to or
-from another plugin as needed.
-
-For these reasons, each add-on has two primary directories for handling its logic:
-- src/Addon
-- src/Domain
-
-### src directory
-
-The src directory handles business domain logic (i.e. a specific feature). The src
-directory should have no files in the root, but be a collection of folders. Each folder represents
-a distinct domain. Even if there is only one domain for the add-on, it should still live inside a
-domain directory.
-
-### src/Domain directory
-
-It is possible for an add-on to have multiple domains, but it will always have at least one. Feel
-free to duplicate this directory and make more. This directory is just the starting point for the
-initial domain.
-
-### src/Addon directory
-
-This unique domain directory is responsible for the fact that the add-on is a WordPress plugin.
-Plugins do things such as activate, upgrade, and uninstall — the logic of which should be handled
-there. All GiveWP add-ons also check for compatibility with GiveWP core, and this also is handled
-here.
-
-The `src/Addon` directory may reference code in the `src` directory, but not the other way around.
-No domain code should reference (and therefore depend on) the `src/Addon` directory. Doing this
-keeps the dependency unidirectional.
-
-#### Note for developers
-If running `npm run dev` throws an error then check whether the `images` folder exists in your addon directory under `src/Addon/resources`. 
-1. If the `images` folder does not exist then create one. 
-2. If the `images` folder isn't required then remove the code from `webpack.config.js`.
+<p align="center">🚨 Warning this project is a work in progress and should not be used on a live site to accept donations. With that disclaimer out of the way, let's answer the question of what the heck this is. The goal of this project is to provide GiveWP admins complete flexibility over the donation form creation process via a brand new visual donation builder.</p>
 
 ---
 
-DELETE ABOVE THIS LINE WHEN REWRITING README
+## The Why
 
----
+GiveWP is developing a solution to allow fundraisers to create their donation forms in a more powerful, drag-and-drop, visual way.
 
-## Introduction
+At the core of the project is a new interface designed to give administrators new tools to create and edit their donation forms. It will be similar to other form builders, but specifically tailored to the unique needs of nonprofit organizations.
 
-[Write an introduction to what this addon is for]
+In this new interface admins will be able to add custom fields to various locations of their donation form and map the corresponding custom data to either donor or donation metadata. The default required fields for donation forms (first and last name, email, and relevant payment fields) will be customizable by allowing label changes, placeholder text, tooltips, and more.
+
+To achieve this new functionality the team is engaging in UX/UI design and development, frontend and backend database development, and an extensive overhaul of the payment gateways API.
 
 ## Development
 
+Want to help contribute? Awesome! We're always looking for new contributors to help us out.
+
 ### Getting Set Up
-1. Clone this repository locally
+1. Clone this repository locally in your `wp-content/plugins/` directory.
 2. Run `composer install` from the CLI
 3. Run `npm install` from the CLI
 
@@ -80,3 +29,19 @@ To compile your CSS & JS assets, run one of the following:
 - `npm run watch` — Compiles all assets for development one time and then watches for changes, supporting [BrowserSync](https://laravel-mix.com/docs/5.0/browsersync)
 - `npm run hot` — Compiles all assets for development one time and then watches for [hot replacement](https://laravel-mix.com/docs/5.0/hot-module-replacement)
 - `npm run dev` — Compiles all assets for production one time
+
+## Packages
+
+Parts of the codebase are separated out into packages, making the repository a "monorepo". This allows for related functionality to be maintained in the same repository, but allows for technical differences in development.
+
+Packages are managed using NPM "workspaces" and NPM commands can be passed to individual packages using the `-w` flag and are namespaced as `@givewp/{package-name}`.
+
+### Donation Form Builder - `@givewp/form-builder`
+
+The Visual Donation Form Builder package, also known internally as "Givenberg", uses WordPress Gutenberg components to create a custom block editor (not to be confused with THE WordPress Block Editor, which is the main solution built with the Gutenberg components).
+
+Local development uses Create React App and can be run outside the context of WordPress.
+
+To develop the Visual Donation Form Builder locally run `npm run start -w @givewp/form-builder` to start the local environment. If this does not work, you can always change into the `/packages/form-builder` directory and run `npm run start` from there.
+
+To build the Form Builder for use in the context of WordPress run `npm run build -w @givewp/form-builder`. This will create a build inside the plugin which is used by the corresponding domain in the `src/FormBuilder` directory.

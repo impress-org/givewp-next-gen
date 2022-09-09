@@ -16,7 +16,7 @@ class GenerateDonateRouteUrl
      * @return string
      *
      */
-    public function __invoke()
+    public function __invoke(): string
     {
         $signature = new DonateRouteSignature('give-donate');
 
@@ -27,9 +27,11 @@ class GenerateDonateRouteUrl
             'give-route-signature-expiration' => $signature->expiration,
         ];
 
-        return add_query_arg(
-            $queryArgs,
-            home_url()
+        return esc_url_raw(
+            add_query_arg(
+                $queryArgs,
+                home_url()
+            )
         );
     }
 }

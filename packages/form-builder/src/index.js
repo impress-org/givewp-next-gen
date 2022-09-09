@@ -1,21 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {registerBlockType} from '@wordpress/blocks';
 
 import './index.scss';
+
 import App from './App';
 
-import './blocks/fields/index'
+import sectionBlocks, {sectionBlockNames} from './blocks/section';
 
-import './blocks/nameFieldGroup'
-import './blocks/nameFieldGroup/style.scss'
+import fieldBlocks from './blocks/fields';
+import elementBlocks from './blocks/elements';
 
-import './blocks/donation-amount-levels/index'
+sectionBlocks.map(({name, settings}) => registerBlockType(name, settings));
 
-import './blocks/section/index'
+[...fieldBlocks, ...elementBlocks].map(({name, settings}) =>
+    registerBlockType(name, {...settings, parent: sectionBlockNames})
+);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+    document.getElementById('root')
 );

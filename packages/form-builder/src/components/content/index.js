@@ -1,20 +1,16 @@
-import React  from 'react';
-import {BlockList, BlockTools, ObserveTyping, WritingFlow, ButtonBlockAppender, RichText } from "@wordpress/block-editor";
-import {useFormSettings} from "../../settings/context";
+import React from 'react';
+import {
+    BlockList,
+    BlockTools,
+    ObserveTyping,
+    WritingFlow,
+    ButtonBlockAppender,
+} from "@wordpress/block-editor";
 
 const Component = () => {
-
-    const [ { formTitle }, updateFormSetting ] = useFormSettings();
-
     return (
         <BlockTools>
             <WritingFlow>
-                <RichText
-                    tagName="h1"
-                    value={ formTitle }
-                    onChange={ ( formTitle ) => updateFormSetting( formTitle ) }
-                    style={{ margin: '40px' }}
-                />
                 <ObserveTyping>
                     <BlockList
                         renderAppender={ButtonBlockAppender}
@@ -22,7 +18,7 @@ const Component = () => {
                 </ObserveTyping>
             </WritingFlow>
         </BlockTools>
-    )
-}
+    );
+};
 
-export default Component
+export default Component;
