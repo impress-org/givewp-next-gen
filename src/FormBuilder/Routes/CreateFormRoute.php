@@ -2,6 +2,9 @@
 
 namespace Give\FormBuilder\Routes;
 
+/**
+ * Route to create a new form
+ */
 class CreateFormRoute
 {
     /**
