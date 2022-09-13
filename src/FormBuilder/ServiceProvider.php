@@ -19,7 +19,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        //
     }
 
     /**

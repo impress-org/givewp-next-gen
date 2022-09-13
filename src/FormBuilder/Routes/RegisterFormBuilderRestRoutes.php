@@ -2,10 +2,22 @@
 
 namespace Give\FormBuilder\Routes;
 
+use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use WP_REST_Request;
 
 class RegisterFormBuilderRestRoutes
 {
+    /**
+     * @var FormBuilderResourceController
+     */
+    protected $formBuilderResourceController;
+
+    public function __construct(
+        FormBuilderResourceController $formBuilderResourceController
+    ) {
+        $this->formBuilderResourceController = $formBuilderResourceController;
+    }
+
     /**
      * @unreleased
      *
@@ -13,8 +25,11 @@ class RegisterFormBuilderRestRoutes
      */
     public function __invoke()
     {
-        $this->registerGetForm();
-        $this->registerPostForm();
+        $namespace = 'givewp/next-gen';
+        $route = '/form/(?P<id>\d+)';
+        
+        $this->registerGetForm($namespace, $route);
+        $this->registerPostForm($namespace, $route);
     }
 
     /**
@@ -24,24 +39,20 @@ class RegisterFormBuilderRestRoutes
      *
      * @return void
      */
-    public function registerGetForm()
+    public function registerGetForm(string $namespace, string $route)
     {
-        register_rest_route('givewp/next-gen', '/form/(?P<id>\d+)', [
+        register_rest_route($namespace, $route, [
             'methods' => 'GET',
             'callback' => function (WP_REST_Request $request) {
-                return [
-                    'blocks' => get_post($request->get_param('id'))->post_content,
-                    'settings' => get_post_meta($request->get_param('id'), 'formBuilderSettings', true),
-                ];
+                return $this->formBuilderResourceController->view($request);
             },
             'permission_callback' => function () {
                 return current_user_can('manage_options');
             },
             'args' => [
                 'id' => [
-                    'validate_callback' => function ($param, $request, $key) {
-                        return is_numeric($param);
-                    },
+                    'type' => 'integer',
+                    'sanitize_callback' => 'absint',
                 ],
             ],
         ]);
@@ -54,38 +65,22 @@ class RegisterFormBuilderRestRoutes
      *
      * @return void
      */
-    public function registerPostForm()
+    public function registerPostForm(string $namespace, string $route)
     {
-        register_rest_route('givewp/next-gen', '/form/(?P<id>\d+)', [
+        register_rest_route($namespace, $route, [
             'methods' => 'POST',
             'callback' => function (WP_REST_Request $request) {
-                $settings = json_decode($request->get_param('settings'));
-                $meta = update_post_meta(
-                    $request->get_param('id'),
-                    'formBuilderSettings',
-                    $request->get_param('settings')
-                );
-                $post = wp_update_post([
-                    'ID' => $request->get_param('id'),
-                    'post_content' => $request->get_param('blocks'),
-                    'post_title' => $settings->formTitle,
-                ]);
-
-                return [
-                    $meta,
-                    $post,
-                ];
+                return $this->formBuilderResourceController->update($request);
             },
             'permission_callback' => function () {
                 return current_user_can('manage_options');
             },
             'args' => [
                 'id' => [
-                    'validate_callback' => function ($param, $request, $key) {
-                        return is_numeric($param);
-                    },
+                    'type' => 'integer',
+                    'sanitize_callback' => 'absint',
                 ],
-                'blockData' => [
+                'blocks' => [
                     'type' => 'string',
                 ],
             ],
