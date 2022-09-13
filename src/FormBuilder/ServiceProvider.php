@@ -3,6 +3,7 @@
 namespace Give\FormBuilder;
 
 use Give\Addon\View;
+use Give\FormBuilder\Routes\CreateFormRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderRestRoutes;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -27,30 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('rest_api_init', RegisterFormBuilderRestRoutes::class);
 
-        add_action('admin_init', function () {
-            if (isset($_GET['page']) && 'campaign-builder' === $_GET['page']) {
-                // Little hack for alpha users to make sure the form builder is loaded.
-                if ( ! isset($_GET['donationFormID'])) {
-                    wp_redirect('edit.php?post_type=give_forms&page=campaign-builder&donationFormID=new');
-                    exit();
-                }
-                if ('new' === $_GET['donationFormID']) {
-                    $newPostID = wp_insert_post([
-                        'post_type' => 'give_forms',
-                        'post_status' => 'publish',
-                        'post_content' => json_encode(null),
-                    ]);
-
-                    wp_update_post([
-                        'ID' => $newPostID,
-                        'post_title' => "Next Gen Donation Form ID:$newPostID",
-                    ]);
-
-                    wp_redirect('edit.php?post_type=give_forms&page=campaign-builder&donationFormID=' . $newPostID);
-                    exit();
-                }
-            }
-        });
+        Hooks::addAction('admin_init', CreateFormRoute::class);
 
         add_action('admin_init', function () {
             if (isset($_GET['post']) && isset($_GET['action']) && 'edit' === $_GET['action']) {
