@@ -9,7 +9,7 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
-     * TODO: replace with form model
+     * TODO: replace logic with form model
      *
      * @unreleased
      */
@@ -28,7 +28,7 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
-     * TODO: replace with form model
+     * TODO: replace logic with form model
      *
      * @unreleased
      */

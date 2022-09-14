@@ -2,6 +2,7 @@
 
 namespace Give\FormBuilder\Routes;
 use Give\Addon\View;
+use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 
 /**
@@ -38,7 +39,7 @@ class RegisterFormBuilderPageRoute
      */
     public function renderPage()
     {
-        [$css, $js] = $this->getAssetManifest();
+        $formBuilderViewModel = new FormBuilderViewModel();
 
         $formBuilderStorage = (new EnqueueScript(
             '@givewp/form-builder/storage',
@@ -48,19 +49,13 @@ class RegisterFormBuilderPageRoute
             'give'
         ));
 
-        $formBuilderStorage->registerLocalizeData('storageData', [
-            'resourceURL' => rest_url('givewp/next-gen/form/' . abs($_GET['donationFormID'])),
-            'nonce' => wp_create_nonce('wp_rest'),
-            'blockData' => get_post(abs($_GET['donationFormID']))->post_content,
-            'settings' => get_post_meta(abs($_GET['donationFormID']), 'formBuilderSettings', true),
-            'currency' => give_get_currency(),
-        ]);
+        $formBuilderStorage->registerLocalizeData('storageData', $formBuilderViewModel->storageData());
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
         (new EnqueueScript(
             '@givewp/form-builder/script',
-            'packages/form-builder/build/' . $js,
+            'packages/form-builder/build/' . $formBuilderViewModel->js(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
@@ -68,30 +63,11 @@ class RegisterFormBuilderPageRoute
 
         wp_add_inline_script(
             '@givewp/form-builder/script',
-            "
-                        document.getElementById('app').attachShadow({mode: 'open'})
-                            .appendChild( document.getElementById('root') )
-                            .appendChild( document.getElementById('shadowDomStyles') )
-                    "
+            $formBuilderViewModel->attachShadowScript()
         );
 
         View::render('FormBuilder.admin-form-builder', [
-            'shadowDomStyles' => file_get_contents(
-                trailingslashit(GIVE_NEXT_GEN_DIR) . 'packages/form-builder/build/' . $css
-            ),
+            'shadowDomStyles' => $formBuilderViewModel->shadowDomStyles(),
         ]);
-    }
-
-    /**
-     * Get css and js paths from manifest file
-     *
-     * @unreleased
-     */
-    public function getAssetManifest(): array
-    {
-        return json_decode(
-            file_get_contents(GIVE_NEXT_GEN_DIR . 'packages/form-builder/build/asset-manifest.json'),
-            false
-        )->entrypoints;
     }
 }
