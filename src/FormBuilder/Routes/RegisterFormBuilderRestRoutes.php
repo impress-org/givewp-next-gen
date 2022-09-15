@@ -12,6 +12,9 @@ class RegisterFormBuilderRestRoutes
      */
     protected $formBuilderResourceController;
 
+    /**
+     * @unreleased
+     */
     public function __construct(
         FormBuilderResourceController $formBuilderResourceController
     ) {
@@ -27,7 +30,7 @@ class RegisterFormBuilderRestRoutes
     {
         $namespace = 'givewp/next-gen';
         $route = '/form/(?P<id>\d+)';
-        
+
         $this->registerGetForm($namespace, $route);
         $this->registerPostForm($namespace, $route);
     }

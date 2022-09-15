@@ -1,5 +1,7 @@
 <?php
-/* @var string $shadowDomStyles ; */
+/* @unreleased
+ * @var string $shadowDomStyles
+ */
 
 ?>
 <div id="app">

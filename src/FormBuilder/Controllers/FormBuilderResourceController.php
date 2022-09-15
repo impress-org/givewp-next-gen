@@ -4,7 +4,7 @@ namespace Give\FormBuilder\Controllers;
 
 use WP_REST_Request;
 
-class FormBuilderResourceController
+class  FormBuilderResourceController
 {
     /**
      * Get the form builder instance
