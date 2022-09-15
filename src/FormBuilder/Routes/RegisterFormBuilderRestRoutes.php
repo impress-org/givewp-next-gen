@@ -4,9 +4,12 @@ namespace Give\FormBuilder\Routes;
 
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use WP_REST_Request;
+use WP_REST_Server;
 
 class RegisterFormBuilderRestRoutes
 {
+    public $namespace = 'givewp/next-gen';
+
     /**
      * @var FormBuilderResourceController
      */
@@ -45,9 +48,9 @@ class RegisterFormBuilderRestRoutes
     public function registerGetForm(string $namespace, string $route)
     {
         register_rest_route($namespace, $route, [
-            'methods' => 'GET',
+            'methods' => WP_REST_Server::READABLE,
             'callback' => function (WP_REST_Request $request) {
-                return $this->formBuilderResourceController->view($request);
+                return $this->formBuilderResourceController->show($request);
             },
             'permission_callback' => function () {
                 return current_user_can('manage_options');
@@ -71,7 +74,7 @@ class RegisterFormBuilderRestRoutes
     public function registerPostForm(string $namespace, string $route)
     {
         register_rest_route($namespace, $route, [
-            'methods' => 'POST',
+            'methods' => WP_REST_Server::CREATABLE,
             'callback' => function (WP_REST_Request $request) {
                 return $this->formBuilderResourceController->update($request);
             },
