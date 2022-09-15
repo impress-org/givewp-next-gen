@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+
 class FormBuilderViewModel
 {
     /**
@@ -14,7 +16,7 @@ class FormBuilderViewModel
         $donationFormId = abs($_GET['donationFormID']);
 
         return [
-            'resourceURL' => rest_url('givewp/next-gen/form/' . $donationFormId),
+            'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $donationFormId),
             'nonce' => wp_create_nonce('wp_rest'),
             'blockData' => get_post($donationFormId)->post_content,
             'settings' => get_post_meta($donationFormId, 'formBuilderSettings', true),
