@@ -3,13 +3,12 @@
 namespace Give\FormBuilder\Routes;
 
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
+use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use WP_REST_Request;
 use WP_REST_Server;
 
 class RegisterFormBuilderRestRoutes
 {
-    public $namespace = 'givewp/next-gen';
-
     /**
      * @var FormBuilderResourceController
      */
@@ -31,11 +30,8 @@ class RegisterFormBuilderRestRoutes
      */
     public function __invoke()
     {
-        $namespace = 'givewp/next-gen';
-        $route = '/form/(?P<id>\d+)';
-
-        $this->registerGetForm($namespace, $route);
-        $this->registerPostForm($namespace, $route);
+        $this->registerGetForm(FormBuilderRestRouteConfig::NAMESPACE, FormBuilderRestRouteConfig::PATH);
+        $this->registerPostForm(FormBuilderRestRouteConfig::NAMESPACE, FormBuilderRestRouteConfig::PATH);
     }
 
     /**

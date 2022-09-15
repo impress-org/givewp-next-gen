@@ -3,6 +3,7 @@
 namespace TestsNextGen\Feature\Controllers;
 
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
+use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 use WP_Error;
@@ -355,7 +356,7 @@ class FormBuilderResourceControllerTest extends TestCase
     {
         return new WP_REST_Request(
             $method,
-            '/wp/v2/givewp/next-gen'
+            '/wp/v2/' . FormBuilderRestRouteConfig::PATH
         );
     }
 }
