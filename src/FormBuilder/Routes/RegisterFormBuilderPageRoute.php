@@ -41,6 +41,14 @@ class RegisterFormBuilderPageRoute
     {
         $formBuilderViewModel = new FormBuilderViewModel();
 
+        $donationFormId = abs($_GET['donationFormID']);
+
+        // validate form exists before proceeding
+        // TODO: improve on this validation
+        if (!get_post($donationFormId)) {
+            wp_die(__('Donation form does not exist.'));
+        }
+
         $formBuilderStorage = (new EnqueueScript(
             '@givewp/form-builder/storage',
             'src/FormBuilder/resources/js/storage.js',
@@ -49,7 +57,7 @@ class RegisterFormBuilderPageRoute
             'give'
         ));
 
-        $formBuilderStorage->registerLocalizeData('storageData', $formBuilderViewModel->storageData());
+        $formBuilderStorage->registerLocalizeData('storageData', $formBuilderViewModel->storageData($donationFormId));
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
