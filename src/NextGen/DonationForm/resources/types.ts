@@ -123,6 +123,7 @@ export interface Node {
 export interface Field extends Node {
     nodeType: 'field';
     label: string;
+    placeholder: string | null;
     validationRules: {
         [key: string]: any;
     };

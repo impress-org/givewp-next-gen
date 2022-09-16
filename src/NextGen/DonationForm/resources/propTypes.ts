@@ -5,7 +5,15 @@ export interface FieldProps extends Field {
     inputProps: UseFormRegisterReturn;
 }
 
-export interface ElementProps extends Element {}
+export interface SelectFieldProps extends FieldProps {
+    options: Array<{
+        value,
+        label
+    }>
+}
+
+export interface ElementProps extends Element {
+}
 
 export interface GroupProps extends Group {
     inputProps: {
