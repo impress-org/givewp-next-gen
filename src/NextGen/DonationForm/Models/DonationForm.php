@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Models;
 
+use Give\Framework\FieldsAPI\Form;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\NextGen\DonationForm\Traits\DonationFormCRUD;
@@ -20,8 +21,15 @@ class DonationForm extends Model implements ModelCrud
      */
     protected $properties = [
         'id' => 'int',
+        'formTitle' => 'string',
+        'schema' => Form::class,
+        'settings' => 'array',
     ];
 
+    public function getSetting( $settingName )
+    {
+        return $this->settings[$settingName];
+    }
 
     /**
      * @unreleased

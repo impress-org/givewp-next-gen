@@ -10,6 +10,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
 
 /**
  * @unreleased
@@ -190,7 +191,14 @@ class DonationFormRepository
         return $builder->from('posts')
             ->select(
                 ['ID', 'id'],
+                ['post_title', 'formTitle'],
                 ['post_content', 'blocksData']
+            )
+            ->attachMeta(
+                'give_formmeta',
+                'ID',
+                'form_id',
+                ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_forms');
     }

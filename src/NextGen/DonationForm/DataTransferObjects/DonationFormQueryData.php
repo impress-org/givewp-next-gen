@@ -2,7 +2,9 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
 
 class DonationFormQueryData
 {
@@ -10,6 +12,21 @@ class DonationFormQueryData
      * @var int
      */
     public $id;
+
+    /**
+     * @var string
+     */
+    public $formTitle;
+
+    /**
+     * @var string
+     */
+    public $schema;
+
+    /**
+     * @var array
+     */
+    public $settings;
 
     /**
      * Convert data from object to Donation Form
@@ -24,6 +41,9 @@ class DonationFormQueryData
     {
         $self = new static();
         $self->id = (int)$queryObject->id;
+        $self->formTitle = $queryObject->formTitle;
+        $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->id, $queryObject->blocksData );
+        $self->settings = json_decode($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}, true);
 
         return $self;
     }
@@ -33,7 +53,7 @@ class DonationFormQueryData
      *
      * @return DonationForm
      */
-    public function toDonationForm()
+    public function toDonationForm(): DonationForm
     {
         $attributes = get_object_vars($this);
 
