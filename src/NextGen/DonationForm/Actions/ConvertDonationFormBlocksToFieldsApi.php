@@ -13,17 +13,19 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
-use stdClass;
+use Give\NextGen\Framework\Blocks\BlockCollection;
+use Give\NextGen\Framework\Blocks\BlockModel;
 
 class ConvertDonationFormBlocksToFieldsApi
 {
     public function __invoke( $rootNodeName, $blocksData ): Form
     {
         $form = new Form($rootNodeName);
-        $formBlocks = json_decode($blocksData, false);
 
-        foreach ($formBlocks as $block) {
-            $form->append($this->convertFormBlockToSection($block));
+        $blocks = BlockCollection::fromJson($blocksData);
+
+        foreach ($blocks as $block) {
+            $form->append($this->convertTopLevelBlockToSection($block));
         }
 
         return $form;
@@ -32,22 +34,22 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      */
-    protected function convertFormBlockToSection(stdClass $block): Section
+    protected function convertTopLevelBlockToSection(BlockModel $block): Section
     {
-        return Section::make(substr($block->name, strpos($block->name, '/') + 1))
-            ->label($block->attributes->title)
-            ->description($block->attributes->description)
-            ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks));
+        return Section::make($block->getShortName())
+            ->label($block->attributes['title'])
+            ->description($block->attributes['description'])
+            ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->toArray()));
     }
 
     /**
      * @unreleased
      * @throws EmptyNameException
      */
-    protected function convertInnerBlockToNode(stdClass $block): Node
+    protected function convertInnerBlockToNode(BlockModel $block): Node
     {
         $node = $this->createNodeFromBlockWithUniqueAttributes($block);
-        return $this->mapGenericBlockAttributesToNode($node, $block->attributes);
+        return $this->mapGenericBlockAttributesToNode($node, $block);
     }
 
     protected function createNodeFromBlockWithUniqueAttributes($block): Node
@@ -56,7 +58,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "custom-block-editor/donation-amount-levels":
                 return Amount::make('amount')
-                    ->levels(...array_map('absint', $block->attributes->levels))
+                    ->levels(...array_map('absint', $block->attributes['levels']))
                     ->allowCustomAmount()
                     ->defaultValue(50)
                     ->required();
@@ -66,7 +68,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "custom-block-editor/paragraph":
                 return Paragraph::make(substr(md5(mt_rand()), 0, 7))
-                    ->content($block->attributes->content);
+                    ->content($block->attributes['content']);
 
             case "custom-block-editor/email-field":
                 return Email::make('email')->emailTag('email');
@@ -85,44 +87,44 @@ class ConvertDonationFormBlocksToFieldsApi
         }
     }
 
-    protected function createNodeFromDonorNameBlock(stdClass $block): Node
+    protected function createNodeFromDonorNameBlock(BlockModel $block): Node
     {
         return Name::make('name')->tap(function ($group) use ($block) {
             $group->getNodeByName('firstName')
-                ->label($block->attributes->firstNameLabel)
-                ->placeholder($block->attributes->firstNamePlaceholder);
+                ->label($block->attributes['firstNameLabel'])
+                ->placeholder($block->attributes['firstNamePlaceholder']);
 
             $group->getNodeByName('lastName')
-                ->label($block->attributes->lastNameLabel)
-                ->placeholder($block->attributes->lastNamePlaceholder)
-                ->required($block->attributes->requireLastName);
+                ->label($block->attributes['lastNameLabel'])
+                ->placeholder($block->attributes['lastNamePlaceholder'])
+                ->required($block->attributes['requireLastName']);
 
             if ($block->attributes->showHonorific) {
                 $group->getNodeByName('honorific')
                     ->label('Title')
-                    ->options(...$block->attributes->honorifics);
+                    ->options(...$block->attributes['honorifics']);
             } else {
                 $group->remove('honorific');
             }
         });
     }
 
-    protected function mapGenericBlockAttributesToNode(Node $node, stdClass $attributes): Node
+    protected function mapGenericBlockAttributesToNode(Node $node, BlockModel $block): Node
     {
         if ('field' === $node->getNodeType()) {
             // Label
-            if (property_exists($attributes, 'label')) {
-                $node->label($attributes->label);
+            if ($block->hasAttribute('label')) {
+                $node->label($block->attributes['label']);
             }
 
             // Placeholder
-            if (property_exists($attributes, 'placeholder')) {
-                $node->placeholder($attributes->placeholder);
+            if ($block->hasAttribute('placeholder')) {
+                $node->placeholder($block->attributes['placeholder']);
             }
 
             // Required
-            if (property_exists($attributes, 'isRequired')) {
-                $node->required($attributes->isRequired);
+            if ($block->hasAttribute('isRequired')) {
+                $node->required($block->attributes['isRequired']);
             }
         }
 
