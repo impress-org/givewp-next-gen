@@ -65,7 +65,7 @@ class DonationFormRepository
                     'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $dateCreatedFormatted,
                     'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
-                    //'post_status' => $donationForm->status->getValue(),
+                    'post_status' => $donationForm->status->getValue(),
                     'post_type' => 'give_forms',
                     'post_parent' => 0,
                 ]);
@@ -116,7 +116,7 @@ class DonationFormRepository
                 ->update([
                     'post_modified' => $date,
                     'post_modified_gmt' => get_gmt_from_date($date),
-                    //'post_status' => $donationForm->status->getValue(),
+                    'post_status' => $donationForm->status->getValue(),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -191,6 +191,7 @@ class DonationFormRepository
         return $builder->from('posts')
             ->select(
                 ['ID', 'id'],
+                ['post_status', 'status'],
                 ['post_title', 'formTitle'],
                 ['post_content', 'blocksData']
             )

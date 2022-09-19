@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
 
 class DonationFormQueryData
 {
@@ -42,6 +43,7 @@ class DonationFormQueryData
         $self = new static();
         $self->id = (int)$queryObject->id;
         $self->formTitle = $queryObject->formTitle;
+        $self->status = new DonationFormStatus($queryObject->status);
         $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->id, $queryObject->blocksData );
         $self->settings = json_decode($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}, true);
 

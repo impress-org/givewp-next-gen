@@ -6,6 +6,7 @@ use Give\Framework\FieldsAPI\Form;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\NextGen\DonationForm\Traits\DonationFormCRUD;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
 
 /**
  * @unreleased
@@ -22,6 +23,7 @@ class DonationForm extends Model implements ModelCrud
     protected $properties = [
         'id' => 'int',
         'formTitle' => 'string',
+        'status' => DonationFormStatus::class,
         'schema' => Form::class,
         'settings' => 'array',
     ];
