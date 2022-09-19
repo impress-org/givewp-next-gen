@@ -41,10 +41,12 @@ class TestDonationForm extends TestCase
         ]);
 
         $donationForm->formTitle = 'Updated Form Title';
+        $donationForm->updateSetting('foo', 'bar');
         $donationForm->save();
 
         $donationFormFromDatabase = DonationForm::find($donationForm->id);
 
         $this->assertEquals('Updated Form Title', $donationFormFromDatabase->formTitle);
+        $this->assertEquals('bar', $donationFormFromDatabase->getSetting('foo'));
     }
 }
