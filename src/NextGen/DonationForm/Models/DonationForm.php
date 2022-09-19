@@ -2,9 +2,12 @@
 
 namespace Give\NextGen\DonationForm\Models;
 
+use DateTime;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\Models\Contracts\ModelCrud;
+use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
+use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Traits\DonationFormCRUD;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
 
@@ -13,7 +16,7 @@ use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
  *
  * @property int $id
  */
-class DonationForm extends Model implements ModelCrud
+class DonationForm extends Model implements ModelCrud, ModelHasFactory
 {
     use DonationFormCRUD;
 
@@ -23,6 +26,8 @@ class DonationForm extends Model implements ModelCrud
     protected $properties = [
         'id' => 'int',
         'formTitle' => 'string',
+        'createdAt' => DateTime::class,
+        'updatedAt' => DateTime::class,
         'status' => DonationFormStatus::class,
         'schema' => Form::class,
         'settings' => 'array',
@@ -43,5 +48,10 @@ class DonationForm extends Model implements ModelCrud
         return array_merge(parent::getPropertyDefaults(), [
             //
         ]);
+    }
+
+    public static function factory(): DonationFormFactory
+    {
+        return new DonationFormFactory(static::class);
     }
 }

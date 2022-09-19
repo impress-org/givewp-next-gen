@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
@@ -43,9 +44,14 @@ class DonationFormQueryData
         $self = new static();
         $self->id = (int)$queryObject->id;
         $self->formTitle = $queryObject->formTitle;
+        $self->createdAt = Temporal::toDateTime($queryObject->createdAt);
+        $self->updatedAt = Temporal::toDateTime($queryObject->updatedAt);
         $self->status = new DonationFormStatus($queryObject->status);
-        $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->id, $queryObject->blocksData );
         $self->settings = json_decode($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}, true);
+
+        if($queryObject->blocksData) {
+            $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->id, $queryObject->blocksData );
+        }
 
         return $self;
     }

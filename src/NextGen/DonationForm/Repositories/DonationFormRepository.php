@@ -23,7 +23,7 @@ class DonationFormRepository
      * @var string[]
      */
     private $requiredProperties = [
-        'id',
+        //
     ];
 
     /**
@@ -68,9 +68,17 @@ class DonationFormRepository
                     'post_status' => $donationForm->status->getValue(),
                     'post_type' => 'give_forms',
                     'post_parent' => 0,
+                    'post_title' => $donationForm->formTitle,
                 ]);
 
             $donationFormId = DB::last_insert_id();
+
+            DB::table('give_formmeta')
+                ->insert([
+                    'form_id' => $donationFormId,
+                    'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
+                    'meta_value' => json_encode($donationForm->settings),
+                ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -191,6 +199,8 @@ class DonationFormRepository
         return $builder->from('posts')
             ->select(
                 ['ID', 'id'],
+                ['post_date', 'createdAt'],
+                ['post_modified', 'updatedAt'],
                 ['post_status', 'status'],
                 ['post_title', 'formTitle'],
                 ['post_content', 'blocksData']
