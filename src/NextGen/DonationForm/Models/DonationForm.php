@@ -15,6 +15,12 @@ use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
  * @unreleased
  *
  * @property int $id
+ * @property string $formTitle
+ * @property DateTime $createdAt
+ * @property DateTime $updatedAt
+ * @property DonationFormStatus $status
+ * @property Form $schema
+ * @property array $settings
  */
 class DonationForm extends Model implements ModelCrud, ModelHasFactory
 {
@@ -33,11 +39,26 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         'settings' => 'array',
     ];
 
+    /**
+     * @unreleased
+     *
+     * @param string $settingName
+     *
+     * @return mixed
+     */
     public function getSetting( $settingName )
     {
         return $this->settings[$settingName];
     }
 
+    /**
+     * @unreleased
+     *
+     * @param $name
+     * @param $value
+     *
+     * @return $this
+     */
     public function updateSetting($name, $value): self
     {
         $this->settings = array_merge($this->settings, [
@@ -58,6 +79,10 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         ]);
     }
 
+    /**
+     * @unreleased
+     * @return DonationFormFactory
+     */
     public static function factory(): DonationFormFactory
     {
         return new DonationFormFactory(static::class);

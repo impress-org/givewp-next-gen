@@ -9,6 +9,9 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonationFormQueryData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 
+/**
+ * @unreleased
+ */
 trait DonationFormCRUD
 {
     /**
