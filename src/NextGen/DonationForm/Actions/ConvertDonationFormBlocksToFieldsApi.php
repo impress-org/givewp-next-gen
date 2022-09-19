@@ -99,7 +99,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->placeholder($block->attributes['lastNamePlaceholder'])
                 ->required($block->attributes['requireLastName']);
 
-            if ($block->attributes->showHonorific) {
+            if ($block->hasAttribute('showHonorific')) {
                 $group->getNodeByName('honorific')
                     ->label('Title')
                     ->options(...$block->attributes['honorifics']);
