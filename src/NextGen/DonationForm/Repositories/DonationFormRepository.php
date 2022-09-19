@@ -125,7 +125,16 @@ class DonationFormRepository
                     'post_modified' => $date,
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donationForm->status->getValue(),
+                    'post_title' => $donationForm->formTitle,
                 ]);
+
+            DB::table('give_formmeta')
+                ->where('form_id', $donationForm->id)
+                ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
+                ->update([
+                    'meta_value' => json_encode($donationForm->settings),
+                ]);
+
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

@@ -33,4 +33,18 @@ class TestDonationForm extends TestCase
 
         $this->assertEquals($donationForm->getAttributes(), $donationFromDatabase->getAttributes());
     }
+
+    public function testDonationFormShouldUpdate()
+    {
+        $donationForm = DonationForm::factory()->create([
+            'formTitle' => 'New Donation Form',
+        ]);
+
+        $donationForm->formTitle = 'Updated Form Title';
+        $donationForm->save();
+
+        $donationFormFromDatabase = DonationForm::find($donationForm->id);
+
+        $this->assertEquals('Updated Form Title', $donationFormFromDatabase->formTitle);
+    }
 }
