@@ -23,7 +23,7 @@ select {
     border-radius: 0.25rem;
     box-shadow: inset 0 0.08em 0.4em rgb(0 0 0 / 15%);
     background-color: #fff;
-    color: #828382;
+    color: #4d4d4d;
     font-size: 1rem;
     font-family: inherit;
     font-weight: 500;
@@ -49,7 +49,7 @@ input[type="text"]:not([name="amount"]), input[type="email"] {
     inline-size: 100%;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 0.08em 0.4em inset;
     background-color: rgb(255, 255, 255);
-    color: rgb(130, 131, 130);
+    color: #4d4d4d;
     font-size: 1rem;
     font-family: inherit;
     font-weight: 500;
@@ -58,6 +58,10 @@ input[type="text"]:not([name="amount"]), input[type="email"] {
     &[aria-invalid="true"],
     &:invalid {
         border-color: red;
+    }
+
+    &::placeholder {
+        opacity: 0.6;
     }
 }
 
