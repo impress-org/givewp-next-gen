@@ -37,6 +37,11 @@ class BlockModel
         return isset($this->attributes[$name]);
     }
 
+    public function getAttribute($name)
+    {
+        return $this->attributes[$name];
+    }
+
     /**
      * Returns the unqualified, or short name, of the block without the namespace.
      *
@@ -58,8 +63,8 @@ class BlockModel
     {
         return new BlockModel(
             $blockData['name'],
-            $blockData['attributes'],
-            BlockCollection::make($blockData['innerBlocks'])
+            $blockData['attributes'] ?? [],
+            BlockCollection::make($blockData['innerBlocks'] ?? [])
         );
     }
 }
