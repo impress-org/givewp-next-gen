@@ -27,12 +27,15 @@ const settings = {
             source: 'attribute',
             default: false,
         },
+        options: {
+            type: 'array',
+        },
     },
 
     edit: function (props) {
 
         const {
-            attributes: {label, placeholder, isRequired},
+            attributes: {label, placeholder, isRequired, options},
             setAttributes,
         } = props;
 
@@ -41,8 +44,12 @@ const settings = {
         return (
             <>
                 <div>
-                    <TextControl className={requiredClass}
-                                 label={label} placeholder={placeholder} required={isRequired} />
+                    {'undefined' === typeof options
+                        ? <TextControl label={label} placeholder={placeholder} required={isRequired}
+                                       className={requiredClass} />
+                        : <select>{options.map((option) => <option key={option.value}
+                                                                   value={option.value}>{option.label}</option>)}</select>
+                    }
                 </div>
 
                 <InspectorControls>
