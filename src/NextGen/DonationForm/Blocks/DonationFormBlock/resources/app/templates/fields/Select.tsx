@@ -5,16 +5,17 @@ export default function Select({label, placeholder, fieldError, options, inputPr
         <label>
             <span>{label}</span>
 
-            <select  {...inputProps} aria-invalid={fieldError ? 'true' : 'false'}>
-                {placeholder ? (
+            <select {...inputProps} aria-invalid={fieldError ? 'true' : 'false'}>
+                {placeholder && (
                     <>
                         <option hidden>{placeholder}</option>
                         <option disabled>{placeholder}</option>
                     </>
-                ) : <option disabled>{' '}</option>
-                }
+                )}
                 {options.map(({value, label}) => (
-                    <option key={value} value={value}>{value}</option>
+                    <option key={value} value={value}>
+                        {label ?? value}
+                    </option>
                 ))}
             </select>
 
