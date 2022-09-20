@@ -3,8 +3,9 @@
 namespace Give\NextGen\Framework\Blocks;
 
 use ArrayObject;
+use Give\Framework\Support\Contracts\Arrayable;
 
-class BlockCollection extends ArrayObject
+class BlockCollection extends ArrayObject implements Arrayable
 {
     public function __construct(BlockModel ...$blocks)
     {
@@ -22,5 +23,10 @@ class BlockCollection extends ArrayObject
         return BlockCollection::make(
             json_decode($blocksJson, true)
         );
+    }
+
+    public function toArray()
+    {
+        return $this->getArrayCopy();
     }
 }
