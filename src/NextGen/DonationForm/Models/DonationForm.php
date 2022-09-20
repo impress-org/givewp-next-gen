@@ -64,7 +64,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     public function updateSetting($name, $value): self
     {
         $this->settings = array_merge($this->settings, [
-            'foo' => 'bar',
+            $name => $value,
         ]);
         return $this;
     }
