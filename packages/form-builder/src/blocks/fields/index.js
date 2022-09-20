@@ -1,5 +1,4 @@
 import field from './field';
-import select from './select';
 import company from './company';
 import donorName from './donor-name';
 import email from './email';
@@ -13,7 +12,6 @@ import amount from './amount';
 
 const fieldBlocks = [
     field,
-    select,
     company,
     donorName,
     email,

@@ -32,7 +32,6 @@ const settings = {
     edit: function (props) {
 
         const {
-            renderInput,
             attributes: {label, placeholder, isRequired},
             setAttributes,
         } = props;
@@ -42,10 +41,8 @@ const settings = {
         return (
             <>
                 <div>
-                    {renderInput ? renderInput({label, placeholder, isRequired, requiredClass}) : (
-                        <TextControl className={requiredClass}
-                                     label={label} placeholder={placeholder} required={isRequired} />
-                    )}
+                    <TextControl className={requiredClass}
+                                 label={label} placeholder={placeholder} required={isRequired} />
                 </div>
 
                 <InspectorControls>
@@ -83,4 +80,3 @@ const settings = {
 };
 
 export default settings;
-export const Edit = settings.edit;
