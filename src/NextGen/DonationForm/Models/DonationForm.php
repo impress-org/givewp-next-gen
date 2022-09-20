@@ -10,6 +10,7 @@ use Give\Framework\Models\Model;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Traits\DonationFormCRUD;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
+use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
  * @unreleased
@@ -35,7 +36,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationFormStatus::class,
-        'schema' => Form::class,
+        'blocksData' => BlockCollection::class,
         'settings' => 'array',
     ];
 

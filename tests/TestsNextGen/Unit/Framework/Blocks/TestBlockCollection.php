@@ -22,10 +22,16 @@ class TestBlockCollection extends TestCase
 
     public function testMakesCollectionFromJson()
     {
-        $collection = BlockCollection::fromJson(
-            json_encode('[["name" => "namespace/nested-block"]]')
-        );
+        $collection = BlockCollection::fromJson('[{"name":"namespace/nested-block"}]');
 
         $this->assertInstanceOf(BlockModel::class, $collection[0]);
+    }
+
+    public function testCollectionIsSerializable()
+    {
+        $blocksJson = '[{"name":"namespace\/nested-block","attributes":[],"innerBlocks":{}}]';
+        $collection = BlockCollection::fromJson($blocksJson);
+
+        $this->assertEquals($blocksJson, $collection->toJson());
     }
 }
