@@ -26,12 +26,4 @@ class TestBlockCollection extends TestCase
 
         $this->assertInstanceOf(BlockModel::class, $collection[0]);
     }
-
-    public function testCollectionIsSerializable()
-    {
-        $blocksJson = '[{"name":"namespace\/nested-block","attributes":[],"innerBlocks":{}}]';
-        $collection = BlockCollection::fromJson($blocksJson);
-
-        $this->assertEquals($blocksJson, $collection->toJson());
-    }
 }

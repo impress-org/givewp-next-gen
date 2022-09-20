@@ -23,9 +23,4 @@ class BlockCollection extends ArrayObject
             json_decode($blocksJson, true)
         );
     }
-
-    public function toJson()
-    {
-        return json_encode(array_values($this->getArrayCopy()));
-    }
 }

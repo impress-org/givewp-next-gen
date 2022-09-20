@@ -69,6 +69,7 @@ class DonationFormRepository
                     'post_type' => 'give_forms',
                     'post_parent' => 0,
                     'post_title' => $donationForm->formTitle,
+                    'post_content' => $donationForm->blocksContent,
                 ]);
 
             $donationFormId = DB::last_insert_id();
@@ -126,6 +127,7 @@ class DonationFormRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donationForm->status->getValue(),
                     'post_title' => $donationForm->formTitle,
+                    'post_content' => $donationForm->blocksContent,
                 ]);
 
             DB::table('give_formmeta')
@@ -212,7 +214,7 @@ class DonationFormRepository
                 ['post_modified', 'updatedAt'],
                 ['post_status', 'status'],
                 ['post_title', 'formTitle'],
-                ['post_content', 'blocksData']
+                ['post_content', 'blocksContent']
             )
             ->attachMeta(
                 'give_formmeta',

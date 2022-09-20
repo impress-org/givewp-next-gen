@@ -18,11 +18,11 @@ use Give\NextGen\Framework\Blocks\BlockModel;
 
 class ConvertDonationFormBlocksToFieldsApi
 {
-    public function __invoke( $rootNodeName, $blocksData ): Form
+    public function __invoke( $rootNodeName, $blocksContent ): Form
     {
         $form = new Form($rootNodeName);
 
-        $blocks = BlockCollection::fromJson($blocksData);
+        $blocks = BlockCollection::fromJson($blocksContent);
 
         foreach ($blocks as $block) {
             $form->append($this->convertTopLevelBlockToSection($block));

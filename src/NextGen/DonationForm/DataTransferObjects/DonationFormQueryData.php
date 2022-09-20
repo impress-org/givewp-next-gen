@@ -48,10 +48,8 @@ class DonationFormQueryData
         $self->updatedAt = Temporal::toDateTime($queryObject->updatedAt);
         $self->status = new DonationFormStatus($queryObject->status);
         $self->settings = json_decode($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}, true);
-
-        if($queryObject->blocksData) {
-            $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->id, $queryObject->blocksData );
-        }
+        $self->blocksContent = $queryObject->blocksContent;
+        $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->id, $queryObject->blocksContent );
 
         return $self;
     }
