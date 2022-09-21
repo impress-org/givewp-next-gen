@@ -17,6 +17,11 @@ use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
  */
 class DonationFormRepository
 {
+      /**
+     * @var PaymentGatewayRegister
+     */
+    private $paymentGatewayRegister;
+
     /**
      * @unreleased
      *
@@ -25,6 +30,16 @@ class DonationFormRepository
     private $requiredProperties = [
         //
     ];
+
+        /**
+     * @unreleased
+     *
+     * @param PaymentGatewayRegister $paymentGatewayRegister
+     */
+    public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
+    {
+        $this->paymentGatewayRegister = $paymentGatewayRegister;
+    }
 
     /**
      * Get Donation Form By ID
@@ -223,5 +238,49 @@ class DonationFormRepository
                 ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_forms');
+    }
+
+         /**
+     * @return PaymentGateway[]
+     */
+    public function getEnabledPaymentGateways($formId): array
+    {
+        $gateways = [];
+
+        $enabledGateways = give_get_option('gateways');
+        $defaultGateway = give_get_default_gateway($formId);
+
+        foreach ($enabledGateways as $gatewayId => $enabled) {
+            if ($enabled && $this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
+                $gateways[$gatewayId] = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
+            }
+        }
+
+        if (array_key_exists($defaultGateway, $gateways)) {
+            $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
+        }
+
+        return $gateways;
+    }
+
+     /**
+     * @unreleased
+     */
+    public function getFormDataGateways(int $formId): array
+    {
+        $formDataGateways = [];
+
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
+            $gatewayId = $gateway->getId();
+
+            $formDataGateways[$gatewayId] = array_merge(
+                [
+                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel(),
+                ],
+                method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
+            );
+        }
+
+        return $formDataGateways;
     }
 }
