@@ -6,7 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
- * @unlreased
+ * @unreleased
  *
  * @method static DonationFormMetaKeys SETTINGS()
  */
