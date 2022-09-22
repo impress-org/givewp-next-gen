@@ -7,30 +7,49 @@ use Give\Framework\Support\Contracts\Arrayable;
 
 class BlockCollection extends ArrayObject implements Arrayable
 {
-    public function __construct(BlockModel ...$blocks)
+    /**
+     * @unreleased
+     *
+     * @param  BlockModel[]  ...$blocks
+     */
+    public function __construct(...$blocks)
     {
         parent::__construct($blocks);
     }
 
+    /**
+     * @unreleased
+     */
     public static function make(array $blocks): BlockCollection
     {
         $blockModels = array_map([BlockModel::class, 'make'], $blocks);
         return new BlockCollection(...$blockModels);
     }
 
-    public static function fromJson($blocksJson)
+    /**
+     * @unreleased
+     */
+    public static function fromJson($blocksJson): BlockCollection
     {
-        return BlockCollection::make(
-            json_decode($blocksJson, true)
+        return self::make(
+            json_decode($blocksJson, true, JSON_UNESCAPED_SLASHES)
         );
     }
 
+    /**
+     * @unreleased
+     *
+     * @return false|string
+     */
     public function toJson()
     {
-        return json_encode($this->toArray());
+        return json_encode($this->toArray(), JSON_UNESCAPED_SLASHES);
     }
 
-    public function toArray()
+    /**
+     * @unreleased
+     */
+    public function toArray(): array
     {
         return $this->getArrayCopy();
     }

@@ -11,8 +11,12 @@ namespace Give\NextGen\Framework\Blocks;
  */
 class BlockModel
 {
+
     /** @var string */
     public $name;
+
+    /** @var string */
+    public $clientId;
 
     /** @var array */
     public $attributes;
@@ -22,21 +26,28 @@ class BlockModel
 
     /**
      * @param                 $name
-     * @param array           $attributes
-     * @param BlockCollection $innerBlocks
+     * @param  array  $attributes
+     * @param  BlockCollection|null  $innerBlocks
      */
     public function __construct($name, array $attributes, BlockCollection $innerBlocks)
     {
         $this->name = $name;
+        $this->clientId = $name;
         $this->attributes = $attributes;
         $this->innerBlocks = $innerBlocks;
     }
 
+    /**
+     * @unreleased
+     */
     public function hasAttribute($name): bool
     {
         return isset($this->attributes[$name]);
     }
 
+    /**
+     * @unreleased
+     */
     public function getAttribute($name)
     {
         return $this->attributes[$name];
@@ -45,7 +56,7 @@ class BlockModel
     /**
      * Returns the unqualified, or short name, of the block without the namespace.
      *
-     * @return string
+     * @unreleased
      */
     public function getShortName(): string
     {
@@ -53,10 +64,9 @@ class BlockModel
     }
 
     /**
-     * @param       $name
-     * @param array $attributes
-     * @param array $innerBlocks
+     * @unreleased
      *
+     * @param  array  $blockData
      * @return BlockModel
      */
     public static function make( array $blockData ): BlockModel

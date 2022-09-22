@@ -30,7 +30,7 @@ class ConvertDonationFormBlocksToFieldsApi
      * @return Form
      * @throws TypeNotSupported
      */
-    public function __invoke( BlockCollection $blocks ): Form
+    public function __invoke(BlockCollection $blocks): Form
     {
         $form = new Form('donation-form');
 
@@ -44,7 +44,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param BlockModel $block
+     * @param  BlockModel  $block
      *
      * @return Section
      */
@@ -60,9 +60,10 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param BlockModel $block
+     * @param  BlockModel  $block
      *
      * @return Node
+     * @throws EmptyNameException
      */
     protected function convertInnerBlockToNode(BlockModel $block): Node
     {
@@ -80,8 +81,7 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function createNodeFromBlockWithUniqueAttributes($block): Node
     {
-        switch( $block->name ){
-
+        switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
                 return Amount::make('amount')
                     ->levels(...array_map('absint', $block->attributes['levels']))
@@ -116,7 +116,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param BlockModel $block
+     * @param  BlockModel  $block
      *
      * @return Node
      */
@@ -145,8 +145,8 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param Node       $node
-     * @param BlockModel $block
+     * @param  Node  $node
+     * @param  BlockModel  $block
      *
      * @return Node
      */
