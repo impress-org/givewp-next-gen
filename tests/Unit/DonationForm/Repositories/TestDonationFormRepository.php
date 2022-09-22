@@ -7,7 +7,6 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
-use Give\NextGen\DonationForm\Repositories\DonationFormRepositoryClass;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
@@ -117,6 +116,7 @@ final class TestDonationFormRepository extends TestCase
 
         $this->repository->update($donationForm);
 
+        /** @var DonationForm $donationFormFromDatabase */
         $donationFormFromDatabase = $this->repository->getById($donationForm->id);
 
         $this->assertEquals('Updated Form Title', $donationFormFromDatabase->title);
