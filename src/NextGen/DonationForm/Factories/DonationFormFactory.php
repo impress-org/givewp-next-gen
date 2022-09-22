@@ -23,7 +23,7 @@ class DonationFormFactory extends ModelFactory
                 'registration' => 'none',
                 'goalFormat' => 'amount-raised',
             ],
-            'blockCollection' => $this->getMockBlockCollection(),
+            'blocks' => $this->getMockBlockCollection(),
         ];
     }
 

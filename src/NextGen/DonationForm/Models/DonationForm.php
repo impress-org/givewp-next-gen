@@ -28,7 +28,7 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
  * @property DateTime $updatedAt
  * @property DonationFormStatus $status
  * @property array $settings
- * @property BlockCollection $blockCollection
+ * @property BlockCollection $blocks
  */
 class DonationForm extends Model implements ModelCrud, ModelHasFactory
 {
@@ -42,7 +42,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         'updatedAt' => DateTime::class,
         'status' => DonationFormStatus::class,
         'settings' => 'array',
-        'blockCollection' => BlockCollection::class,
+        'blocks' => BlockCollection::class,
     ];
 
     /**

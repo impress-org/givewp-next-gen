@@ -32,7 +32,7 @@ class DonationFormRepository
     private $requiredProperties = [
         'status',
         'title',
-        'blockCollection',
+        'blocks',
     ];
 
         /**
@@ -88,7 +88,7 @@ class DonationFormRepository
                     'post_type' => 'give_forms',
                     'post_parent' => 0,
                     'post_title' => $donationForm->title,
-                    'post_content' => $donationForm->blockCollection->toJson(),
+                    'post_content' => $donationForm->blocks->toJson(),
                 ]);
 
             $donationFormId = DB::last_insert_id();
@@ -146,7 +146,7 @@ class DonationFormRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donationForm->status->getValue(),
                     'post_title' => $donationForm->title,
-                    'post_content' => $donationForm->blockCollection->toJson(),
+                    'post_content' => $donationForm->blocks->toJson(),
                 ]);
 
             DB::table('give_formmeta')
