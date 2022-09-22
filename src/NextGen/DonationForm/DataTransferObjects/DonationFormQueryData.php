@@ -4,7 +4,6 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use DateTimeInterface;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
@@ -48,11 +47,6 @@ class DonationFormQueryData
     public $blockCollection;
 
     /**
-     * @var string
-     */
-    public $schema;
-
-    /**
      * Convert data from object to Donation Form
      *
      * @unreleased
@@ -71,7 +65,6 @@ class DonationFormQueryData
         $self->status = new DonationFormStatus($queryObject->status);
         $self->settings = json_decode($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}, true);
         $self->blockCollection = BlockCollection::fromJson($queryObject->blocksContent);
-        $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->blockCollection);
 
         return $self;
     }

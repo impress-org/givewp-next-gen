@@ -25,7 +25,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param BlockCollection $blocks
+     * @param  BlockCollection  $blocks
      *
      * @return Form
      * @throws TypeNotSupported

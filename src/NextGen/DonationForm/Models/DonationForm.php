@@ -6,10 +6,13 @@ use DateTime;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormQueryData;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
@@ -26,7 +29,6 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
  * @property DonationFormStatus $status
  * @property array $settings
  * @property BlockCollection $blockCollection
- * @property Form $schema
  */
 class DonationForm extends Model implements ModelCrud, ModelHasFactory
 {
@@ -41,7 +43,6 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         'status' => DonationFormStatus::class,
         'settings' => 'array',
         'blockCollection' => BlockCollection::class,
-        'schema' => Form::class, // Read-only
     ];
 
     /**
@@ -130,5 +131,26 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     public static function fromQueryBuilderObject($object): DonationForm
     {
         return DonationFormQueryData::fromObject($object)->toDonationForm();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getSchema(): Form
+    {
+        $form = (new ConvertDonationFormBlocksToFieldsApi())($this->blockCollection);
+
+        /** @var Section $paymentDetails */
+        $paymentDetails = $form->getNodeByName('payment-details');
+
+        $paymentDetails->append(
+            Hidden::make('formId')
+                ->defaultValue($this->id),
+
+            Hidden::make('currency')
+                ->defaultValue(give_get_currency($this->id))
+        );
+
+        return $form;
     }
 }
