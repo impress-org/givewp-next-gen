@@ -6,11 +6,8 @@ use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
-<<<<<<< HEAD
 use Give\Framework\PaymentGateways\PaymentGateway;
-=======
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
->>>>>>> 0c28b41 (wip)
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
