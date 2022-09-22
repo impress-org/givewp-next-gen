@@ -25,6 +25,11 @@ class BlockCollection extends ArrayObject implements Arrayable
         );
     }
 
+    public function toJson()
+    {
+        return json_encode($this->toArray());
+    }
+
     public function toArray()
     {
         return $this->getArrayCopy();

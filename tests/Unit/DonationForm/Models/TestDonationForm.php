@@ -3,14 +3,7 @@
 namespace TestsNextGen\Unit\DonationForm\Models;
 
 use Exception;
-use Give\Donations\Models\Donation;
-use Give\Donations\Models\DonationNote;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Models\Donor;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use Give\Subscriptions\Models\Subscription;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
@@ -45,16 +38,14 @@ class TestDonationForm extends TestCase
     public function testDonationFormShouldUpdate()
     {
         $donationForm = DonationForm::factory()->create([
-            'formTitle' => 'New Donation Form',
+            'title' => 'New Donation Form',
         ]);
 
-        $donationForm->formTitle = 'Updated Form Title';
-        $donationForm->updateSetting('foo', 'bar');
+        $donationForm->title = 'Updated Form Title';
         $donationForm->save();
 
         $donationFormFromDatabase = DonationForm::find($donationForm->id);
 
-        $this->assertEquals('Updated Form Title', $donationFormFromDatabase->formTitle);
-        $this->assertEquals('bar', $donationFormFromDatabase->getSetting('foo'));
+        $this->assertEquals('Updated Form Title', $donationFormFromDatabase->title);
     }
 }

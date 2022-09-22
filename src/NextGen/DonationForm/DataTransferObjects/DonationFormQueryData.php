@@ -2,11 +2,13 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use DateTimeInterface;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
+use Give\NextGen\Framework\Blocks\BlockCollection;
 
 class DonationFormQueryData
 {
@@ -18,17 +20,37 @@ class DonationFormQueryData
     /**
      * @var string
      */
-    public $formTitle;
-
-    /**
-     * @var string
-     */
-    public $schema;
+    public $title;
 
     /**
      * @var array
      */
     public $settings;
+
+    /**
+     * @var DateTimeInterface
+     */
+    public $createdAt;
+
+    /**
+     * @var DateTimeInterface
+     */
+    public $updatedAt;
+
+    /**
+     * @var DonationFormStatus
+     */
+    public $status;
+
+    /**
+     * @var BlockCollection
+     */
+    public $blockCollection;
+
+    /**
+     * @var string
+     */
+    public $schema;
 
     /**
      * Convert data from object to Donation Form
@@ -43,13 +65,13 @@ class DonationFormQueryData
     {
         $self = new static();
         $self->id = (int)$queryObject->id;
-        $self->formTitle = $queryObject->formTitle;
+        $self->title = $queryObject->title;
         $self->createdAt = Temporal::toDateTime($queryObject->createdAt);
         $self->updatedAt = Temporal::toDateTime($queryObject->updatedAt);
         $self->status = new DonationFormStatus($queryObject->status);
         $self->settings = json_decode($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}, true);
-        $self->blocksContent = $queryObject->blocksContent;
-        $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->id, $queryObject->blocksContent );
+        $self->blockCollection = BlockCollection::fromJson($queryObject->blocksContent);
+        $self->schema = give(ConvertDonationFormBlocksToFieldsApi::class)($self->blockCollection);
 
         return $self;
     }

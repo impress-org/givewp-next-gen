@@ -6,7 +6,11 @@ use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
+<<<<<<< HEAD
 use Give\Framework\PaymentGateways\PaymentGateway;
+=======
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+>>>>>>> 0c28b41 (wip)
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -29,7 +33,9 @@ class DonationFormRepository
      * @var string[]
      */
     private $requiredProperties = [
-        //
+        'status',
+        'title',
+        'blockCollection',
     ];
 
         /**
@@ -84,8 +90,8 @@ class DonationFormRepository
                     'post_status' => $donationForm->status->getValue(),
                     'post_type' => 'give_forms',
                     'post_parent' => 0,
-                    'post_title' => $donationForm->formTitle,
-                    'post_content' => $donationForm->blocksContent,
+                    'post_title' => $donationForm->title,
+                    'post_content' => $donationForm->blockCollection->toJson(),
                 ]);
 
             $donationFormId = DB::last_insert_id();
@@ -142,8 +148,8 @@ class DonationFormRepository
                     'post_modified' => $date,
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donationForm->status->getValue(),
-                    'post_title' => $donationForm->formTitle,
-                    'post_content' => $donationForm->blocksContent,
+                    'post_title' => $donationForm->title,
+                    'post_content' => $donationForm->blockCollection->toJson(),
                 ]);
 
             DB::table('give_formmeta')
@@ -183,6 +189,11 @@ class DonationFormRepository
             DB::table('posts')
                 ->where('id', $donationForm->id)
                 ->delete();
+
+            DB::table('give_formmeta')
+                ->where('form_id', $donationForm->id)
+                ->delete();
+
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -229,7 +240,7 @@ class DonationFormRepository
                 ['post_date', 'createdAt'],
                 ['post_modified', 'updatedAt'],
                 ['post_status', 'status'],
-                ['post_title', 'formTitle'],
+                ['post_title', 'title'],
                 ['post_content', 'blocksContent']
             )
             ->attachMeta(

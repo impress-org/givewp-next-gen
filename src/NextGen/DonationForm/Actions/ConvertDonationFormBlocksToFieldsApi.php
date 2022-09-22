@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
+use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
@@ -16,13 +17,22 @@ use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 
+/**
+ * @unreleased
+ */
 class ConvertDonationFormBlocksToFieldsApi
 {
-    public function __invoke( $rootNodeName, $blocksContent ): Form
+    /**
+     * @unreleased
+     *
+     * @param BlockCollection $blocks
+     *
+     * @return Form
+     * @throws TypeNotSupported
+     */
+    public function __invoke( BlockCollection $blocks ): Form
     {
-        $form = new Form($rootNodeName);
-
-        $blocks = BlockCollection::fromJson($blocksContent);
+        $form = new Form('donation-form');
 
         foreach ($blocks as $block) {
             $form->append($this->convertTopLevelBlockToSection($block));
@@ -33,6 +43,10 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @unreleased
+     *
+     * @param BlockModel $block
+     *
+     * @return Section
      */
     protected function convertTopLevelBlockToSection(BlockModel $block): Section
     {
@@ -42,9 +56,13 @@ class ConvertDonationFormBlocksToFieldsApi
             ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->toArray()));
     }
 
+
     /**
      * @unreleased
-     * @throws EmptyNameException
+     *
+     * @param BlockModel $block
+     *
+     * @return Node
      */
     protected function convertInnerBlockToNode(BlockModel $block): Node
     {
@@ -52,6 +70,14 @@ class ConvertDonationFormBlocksToFieldsApi
         return $this->mapGenericBlockAttributesToNode($node, $block);
     }
 
+    /**
+     * @unreleased
+     *
+     * @param $block
+     *
+     * @return Node
+     * @throws EmptyNameException
+     */
     protected function createNodeFromBlockWithUniqueAttributes($block): Node
     {
         switch( $block->name ){
@@ -83,10 +109,17 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Text::make('company');
 
             default:
-                return Text::make($block->clientId);
+                return Text::make(md5($block->name)); // @todo Replace hashed name with programmatic name.
         }
     }
 
+    /**
+     * @unreleased
+     *
+     * @param BlockModel $block
+     *
+     * @return Node
+     */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
     {
         return Name::make('name')->tap(function ($group) use ($block) {
@@ -109,6 +142,14 @@ class ConvertDonationFormBlocksToFieldsApi
         });
     }
 
+    /**
+     * @unreleased
+     *
+     * @param Node       $node
+     * @param BlockModel $block
+     *
+     * @return Node
+     */
     protected function mapGenericBlockAttributesToNode(Node $node, BlockModel $block): Node
     {
         if ('field' === $node->getNodeType()) {
