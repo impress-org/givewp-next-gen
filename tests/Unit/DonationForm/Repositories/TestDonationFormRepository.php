@@ -3,6 +3,7 @@
 namespace TestsNextGen\Unit\DonationForm\Repositories;
 
 use Exception;
+use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -61,6 +62,8 @@ final class TestDonationFormRepository extends TestCase
         $donationForm = $this->modelFactory->make();
 
         $this->repository->insert($donationForm);
+
+        /** @var DonationForm $donationFormFromDatabase */
         $donationFormFromDatabase = $this->repository->getById($donationForm->id);
 
         $this->assertEquals($donationForm->getAttributes(), $donationFormFromDatabase->getAttributes());
@@ -135,6 +138,12 @@ final class TestDonationFormRepository extends TestCase
 
         $this->repository->delete($donationForm);
 
-        $this->assertNull($this->repository->getById($donationForm->id));
+        $form = $this->repository->getById($donationForm->id);
+        $formMeta = DB::table('give_formmeta')
+            ->where('form_id', $donationForm->id)
+            ->getAll();
+
+        $this->assertNull($form);
+        $this->assertEmpty($formMeta);
     }
 }
