@@ -28,7 +28,7 @@ class BlockModel implements Arrayable
     /**
      * @param  string  $name
      * @param  array  $attributes
-     * @param  BlockModel[]|null  $innerBlocks
+     * @param  BlockCollection|null  $innerBlocks
      */
     public function __construct(string $name, array $attributes, $innerBlocks = null)
     {
