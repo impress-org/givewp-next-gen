@@ -38,7 +38,7 @@ class DonationFormFactory extends ModelFactory
             $blocks[] = BlockModel::make($blockData);
         }
 
-        return new BlockCollection(...$blocks);
+        return new BlockCollection($blocks);
     }
 
     /**

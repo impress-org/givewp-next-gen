@@ -11,19 +11,49 @@ use GiveTests\TestCase;
  */
 class TestBlockCollection extends TestCase
 {
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function testMakesCollectionFromArray()
     {
-        $collection = BlockCollection::make([[
-            'name' => 'namespace/nested-block'
-        ]]);
+        $blockModel = new BlockModel('namespace/nested-block', []);
+        $collection = BlockCollection::make([
+            $blockModel
+        ]);
 
         $this->assertInstanceOf(BlockModel::class, $collection[0]);
     }
 
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function testMakesCollectionFromJson()
     {
         $collection = BlockCollection::fromJson('[{"name":"namespace/nested-block"}]');
 
         $this->assertInstanceOf(BlockModel::class, $collection[0]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function testCollectionReturnsArray()
+    {
+        $collection = BlockCollection::fromJson('[{"name":"namespace/nested-block"}]');
+
+        $blockModel = new BlockModel('namespace/nested-block', [], []);
+
+        $this->assertSame(
+            [
+                $blockModel->toArray()
+            ],
+            $collection->toArray()
+        );
     }
 }

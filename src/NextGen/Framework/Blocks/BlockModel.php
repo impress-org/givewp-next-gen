@@ -2,6 +2,8 @@
 
 namespace Give\NextGen\Framework\Blocks;
 
+use Give\Framework\Support\Contracts\Arrayable;
+
 /**
  * @unreleased
  * A structured model for a Gutenberg block.
@@ -9,9 +11,8 @@ namespace Give\NextGen\Framework\Blocks;
  * ... and without the HTML comments as structure.
  * ... but now with a Collection for innerBlocks :)
  */
-class BlockModel
+class BlockModel implements Arrayable
 {
-
     /** @var string */
     public $name;
 
@@ -25,11 +26,11 @@ class BlockModel
     public $innerBlocks;
 
     /**
-     * @param                 $name
+     * @param  string  $name
      * @param  array  $attributes
-     * @param  BlockCollection|null  $innerBlocks
+     * @param  BlockModel[]|null  $innerBlocks
      */
-    public function __construct($name, array $attributes, BlockCollection $innerBlocks)
+    public function __construct(string $name, array $attributes, $innerBlocks = null)
     {
         $this->name = $name;
         $this->clientId = $name;
@@ -71,10 +72,28 @@ class BlockModel
      */
     public static function make( array $blockData ): BlockModel
     {
+        $innerBlocks = !empty($blockData['innerBlocks']) ? new BlockCollection(
+            array_map([__CLASS__, 'make'],
+                $blockData['innerBlocks'])
+        ) : [];
+
         return new BlockModel(
             $blockData['name'],
             $blockData['attributes'] ?? [],
-            BlockCollection::make($blockData['innerBlocks'] ?? [])
+            $innerBlocks
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toArray(): array
+    {
+        return array_merge(
+            get_object_vars($this),
+            [
+                'innerBlocks' => $this->innerBlocks ? $this->innerBlocks->toArray() : []
+            ]
         );
     }
 }
