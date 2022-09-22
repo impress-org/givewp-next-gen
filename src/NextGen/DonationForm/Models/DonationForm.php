@@ -70,9 +70,10 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param array $attributes
+     * @param  array  $attributes
      *
      * @return DonationForm
+     * @throws Exception
      */
     public static function create(array $attributes): DonationForm
     {
@@ -99,6 +100,11 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         }
     }
 
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function delete()
     {
         give(DonationFormRepository::class)->delete($this);
