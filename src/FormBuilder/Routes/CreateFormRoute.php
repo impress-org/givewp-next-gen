@@ -2,6 +2,9 @@
 
 namespace Give\FormBuilder\Routes;
 
+use Exception;
+use Give\NextGen\DonationForm\Models\DonationForm;
+
 /**
  * Route to create a new form
  */
@@ -11,6 +14,7 @@ class CreateFormRoute
      * @unreleased
      *
      * @return void
+     * @throws Exception
      */
     public function __invoke()
     {
@@ -21,18 +25,9 @@ class CreateFormRoute
                 exit();
             }
             if ('new' === $_GET['donationFormID']) {
-                $newPostID = wp_insert_post([
-                    'post_type' => 'give_forms',
-                    'post_status' => 'publish',
-                    'post_content' => json_encode(null),
-                ]);
+                $form = DonationForm::factory()->create();
 
-                wp_update_post([
-                    'ID' => $newPostID,
-                    'post_title' => "Next Gen Donation Form ID:$newPostID",
-                ]);
-
-                wp_redirect('edit.php?post_type=give_forms&page=campaign-builder&donationFormID=' . $newPostID);
+                wp_redirect('edit.php?post_type=give_forms&page=campaign-builder&donationFormID=' . $form->id);
                 exit();
             }
         }

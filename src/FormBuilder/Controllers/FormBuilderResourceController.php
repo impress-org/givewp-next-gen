@@ -59,7 +59,7 @@ class FormBuilderResourceController
         $form = DonationForm::find($formId);
 
         if (!$form) {
-            return rest_ensure_response(new WP_Error(404, 'Form not found.'));
+            return rest_ensure_response(new WP_Error(404, __('Form not found.', 'give')));
         }
 
         $blocks = BlockCollection::fromJson($rawBlocks);
@@ -69,7 +69,7 @@ class FormBuilderResourceController
         }
 
         $updatedSettings = json_decode($formBuilderSettings, true);
-        $form->settings = array_merge($form->settings, $updatedSettings);
+        $form->settings = array_merge($form->settings ?? [], $updatedSettings);
         $form->title = $updatedSettings['formTitle'];
         $form->blocks = $blocks;
         $form->save();
@@ -103,7 +103,7 @@ class FormBuilderResourceController
 
         foreach ($this->getRequiredBlockNames() as $requiredBlock) {
             if (!in_array($requiredBlock, $blockNames, true)) {
-                return new WP_Error(404, "Required block $requiredBlock not found.");
+                return new WP_Error(404, __("Required block $requiredBlock not found.", 'give'));
             }
         }
     }
