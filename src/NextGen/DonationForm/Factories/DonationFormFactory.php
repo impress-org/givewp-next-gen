@@ -16,7 +16,7 @@ class DonationFormFactory extends ModelFactory
     {
         return [
             'title' => 'Form Title',
-            'status' => DonationFormStatus::PENDING(),
+            'status' => DonationFormStatus::PUBLISH(),
             'settings' => [
                 'enableDonationGoal' => false,
                 'enableAutoClose' => false,
@@ -30,7 +30,7 @@ class DonationFormFactory extends ModelFactory
     /**
      * @unreleased
      */
-    protected function getMockBlockCollection(): BlockCollection
+    public function getMockBlockCollection(): BlockCollection
     {
         $blocks = [];
 
@@ -127,12 +127,16 @@ class DonationFormFactory extends ModelFactory
                                 "remove" => true
                             ],
                             "showHonorific" => true,
-                            "honoriphics" => [
+                            "honorifics" => [
                                 "Mr",
                                 "Ms",
-                                "Mrs"
+                                "Mrs",
                             ],
-                            "requireLastName" => false
+                            'firstNameLabel' => 'First name',
+                            'firstNamePlaceholder' => 'First name',
+                            'lastNameLabel' => 'Last name',
+                            'lastNamePlaceholder' => 'Last name',
+                            "requireLastName" => false,
                         ],
                         "innerBlocks" => [
                         ]
