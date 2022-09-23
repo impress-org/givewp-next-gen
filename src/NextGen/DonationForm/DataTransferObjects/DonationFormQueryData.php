@@ -51,7 +51,7 @@ class DonationFormQueryData
      *
      * @unreleased
      *
-     * @param object $queryObject
+     * @param  object  $queryObject
      *
      * @return DonationFormQueryData
      */
@@ -64,7 +64,7 @@ class DonationFormQueryData
         $self->updatedAt = Temporal::toDateTime($queryObject->updatedAt);
         $self->status = new DonationFormStatus($queryObject->status);
         $self->settings = json_decode($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}, true);
-        $self->blocks = BlockCollection::fromJson($queryObject->blocksContent);
+        $self->blocks = BlockCollection::fromJson($queryObject->blocks);
 
         return $self;
     }

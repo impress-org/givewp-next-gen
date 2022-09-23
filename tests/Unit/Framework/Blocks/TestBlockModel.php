@@ -67,21 +67,29 @@ class TestBlockModel extends TestCase
      */
     public function testBlockModelReturnsArray()
     {
-        $blockModel = new BlockModel('namespace/block', ['title' => 'My Block'], new BlockCollection([
-            new BlockModel('namespace/inner-block', ['title' => 'My Inner Block'])
-        ]));
+        $blockModel = new BlockModel(
+            'namespace/block',
+            'client-id',
+            true,
+            ['title' => 'My Block'],
+            new BlockCollection([
+                new BlockModel('namespace/inner-block', 'client-id', true, ['title' => 'My Inner Block'])
+            ])
+        );
 
         $this->assertSame(
             [
                 'name' => 'namespace/block',
-                'clientId' => 'namespace/block',
+                'clientId' => 'client-id',
+                'isValid' => true,
                 'attributes' => [
                     'title' => 'My Block'
                 ],
                 'innerBlocks' => [
                     [
                         'name' => 'namespace/inner-block',
-                        'clientId' => 'namespace/inner-block',
+                        'clientId' => 'client-id',
+                        'isValid' => true,
                         'attributes' => [
                             'title' => 'My Inner Block'
                         ],

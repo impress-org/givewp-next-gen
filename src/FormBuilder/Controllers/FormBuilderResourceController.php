@@ -2,6 +2,9 @@
 
 namespace Give\FormBuilder\Controllers;
 
+use Give\Framework\Exceptions\Primitives\Exception;
+use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\Framework\Blocks\BlockCollection;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Request;
@@ -12,9 +15,6 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
-     * TODO: replace logic with form model
-     * TODO: handle more validation and errors
-     *
      * @unreleased
      *
      * @param  WP_REST_Request  $request
@@ -24,50 +24,87 @@ class FormBuilderResourceController
     {
         $formId = $request->get_param('id');
 
-        if (!get_post($formId)) {
+        /** @var DonationForm $form */
+        $form = DonationForm::find($formId);
+
+        if (!$form) {
             return rest_ensure_response(new WP_Error(404, 'Form not found.'));
         }
 
-        $formData = get_post($formId)->post_content;
-        $formBuilderSettings = get_post_meta($formId, 'formBuilderSettings', true);
+        if ($blockError = $this->validateBlocks($form->blocks)) {
+            return rest_ensure_response($blockError);
+        }
 
         return rest_ensure_response([
-            'blocks' => $formData,
-            'settings' => $formBuilderSettings
+            'blocks' => $form->blocks->toJson(),
+            'settings' => json_encode($form->settings)
         ]);
     }
 
     /**
      * Update the form builder
      *
-     * TODO: replace logic with form model
-     * TODO: handle more validation and errors
-     *
      * @unreleased
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     * @throws Exception
      */
     public function update(WP_REST_Request $request)
     {
         $formId = $request->get_param('id');
         $formBuilderSettings = $request->get_param('settings');
-        $data = $request->get_param('blocks');
+        $rawBlocks = $request->get_param('blocks');
 
-        if (!get_post($formId)) {
+        /** @var DonationForm $form */
+        $form = DonationForm::find($formId);
+
+        if (!$form) {
             return rest_ensure_response(new WP_Error(404, 'Form not found.'));
         }
 
-        $meta = update_post_meta($formId, 'formBuilderSettings', $formBuilderSettings);
+        $blocks = BlockCollection::fromJson($rawBlocks);
 
-        $post = wp_update_post([
-            'ID' => $formId,
-            'post_content' => $data,
-            'post_title' => json_decode($formBuilderSettings, false)->formTitle,
-        ]);
+        if ($blockError = $this->validateBlocks($blocks)) {
+            return rest_ensure_response($blockError);
+        }
+
+        $updatedSettings = json_decode($formBuilderSettings, true);
+        $form->settings = array_merge($form->settings, $updatedSettings);
+        $form->title = $updatedSettings['formTitle'];
+        $form->blocks = $blocks;
+        $form->save();
 
         return rest_ensure_response([
-            'settings' => $meta,
-            'form' => $post,
+            'settings' => json_encode($form->settings),
+            'form' => $form->id,
         ]);
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getRequiredBlockNames(): array
+    {
+        return [
+            "custom-block-editor/donation-amount",
+            "custom-block-editor/donor-info",
+            "custom-block-editor/payment-details",
+        ];
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return WP_Error|void
+     */
+    protected function validateBlocks(BlockCollection $blocks)
+    {
+        $blockNames = array_column($blocks->toArray(), 'name');
+
+        foreach ($this->getRequiredBlockNames() as $requiredBlock) {
+            if (!in_array($requiredBlock, $blockNames, true)) {
+                return new WP_Error(404, "Required block $requiredBlock not found.");
+            }
+        }
     }
 }

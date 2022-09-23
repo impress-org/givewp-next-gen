@@ -1,23 +1,24 @@
 window.storage = {
     save: ( { blocks, formSettings } ) => {
         return new Promise((resolve, reject) => {
-            jQuery.post( {
-                url: window.storageData.resourceURL,
-                headers: {
-                    "X-WP-Nonce": window.storageData.nonce,
-                },
-                data: {
-                    blocks: JSON.stringify(blocks),
-                    settings: JSON.stringify(formSettings),
-                }
-            })
+            jQuery
+                .post({
+                    url: window.storageData.resourceURL,
+                    headers: {
+                        'X-WP-Nonce': window.storageData.nonce,
+                    },
+                    data: {
+                        blocks: JSON.stringify(blocks),
+                        settings: JSON.stringify(formSettings),
+                    },
+                })
                 .done(() => {
-                    resolve()
+                    resolve();
                 })
-                .fail(() => {
-                    reject(new Error("Save not implemented!!!!"))
-                })
-        })
+                .fail((error) => {
+                    reject(new Error(error.responseJSON.message));
+                });
+        });
     },
     load: () => {
         return {

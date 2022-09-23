@@ -238,7 +238,7 @@ class DonationFormRepository
                 ['post_modified', 'updatedAt'],
                 ['post_status', 'status'],
                 ['post_title', 'title'],
-                ['post_content', 'blocksContent']
+                ['post_content', 'blocks']
             )
             ->attachMeta(
                 'give_formmeta',

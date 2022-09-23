@@ -19,6 +19,9 @@ class BlockModel implements Arrayable
     /** @var string */
     public $clientId;
 
+    /** @var bool */
+    public $isValid;
+
     /** @var array */
     public $attributes;
 
@@ -27,13 +30,21 @@ class BlockModel implements Arrayable
 
     /**
      * @param  string  $name
+     * @param  string|null  $clientId
+     * @param  bool  $isValid
      * @param  array  $attributes
      * @param  BlockCollection|null  $innerBlocks
      */
-    public function __construct(string $name, array $attributes, $innerBlocks = null)
-    {
+    public function __construct(
+        string $name,
+        $clientId,
+        bool $isValid = true,
+        array $attributes = [],
+        $innerBlocks = null
+    ) {
         $this->name = $name;
-        $this->clientId = $name;
+        $this->clientId = $clientId;
+        $this->isValid = $isValid;
         $this->attributes = $attributes;
         $this->innerBlocks = $innerBlocks;
     }
@@ -79,7 +90,9 @@ class BlockModel implements Arrayable
 
         return new BlockModel(
             $blockData['name'],
-            $blockData['attributes'] ?? [],
+            !empty($blockData['clientId']) ? $blockData['clientId'] : $blockData['name'],
+            !empty($blockData['isValid']) ? $blockData['isValid'] : true,
+            !empty($blockData['attributes']) ? $blockData['attributes'] : [],
             $innerBlocks
         );
     }

@@ -18,7 +18,7 @@ class TestBlockCollection extends TestCase
      */
     public function testMakesCollectionFromArray()
     {
-        $blockModel = new BlockModel('namespace/nested-block', []);
+        $blockModel = new BlockModel('namespace/nested-block', 'namespace/nested-block', true);
         $collection = BlockCollection::make([
             $blockModel
         ]);
@@ -45,9 +45,9 @@ class TestBlockCollection extends TestCase
      */
     public function testCollectionReturnsArray()
     {
-        $collection = BlockCollection::fromJson('[{"name":"namespace/nested-block"}]');
+        $collection = BlockCollection::fromJson('[{"name":"namespace/nested-block", "clientId":"client-id"}]');
 
-        $blockModel = new BlockModel('namespace/nested-block', [], []);
+        $blockModel = new BlockModel('namespace/nested-block', 'client-id', true);
 
         $this->assertSame(
             [
