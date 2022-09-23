@@ -81,6 +81,8 @@ class FormBuilderResourceController
     }
 
     /**
+     * @unreleased
+     *
      * @return string[]
      */
     protected function getRequiredBlockNames(): array

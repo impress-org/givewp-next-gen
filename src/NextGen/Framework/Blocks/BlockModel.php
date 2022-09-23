@@ -43,7 +43,7 @@ class BlockModel implements Arrayable
         $innerBlocks = null
     ) {
         $this->name = $name;
-        $this->clientId = $clientId;
+        $this->clientId = $clientId ?? $name;
         $this->isValid = $isValid;
         $this->attributes = $attributes;
         $this->innerBlocks = $innerBlocks;
