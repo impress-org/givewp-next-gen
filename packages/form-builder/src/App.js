@@ -19,8 +19,6 @@ import './App.scss';
 
 import defaultBlocks from './blocks.json'
 
-console.log( defaultBlocks )
-
 function App() {
 
     const {
