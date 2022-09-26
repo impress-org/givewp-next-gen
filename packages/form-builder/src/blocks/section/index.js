@@ -9,7 +9,7 @@ const sectionBlocks = [
         name: 'custom-block-editor/section',
         settings: {
             ...Defaults,
-            title: __('Custom Section', 'custom-block-editor'),
+            title: __('Section', 'custom-block-editor'),
             attributes: {
                 ...attributes,
                 innerBlocksTemplate: {
