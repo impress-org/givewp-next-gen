@@ -86,7 +86,7 @@ class BlockModel implements Arrayable
         $innerBlocks = !empty($blockData['innerBlocks']) ? new BlockCollection(
             array_map([__CLASS__, 'make'],
                 $blockData['innerBlocks'])
-        ) : [];
+        ) : null;
 
         return new BlockModel(
             $blockData['name'],

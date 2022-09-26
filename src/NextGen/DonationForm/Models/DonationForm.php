@@ -13,7 +13,7 @@ use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
-use Give\NextGen\DonationForm\DataTransferObjects\DonationFormQueryData;
+use Give\NextGen\DonationForm\Actions\ConvertQueryDataToDonationForm;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
@@ -124,13 +124,11 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param $object
-     *
-     * @return DonationForm
+     * @param  object  $object
      */
     public static function fromQueryBuilderObject($object): DonationForm
     {
-        return DonationFormQueryData::fromObject($object)->toDonationForm();
+        return (new ConvertQueryDataToDonationForm())($object);
     }
 
     /**
