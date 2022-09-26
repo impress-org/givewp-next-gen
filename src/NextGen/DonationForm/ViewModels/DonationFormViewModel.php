@@ -43,7 +43,7 @@ class DonationFormViewModel
         $formDataGateways = $donationFormRepository->getFormDataGateways($this->formId);
 
         return [
-            'form' => $donationForm->getSchema()->jsonSerialize(),
+            'form' => $donationForm->schema()->jsonSerialize(),
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
             'gatewaySettings' => $formDataGateways
