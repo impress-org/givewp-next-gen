@@ -102,11 +102,12 @@ class BlockModel implements Arrayable
      */
     public function toArray(): array
     {
-        return array_merge(
-            get_object_vars($this),
-            [
-                'innerBlocks' => $this->innerBlocks ? $this->innerBlocks->toArray() : []
-            ]
-        );
+        return [
+            'name' => $this->name,
+            'clientId' => $this->clientId,
+            'isValid' => $this->isValid,
+            'attributes' => $this->attributes,
+            'innerBlocks' => $this->innerBlocks ? $this->innerBlocks->toArray() : []
+        ];
     }
 }
