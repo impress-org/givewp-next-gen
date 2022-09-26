@@ -3,6 +3,7 @@
 namespace Give\FormBuilder\Controllers;
 
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\FieldsAPI\Form;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use WP_Error;
@@ -31,8 +32,8 @@ class FormBuilderResourceController
             return rest_ensure_response(new WP_Error(404, 'Form not found.'));
         }
 
-        if ($blockError = $this->validateBlocks($form->blocks)) {
-            return rest_ensure_response($blockError);
+        if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
+            return rest_ensure_response($requiredFieldsError);
         }
 
         return rest_ensure_response([
@@ -64,14 +65,15 @@ class FormBuilderResourceController
 
         $blocks = BlockCollection::fromJson($rawBlocks);
 
-        if ($blockError = $this->validateBlocks($blocks)) {
-            return rest_ensure_response($blockError);
-        }
-
         $updatedSettings = json_decode($formBuilderSettings, true);
         $form->settings = array_merge($form->settings ?? [], $updatedSettings);
         $form->title = $updatedSettings['formTitle'];
         $form->blocks = $blocks;
+
+        if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
+            return rest_ensure_response($requiredFieldsError);
+        }
+
         $form->save();
 
         return rest_ensure_response([
@@ -85,12 +87,12 @@ class FormBuilderResourceController
      *
      * @return string[]
      */
-    protected function getRequiredBlockNames(): array
+    protected function getRequiredFieldNames(): array
     {
         return [
-            "custom-block-editor/donation-amount",
-            "custom-block-editor/donor-info",
-            "custom-block-editor/payment-details",
+            "amount",
+            "name",
+            "gatewayId",
         ];
     }
 
@@ -99,13 +101,11 @@ class FormBuilderResourceController
      *
      * @return WP_Error|void
      */
-    protected function validateBlocks(BlockCollection $blocks)
+    protected function validateRequiredFields(Form $schema)
     {
-        $blockNames = array_column($blocks->toArray(), 'name');
-
-        foreach ($this->getRequiredBlockNames() as $requiredBlock) {
-            if (!in_array($requiredBlock, $blockNames, true)) {
-                return new WP_Error(404, __("Required block $requiredBlock not found.", 'give'));
+        foreach ($this->getRequiredFieldNames() as $requiredFieldName) {
+            if (!$schema->getNodeByName($requiredFieldName)) {
+                return new WP_Error(404, __("Required field '$requiredFieldName' not found.", 'give'));
             }
         }
     }
