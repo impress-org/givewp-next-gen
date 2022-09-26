@@ -11,6 +11,10 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static RegistrationOptions PERCENTAGE_RAISED()
  * @method static RegistrationOptions NUMBER_DONATIONS()
  * @method static RegistrationOptions NUMBER_DONORS()
+ * @method bool isNumberRaised()
+ * @method bool isPercentageRaised()
+ * @method bool isNumberDonations()
+ * @method bool NumberDonors()
  */
 class GoalFormatOptions extends Enum
 {

@@ -16,7 +16,7 @@ class DonationFormFactory extends ModelFactory
     {
         return [
             'title' => 'Form Title',
-            'status' => DonationFormStatus::PUBLISH(),
+            'status' => DonationFormStatus::PUBLISHED(),
             'settings' => [
                 'enableDonationGoal' => false,
                 'enableAutoClose' => false,

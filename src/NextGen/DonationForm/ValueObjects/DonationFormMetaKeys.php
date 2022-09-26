@@ -9,6 +9,7 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @unreleased
  *
  * @method static DonationFormMetaKeys SETTINGS()
+ * @method bool isSettings()
  */
 class DonationFormMetaKeys extends Enum
 {

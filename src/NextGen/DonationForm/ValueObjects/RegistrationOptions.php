@@ -11,6 +11,10 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static RegistrationOptions REGISTRATION()
  * @method static RegistrationOptions LOGIN()
  * @method static RegistrationOptions REGISTRATION_LOGIN()
+ * @method bool isNone()
+ * @method bool isRegistration()
+ * @method bool isLogin()
+ * @method bool isRegisterAndLogin()
  */
 class RegistrationOptions extends Enum
 {
