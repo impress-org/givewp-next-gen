@@ -1,7 +1,7 @@
 [
     {
         "clientId": "8371d4c7-0e8d-4aff-a1a1-b4520f008132",
-        "name": "custom-block-editor/section-1",
+        "name": "custom-block-editor/section",
         "isValid": true,
         "attributes": {
             "title": "How much would you like to donate today?",
@@ -30,7 +30,7 @@
     },
     {
         "clientId": "2d74bf4b-4b82-4bea-aed7-431801709351",
-        "name": "custom-block-editor/section-2",
+        "name": "custom-block-editor/section",
         "isValid": true,
         "attributes": {
             "title": "Who's Giving Today?",
@@ -73,7 +73,7 @@
     },
     {
         "clientId": "52596cc5-ab49-433e-b8e9-23fb4871fb5c",
-        "name": "custom-block-editor/section-3",
+        "name": "custom-block-editor/section",
         "isValid": true,
         "attributes": {
             "title": "Payment Details",
