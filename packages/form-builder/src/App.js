@@ -11,7 +11,7 @@ import {Content, SecondarySidebar, Sidebar} from './components';
 import {defaultFormSettings, FormSettingsProvider} from './settings/context';
 import {Storage} from './common';
 
-import {useFieldNames, useToggleState} from "./hooks";
+import {useToggleState} from "./hooks";
 
 import '@wordpress/components/build-style/style.css';
 import '@wordpress/block-editor/build-style/style.css';
@@ -50,11 +50,6 @@ function App() {
                       .catch(error => alert(error.message));
     };
 
-    const FieldNames = () => {
-        useFieldNames()
-        return <></>
-    }
-
     return (
         <FormSettingsProvider formSettings={formSettings} setFormSettings={setFormSettings}>
             <ShortcutProvider>
@@ -63,7 +58,6 @@ function App() {
                     onInput={(blocks) => updateBlocks(blocks)}
                     onChange={(blocks) => updateBlocks(blocks)}
                 >
-                    <FieldNames />
                     <SlotFillProvider>
                         <Sidebar.InspectorFill>
                             <BlockInspector />
