@@ -12,18 +12,15 @@ const Edit = function (props) {
 
     const validateFieldName = useFieldNames()
 
-    if( ! fieldName ) {
-        const [ isUnique, suggestedName ] = validateFieldName('field')
-        const debug = 'Using suggestion ' + suggestedName
-        setAttributes({fieldName: suggestedName})
-        console.log( 'Using suggestion', suggestedName)
-        console.log(debug)
+    const updateFieldName = (newFieldName) => {
+        setAttributes({fieldName: newFieldName})
     }
 
-    const updateFieldName = (newFieldName) => {
-        const [ isUnique, suggestedName ] = validateFieldName(newFieldName)
-        console.log( 'here', isUnique, suggestedName)
-        setAttributes({fieldName: ( newFieldName && isUnique ) ? newFieldName : suggestedName})
+    const enforceUniqueFieldName = () => {
+        const [ isUnique, suggestedName ] = validateFieldName(fieldName)
+        if(!isUnique) {
+            updateFieldName(suggestedName)
+        }
     }
 
     const requiredClass = isRequired ? "give-is-required" : "";
@@ -67,6 +64,7 @@ const Edit = function (props) {
                             label={'Field Name'}
                             value={fieldName}
                             onChange={updateFieldName}
+                            onBlur={enforceUniqueFieldName}
                         />
                     </PanelRow>
                 </PanelBody>
