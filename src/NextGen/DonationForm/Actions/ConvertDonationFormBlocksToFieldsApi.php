@@ -34,7 +34,7 @@ class ConvertDonationFormBlocksToFieldsApi
     {
         $form = new Form('donation-form');
 
-        foreach ($blocks as $block) {
+        foreach ($blocks->getBlocks() as $block) {
             $form->append($this->convertTopLevelBlockToSection($block));
         }
 
@@ -50,9 +50,9 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function convertTopLevelBlockToSection(BlockModel $block): Section
     {
-        return Section::make(uniqid($block->getShortName()))
-            ->label($block->attributes['title'])
-            ->description($block->attributes['description'])
+        return Section::make(uniqid($block->getShortName(), true))
+            ->label($block->getAttribute('title'))
+            ->description($block->getAttribute('description'))
             ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
     }
 

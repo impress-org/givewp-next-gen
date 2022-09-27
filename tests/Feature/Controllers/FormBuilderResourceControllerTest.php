@@ -179,8 +179,25 @@ class FormBuilderResourceControllerTest extends TestCase
     public function testShowShouldFailIfBlockDataIsInvalid()
     {
         $blockCollectionWithoutAmountField = BlockCollection::make([
-            BlockModel::make(['name' => 'custom-block-editor/donor-info']),
-            BlockModel::make(['name' => 'custom-block-editor/payment-details']),
+            BlockModel::make([
+                'name' => 'custom-block-editor/section',
+                'attributes' => ['title' => '', 'description' => ''],
+                'innerBlocks' => [
+                    /* @note The `donation-amount-levels` block is intentionally omitted for this test. */
+                    [
+                        'name' => 'custom-block-editor/donor-name',
+                        'attributes' => [
+                            'firstNameLabel' => 'First Name',
+                            'firstNamePlaceholder' => '',
+                            'lastNameLabel' => 'Last Name',
+                            'lastNamePlaceholder' => '',
+                            'requireLastName' => true,
+                        ]
+                    ],
+                    ['name' => 'custom-block-editor/email-field'],
+                    ['name' => 'custom-block-editor/payment-gateways'],
+                ]
+            ]),
         ]);
 
         $form = DonationForm::factory()->create(['blocks' => $blockCollectionWithoutAmountField]);
