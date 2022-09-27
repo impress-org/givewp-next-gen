@@ -90,9 +90,10 @@ class FormBuilderResourceController
     protected function getRequiredFieldNames(): array
     {
         return [
-            "amount",
-            "name",
-            "gatewayId",
+            'amount',
+            'name',
+            'email',
+            'gatewayId',
         ];
     }
 
