@@ -1,11 +1,7 @@
 import {useSelect} from "@wordpress/data";
 
-export const isFieldNameUnique = (fieldName, fieldNames) => {
-    /**
-     * We are checking for uniqueness after the field name is updated.
-     * Therefor we the field name will be in the list at least once.
-     */
-    return 1 >= fieldNames.filter(name => name === fieldName ).length
+export const getFieldNameFrequency = (fieldName, fieldNames) => {
+    return fieldNames.filter(name => name === fieldName).length
 }
 
 export const getFieldNameSuggestion = (name, names) => {
@@ -18,6 +14,11 @@ export const getFieldNameSuggestion = (name, names) => {
 
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)]
 
+/**
+ * A hook for validating uniqueness of the 'fieldName' attribute.
+ *
+ * @return {function(*): [boolean,string]}
+ */
 const useFieldNames = () => {
     const blocks = useSelect((select) => select('core/block-editor').getBlocks());
 
@@ -26,7 +27,11 @@ const useFieldNames = () => {
                              .filter(name => name)
 
     return (n) => [
-        isFieldNameUnique(n, fieldNames ?? []),
+        /**
+         * We are checking for uniqueness after the field name is updated.
+         * Therefor the field name will be in the list at least once.
+         */
+        1 >= getFieldNameFrequency(n, fieldNames ?? []),
         getFieldNameSuggestion(n, fieldNames ?? [])
     ]
 };
