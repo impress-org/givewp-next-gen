@@ -53,7 +53,7 @@ class ConvertDonationFormBlocksToFieldsApi
         return Section::make(uniqid($block->getShortName()))
             ->label($block->attributes['title'])
             ->description($block->attributes['description'])
-            ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->blocks));
+            ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
     }
 
 

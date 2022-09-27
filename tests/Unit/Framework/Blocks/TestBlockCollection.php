@@ -23,7 +23,7 @@ class TestBlockCollection extends TestCase
             $blockModel
         ]);
 
-        $this->assertInstanceOf(BlockModel::class, $collection[0]);
+        $this->assertInstanceOf(BlockModel::class, $collection->getBlocks()[0]);
     }
 
     /**
@@ -35,7 +35,7 @@ class TestBlockCollection extends TestCase
     {
         $collection = BlockCollection::fromJson('[{"name":"namespace/nested-block"}]');
 
-        $this->assertInstanceOf(BlockModel::class, $collection[0]);
+        $this->assertInstanceOf(BlockModel::class, $collection->getBlocks()[0]);
     }
 
     /**

@@ -2,25 +2,22 @@
 
 namespace Give\NextGen\Framework\Blocks;
 
-use ArrayObject;
 use Give\Framework\Support\Contracts\Arrayable;
 
-class BlockCollection extends ArrayObject implements Arrayable
+class BlockCollection implements Arrayable
 {
     /**
      * @var BlockModel[]
      */
-    public $blocks;
+    protected $blocks;
 
     /**
      * @unreleased
      *
      * @param  BlockModel[]  $blocks
      */
-    public function __construct($blocks)
+    public function __construct(array $blocks)
     {
-        parent::__construct($blocks);
-
         $this->blocks = $blocks;
     }
 
@@ -67,5 +64,15 @@ class BlockCollection extends ArrayObject implements Arrayable
         return array_map(static function (BlockModel $block) {
             return $block->toArray();
         }, $this->blocks);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return BlockModel[]
+     */
+    public function getBlocks(): array
+    {
+        return $this->blocks;
     }
 }
