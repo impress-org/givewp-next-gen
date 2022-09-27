@@ -138,15 +138,15 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     {
         $form = (new ConvertDonationFormBlocksToFieldsApi())($this->blocks);
 
-        /** @var Section $paymentDetails */
-        $paymentDetails = $form->getNodeByName('payment-details');
+        $paymentDetails = new Section('hidden-fields');
+        $form->append(
+            $paymentDetails->append(
+                Hidden::make('formId')
+                    ->defaultValue($this->id),
 
-        $paymentDetails->append(
-            Hidden::make('formId')
-                ->defaultValue($this->id),
-
-            Hidden::make('currency')
-                ->defaultValue(give_get_currency($this->id))
+                Hidden::make('currency')
+                    ->defaultValue(give_get_currency($this->id))
+            )
         );
 
         return $form;
