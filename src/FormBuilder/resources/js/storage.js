@@ -16,7 +16,8 @@ window.storage = {
                     resolve();
                 })
                 .fail((error) => {
-                    reject(new Error(error.responseJSON.message));
+                    console.error(error);
+                    reject(new Error(error?.responseJSON?.message));
                 });
         });
     },
