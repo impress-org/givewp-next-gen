@@ -3,7 +3,7 @@ import {__} from "@wordpress/i18n";
 import settings from "./settings";
 import {useFieldNames} from "../../hooks";
 import {InspectorAdvancedControls} from "@wordpress/block-editor";
-import {PanelRow, TextControl} from "@wordpress/components";
+import {ExternalLink, PanelRow, TextControl} from "@wordpress/components";
 
 const Edit = (props) => {
     const ParentEdit = settings.edit
@@ -31,6 +31,12 @@ const Edit = (props) => {
                     <TextControl
                         label={'Field Name'}
                         value={fieldName}
+                        help={[
+                            <>{__('The programmatic name of the field used by the Fields API.', 'give')}</>,
+                            <ExternalLink style={{display: 'block', marginTop: '8px'}} href="https://github.com/impress-org/givewp/tree/develop/src/Framework/FieldsAPI">
+                                {__('Learn more about the Fields API', 'give')}
+                            </ExternalLink>
+                        ]}
                         onChange={updateFieldName}
                         onBlur={enforceUniqueFieldName}
                     />
