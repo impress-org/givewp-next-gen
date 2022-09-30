@@ -1,4 +1,4 @@
-import CurrencyInput, {formatValue} from "react-currency-input-field";
+import CurrencyInput, {formatValue} from 'react-currency-input-field';
 
 const {currency = 'USD'} = window?.storageData?.currency ?? {};
 
