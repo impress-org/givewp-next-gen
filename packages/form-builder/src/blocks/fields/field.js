@@ -8,12 +8,21 @@ import {ExternalLink, PanelRow, TextControl} from "@wordpress/components";
 const Edit = (props) => {
     const ParentEdit = settings.edit
 
-    const {attributes: {fieldName}, setAttributes} = props;
+    const {attributes: {fieldName, label}, setAttributes} = props;
 
     const validateFieldName = useFieldNames()
 
+    const slugify = (value) => {
+        return value.toLowerCase()
+                    .replace(/\s|_/g, '-') // Replace spaces and underscores with dashes
+                    .replace(/[^a-zA-Z\d\s-]/g, '') // Replace non-alphanumeric characters (other than dashes)
+                    .replace(/-$/g, '') // Remove trailing dash
+    }
+
     const updateFieldName = (newFieldName) => {
-        setAttributes({fieldName: newFieldName})
+        setAttributes({
+            fieldName: slugify(newFieldName)
+        })
     }
 
     const enforceUniqueFieldName = () => {
@@ -23,9 +32,20 @@ const Edit = (props) => {
         }
     }
 
+    const enforceRequiredValue = () => {
+        if( ! fieldName ) {
+            updateFieldName(label)
+        }
+    }
+
     return (
         <>
-            <ParentEdit {...props} />
+            <ParentEdit {...props} onLabelTextControlBlur={(event) => {
+                if( ! fieldName ) {
+                    updateFieldName(event.target.value)
+                    enforceUniqueFieldName()
+                }
+            }} />
             <InspectorAdvancedControls>
                 <PanelRow>
                     <TextControl
@@ -38,7 +58,10 @@ const Edit = (props) => {
                             </ExternalLink>
                         ]}
                         onChange={updateFieldName}
-                        onBlur={enforceUniqueFieldName}
+                        onBlur={() => {
+                            enforceRequiredValue()
+                            enforceUniqueFieldName()
+                        }}
                     />
                 </PanelRow>
             </InspectorAdvancedControls>

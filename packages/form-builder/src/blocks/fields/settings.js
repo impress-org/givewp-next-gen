@@ -1,12 +1,14 @@
 import {InspectorControls} from "@wordpress/block-editor";
 import {PanelBody, PanelRow, TextControl, ToggleControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
+import {noop} from "lodash";
 
 const Edit = function (props) {
 
     const {
         attributes: {label, placeholder, isRequired, options},
         setAttributes,
+        onLabelTextControlBlur = noop
     } = props;
 
     const requiredClass = isRequired ? "give-is-required" : "";
@@ -29,6 +31,7 @@ const Edit = function (props) {
                             label={'Label'}
                             value={label}
                             onChange={(val) => setAttributes({label: val})}
+                            onBlur={onLabelTextControlBlur}
                         />
                     </PanelRow>
                     <PanelRow>
