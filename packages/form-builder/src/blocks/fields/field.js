@@ -3,77 +3,93 @@ import {__} from "@wordpress/i18n";
 import settings from "./settings";
 import {useFieldNames} from "../../hooks";
 import {InspectorAdvancedControls} from "@wordpress/block-editor";
-import {ExternalLink, PanelRow, TextControl} from "@wordpress/components";
+import {ExternalLink, PanelRow, TextControl, ToggleControl} from "@wordpress/components";
 
 const Edit = (props) => {
-    const ParentEdit = settings.edit
+    const ParentEdit = settings.edit;
 
-    const {attributes: {fieldName, label}, setAttributes} = props;
+    const {attributes: {fieldName, label, storeAsDonorMeta}, setAttributes} = props;
 
-    const validateFieldName = useFieldNames()
+    const validateFieldName = useFieldNames();
 
     const slugify = (value) => {
         return value.toLowerCase()
                     .replace(/\s|_/g, '-') // Replace spaces and underscores with dashes
                     .replace(/[^a-zA-Z\d\s-]/g, '') // Replace non-alphanumeric characters (other than dashes)
-                    .replace(/-$/g, '') // Remove trailing dash
-    }
+                    .replace(/-$/g, ''); // Remove trailing dash
+    };
 
     const updateFieldName = (newFieldName) => {
         setAttributes({
-            fieldName: slugify(newFieldName)
-        })
-    }
+            fieldName: slugify(newFieldName),
+        });
+    };
 
     const enforceUniqueFieldName = () => {
-        const [ isUnique, suggestedName ] = validateFieldName(fieldName)
-        if(!isUnique) {
-            updateFieldName(suggestedName)
+        const [isUnique, suggestedName] = validateFieldName(fieldName);
+        if (!isUnique) {
+            updateFieldName(suggestedName);
         }
-    }
+    };
 
     const enforceRequiredValue = () => {
-        if( ! fieldName ) {
-            updateFieldName(label)
+        if (!fieldName) {
+            updateFieldName(label);
         }
-    }
+    };
 
     return (
         <>
             <ParentEdit {...props} onLabelTextControlBlur={(event) => {
-                if( ! fieldName ) {
-                    updateFieldName(event.target.value)
-                    enforceUniqueFieldName()
+                if (!fieldName) {
+                    updateFieldName(event.target.value);
+                    enforceUniqueFieldName();
                 }
             }} />
             <InspectorAdvancedControls>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Store as Donor Meta', 'give')}
+                        checked={storeAsDonorMeta}
+                        onChange={() => setAttributes({storeAsDonorMeta: !storeAsDonorMeta})}
+                    />
+                </PanelRow>
                 <PanelRow>
                     <TextControl
                         label={'Field Name'}
                         value={fieldName}
                         help={[
                             <>{__('The programmatic name of the field used by the Fields API.', 'give')}</>,
-                            <ExternalLink style={{display: 'block', marginTop: '8px'}} href="https://github.com/impress-org/givewp/tree/develop/src/Framework/FieldsAPI">
+                            <ExternalLink style={{display: 'block', marginTop: '8px'}}
+                                          href="https://github.com/impress-org/givewp/tree/develop/src/Framework/FieldsAPI">
                                 {__('Learn more about the Fields API', 'give')}
-                            </ExternalLink>
+                            </ExternalLink>,
                         ]}
                         onChange={updateFieldName}
                         onBlur={() => {
-                            enforceRequiredValue()
-                            enforceUniqueFieldName()
+                            enforceRequiredValue();
+                            enforceUniqueFieldName();
                         }}
                     />
                 </PanelRow>
             </InspectorAdvancedControls>
         </>
-    )
-}
+    );
+};
 
 const field = {
     name: 'custom-block-editor/field',
     category: 'custom',
     settings: {
         ...settings,
+        attributes: {
+            ...settings.attributes,
+            storeAsDonorMeta:  {
+                type: 'boolean',
+                source: 'attribute',
+                default: false,
+            },
+        },
         title: __('Text', 'custom-block-editor'),
         icon: () => <Icon icon={
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
