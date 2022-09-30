@@ -1,27 +1,13 @@
 import {InspectorControls} from "@wordpress/block-editor";
 import {PanelBody, PanelRow, TextControl, ToggleControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
-import {useFieldNames} from "../../hooks";
 
 const Edit = function (props) {
 
     const {
-        attributes: {label, placeholder, isRequired, options, fieldName},
+        attributes: {label, placeholder, isRequired, options},
         setAttributes,
     } = props;
-
-    const validateFieldName = useFieldNames()
-
-    const updateFieldName = (newFieldName) => {
-        setAttributes({fieldName: newFieldName})
-    }
-
-    const enforceUniqueFieldName = () => {
-        const [ isUnique, suggestedName ] = validateFieldName(fieldName)
-        if(!isUnique) {
-            updateFieldName(suggestedName)
-        }
-    }
 
     const requiredClass = isRequired ? "give-is-required" : "";
 
@@ -57,14 +43,6 @@ const Edit = function (props) {
                             label={'Required'}
                             checked={isRequired}
                             onChange={() => setAttributes({isRequired: !isRequired})}
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <TextControl
-                            label={'Field Name'}
-                            value={fieldName}
-                            onChange={updateFieldName}
-                            onBlur={enforceUniqueFieldName}
                         />
                     </PanelRow>
                 </PanelBody>

@@ -1,6 +1,44 @@
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
 import settings from "./settings";
+import {useFieldNames} from "../../hooks";
+import {InspectorAdvancedControls} from "@wordpress/block-editor";
+import {PanelRow, TextControl} from "@wordpress/components";
+
+const Edit = (props) => {
+    const ParentEdit = settings.edit
+
+    const {attributes: {fieldName}, setAttributes} = props;
+
+    const validateFieldName = useFieldNames()
+
+    const updateFieldName = (newFieldName) => {
+        setAttributes({fieldName: newFieldName})
+    }
+
+    const enforceUniqueFieldName = () => {
+        const [ isUnique, suggestedName ] = validateFieldName(fieldName)
+        if(!isUnique) {
+            updateFieldName(suggestedName)
+        }
+    }
+
+    return (
+        <>
+            <ParentEdit {...props} />
+            <InspectorAdvancedControls>
+                <PanelRow>
+                    <TextControl
+                        label={'Field Name'}
+                        value={fieldName}
+                        onChange={updateFieldName}
+                        onBlur={enforceUniqueFieldName}
+                    />
+                </PanelRow>
+            </InspectorAdvancedControls>
+        </>
+    )
+}
 
 const field = {
     name: 'custom-block-editor/field',
@@ -18,6 +56,7 @@ const field = {
                     fill="#000C00" />
             </svg>
         } />,
+        edit: Edit,
     },
 };
 
