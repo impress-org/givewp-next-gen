@@ -1,8 +1,8 @@
-import {useSelect} from "@wordpress/data";
+import {useSelect} from '@wordpress/data';
 
 export const getFieldNameFrequency = (fieldName, fieldNames) => {
-    return fieldNames.filter(name => name === fieldName).length
-}
+    return fieldNames.filter((name) => name === fieldName).length;
+};
 
 export const getFieldNameSuggestion = (name, names) => {
     const [ prefix ] = name.split(/^(.*)-([0-9]*)$/g).filter(Boolean)
@@ -20,7 +20,7 @@ export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(fla
  * @return {function(*): [boolean,string]}
  */
 const useFieldNames = () => {
-    const blocks = useSelect((select) => select('core/block-editor').getBlocks());
+    const blocks = useSelect((select) => select('core/block-editor').getBlocks(), []);
 
     const fieldNames = blocks.flatMap(flattenBlocks)
                              .map(block => block.attributes.fieldName)
