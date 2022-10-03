@@ -3,11 +3,8 @@ import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import {noop} from 'lodash';
 
-export default function Edit({
-    attributes: {label, placeholder, isRequired, options},
-    setAttributes,
-    onLabelTextControlBlur = noop,
-}) {
+export default function DefaultFieldSettings({attributes, setAttributes, onLabelTextControlBlur = noop}) {
+    const {label, placeholder, isRequired, options} = attributes;
     const requiredClass = isRequired ? 'give-is-required' : '';
 
     return (

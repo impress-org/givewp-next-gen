@@ -19,20 +19,20 @@ export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(fla
  *
  * @return {function(*): [boolean,string]}
  */
-const useFieldNames = () => {
+const useFieldNames = (fieldName) => {
     const blocks = useSelect((select) => select('core/block-editor').getBlocks(), []);
 
     const fieldNames = blocks.flatMap(flattenBlocks)
-                             .map(block => block.attributes.fieldName)
-                             .filter(name => name)
+        .map(block => block.attributes.fieldName)
+        .filter(name => name)
 
     return (n) => [
         /**
          * We are checking for uniqueness after the field name is updated.
          * Therefor the field name will be in the list at least once.
          */
-        1 >= getFieldNameFrequency(n, fieldNames ?? []),
-        getFieldNameSuggestion(n, fieldNames ?? [])
+        1 >= getFieldNameFrequency(fieldName, fieldNames ?? []),
+        getFieldNameSuggestion(fieldName, fieldNames ?? [])
     ]
 };
 
