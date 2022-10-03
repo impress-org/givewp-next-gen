@@ -1,4 +1,4 @@
-import {isFieldNameUnique, getFieldNameSuggestion, getFieldNameFrequency} from "./useFieldNames";
+import {getFieldNameFrequency, getFieldNameSuggestion} from './useFieldNameValidator';
 
 /**
  * We are checking for uniqueness after the field name is updated.

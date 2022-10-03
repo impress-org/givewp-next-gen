@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import Edit from './Edit';
+import DefaultFieldSettings from './DefaultFieldSettings';
 
 const defaultSettings = {
     title: __('Field', 'custom-block-editor'),
@@ -34,7 +34,7 @@ const defaultSettings = {
         },
     },
 
-    edit: Edit,
+    edit: DefaultFieldSettings,
 
     save: function () {
         return null; // Save as attributes - not rendered HTML.

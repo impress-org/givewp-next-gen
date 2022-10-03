@@ -1,9 +1,19 @@
 import {useSelect} from '@wordpress/data';
 
+/**
+ * @unreleased
+ *
+ * @returns {*}
+ */
 export const getFieldNameFrequency = (fieldName, fieldNames) => {
     return fieldNames.filter((name) => name === fieldName).length;
 };
 
+/**
+ * @unreleased
+ *
+ * @returns {`${*}-${number|number}`}
+ */
 export const getFieldNameSuggestion = (name, names) => {
     const [ prefix ] = name.split(/^(.*)-([0-9]*)$/g).filter(Boolean)
     const similarFieldNames = names.filter(fieldName => fieldName.startsWith(prefix));
@@ -12,14 +22,22 @@ export const getFieldNameSuggestion = (name, names) => {
     return `${prefix}-${nextIncrement}`;
 }
 
+/**
+ * @unreleased
+ */
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)]
 
 /**
  * A hook for validating uniqueness of the 'fieldName' attribute.
+ * When a conflict has been found, a new name suggestion will be generated and returned within the array
  *
- * @return {function(*): [boolean,string]}
+ * @unreleased
+ *
+ * TODO: use typescript types
+ *
+ * @return {function(fieldName: string): [isUnique: boolean, suggestedName: string]}
  */
-const useFieldNames = (fieldName) => {
+const useFieldNameValidator = () => {
     const blocks = useSelect((select) => select('core/block-editor').getBlocks(), []);
 
     const fieldNames = blocks.flatMap(flattenBlocks)
@@ -31,9 +49,9 @@ const useFieldNames = (fieldName) => {
          * We are checking for uniqueness after the field name is updated.
          * Therefor the field name will be in the list at least once.
          */
-        1 >= getFieldNameFrequency(fieldName, fieldNames ?? []),
-        getFieldNameSuggestion(fieldName, fieldNames ?? [])
+        1 >= getFieldNameFrequency(n, fieldNames ?? []),
+        getFieldNameSuggestion(n, fieldNames ?? [])
     ]
 };
 
-export default useFieldNames;
+export default useFieldNameValidator;
