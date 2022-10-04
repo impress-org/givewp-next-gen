@@ -1,7 +1,4 @@
-import useFieldNames from "./useFieldNames";
-import useToggleState from "./useToggleState";
+import useFieldNameValidator from './useFieldNameValidator';
+import useToggleState from './useToggleState';
 
-export {
-    useFieldNames,
-    useToggleState,
-};
+export {useFieldNameValidator, useToggleState};

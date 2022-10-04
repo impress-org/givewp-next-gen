@@ -1,4 +1,4 @@
-import {isFieldNameUnique, getFieldNameSuggestion, getFieldNameFrequency} from "./useFieldNames";
+import {isFieldNameUnique, getFieldNameSuggestion, getFieldNameFrequency} from './useFieldNameValidator';
 
 /**
  * We are checking for uniqueness after the field name is updated.
@@ -12,23 +12,9 @@ it('is counts the frequency of a field name', () => {
 });
 
 it('suggests a name to be unique', () => {
-    expect(
-        getFieldNameSuggestion('text-field', [
-            'text-field'
-        ])
-    ).toBe('text-field-1')
+    expect(getFieldNameSuggestion('text-field', ['text-field'])).toBe('text-field-1');
 
-    expect(
-        getFieldNameSuggestion('text-field', [
-            'text-field',
-            'text-field-1'
-        ])
-    ).toBe('text-field-2')
+    expect(getFieldNameSuggestion('text-field', ['text-field', 'text-field-1'])).toBe('text-field-2');
 
-    expect(
-        getFieldNameSuggestion('text-field', [
-            'text-field',
-            'text-field-2'
-        ])
-    ).toBe('text-field-3')
+    expect(getFieldNameSuggestion('text-field', ['text-field', 'text-field-2'])).toBe('text-field-3');
 });
