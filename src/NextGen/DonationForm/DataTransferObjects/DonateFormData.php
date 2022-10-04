@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
  * @unreleased
@@ -55,6 +56,10 @@ class DonateFormData
      * @var string|null
      */
     public $honorific;
+    /**
+     * @var array
+     */
+    public $customFields;
 
     /**
      * Convert data from request into DTO
@@ -79,6 +84,7 @@ class DonateFormData
         $self->formTitle = get_the_title($request['formId']);
         $self->company = !empty($request['company']) ? $request['company'] : null;
         $self->honorific = !empty($request['honorific']) ? $request['honorific'] : null;
+        $self->customFields = $request['customFields'];
 
         return $self;
     }
@@ -100,5 +106,13 @@ class DonateFormData
             'formTitle' => $this->formTitle,
             'company' => $this->company
         ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toDonationForm(): DonationForm
+    {
+        return DonationForm::find($this->formId);
     }
 }
