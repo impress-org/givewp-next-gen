@@ -5,9 +5,12 @@ namespace Give\NextGen\DonationForm\Controllers;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Text;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
 use Give\NextGen\DonationForm\DataTransferObjects\LegacyPurchaseFormData;
+use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
  * @unreleased
@@ -37,6 +40,10 @@ class DonateController
 
         $donation = $formData->toDonation($donor->id);
         $donation->save();
+
+        $form = $formData->toDonationForm();
+
+        $this->saveCustomFields($form, $donation, $formData->customFields);
 
         // setting sessions is required for legacy receipts
         $this->setSession($donation, $donor);
@@ -111,6 +118,36 @@ class DonateController
             $legacyPurchaseFormData = LegacyPurchaseFormData::fromArray(['donation' => $donation, 'donor' => $donor]);
 
             give_set_purchase_session($legacyPurchaseFormData->toPurchaseData());
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * TODO: add more validation based on the field settings.
+     *
+     * @return void
+     */
+    private function saveCustomFields(DonationForm $form, Donation $donation, array $customFields)
+    {
+        $formSchema = $form->schema();
+
+        foreach ($customFields as $key => $value) {
+            /** @var Text $node */
+            $node = $formSchema->getNodeByName($key);
+
+            // make sure node exists in schema
+            if (!$node) {
+                throw new InvalidArgumentException("$key is not a valid custom field.");
+            }
+
+            if ($node->shouldStoreAsDonorMeta()) {
+                // save as donor meta
+                give()->donor_meta->add_meta($donation->donorId, $node->getName(), $value);
+            } else {
+                // save as donation meta
+                give()->payment_meta->update_meta($donation->id, $node->getName(), $value);
+            }
         }
     }
 }
