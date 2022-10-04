@@ -48,13 +48,6 @@ function FieldSettings({attributes, setAttributes}) {
             />
             <InspectorAdvancedControls>
                 <PanelRow>
-                    <ToggleControl
-                        label={__('Store as Donor Meta', 'give')}
-                        checked={storeAsDonorMeta}
-                        onChange={() => setAttributes({storeAsDonorMeta: !storeAsDonorMeta})}
-                    />
-                </PanelRow>
-                <PanelRow>
                     <TextControl
                         label={__('Field Name', 'give')}
                         value={fieldName}
@@ -72,6 +65,14 @@ function FieldSettings({attributes, setAttributes}) {
                             enforceRequiredValue();
                             enforceUniqueFieldName();
                         }}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Store as Donor Meta', 'give')}
+                        checked={storeAsDonorMeta}
+                        onChange={() => setAttributes({storeAsDonorMeta: !storeAsDonorMeta})}
+                        help={__('By default, fields are stored as Donation Meta', 'give')}
                     />
                 </PanelRow>
             </InspectorAdvancedControls>
