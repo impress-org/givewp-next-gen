@@ -46,8 +46,19 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         return setError('FORM_ERROR', {message: error.message});
     }
 
+    const {firstName, lastName, email, amount, gatewayId, formId, currency, company, honorific, ...rest} = values;
+
     const request = await postData(donateUrl, {
-        ...values,
+        amount,
+        email,
+        firstName,
+        lastName,
+        honorific,
+        gatewayId,
+        formId,
+        currency,
+        company,
+        customFields: {...rest},
         gatewayData: beforeCreatePaymentGatewayResponse,
     });
 
