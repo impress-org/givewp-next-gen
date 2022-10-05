@@ -140,6 +140,10 @@ class DonateController
             if (!$node) {
                 throw new InvalidArgumentException("$key is not a valid custom field.");
             }
+            
+            if (empty($value) && $node->isRequired()) {
+                throw new InvalidArgumentException("$key is required.");
+            }
 
             if ($node->shouldStoreAsDonorMeta()) {
                 // save as donor meta
