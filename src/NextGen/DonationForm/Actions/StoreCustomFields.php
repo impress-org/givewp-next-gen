@@ -4,11 +4,14 @@ namespace Give\NextGen\DonationForm\Actions;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
 class StoreCustomFields {
     /**
-     *
+     * In order to store custom fields, we need to validate them by comparing the form's
+     * schema settings to the request.  Once a field has passed validation, we can determine
+     * its storage location from the fields api.
      *
      * @unreleased
      *
