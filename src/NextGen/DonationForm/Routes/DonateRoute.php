@@ -47,7 +47,6 @@ class DonateRoute
      * @return void
      *
      * @throws PaymentGatewayException
-     *
      */
     public function __invoke()
     {
@@ -82,7 +81,7 @@ class DonateRoute
             } catch (Exception $e) {
                 Log::error(
                     'Donation Error',
-                    ['message' => $e->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
+                    ['exceptionMessage' => $e->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
                 );
             }
 
@@ -94,10 +93,8 @@ class DonateRoute
      * Check if the listener is valid
      *
      * @unreleased
-     *
-     * @return bool
      */
-    private function isValidListener()
+    private function isValidListener(): bool
     {
         return isset($_GET['give-listener']) && $_GET['give-listener'] === 'give-donate';
     }
@@ -105,12 +102,9 @@ class DonateRoute
     /**
      * @unreleased
      *
-     * @param  string  $routeSignature
-     * @param  DonateRouteData  $data
-     *
      * @return void
      */
-    private function validateSignature($routeSignature, DonateRouteData $data)
+    private function validateSignature(string $routeSignature, DonateRouteData $data)
     {
         $signature = new DonateRouteSignature(
             $data->routeSignatureId,
@@ -137,12 +131,10 @@ class DonateRoute
     /**
      * @unreleased
      *
-     * @param  string  $paymentGateway
-     * @param  array  $gatewayIds
      * @return void
      * @throws PaymentGatewayException
      */
-    private function validateGateway($paymentGateway, $gatewayIds)
+    private function validateGateway(string $paymentGateway, array $gatewayIds)
     {
         if (!in_array($paymentGateway, $gatewayIds, true)) {
             throw new PaymentGatewayException('This gateway is not valid.');

@@ -62,6 +62,8 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         gatewayData: beforeCreatePaymentGatewayResponse,
     });
 
+    console.log(request.response);
+
     if (!request.response.ok) {
         return setError('FORM_ERROR', {message: 'Something went wrong, please try again or contact support.'});
     }

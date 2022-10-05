@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Actions\ValidateCustomFields;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
@@ -106,6 +107,18 @@ class DonateFormData
             'formTitle' => $this->formTitle,
             'company' => $this->company
         ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function validateData()
+    {
+        if (!empty($this->customFields)) {
+            (new ValidateCustomFields())($this->getDonationForm(), $this->customFields);
+        }
     }
 
     /**

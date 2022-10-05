@@ -3,7 +3,6 @@
 namespace Give\NextGen\DonationForm\Actions;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
@@ -24,15 +23,6 @@ class StoreCustomFields {
         foreach ($customFields as $key => $value) {
             /** @var Text $node */
             $node = $formSchema->getNodeByName($key);
-
-            // make sure node exists in schema
-            if (!$node) {
-                throw new InvalidArgumentException("$key is not a valid custom field.");
-            }
-
-            if (empty($value) && $node->isRequired()) {
-                throw new InvalidArgumentException("$key is required.");
-            }
 
             if ($node->shouldStoreAsDonorMeta()) {
                 // save as donor meta

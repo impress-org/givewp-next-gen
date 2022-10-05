@@ -16,7 +16,6 @@ use Give\NextGen\DonationForm\Models\DonationForm;
  */
 class DonateController
 {
-
     /**
      * First we create a donation, then move on to the gateway processing
      *
@@ -30,6 +29,8 @@ class DonateController
      */
     public function donate(DonateFormData $formData, PaymentGateway $registeredGateway)
     {
+        $formData->validateData();
+        
         $donor = $this->getOrCreateDonor(
             $formData->wpUserId,
             $formData->email,

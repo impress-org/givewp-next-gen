@@ -4,13 +4,7 @@ export default function Text({label, placeholder, fieldError, inputProps, valida
     return (
         <label>
             <span>{label}</span>
-            <input
-                type="text"
-                aria-invalid={fieldError ? 'true' : 'false'}
-                placeholder={placeholder}
-                {...inputProps}
-                {...validationRules}
-            />
+            <input type="text" aria-invalid={fieldError ? 'true' : 'false'} placeholder={placeholder} {...inputProps} />
 
             {fieldError && (
                 <div className="error-message">
