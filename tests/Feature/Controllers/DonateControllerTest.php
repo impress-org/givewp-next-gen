@@ -13,7 +13,8 @@ use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
-class DonateControllerTest extends TestCase {
+class DonateControllerTest extends TestCase
+{
     use RefreshDatabase;
 
     /**
