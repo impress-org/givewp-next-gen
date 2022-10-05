@@ -6,7 +6,8 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
-class ValidateCustomFields {
+class ValidateCustomFields
+{
     /**
      * In order to store custom fields, we need to validate them by comparing the form's
      * schema settings to the request.
@@ -14,6 +15,8 @@ class ValidateCustomFields {
      * @unreleased
      *
      * @return void
+     *
+     * @throws InvalidArgumentException
      */
     public function __invoke(DonationForm $form, array $customFields)
     {
