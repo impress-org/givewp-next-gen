@@ -41,7 +41,7 @@ class DonateController
         $donation = $formData->toDonation($donor->id);
         $donation->save();
 
-        $form = $formData->toDonationForm();
+        $form = $formData->getDonationForm();
 
         $this->saveCustomFields($form, $donation, $formData->customFields);
 
@@ -140,7 +140,7 @@ class DonateController
             if (!$node) {
                 throw new InvalidArgumentException("$key is not a valid custom field.");
             }
-            
+
             if (empty($value) && $node->isRequired()) {
                 throw new InvalidArgumentException("$key is required.");
             }

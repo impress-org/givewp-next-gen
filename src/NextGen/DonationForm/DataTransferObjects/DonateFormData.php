@@ -111,7 +111,7 @@ class DonateFormData
     /**
      * @unreleased
      */
-    public function toDonationForm(): DonationForm
+    public function getDonationForm(): DonationForm
     {
         return DonationForm::find($this->formId);
     }
