@@ -87,7 +87,7 @@ class DonateFormRouteData
             }
 
             if (empty($errors[$field->getName()])) {
-                $validData->{$field->getName()} = $this->castFieldValue($field, $fieldValue);
+                $validData->{$field->getName()} = $this->castFieldValue($field, $fieldValue ?? '');
             }
         });
 

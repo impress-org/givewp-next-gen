@@ -42,7 +42,6 @@ class DonateFormDataTest extends TestCase
             'formId' => $form->id,
             'company' => null,
             'honorific' => null,
-            'customFields' => []
         ];
 
         $donor = Donor::factory()->create();
@@ -62,7 +61,9 @@ class DonateFormDataTest extends TestCase
 
         $formData = DonateFormRouteData::fromRequest((array)$data);
 
-        $this->assertEquals($donation->getAttributes(), $formData->toDonation($donor->id)->getAttributes());
+        $data = $formData->validateFields();
+
+        $this->assertEquals($donation->getAttributes(), $data->toDonation($donor->id)->getAttributes());
     }
 
 }
