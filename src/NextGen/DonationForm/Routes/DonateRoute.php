@@ -81,20 +81,18 @@ class DonateRoute
                 $data = $formData->validated();
 
                 $this->donateController->donate($data, $gateway);
+            } catch (DonationFormFieldErrorsException $exception) {
+                Log::error(
+                    'Donation Form Field Errors',
+                    [
+                        'exceptionMessage' => $exception->getMessage(),
+                        'formData' => $formData,
+                        'errors' => $exception->getError()
+                    ]
+                );
+
+                wp_send_json_error(['errors' => $exception->getError()]);
             } catch (Exception $exception) {
-                if ($exception instanceof DonationFormFieldErrorsException) {
-                    Log::error(
-                        'Donation Form Field Errors',
-                        [
-                            'exceptionMessage' => $exception->getMessage(),
-                            'formData' => $formData,
-                            'errors' => $exception->getError()
-                        ]
-                    );
-
-                    wp_send_json_error(['errors' => $exception->getError()]);
-                }
-
                 Log::error(
                     'Donation Error',
                     ['exceptionMessage' => $exception->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
