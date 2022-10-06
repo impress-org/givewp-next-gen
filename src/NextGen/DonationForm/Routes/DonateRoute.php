@@ -99,6 +99,8 @@ class DonateRoute
                     'Donation Error',
                     ['exceptionMessage' => $exception->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
                 );
+
+                wp_send_json_error();
             }
 
             exit;
