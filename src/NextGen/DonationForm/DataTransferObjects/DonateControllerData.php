@@ -54,7 +54,7 @@ class DonateControllerData
      */
     public $honorific;
 
-      /**
+    /**
      * @unreleased
      */
     public function toDonation($donorId): Donation
@@ -75,7 +75,7 @@ class DonateControllerData
         ]);
     }
 
-     /**
+    /**
      * @unreleased
      */
     public function getDonationForm(): DonationForm
@@ -95,7 +95,7 @@ class DonateControllerData
     {
         $properties = get_object_vars($this);
 
-         return array_filter($properties, static function ($param) {
+        return array_filter($properties, static function ($param) {
             return !in_array(
                 $param,
                 [
