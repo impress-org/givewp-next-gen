@@ -2,7 +2,6 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
-use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Field;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -66,19 +65,6 @@ class DonateFormRouteData
             &$errors
         ) {
             $fieldValue = $request[$field->getName()];
-
-            // validate specific field types like email
-            if ($field->getType() === Email::TYPE && !is_email($fieldValue)) {
-                $error = $request[$field->getName()] = [
-                    'error_id' => $field->getName(),
-                    'error_message' => sprintf(
-                        esc_html__('Please use a valid email for %s', 'give'),
-                        $field->getName()
-                    ),
-                ];
-
-                $errors[] = $error;
-            }
 
             // validate required fields
             if (empty($fieldValue) && $field->isRequired()) {
