@@ -10,9 +10,8 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
 use Give\NextGen\DonationForm\Controllers\DonateController;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateRouteData;
-use WP_Error;
 
 /**
  * @unreleased
@@ -63,7 +62,7 @@ class DonateRoute
             $postData = json_decode($request, true);
 
             // create DTO from POST request
-            $formData = DonateFormData::fromRequest(give_clean($postData));
+            $formData = DonateFormRouteData::fromRequest(give_clean($postData));
 
             // get all registered gateways
             $paymentGateways = $this->paymentGatewayRegister->getPaymentGateways();
@@ -78,15 +77,9 @@ class DonateRoute
             $gateway = give($paymentGateways[$formData->gatewayId]);
 
             try {
-                $errors = $formData->validateFields();
+                $data = $formData->validateFields();
 
-                if (!empty($errors)) {
-                    Log::error('DonationFormErrors', compact('errors'));
-
-                    $this->redirectWithErrors($errors);
-                } else {
-                    $this->donateController->donate($formData, $gateway);
-                }
+                $this->donateController->donate($data, $gateway);
             } catch (Exception $e) {
                 Log::error(
                     'Donation Error',
@@ -148,19 +141,5 @@ class DonateRoute
         if (!in_array($paymentGateway, $gatewayIds, true)) {
             throw new PaymentGatewayException('This gateway is not valid.');
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    private function redirectWithErrors(array $errors)
-    {
-        $wpError = new WP_Error();
-
-        foreach ($errors as $error) {
-            $wpError->add($error['error_id'], $error['error_message']);
-        }
-
-        wp_send_json_error(['errors' => $wpError]);
     }
 }

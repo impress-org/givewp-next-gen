@@ -7,7 +7,7 @@ use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\Actions\StoreCustomFields;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 use Give\NextGen\DonationForm\DataTransferObjects\LegacyPurchaseFormData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
@@ -21,13 +21,10 @@ class DonateController
      *
      * @unreleased
      *
-     * @param  DonateFormData  $formData
-     * @param  PaymentGateway  $registeredGateway
-     *
      * @return void
      * @throws Exception
      */
-    public function donate(DonateFormData $formData, PaymentGateway $registeredGateway)
+    public function donate(DonateControllerData $formData, PaymentGateway $registeredGateway)
     {
         $donor = $this->getOrCreateDonor(
             $formData->wpUserId,
@@ -41,7 +38,7 @@ class DonateController
 
         $form = $formData->getDonationForm();
 
-        $this->saveCustomFields($form, $donation, $formData->customFields);
+        $this->saveCustomFields($form, $donation, $formData->getCustomFields());
 
         // setting sessions is required for legacy receipts
         $this->setSession($donation, $donor);

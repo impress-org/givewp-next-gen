@@ -7,7 +7,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use GiveTests\TestCase;
@@ -60,7 +60,7 @@ class DonateFormDataTest extends TestCase
             'company' => $data->company
         ]);
 
-         $formData = DonateFormData::fromRequest((array)$data);
+        $formData = DonateFormRouteData::fromRequest((array)$data);
 
         $this->assertEquals($donation->getAttributes(), $formData->toDonation($donor->id)->getAttributes());
     }

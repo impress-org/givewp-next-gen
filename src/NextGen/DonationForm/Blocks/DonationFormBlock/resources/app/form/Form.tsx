@@ -45,19 +45,8 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
 
-        const {firstName, lastName, email, amount, gatewayId, formId, currency, company, honorific, ...rest} = values;
-
         const {response} = await postData(donateUrl, {
-            amount,
-            email,
-            firstName,
-            lastName,
-            honorific,
-            gatewayId,
-            formId,
-            currency,
-            company,
-            customFields: {...rest},
+            ...values,
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
 
@@ -94,7 +83,6 @@ export default function Form({defaultValues, sections}: PropTypes) {
     const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
 
     const formError = errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null;
-    
 
     if (isSubmitSuccessful) {
         const {amount, firstName, lastName, email, gatewayId} = getValues();

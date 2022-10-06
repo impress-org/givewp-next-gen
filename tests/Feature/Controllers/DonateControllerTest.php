@@ -5,7 +5,7 @@ namespace TestsNextGen\Feature\Controllers;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\NextGen\DonationForm\Controllers\DonateController;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
@@ -48,7 +48,7 @@ class DonateControllerTest extends TestCase
 
         $form->save();
 
-        $formData = DonateFormData::fromRequest([
+        $formData = DonateFormRouteData::fromRequest([
             'gatewayId' => $testGateway::id(),
             'amount' => 50,
             'currency' => 'USD',
@@ -104,7 +104,7 @@ class DonateControllerTest extends TestCase
 
         $form->save();
 
-        $formData = DonateFormData::fromRequest([
+        $formData = DonateFormRouteData::fromRequest([
             'gatewayId' => $testGateway::id(),
             'amount' => 50,
             'currency' => 'USD',
