@@ -59,6 +59,8 @@ class DonateControllerData
      */
     public function toDonation($donorId): Donation
     {
+        $form = $this->getDonationForm();
+
         return new Donation([
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
@@ -68,7 +70,7 @@ class DonateControllerData
             'lastName' => $this->lastName,
             'email' => $this->email,
             'formId' => $this->formId,
-            'formTitle' => get_the_title($this->formId),
+            'formTitle' => $form->title,
             'company' => $this->company
         ]);
     }
