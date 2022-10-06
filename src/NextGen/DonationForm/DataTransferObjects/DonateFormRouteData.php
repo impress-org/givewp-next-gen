@@ -20,7 +20,7 @@ class DonateFormRouteData
     /**
      * @var array
      */
-    private $request;
+    private $requestData;
     /**
      * @var int
      */
@@ -31,12 +31,12 @@ class DonateFormRouteData
      *
      * @unreleased
      */
-    public static function fromRequest(array $request): DonateFormRouteData
+    public static function fromRequest(array $requestData): DonateFormRouteData
     {
         $self = new static();
-        $self->formId = (int)$request['formId'];
-        $self->gatewayId = $request['gatewayId'];
-        $self->request = $request;
+        $self->formId = (int)$requestData['formId'];
+        $self->gatewayId = $requestData['gatewayId'];
+        $self->requestData = $requestData;
 
         return $self;
     }
@@ -50,10 +50,9 @@ class DonateFormRouteData
      *
      * @throws DonationFormFieldErrorsException
      */
-    public function validateFields(): DonateControllerData
+    public function validated(): DonateControllerData
     {
-        $request = $this->getRequest();
-
+        $request = $this->getRequestData();
         $validData = new DonateControllerData();
 
         $errors = [];
@@ -103,13 +102,20 @@ class DonateFormRouteData
     /**
      * @unreleased
      */
-    public function getRequest(): array
+    public function getRequestData(): array
     {
-        return $this->request;
+        return $this->requestData;
     }
 
     /**
+     * This loops over an array of errors in the specific FieldAPI format,
+     * and converts them into a WP_Error object that is attached to the
+     * exception and delivered back to the client via JSON.
+     *
      * @unreleased
+     *
+     * @param  array{error_id: string, error_message: string}  $errors
+     *
      * @throws DonationFormFieldErrorsException
      */
     private function throwDonationFormFieldErrorsException(array $errors)
@@ -127,6 +133,10 @@ class DonateFormRouteData
     }
 
     /**
+     * Some properties need to be cast to specific types.
+     *
+     * TODO: figure out a less static way of doing this
+     *
      * @unreleased
      */
     private function castFieldValue(Field $field, string $fieldValue)

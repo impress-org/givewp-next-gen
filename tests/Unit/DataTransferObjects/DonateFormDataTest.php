@@ -61,7 +61,7 @@ class DonateFormDataTest extends TestCase
 
         $formData = DonateFormRouteData::fromRequest((array)$data);
 
-        $data = $formData->validateFields();
+        $data = $formData->validated();
 
         $this->assertEquals($donation->getAttributes(), $data->toDonation($donor->id)->getAttributes());
     }

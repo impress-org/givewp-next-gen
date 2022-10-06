@@ -82,6 +82,11 @@ class DonateControllerData
     }
 
     /**
+     * This is a hard-coded way of filtering through our dynamic properties
+     * and only returning custom fields.
+     *
+     * TODO: figure out a less static way of doing this
+     *
      * @unreleased
      */
     public function getCustomFields(): array

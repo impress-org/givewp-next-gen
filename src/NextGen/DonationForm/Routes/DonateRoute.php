@@ -78,7 +78,7 @@ class DonateRoute
             $gateway = give($paymentGateways[$formData->gatewayId]);
 
             try {
-                $data = $formData->validateFields();
+                $data = $formData->validated();
 
                 $this->donateController->donate($data, $gateway);
             } catch (Exception $exception) {
