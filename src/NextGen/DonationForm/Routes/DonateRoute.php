@@ -12,6 +12,7 @@ use Give\Log\Log;
 use Give\NextGen\DonationForm\Controllers\DonateController;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateRouteData;
+use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 
 /**
  * @unreleased
@@ -80,10 +81,23 @@ class DonateRoute
                 $data = $formData->validateFields();
 
                 $this->donateController->donate($data, $gateway);
-            } catch (Exception $e) {
+            } catch (Exception $exception) {
+                if ($exception instanceof DonationFormFieldErrorsException) {
+                    Log::error(
+                        'Donation Form Field Errors',
+                        [
+                            'exceptionMessage' => $exception->getMessage(),
+                            'formData' => $formData,
+                            'errors' => $exception->getError()
+                        ]
+                    );
+
+                    wp_send_json_error(['errors' => $exception->getError()]);
+                }
+
                 Log::error(
                     'Donation Error',
-                    ['exceptionMessage' => $e->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
+                    ['exceptionMessage' => $exception->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
                 );
             }
 

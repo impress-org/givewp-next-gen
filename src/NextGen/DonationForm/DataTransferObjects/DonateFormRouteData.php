@@ -4,8 +4,9 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Field;
-use Give\Log\Log;
+use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use WP_Error;
 
 /**
  * @unreleased
@@ -41,7 +42,13 @@ class DonateFormRouteData
     }
 
     /**
+     * This method loops over the form schema to
+     * compares the request against the individual fields,
+     * their types and validation rules.
+     *
      * @unreleased
+     *
+     * @throws DonationFormFieldErrorsException
      */
     public function validateFields(): DonateControllerData
     {
@@ -61,7 +68,7 @@ class DonateFormRouteData
         ) {
             $fieldValue = $request[$field->getName()];
 
-            // validate specific field types
+            // validate specific field types like email
             if ($field->getType() === Email::TYPE && !is_email($fieldValue)) {
                 $error = $request[$field->getName()] = [
                     'error_id' => $field->getName(),
@@ -85,10 +92,7 @@ class DonateFormRouteData
         });
 
         if ($errors) {
-            // TODO: throw exception and elevate error handling
-            Log::error('DonationFormErrors', compact('errors'));
-
-            $this->redirectWithErrors($errors);
+            $this->throwDonationFormFieldErrorsException($errors);
         }
 
         $validData->wpUserId = get_current_user_id();
@@ -106,16 +110,20 @@ class DonateFormRouteData
 
     /**
      * @unreleased
+     * @throws DonationFormFieldErrorsException
      */
-    private function redirectWithErrors(array $errors)
+    private function throwDonationFormFieldErrorsException(array $errors)
     {
-        $wpError = new \WP_Error();
+        $wpError = new WP_Error();
 
         foreach ($errors as $error) {
             $wpError->add($error['error_id'], $error['error_message']);
         }
 
-        wp_send_json_error(['errors' => $wpError]);
+        $exception = new DonationFormFieldErrorsException();
+        $exception->setError($wpError);
+
+        throw $exception;
     }
 
     /**
