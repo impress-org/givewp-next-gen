@@ -3,10 +3,11 @@
 namespace Give\NextGen\DonationForm\Actions;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\FieldsAPI\Text;
+use Give\Framework\FieldsAPI\Field;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
-class StoreCustomFields {
+class StoreCustomFields
+{
     /**
      * In order to store custom fields, we need to validate them by comparing the form's
      * schema settings to the request.  Once a field has passed validation, we can determine
@@ -18,19 +19,22 @@ class StoreCustomFields {
      */
     public function __invoke(DonationForm $form, Donation $donation, array $customFields)
     {
-        $formSchema = $form->schema();
+        $form->schema()->walkFields(
+            static function (Field $field) use ($customFields, $donation) {
+                if (!array_key_exists($field->getName(), $customFields)) {
+                    return;
+                }
 
-        foreach ($customFields as $key => $value) {
-            /** @var Text $node */
-            $node = $formSchema->getNodeByName($key);
+                $value = $customFields[$field->getName()];
 
-            if ($node->shouldStoreAsDonorMeta()) {
-                // save as donor meta
-                give()->donor_meta->add_meta($donation->donorId, $node->getName(), $value);
-            } else {
-                // save as donation meta
-                give()->payment_meta->update_meta($donation->id, $node->getName(), $value);
+                if ($field->shouldStoreAsDonorMeta()) {
+                    // save as donor meta
+                    give()->donor_meta->add_meta($donation->donorId, $field->getName(), $value);
+                } else {
+                    // save as donation meta
+                    give()->payment_meta->update_meta($donation->id, $field->getName(), $value);
+                }
             }
-        }
+        );
     }
 }
