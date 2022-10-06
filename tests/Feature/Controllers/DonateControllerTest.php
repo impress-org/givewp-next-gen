@@ -31,9 +31,9 @@ class DonateControllerTest extends TestCase
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
 
-        $customFieldBlockModel =  BlockModel::make([
+        $customFieldBlockModel = BlockModel::make([
             'name' => 'custom-block-editor/section',
-            'attributes' => [ 'title' => '', 'description' => '' ],
+            'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
                     'name' => 'custom-block-editor/custom-text-block',

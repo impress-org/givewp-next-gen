@@ -24,12 +24,12 @@ class StoreCustomFieldsTest extends TestCase
      */
     public function testShouldStoreAsDonorMeta()
     {
-          /** @var DonationForm $form */
+        /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
 
-        $customFieldBlockModel =  BlockModel::make([
+        $customFieldBlockModel = BlockModel::make([
             'name' => 'custom-block-editor/section',
-            'attributes' => [ 'title' => '', 'description' => '' ],
+            'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
                     'name' => 'custom-block-editor/custom-text-block',
@@ -60,7 +60,7 @@ class StoreCustomFieldsTest extends TestCase
             ->select('meta_value')
             ->where('donor_id', $donation->donorId)
             ->where('meta_key', 'custom_text_block_meta')
-        ->get();
+            ->get();
 
         $this->assertSame('Custom Text Block Value', $query->meta_value);
     }
@@ -73,12 +73,12 @@ class StoreCustomFieldsTest extends TestCase
      */
     public function testShouldStoreAsDonationMeta()
     {
-          /** @var DonationForm $form */
+        /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
 
-        $customFieldBlockModel =  BlockModel::make([
+        $customFieldBlockModel = BlockModel::make([
             'name' => 'custom-block-editor/section',
-            'attributes' => [ 'title' => '', 'description' => '' ],
+            'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
                     'name' => 'custom-block-editor/custom-text-block',
@@ -109,7 +109,7 @@ class StoreCustomFieldsTest extends TestCase
             ->select('meta_value')
             ->where('donation_id', $donation->id)
             ->where('meta_key', 'custom_text_block_meta')
-        ->get();
+            ->get();
 
         $this->assertSame('Custom Text Block Value', $query->meta_value);
     }
