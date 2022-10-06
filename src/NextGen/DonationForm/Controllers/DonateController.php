@@ -29,8 +29,6 @@ class DonateController
      */
     public function donate(DonateFormData $formData, PaymentGateway $registeredGateway)
     {
-        $formData->validateData();
-        
         $donor = $this->getOrCreateDonor(
             $formData->wpUserId,
             $formData->email,

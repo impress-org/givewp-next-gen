@@ -14,8 +14,6 @@ class ValidateCustomFields
      *
      * @unreleased
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public function __invoke(DonationForm $form, array $customFields)

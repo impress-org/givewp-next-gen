@@ -12,6 +12,7 @@ use Give\Log\Log;
 use Give\NextGen\DonationForm\Controllers\DonateController;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateRouteData;
+use WP_Error;
 
 /**
  * @unreleased
@@ -77,7 +78,15 @@ class DonateRoute
             $gateway = give($paymentGateways[$formData->gatewayId]);
 
             try {
-                $this->donateController->donate($formData, $gateway);
+                $errors = $formData->validateFields();
+
+                if (!empty($errors)) {
+                    Log::error('DonationFormErrors', compact('errors'));
+
+                    $this->redirectWithErrors($errors);
+                } else {
+                    $this->donateController->donate($formData, $gateway);
+                }
             } catch (Exception $e) {
                 Log::error(
                     'Donation Error',
@@ -139,5 +148,19 @@ class DonateRoute
         if (!in_array($paymentGateway, $gatewayIds, true)) {
             throw new PaymentGatewayException('This gateway is not valid.');
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function redirectWithErrors(array $errors)
+    {
+        $wpError = new WP_Error();
+
+        foreach ($errors as $error) {
+            $wpError->add($error['error_id'], $error['error_message']);
+        }
+
+        wp_send_json_error(['errors' => $wpError]);
     }
 }
