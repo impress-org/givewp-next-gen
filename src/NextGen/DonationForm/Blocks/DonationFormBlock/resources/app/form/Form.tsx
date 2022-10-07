@@ -1,8 +1,6 @@
 import {FormProvider, useForm, useFormContext, useFormState, useWatch} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
-import Joi from 'joi';
 
-import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import getWindowData from '../utilities/getWindowData';
 import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
@@ -13,29 +11,22 @@ import SectionNode from '../fields/SectionNode';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import DonationReceipt from './DonationReceipt';
+import getJoiRulesForForm from '../utilities/ConvertFieldAPIRulesToJoi';
 
 window.givewp.form = {
     useFormContext,
     useWatch,
 };
 
-const messages = getFieldErrorMessages();
-
 const {donateUrl} = getWindowData();
 
 const FormTemplate = getFormTemplate();
 const FormSectionTemplate = getSectionTemplate();
 
-const schema = Joi.object({
-    firstName: Joi.string().required().label('First Name').messages(messages),
-    lastName: Joi.string().required().label('Last Name').messages(messages),
-    email: Joi.string().email({tlds: false}).required().label('Email').messages(messages),
-    amount: Joi.number().integer().min(5).required().label('Donation Amount'),
-    gatewayId: Joi.string().required().label('Payment Gateway').messages(messages),
-    formId: Joi.number().required(),
-    currency: Joi.string().required(),
-    company: Joi.string().optional().allow(null, ''),
-}).unknown();
+const {form} = getWindowData();
+const schema = getJoiRulesForForm(form);
+
+console.log({schema});
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};
