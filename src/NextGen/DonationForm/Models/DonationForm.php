@@ -71,7 +71,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param  array  $attributes
+     * @param array $attributes
      *
      * @return DonationForm
      * @throws Exception
@@ -124,7 +124,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param  object  $object
+     * @param object $object
      */
     public static function fromQueryBuilderObject($object): DonationForm
     {
@@ -147,10 +147,12 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         if ($lastSection) {
             $lastSection->append(
                 Hidden::make('formId')
-                    ->defaultValue($this->id),
+                    ->defaultValue($this->id)
+                    ->required(),
 
                 Hidden::make('currency')
                     ->defaultValue(give_get_currency($this->id))
+                    ->required()
             );
         }
 
