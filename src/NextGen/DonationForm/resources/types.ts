@@ -24,13 +24,15 @@ export interface FormData {
     company?: string;
 }
 
+export interface Form {
+    nodes: Section[];
+}
+
 export interface FormServerExports {
     gatewaySettings: {
         [key: string]: GatewaySettings; // key is the gateway ID
     };
-    form: {
-        nodes: Section[];
-    };
+    form: Form;
     attributes: object;
     donateUrl: string;
     successUrl: string;
