@@ -86,23 +86,22 @@ export interface Gateway {
 export interface Template {
     id: string;
     fields?: {
-        amount?: ReactNode,
-        text?: ReactNode,
-        textarea?: ReactNode,
-        email?: ReactNode,
-        hidden?: ReactNode,
-    },
+        amount?: ReactNode;
+        text?: ReactNode;
+        textarea?: ReactNode;
+        email?: ReactNode;
+        hidden?: ReactNode;
+    };
     elements?: {
-        html?: ReactNode,
-    },
+        html?: ReactNode;
+    };
     groups?: {
-        name?: ReactNode,
-    },
+        name?: ReactNode;
+    };
     layouts?: {
-        section?: ReactNode,
-        form?: ReactNode,
-    },
-
+        section?: ReactNode;
+        form?: ReactNode;
+    };
 }
 
 export interface VisibilityCondition {
@@ -122,7 +121,7 @@ export interface Node {
 
 export interface Field extends Node {
     nodeType: 'field';
-    label: string;
+    label: string | ReactNode;
     placeholder: string | null;
     validationRules: {
         [key: string]: any;
@@ -163,4 +162,3 @@ export interface SelectOption {
     value: string;
     disabled?: boolean;
 }
-
