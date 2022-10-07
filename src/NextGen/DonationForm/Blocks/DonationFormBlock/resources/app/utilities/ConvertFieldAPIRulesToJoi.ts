@@ -37,7 +37,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
 
-    if (rules.number) {
+    if (rules.number || rules.integer) {
         joiRules = Joi.number();
 
         if (rules.integer) {
