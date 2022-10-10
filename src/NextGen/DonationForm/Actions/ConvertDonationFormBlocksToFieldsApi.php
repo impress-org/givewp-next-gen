@@ -86,8 +86,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Amount::make('amount')
                     ->levels(...array_map('absint', $block->attributes['levels']))
                     ->allowCustomAmount()
-                    ->defaultValue(50)
-                    ->required();
+                    ->defaultValue(50);
 
             case "custom-block-editor/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
