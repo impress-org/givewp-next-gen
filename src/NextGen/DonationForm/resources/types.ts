@@ -24,10 +24,6 @@ export interface FormData {
     company?: string;
 }
 
-export interface Form {
-    nodes: Section[];
-}
-
 export interface FormServerExports {
     gatewaySettings: {
         [key: string]: GatewaySettings; // key is the gateway ID
@@ -123,7 +119,8 @@ export interface Node {
 
 export interface Field extends Node {
     nodeType: 'field';
-    label: string | ReactNode;
+    label: string;
+    requiredLabel: ReactNode | string;
     placeholder: string | null;
     validationRules: {
         [key: string]: any;
@@ -145,6 +142,10 @@ export interface Element extends Node {
 export interface Section extends Group {
     label: string;
     description: string;
+}
+
+export interface Form extends Group {
+    nodes: Section[];
 }
 
 export function isField(node: Node): node is Field {

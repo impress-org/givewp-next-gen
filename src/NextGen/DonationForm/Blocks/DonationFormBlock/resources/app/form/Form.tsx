@@ -11,7 +11,7 @@ import SectionNode from '../fields/SectionNode';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import DonationReceipt from './DonationReceipt';
-import getJoiRulesForForm from '../utilities/ConvertFieldAPIRulesToJoi';
+import {ObjectSchema} from 'joi';
 
 window.givewp.form = {
     useFormContext,
@@ -22,11 +22,6 @@ const {donateUrl} = getWindowData();
 
 const FormTemplate = getFormTemplate();
 const FormSectionTemplate = getSectionTemplate();
-
-const {form} = getWindowData();
-const schema = getJoiRulesForForm(form);
-
-console.log({schema});
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};
@@ -59,7 +54,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     }
 };
 
-export default function Form({defaultValues, sections}: PropTypes) {
+export default function Form({defaultValues, sections, schema}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
@@ -123,6 +118,7 @@ export default function Form({defaultValues, sections}: PropTypes) {
 type PropTypes = {
     sections: Section[];
     defaultValues: object;
+    schema: ObjectSchema;
 };
 
 type FormInputs = {

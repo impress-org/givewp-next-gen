@@ -1,7 +1,7 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
 import {Field, Form} from '@givewp/forms/types';
-import {getFormFields} from './forms';
 import {__, sprintf} from '@wordpress/i18n';
+import {reduceFields} from './groups';
 
 const requiredMessage = sprintf(
     /* translators: base error message */
@@ -10,13 +10,15 @@ const requiredMessage = sprintf(
 );
 
 export default function getJoiRulesForForm(form: Form): ObjectSchema {
-    const fields = getFormFields(form);
+    const joiRules = reduceFields(
+        form.nodes,
+        (rules, field) => {
+            rules[field.name] = getJoiRulesForField(field);
 
-    const joiRules = fields.reduce((rules, field) => {
-        rules[field.name] = getJoiRulesForField(field);
-
-        return rules;
-    }, {});
+            return rules;
+        },
+        {}
+    );
 
     return Joi.object(joiRules).messages({
         'string.base': requiredMessage,
@@ -25,10 +27,10 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
 }
 
 function getJoiRulesForField(field: Field): AnySchema {
-    const rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules);
+    let rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules);
 
-    if (typeof field.label === 'string') {
-        rules.label(field.label);
+    if (field.label) {
+        rules = rules.label(field.label);
     }
 
     return rules;
@@ -37,36 +39,36 @@ function getJoiRulesForField(field: Field): AnySchema {
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
 
-    if (rules.number || rules.integer) {
+    if (rules.hasOwnProperty('numeric') || rules.hasOwnProperty('integer')) {
         joiRules = Joi.number();
 
-        if (rules.integer) {
+        if (rules.hasOwnProperty('integer')) {
             joiRules = joiRules.integer();
         }
-    } else if (rules.boolean) {
+    } else if (rules.hasOwnProperty('boolean')) {
         joiRules = Joi.boolean();
     } else {
         joiRules = Joi.string();
 
-        if (rules.email) {
+        if (rules.hasOwnProperty('email')) {
             joiRules = joiRules.email({tlds: false});
         }
 
-        if (rules.alpha) {
+        if (rules.hasOwnProperty('alpha')) {
             joiRules = joiRules.alpha();
         }
 
-        if (rules.alphanum) {
+        if (rules.hasOwnProperty('alphanum')) {
             joiRules = joiRules.alphanum();
         }
     }
 
-    if (rules.number || !rules.boolean) {
-        if (rules.min) {
+    if (rules.hasOwnProperty('number') || !rules.hasOwnProperty('boolean')) {
+        if (rules.hasOwnProperty('min')) {
             joiRules = joiRules.min(rules.min);
         }
 
-        if (rules.max) {
+        if (rules.hasOwnProperty('max')) {
             joiRules = joiRules.max(rules.max);
         }
     }
