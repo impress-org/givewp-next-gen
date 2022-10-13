@@ -24,7 +24,6 @@ class Amount extends Field
 
         $this->validationRules->rule('numeric', true);
         $this->validationRules->rule('integer', true);
-        $this->required();
     }
 
     /**
