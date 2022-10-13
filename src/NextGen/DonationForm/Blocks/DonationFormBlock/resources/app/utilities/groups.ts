@@ -63,7 +63,7 @@ export function reduceGroup(
  */
 export function walkNodes(nodes: Node[], callback: (node: Node) => void, filter?: (node: Node) => boolean) {
     nodes.forEach((node) => {
-        if (filter && filter(node)) {
+        if (!filter || filter(node)) {
             callback(node);
         }
 

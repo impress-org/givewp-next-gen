@@ -1,7 +1,6 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
-import {Field, Form} from '@givewp/forms/types';
+import {Field, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
-import {reduceFields} from './groups';
 
 const requiredMessage = sprintf(
     /* translators: base error message */
@@ -10,14 +9,14 @@ const requiredMessage = sprintf(
 );
 
 export default function getJoiRulesForForm(form: Form): ObjectSchema {
-    const joiRules = reduceFields(
-        form.nodes,
-        (rules, field) => {
+    const joiRules = form.reduceNodes(
+        (rules, field: Field) => {
             rules[field.name] = getJoiRulesForField(field);
 
             return rules;
         },
-        {}
+        {},
+        isField
     );
 
     return Joi.object(joiRules).messages({

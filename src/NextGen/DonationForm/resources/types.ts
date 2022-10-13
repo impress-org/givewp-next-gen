@@ -133,6 +133,31 @@ export interface Field extends Node {
 export interface Group extends Node {
     nodeType: 'group';
     nodes: Node[];
+
+    /**
+     * Recursively walk the group and its children for all nodes.
+     *
+     * @unreleased
+     */
+    walkNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): void;
+
+    /**
+     * Recursively map the group and its children for all nodes.
+     *
+     * @unreleased
+     */
+    mapNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): Node[];
+
+    /**
+     * Recursively walk the group and its children for all nodes and reduce to a single value.
+     *
+     * @unreleased
+     */
+    reduceNodes(
+        callback: (accumulator: any, node: Node) => any,
+        initialValue: any,
+        filter?: (node: Node) => boolean
+    ): any;
 }
 
 export interface Element extends Node {
