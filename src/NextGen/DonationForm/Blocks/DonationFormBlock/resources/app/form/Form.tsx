@@ -54,14 +54,14 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     }
 };
 
-export default function Form({defaultValues, sections, schema}: PropTypes) {
+export default function Form({defaultValues, sections, validationSchema}: PropTypes) {
     const {gateways} = useGiveDonationFormStore();
 
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
 
     const methods = useForm<FormInputs>({
         defaultValues,
-        resolver: joiResolver(schema),
+        resolver: joiResolver(validationSchema),
     });
 
     const {handleSubmit, setError, getValues, control} = methods;
@@ -118,7 +118,7 @@ export default function Form({defaultValues, sections, schema}: PropTypes) {
 type PropTypes = {
     sections: Section[];
     defaultValues: object;
-    schema: ObjectSchema;
+    validationSchema: ObjectSchema;
 };
 
 type FormInputs = {

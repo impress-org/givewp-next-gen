@@ -27,7 +27,7 @@ const initialState = {
 function App() {
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
-            <Form defaultValues={defaultValues} sections={form.nodes} schema={schema} />
+            <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
         </GiveDonationFormStoreProvider>
     );
 }
