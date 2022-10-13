@@ -23,7 +23,6 @@ class Amount extends Field
         parent::__construct($name);
 
         $this->validationRules->rule('numeric', true);
-        $this->validationRules->rule('integer', true);
     }
 
     /**
