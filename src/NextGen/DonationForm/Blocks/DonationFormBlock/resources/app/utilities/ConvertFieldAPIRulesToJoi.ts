@@ -22,6 +22,8 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
     return Joi.object(joiRules).messages({
         'string.base': requiredMessage,
         'string.empty': requiredMessage,
+        'number.base': requiredMessage,
+        'number.empty': requiredMessage,
     });
 }
 
