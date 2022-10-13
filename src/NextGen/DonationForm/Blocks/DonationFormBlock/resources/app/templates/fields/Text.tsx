@@ -1,6 +1,6 @@
 import type {FieldProps} from '@givewp/forms/propTypes';
 
-export default function Text({requiredLabel, placeholder, fieldError, inputProps, validationRules}: FieldProps) {
+export default function Text({requiredLabel, placeholder, fieldError, inputProps}: FieldProps) {
     return (
         <label>
             <span>{requiredLabel}</span>

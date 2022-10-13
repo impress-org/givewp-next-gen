@@ -6,7 +6,7 @@ import {ReactNode} from 'react';
  * @unreleased
  */
 export default function generateRequiredLabel(label: string, required: boolean): ReactNode | string {
-    if (required) {
+    if (required && label) {
         return (
             <>
                 {label}{' '}

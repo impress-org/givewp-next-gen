@@ -1,6 +1,6 @@
 import type {FieldProps} from '@givewp/forms/propTypes';
 
-export default function Email({label, requiredLabel, placeholder, fieldError, inputProps}: FieldProps) {
+export default function Email({requiredLabel, placeholder, fieldError, inputProps}: FieldProps) {
     return (
         <label>
             <span>{requiredLabel}</span>

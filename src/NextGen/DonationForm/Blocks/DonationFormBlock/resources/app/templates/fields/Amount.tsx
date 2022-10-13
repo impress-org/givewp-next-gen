@@ -7,7 +7,7 @@ interface AmountProps extends FieldProps {
     allowCustomAmount: boolean;
 }
 
-export default function Amount({name, label, inputProps, levels, allowCustomAmount, fieldError}: AmountProps) {
+export default function Amount({name, requiredLabel, inputProps, levels, allowCustomAmount, fieldError}: AmountProps) {
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
     const formatter: Intl.NumberFormat = useMemo(
@@ -30,7 +30,7 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                 );
             })}
             <label>
-                {label}
+                {requiredLabel}
                 <input type={allowCustomAmount ? 'text' : 'hidden'} {...inputProps} />
             </label>
             {fieldError && (
