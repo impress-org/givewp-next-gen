@@ -49,20 +49,18 @@ const donorName = {
                 default: false,
             },
         },
-        edit: (props) => {
-            const {
-                attributes: {
-                    showHonorific,
-                    honorifics,
-                    firstNameLabel,
-                    firstNamePlaceholder,
-                    lastNameLabel,
-                    lastNamePlaceholder,
-                    requireLastName,
-                },
-                setAttributes,
-            } = props;
-
+        edit: ({
+            attributes: {
+                showHonorific,
+                honorifics,
+                firstNameLabel,
+                firstNamePlaceholder,
+                lastNameLabel,
+                lastNamePlaceholder,
+                requireLastName,
+            },
+            setAttributes,
+        }) => {
             return (
                 <>
                     <div
