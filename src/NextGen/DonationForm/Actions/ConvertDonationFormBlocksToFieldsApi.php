@@ -84,6 +84,7 @@ class ConvertDonationFormBlocksToFieldsApi
         switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
                 return Amount::make('amount')
+                    ->label(__('Donation Amount', 'give'))
                     ->levels(...array_map('absint', $block->attributes['levels']))
                     ->allowCustomAmount()
                     ->defaultValue(50)

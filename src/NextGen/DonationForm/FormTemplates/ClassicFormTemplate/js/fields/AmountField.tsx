@@ -39,7 +39,7 @@ export default function Amount({
                     aria-labelledby={name}
                     style={{display: 'none'}}
                 >
-                    {requiredLabel ?? __('Donation Amount', 'give')}
+                    {requiredLabel}
                 </label>
                 <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
                     <span className="givewp-fields-amount__input--currency-symbol">

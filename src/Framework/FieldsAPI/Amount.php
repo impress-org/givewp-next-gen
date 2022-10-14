@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\Framework\FieldsAPI\Concerns\HasLabel;
+
 class Amount extends Field
 {
+    use HasLabel;
+    
     const TYPE = 'amount';
 
     /**
