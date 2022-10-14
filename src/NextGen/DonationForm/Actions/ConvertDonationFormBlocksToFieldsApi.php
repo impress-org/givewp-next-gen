@@ -109,7 +109,11 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Text::make('company');
 
             default:
-                return Text::make(md5($block->name)); // @todo Replace hashed name with programmatic name.
+                return Text::make(
+                    $block->hasAttribute('fieldName') ? $block->getAttribute('fieldName') : $block->clientId
+                )->storeAsDonorMeta(
+                    $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
+                );
         }
     }
 
@@ -132,7 +136,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->placeholder($block->attributes['lastNamePlaceholder'])
                 ->required($block->attributes['requireLastName']);
 
-            if ($block->hasAttribute('showHonorific')) {
+            if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')
                     ->label('Title')
                     ->options(...$block->attributes['honorifics']);
