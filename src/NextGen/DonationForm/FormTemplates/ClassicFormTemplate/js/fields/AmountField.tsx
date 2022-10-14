@@ -10,7 +10,6 @@ interface AmountProps extends FieldProps {
 
 export default function Amount({
     name,
-    label,
     requiredLabel,
     inputProps,
     levels,
