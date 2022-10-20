@@ -22,5 +22,5 @@ jobs:
                     repository: impress-org/givewp
                     path: './../give'
             -   name: List GiveWP folder
-                    working-directory: './../give'
+                    working-directory: ./../give
                     run: ls
