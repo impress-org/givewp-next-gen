@@ -22,4 +22,6 @@ jobs:
                 with:
                     repository: impress-org/givewp
                     path: './give'
+            -   name: List files in the path
+                working-directory: ${{ github.path }}
                 run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
