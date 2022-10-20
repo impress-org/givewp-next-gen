@@ -1,4 +1,4 @@
-name: WordPress Tests Against Give Core "develop" Branch
+name: WordPress Tests
 
 # Controls when the action will run.
 on:
@@ -106,10 +106,10 @@ jobs:
                     path: './give'
 
             -   name: Set UP Give Core "develop" Branch
-                    working-directory: './give'
-                    run: |
-                        composer install --no-progress --no-interaction
-                        bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+                working-directory: './give'
+                run: |
+                    composer install --no-progress --no-interaction
+                    bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Addon Tests Against Give Core "develop" Branch
                 working-directory: './addon'
@@ -125,10 +125,10 @@ jobs:
                     path: './give'
 
             -   name: Set UP Give Core "master" Branch
-                    working-directory: './give'
-                    run: |
-                        composer install --no-progress --no-interaction
-                        bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+                working-directory: './give'
+                run: |
+                    composer install --no-progress --no-interaction
+                    bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Addon Tests Against Give Core "master" Branch
                 working-directory: './addon'
