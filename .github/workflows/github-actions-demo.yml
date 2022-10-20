@@ -20,5 +20,7 @@ jobs:
                 uses: actions/checkout@v3
                 with:
                     repository: impress-org/givewp
-                    path: './give'
-                    run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+                    path: './../give'
+            -   name: List GiveWP folder
+                    working-directory: './../give'
+                    run: ls
