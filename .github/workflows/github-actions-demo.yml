@@ -16,3 +16,9 @@ jobs:
                 run: |
                     ls ${{ github.workspace }}
             -   run: echo "🍏 This job's status is ${{ job.status }}."
+            -   name: Check out GiveWP code
+                uses: actions/checkout@v3
+                with:
+                    repository: impress-org/givewp
+                    path: './give'
+                    run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
