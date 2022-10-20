@@ -4,7 +4,7 @@ name: WordPress Tests
 on:
     # Triggers the workflow on push or pull request events but only for the master branch
     push:
-        branches: [ master, develop ]
+        branches: [ master, develop, include-tests-workflow ]
     pull_request:
         branches: [ master, develop ]
 
