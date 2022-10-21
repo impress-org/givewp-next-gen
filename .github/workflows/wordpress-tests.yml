@@ -98,7 +98,7 @@ jobs:
             -   name: Configure MySQL
                 run: mysql -uroot --password='${{ env.mysql_pass}}' -h127.0.0.1 --port=${{env.mysql_port}}
 
-            -   name: Check out Give Core - "develop" branch
+            -   name: Check out Give Core "develop" branch
                 uses: actions/checkout@v3
                 with:
                     repository: impress-org/givewp
@@ -109,7 +109,7 @@ jobs:
                 working-directory: './give'
                 run: |
                     composer install --no-progress --no-interaction
-                    bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+                    bash tests/includes/bin/install.sh wordpress_develop_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Addon Tests Against Give Core "develop" Branch
                 working-directory: './givewp-next-gen'
@@ -117,7 +117,7 @@ jobs:
                 env:
                     DB_PORT: ${{ env.mysql_port }}
 
-            -   name: Check out Give Core - "master" branch
+            -   name: Check out Give Core "master" branch
                 uses: actions/checkout@v3
                 with:
                     repository: impress-org/givewp
@@ -128,7 +128,7 @@ jobs:
                 working-directory: './give'
                 run: |
                     composer install --no-progress --no-interaction
-                    bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+                    bash tests/includes/bin/install.sh wordpress_master_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Addon Tests Against Give Core "master" Branch
                 working-directory: './givewp-next-gen'
