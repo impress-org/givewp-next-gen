@@ -35,15 +35,14 @@ class BlockAttributesTest extends TestCase
      *
      * @return void
      */
-    public function testShouldReturnAttributesArray(/*$formId, $formTemplateId*/)
+    public function testShouldReturnAttributesArray($formId, $formTemplateId)
     {
-        /*$blockAttributes = BlockAttributes::fromArray([
+        $blockAttributes = BlockAttributes::fromArray([
             'formId' => $formId,
             'formTemplateId' => $formTemplateId,
         ]);
 
-        $this->assertSame(['formId' => $formId, 'formTemplateId' => $formTemplateId], $blockAttributes->toArray());*/
-        $this->assertSame('workflow test', 'workflow test');
+        $this->assertSame(['formId' => $formId, 'formTemplateId' => $formTemplateId], $blockAttributes->toArray());
     }
 
     /**
