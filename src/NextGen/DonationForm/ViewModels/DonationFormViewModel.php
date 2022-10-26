@@ -17,20 +17,14 @@ class DonationFormViewModel
      */
     private $formId;
     /**
-     * @var string
-     */
-    private $formTemplateId;
-    /**
-     * @var BlockCollection|null
+     * @var BlockCollection
      */
     private $blocks;
 
     /**
      * @unreleased
-     * @param  int  $formId
-     * @param  BlockCollection|null  $blocks
      */
-    public function __construct(int $formId, $blocks)
+    public function __construct(int $formId, BlockCollection $blocks = null)
     {
         $this->formId = $formId;
         $this->blocks = $blocks;

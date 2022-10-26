@@ -10,7 +10,7 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
 class DonationFormViewRouteData
 {
     /**
-     * @var string
+     * @var int
      */
     public $formId;
     /**
@@ -31,8 +31,8 @@ class DonationFormViewRouteData
     {
         $self = new static();
 
-        $self->formId = $request['form-id'];
-        $self->formTemplateId = !empty($request['form-template-id']) ? $request['form-template-id'] : null;
+        $self->formId = (int)$request['form-id'];
+        $self->formTemplateId = !empty($request['form-template-id']) ? $request['form-template-id'] : '';
         $self->formBlocks = !empty($request['form-blocks']) ? BlockCollection::fromJson(
             $request['form-blocks']
         ) : null;
