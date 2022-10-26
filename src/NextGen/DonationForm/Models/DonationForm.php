@@ -135,9 +135,9 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
      *
      * @unreleased
      */
-    public function schema(): Form
+    public function schema(BlockCollection $blocks = null): Form
     {
-        $form = (new ConvertDonationFormBlocksToFieldsApi())($this->blocks);
+        $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks ?: $this->blocks);
 
         $formNodes = $form->all();
 
