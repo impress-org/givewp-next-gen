@@ -43,7 +43,10 @@ class DonationFormViewModel
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($this->formId);
         $formDataGateways = $donationFormRepository->getFormDataGateways($this->formId);
-        $formApi = $donationForm->schema($this->blocks)->jsonSerialize();
+        $formApi = $donationFormRepository->getFormSchemaFromBlocks(
+            $donationForm->id,
+            $this->blocks ?: $donationForm->blocks
+        )->jsonSerialize();
 
         return [
             'form' => $formApi,
