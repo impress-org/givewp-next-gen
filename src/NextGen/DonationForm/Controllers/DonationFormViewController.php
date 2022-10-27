@@ -26,6 +26,9 @@ class DonationFormViewController {
         <div id="root-give-next-gen-donation-form-block"></div>
 
         <?php
+        /**
+         * TODO: Only print form specific scripts here
+         */
         wp_print_footer_scripts();
         echo ob_get_clean();
 
@@ -40,10 +43,16 @@ class DonationFormViewController {
     private function head()
     {
         global $wp_scripts, $wp_styles;
-        wp_head();
+        
+        add_action('wp_print_scripts', function () {
+            wp_dequeue_script('give');
+            wp_dequeue_script('give_recurring_script');
+        });
 
-        $wp_styles->dequeue(array_column($wp_styles->registered,'handle'));
-        $wp_scripts->dequeue(array_column($wp_scripts->registered,'handle'));
+        $wp_styles->dequeue(array_column($wp_styles->registered, 'handle'));
+        $wp_scripts->dequeue(array_column($wp_scripts->registered, 'handle'));
+
+        wp_head();
     }
 
      /**

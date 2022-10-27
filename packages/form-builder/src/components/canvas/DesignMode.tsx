@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Storage} from "../../common";
+import {Storage} from '../../common';
 
-const Component = ({blocks}) => {
+const DesignMode = ({blocks}) => {
+    const [sourceDocument, setSourceDocument] = useState('');
 
-    const [sourceDocument, setSourceDocument] = useState([]);
-
-    useEffect(()=>{
-        Storage
-            .preview(blocks)
-            .then(setSourceDocument)
+    useEffect(() => {
+        Storage.preview(blocks).then(setSourceDocument);
     }, [blocks]);
 
     return (
@@ -22,4 +19,4 @@ const Component = ({blocks}) => {
     );
 };
 
-export default Component;
+export default DesignMode;
