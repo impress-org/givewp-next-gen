@@ -319,5 +319,7 @@ class DonationFormRepository
                     ->defaultValue(give_get_currency($formId))
             );
         }
+
+        return $form;
     }
 }
