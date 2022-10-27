@@ -31,15 +31,15 @@ window.storage = {
         return new Promise((resolve, reject) => {
             jQuery
                 .post({
-                    url: 'google.com',
+                    url: window.storageData.previewURL,
                     headers: {
                         'X-WP-Nonce': window.storageData.nonce,
                     },
                     data: {
-                        blocks: JSON.stringify(blocks),
+                        'form-blocks': JSON.stringify(blocks),
                     },
                 })
-                .then(resolve)
+                .then(resolve);
         });
     },
 }

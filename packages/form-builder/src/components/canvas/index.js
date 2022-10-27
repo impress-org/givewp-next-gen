@@ -1,7 +1,4 @@
-import FormBlocks from './formBlocks.js'
-import DesignMode from './designMode.js'
+import FormBlocks from './formBlocks.js';
+import DesignMode from './DesignMode.tsx';
 
-export {
-    FormBlocks,
-    DesignMode,
-}
+export {FormBlocks, DesignMode};
