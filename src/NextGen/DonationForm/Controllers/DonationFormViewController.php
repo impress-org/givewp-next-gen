@@ -8,7 +8,8 @@ use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 
-class DonationFormViewController {
+class DonationFormViewController
+{
     /**
      * This renders the donation form view.
      *
@@ -28,7 +29,8 @@ class DonationFormViewController {
      */
     public function show(DonationFormViewRouteData $data): string
     {
-        $viewModel = new DonationFormViewModel($data->formId);
+        $viewModel = new DonationFormViewModel($data->formId, $data->formBlocks);
+
         wp_enqueue_global_styles();
         $this->enqueueFormScripts($data->formId, $data->formTemplateId);
 
@@ -37,7 +39,9 @@ class DonationFormViewController {
         wp_print_head_scripts();
         ?>
 
-        <script>window.giveNextGenExports = <?= wp_json_encode($viewModel->exports()) ?>;</script>
+        <script>
+            window.giveNextGenExports = <?= wp_json_encode($viewModel->exports()) ?>;
+        </script>
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
@@ -48,7 +52,7 @@ class DonationFormViewController {
         exit();
     }
 
-     /**
+    /**
      * Loads scripts in order: [Registrars, Template, Gateways, Block]
      *
      * @unreleased
