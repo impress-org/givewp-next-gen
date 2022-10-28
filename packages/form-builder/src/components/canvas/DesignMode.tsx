@@ -15,7 +15,7 @@ const DesignMode = ({blocks}) => {
     ) : (
         <IframeResizer
             srcDoc={sourceDocument}
-            checkOrigin={false}
+            checkOrigin={false} /** The srcDoc property is not a URL and requires that the origin check be disabled. */
             style={{
                 width: '1px',
                 minWidth: '100%',
