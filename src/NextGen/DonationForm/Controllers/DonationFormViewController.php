@@ -8,51 +8,48 @@ use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 
-class DonationFormViewController {
+class DonationFormViewController
+{
     /**
+     * This renders the donation form view.
+     *
+     * This is the order of loading:
+     * 1. Enqueue global styles from WP.
+     *  - This ensures template compatability with global WP css variables as needed. Loads before our templates, so they can use things like global font-family, etc.
+     * 2. Enqueue our donation form specific scripts & styles.
+     *  - We will let WP handle the actual printing depending on how they were enqueued.
+     * 3. Call the specific WP functions wp_print_styles() and wp_print_head_scripts()
+     *  - This will only print the styles and scripts that are enqueued within our route - so we don't have to dequeue a bunch of stuff.
+     * 4. Manually echo our window data and root div for our React app to consume
+     * 5. Finally, call the specific WP function wp_print_footer_scripts()
+     *  - This will only print the footer scripts that are enqueued within our route.
+     *
+     *
      * @unreleased
      */
     public function show(DonationFormViewRouteData $data): string
     {
         $viewModel = new DonationFormViewModel($data->formId, $data->formBlocks);
 
+        wp_enqueue_global_styles();
+        $this->enqueueFormScripts($data->formId, $data->formTemplateId);
+
         ob_start();
-        $this->head();
-        $this->enqueueScripts($data->formId, $data->formTemplateId);
+        wp_print_styles();
+        wp_print_head_scripts();
         ?>
 
-        <script>window.giveNextGenExports = <?= wp_json_encode($viewModel->exports()) ?>;</script>
+        <script>
+            window.giveNextGenExports = <?= wp_json_encode($viewModel->exports()) ?>;
+        </script>
 
         <div id="root-give-next-gen-donation-form-block"></div>
 
         <?php
-        /**
-         * TODO: Only print form specific scripts here
-         */
         wp_print_footer_scripts();
         echo ob_get_clean();
 
         exit();
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     */
-    private function head()
-    {
-        global $wp_scripts, $wp_styles;
-        
-        add_action('wp_print_scripts', function () {
-            wp_dequeue_script('give');
-            wp_dequeue_script('give_recurring_script');
-        });
-
-        $wp_styles->dequeue(array_column($wp_styles->registered, 'handle'));
-        $wp_scripts->dequeue(array_column($wp_scripts->registered, 'handle'));
-
-        wp_head();
     }
 
      /**
@@ -62,14 +59,14 @@ class DonationFormViewController {
      *
      * @return void
      */
-    private function enqueueScripts(int $formId, string $formTemplateId)
+    private function enqueueFormScripts(int $formId, string $formTemplateId)
     {
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
 
         // load registrars
         (new EnqueueScript(
-            'give-donation-form-registrars-js',
+            'givewp-donation-form-registrars-js',
             'build/donationFormRegistrars.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
@@ -93,7 +90,7 @@ class DonationFormViewController {
                     'givewp-form-template-' . $template->getId(),
                     $template->js(),
                     array_merge(
-                        ['give-donation-form-registrars-js'],
+                        ['givewp-donation-form-registrars-js'],
                         $template->dependencies()
                     ),
                     false,
@@ -108,7 +105,7 @@ class DonationFormViewController {
                 /** @var EnqueueScript $script */
                 $script = $gateway->enqueueScript();
 
-                $script->dependencies(['give-donation-form-registrars-js'])
+                $script->dependencies(['givewp-donation-form-registrars-js'])
                     ->loadInFooter()
                     ->enqueue();
             }
@@ -116,12 +113,12 @@ class DonationFormViewController {
 
         // load block - since this is using render_callback viewScript in blocks.json will not work.
         (new EnqueueScript(
-            'give-next-gen-donation-form-block-js',
+            'givewp-next-gen-donation-form-block-js',
             'build/donationFormBlockApp.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        ))->dependencies(['give-donation-form-registrars-js'])->loadInFooter()->enqueue();
+        ))->dependencies(['givewp-donation-form-registrars-js'])->loadInFooter()->enqueue();
 
         /**
          * Load iframeResizer.contentWindow.min.js inside iframe
