@@ -111,13 +111,14 @@ jobs:
                 working-directory: './givewp-next-gen'
                 run: composer install --no-progress --no-interaction
 
-            -   name: Setup Node and run build for Addon
-                working-directory: './givewp-next-gen'
+            -   name: Setup Node
                 uses: actions/setup-node@v3
                 with:
                     node-version: 16
+
+            -   name: Run npm build for addon
+                working-directory: './givewp-next-gen'
                 run: |
-                    npm install -g npm@7
                     npm ci
                     npm run dev
 
