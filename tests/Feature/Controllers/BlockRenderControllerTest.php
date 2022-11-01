@@ -20,8 +20,7 @@ class BlockRenderControllerTest extends TestCase
         $viewUrl = (new GenerateDonationFormViewRouteUrl())($formId, $formTemplateId);
 
         $blockRenderController = new BlockRenderController();
-
-        // this test is failing for some reason
+        
         $this->assertSame(
             "<iframe data-givewp-embed src='$viewUrl'
                 style='width: 1px;min-width: 100%;border: 0;'></iframe>",

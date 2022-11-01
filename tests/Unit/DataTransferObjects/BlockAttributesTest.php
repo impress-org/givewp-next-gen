@@ -19,10 +19,9 @@ class BlockAttributesTest extends TestCase
      {
         return array(
             ['formId' => 1, 'formTemplateId' => 1],
-            ['formId' => null, 'formTemplateId' => null],
-            ['formId' => null, 'formTemplateId' => 1],
             ['formId' => 1, 'formTemplateId' => null],
             ['formId' => null, 'formTemplateId' => 1],
+            ['formId' => null, 'formTemplateId' => null],
             [null, null],
         );
     }
