@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {Storage} from '../../common';
 import IframeResizer from 'iframe-resizer-react';
 
-const DesignMode = ({blocks}) => {
+const DesignPreview = ({blocks}) => {
     const [sourceDocument, setSourceDocument] = useState('');
 
     useEffect(() => {
@@ -25,4 +25,4 @@ const DesignMode = ({blocks}) => {
     );
 };
 
-export default DesignMode;
+export default DesignPreview;

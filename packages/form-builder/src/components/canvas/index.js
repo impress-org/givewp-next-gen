@@ -1,4 +1,4 @@
 import FormBlocks from './FormBlocks.tsx';
-import DesignMode from './DesignMode.tsx';
+import DesignPreview from './DesignPreview.tsx';
 
-export {FormBlocks, DesignMode};
+export {FormBlocks, DesignPreview};

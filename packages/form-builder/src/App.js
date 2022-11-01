@@ -18,7 +18,7 @@ import '@wordpress/block-editor/build-style/style.css';
 import './App.scss';
 
 import defaultBlocks from './blocks.json'
-import {FormBlocks, DesignMode} from "./components/canvas";
+import {FormBlocks, DesignPreview} from "./components/canvas";
 
 function App() {
 
@@ -70,7 +70,7 @@ function App() {
                                 showSidebar={showSidebar}
                                 toggleShowSidebar={toggleShowSidebar}
                             />}
-                            content={'design' === selectedTab ? <DesignMode blocks={blocks} /> : <FormBlocks />}
+                            content={'design' === selectedTab ? <DesignPreview blocks={blocks} /> : <FormBlocks />}
                             sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
                             secondarySidebar={!!selectedSecondarySidebar &&
                                 <SecondarySidebar selected={selectedSecondarySidebar} />}
