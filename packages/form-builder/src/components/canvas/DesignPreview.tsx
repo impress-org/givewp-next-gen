@@ -8,7 +8,7 @@ const DesignPreview = ({blocks}) => {
 
     useEffect(() => {
         Storage.preview(blocks).then(setSourceDocument);
-    }, [JSON.stringify(blocks)]);
+    }, [blocks]);
 
     return !sourceDocument ? (
         'Loading...'
