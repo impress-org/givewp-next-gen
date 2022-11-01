@@ -9,3 +9,6 @@ on:
 jobs:
     build:
         uses: impress-org/givewp-github-actions/.github/workflows/addon-tests.yml@master
+        with:
+            ref: ${{ github.event.inputs.ref }}
+            addon_slug: givewp-next-gen
