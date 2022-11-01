@@ -7,7 +7,7 @@ import {
     ButtonBlockAppender,
 } from "@wordpress/block-editor";
 
-const Component = () => {
+const FormBlocks = () => {
     return (
         <BlockTools>
             <WritingFlow>
@@ -21,4 +21,4 @@ const Component = () => {
     );
 };
 
-export default Component;
+export default FormBlocks;

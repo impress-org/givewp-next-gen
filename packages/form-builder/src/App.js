@@ -18,8 +18,7 @@ import '@wordpress/block-editor/build-style/style.css';
 import './App.scss';
 
 import defaultBlocks from './blocks.json'
-import FormBlocks from "./components/canvas/formBlocks";
-import {DesignMode} from "./components/canvas";
+import {FormBlocks, DesignMode} from "./components/canvas";
 
 function App() {
 
