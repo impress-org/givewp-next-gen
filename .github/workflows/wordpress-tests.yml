@@ -60,6 +60,13 @@ jobs:
                 with:
                     path: 'givewp-next-gen'
 
+            -   name: Check out Give Core "develop" branch
+                uses: actions/checkout@v3
+                with:
+                    repository: impress-org/givewp
+                    ref: develop
+                    path: 'give'
+
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
@@ -73,10 +80,6 @@ jobs:
                     php-version: ${{ matrix.php }}
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
-
-            -   name: Install composer dependencies for Addon
-                working-directory: './givewp-next-gen'
-                run: composer install --no-progress --no-interaction
 
             -   name: Store MySQL details in environment
                 run: |
@@ -98,18 +101,25 @@ jobs:
             -   name: Configure MySQL
                 run: mysql -uroot --password='${{ env.mysql_pass}}' -h127.0.0.1 --port=${{env.mysql_port}}
 
-            -   name: Check out Give Core "develop" branch
-                uses: actions/checkout@v3
-                with:
-                    repository: impress-org/givewp
-                    ref: develop
-                    path: './give'
-
             -   name: Set UP Give Core "develop" Branch
                 working-directory: './give'
                 run: |
                     composer install --no-progress --no-interaction
                     bash tests/includes/bin/install.sh wordpress_develop_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+
+            -   name: Install composer dependencies for Addon
+                working-directory: './givewp-next-gen'
+                run: composer install --no-progress --no-interaction
+
+            -   name: Setup Node and run build for Addon
+                working-directory: './givewp-next-gen'
+                uses: actions/setup-node@v3
+                with:
+                    node-version: 16
+                run: |
+                    npm install -g npm@7
+                    npm ci
+                    npm run dev
 
             -   name: Run Addon Tests Against Give Core "develop" Branch
                 working-directory: './givewp-next-gen'
