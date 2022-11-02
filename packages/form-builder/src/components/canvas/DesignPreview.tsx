@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import type {Block} from '../../types/block';
 
-import Storage from '../../common/storage/index.ts';
+import Storage from '../../common/storage';
 
 import IframeResizer from 'iframe-resizer-react';
 

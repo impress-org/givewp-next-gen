@@ -1,5 +1,5 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
-import formSettingsReducer, {setFormBlocks, setFormSettings} from './reducer.ts';
+import formSettingsReducer, {setFormBlocks, setFormSettings} from './reducer';
 import type {Block} from '../../types/block';
 
 const StoreContext = createContext(null);
