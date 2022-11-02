@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import {BlockEditorProvider, BlockInspector} from '@wordpress/block-editor';
@@ -8,7 +9,7 @@ import {InterfaceSkeleton} from "@wordpress/interface";
 import HeaderContainer from './containers/HeaderContainer';
 import {SecondarySidebar, Sidebar} from './components';
 import {defaultFormSettings, FormSettingsProvider} from './settings/context';
-import {Storage} from './common';
+import Storage from './common/storage/index.ts';
 
 import {useToggleState} from "./hooks";
 
@@ -30,7 +31,7 @@ function App() {
     const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
     const toggleSelectedSecondarySidebar = (name) => setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false);
 
-    const {blocks: initialBlocks, settings: initialFormSettings} = Storage.load();
+    const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
     if (initialBlocks instanceof Error) {
         alert('Unable to load initial blocks.');
         console.error(initialBlocks);
