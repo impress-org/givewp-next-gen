@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
+
 import Storage from '../../common/storage/index.ts';
+
 import IframeResizer from 'iframe-resizer-react';
 
 const DesignPreview = ({blocks}) => {
