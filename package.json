@@ -16,6 +16,7 @@
         "@hookform/resolvers": "^2.9.6",
         "@stripe/react-stripe-js": "^1.2.2",
         "@stripe/stripe-js": "^1.12.1",
+        "@svgr/webpack": "^6.5.1",
         "@wordpress/block-editor": "^8.0.17",
         "@wordpress/components": "^19.2.3",
         "@wordpress/compose": "5.6.0",

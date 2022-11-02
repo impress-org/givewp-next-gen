@@ -4,15 +4,9 @@
     "scripts": {
         "dev": "mix",
         "watch": "mix watch",
-        "build": "npm run production",
+        "build": "mix --production",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "production": "mix --production",
-        "lint": "npm run lint:js & npm run lint:scss & npm run lint:php",
-        "lint:js": "eslint -ext js",
-        "lint:js-fix": "eslint -ext js --fix src/",
-        "lint:textdomain": "node ./wp-textdomain.js",
-        "lint:scss": "stylelint src/**/*.scss"
+        "hot": "mix watch --hot"
     },
     "dependencies": {
         "@wordpress/block-editor": "^8.3.1",
