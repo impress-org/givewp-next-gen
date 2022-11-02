@@ -15,7 +15,8 @@ const DesignPreview = ({blocks}: PropTypes) => {
 
     useEffect(() => {
         Storage.preview(blocks).then(setSourceDocument);
-    }, [blocks]);
+        // stringify to prevent re-renders caused by object as dep
+    }, [JSON.stringify(blocks)]);
 
     return !sourceDocument ? (
         'Loading...'
