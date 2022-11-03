@@ -5,6 +5,11 @@ export interface FieldLabelProps {
     required: boolean;
 }
 
+/**
+ * The label for a field with the required indicator if applicable.
+ *
+ * @unreleased
+ */
 export default function FieldLabel({label, required}: FieldLabelProps): ReactNode {
     return (
         <span>
