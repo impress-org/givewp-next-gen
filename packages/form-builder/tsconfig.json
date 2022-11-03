@@ -18,12 +18,10 @@
                 "name": "typescript-plugin-css-modules"
             }
         ],
+        "baseUrl": ".",
         "paths": {
-            "@givewp/forms/types": [
-                "./src/NextGen/DonationForm/resources/types.ts"
-            ],
-            "@givewp/forms/propTypes": [
-                "./src/NextGen/DonationForm/resources/propTypes.ts"
+            "@givewp/form-builder/*": [
+                "./src/*"
             ]
         }
     },

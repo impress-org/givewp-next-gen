@@ -4,7 +4,7 @@ import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import BlockEditorContainer from './containers/BlockEditorContainer';
 import {FormSettingsProvider} from './stores/form-settings';
 import {Storage} from './common';
-import type {Block} from './types/block';
+import type {Block} from '@givewp/form-builder/types';
 
 import '@wordpress/components/build-style/style.css';
 import '@wordpress/block-editor/build-style/style.css';

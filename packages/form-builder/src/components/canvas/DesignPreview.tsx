@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import type {Block} from '../../types/block';
+import type {Block} from '@givewp/form-builder/types';
 
-import Storage from '../../common/storage';
+import Storage from '@givewp/form-builder/common/storage';
 
 import IframeResizer from 'iframe-resizer-react';
 

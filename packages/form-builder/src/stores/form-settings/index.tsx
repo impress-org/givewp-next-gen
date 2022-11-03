@@ -1,6 +1,6 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
 import formSettingsReducer, {setFormBlocks, setFormSettings} from './reducer';
-import type {Block} from '../../types/block';
+import type {Block} from '@givewp/form-builder/types';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'FormSettingsStoreContext';
