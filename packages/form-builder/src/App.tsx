@@ -12,12 +12,14 @@ import '@wordpress/block-editor/build-style/style.css';
 import './App.scss';
 
 import defaultBlocks from './blocks.json';
+import {__} from '@wordpress/i18n';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
+
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
-    formTitle: 'My Default Donation Form Title',
+    formTitle: __('My Default Donation Form Title'),
     enableDonationGoal: false,
     enableAutoClose: false,
     registration: 'none',
