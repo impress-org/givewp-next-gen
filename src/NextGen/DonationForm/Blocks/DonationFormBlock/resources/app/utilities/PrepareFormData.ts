@@ -1,6 +1,5 @@
-import {Form, Node, Group, isField, isGroup} from '@givewp/forms/types';
+import {Form, Node, Group, isGroup} from '@givewp/forms/types';
 import {mapGroup, reduceGroup, walkGroup} from './groups';
-import {getFieldLabelTemplate} from '../templates';
 
 /**
  * Receives the form data as provided directly from the server and mutates it to be ready for use by the React application
@@ -12,18 +11,11 @@ export default function prepareFormData(form: Form) {
     form.mapNodes = mapGroupNodes.bind(form);
     form.reduceNodes = reduceGroupNodes.bind(form);
 
-    form.walkNodes((node: Node) => {
-        if (isField(node)) {
-            node.Label = getFieldLabelTemplate().bind(null, {
-                label: node.label,
-                required: !!node.validationRules.required,
-            });
-        } else if (isGroup(node)) {
-            node.walkNodes = walkGroupNodes.bind(node);
-            node.mapNodes = mapGroupNodes.bind(node);
-            node.reduceNodes = reduceGroupNodes.bind(node);
-        }
-    });
+    form.walkNodes((node: Group) => {
+        node.walkNodes = walkGroupNodes.bind(node);
+        node.mapNodes = mapGroupNodes.bind(node);
+        node.reduceNodes = reduceGroupNodes.bind(node);
+    }, isGroup);
 }
 
 function walkGroupNodes(this: Group, callback: (node: Node) => void, filter?: (node: Node) => boolean) {
