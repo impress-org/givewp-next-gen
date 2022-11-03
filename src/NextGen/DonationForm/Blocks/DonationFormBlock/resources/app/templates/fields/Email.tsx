@@ -1,9 +1,9 @@
 import type {FieldProps} from '@givewp/forms/propTypes';
 
-export default function Email({requiredLabel, placeholder, fieldError, inputProps}: FieldProps) {
+export default function Email({Label, ErrorMessage, placeholder, fieldError, inputProps}: FieldProps) {
     return (
         <label>
-            <span>{requiredLabel}</span>
+            <Label />
             <input
                 type="email"
                 aria-invalid={fieldError ? 'true' : 'false'}
@@ -11,11 +11,7 @@ export default function Email({requiredLabel, placeholder, fieldError, inputProp
                 {...inputProps}
             />
 
-            {fieldError && (
-                <div className="error-message">
-                    <p role="alert">{fieldError}</p>
-                </div>
-            )}
+            <ErrorMessage />
         </label>
     );
 }

@@ -22,13 +22,6 @@ class Amount extends Field
      */
     protected $allowCustomAmount = false;
 
-    public function __construct($name)
-    {
-        parent::__construct($name);
-
-        $this->validationRules->rule('numeric', true);
-    }
-
     /**
      * Set the preset donation levels. Provide levels in minor units.
      *

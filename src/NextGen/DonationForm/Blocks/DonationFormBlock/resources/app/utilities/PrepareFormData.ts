@@ -1,6 +1,6 @@
 import {Form, Node, Group, isField, isGroup} from '@givewp/forms/types';
-import generateRequiredLabel from './generateRequiredLabel';
 import {mapGroup, reduceGroup, walkGroup} from './groups';
+import {getFieldLabelTemplate} from '../templates';
 
 /**
  * Receives the form data as provided directly from the server and mutates it to be ready for use by the React application
@@ -14,7 +14,10 @@ export default function prepareFormData(form: Form) {
 
     form.walkNodes((node: Node) => {
         if (isField(node)) {
-            node.requiredLabel = generateRequiredLabel(node.label, node.validationRules.required);
+            node.Label = getFieldLabelTemplate().bind(null, {
+                label: node.label,
+                required: !!node.validationRules.required,
+            });
         } else if (isGroup(node)) {
             node.walkNodes = walkGroupNodes.bind(node);
             node.mapNodes = mapGroupNodes.bind(node);

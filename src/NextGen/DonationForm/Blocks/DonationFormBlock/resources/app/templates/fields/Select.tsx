@@ -1,9 +1,9 @@
 import type {SelectFieldProps} from '@givewp/forms/propTypes';
 
-export default function Select({requiredLabel, placeholder, fieldError, options, inputProps}: SelectFieldProps) {
+export default function Select({Label, ErrorMessage, placeholder, fieldError, options, inputProps}: SelectFieldProps) {
     return (
         <label>
-            <span>{requiredLabel}</span>
+            <Label />
 
             <select {...inputProps} aria-invalid={fieldError ? 'true' : 'false'}>
                 {placeholder && (
@@ -19,11 +19,7 @@ export default function Select({requiredLabel, placeholder, fieldError, options,
                 ))}
             </select>
 
-            {fieldError && (
-                <div className="error-message">
-                    <p role="alert">{fieldError}</p>
-                </div>
-            )}
+            <ErrorMessage />
         </label>
     );
 }

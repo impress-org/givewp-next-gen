@@ -120,7 +120,6 @@ export interface Node {
 export interface Field extends Node {
     nodeType: 'field';
     label: string;
-    requiredLabel: ReactNode | string;
     placeholder: string | null;
     validationRules: {
         [key: string]: any;

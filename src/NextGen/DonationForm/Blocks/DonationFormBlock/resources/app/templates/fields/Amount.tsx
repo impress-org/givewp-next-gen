@@ -7,7 +7,15 @@ interface AmountProps extends FieldProps {
     allowCustomAmount: boolean;
 }
 
-export default function Amount({name, requiredLabel, inputProps, levels, allowCustomAmount, fieldError}: AmountProps) {
+export default function Amount({
+    name,
+    Label,
+    ErrorMessage,
+    inputProps,
+    levels,
+    allowCustomAmount,
+    fieldError,
+}: AmountProps) {
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
     const formatter: Intl.NumberFormat = useMemo(
@@ -30,14 +38,14 @@ export default function Amount({name, requiredLabel, inputProps, levels, allowCu
                 );
             })}
             <label>
-                {requiredLabel}
-                <input type={allowCustomAmount ? 'text' : 'hidden'} {...inputProps} />
+                <Label />
+                <input
+                    aria-invalid={fieldError ? 'true' : 'false'}
+                    type={allowCustomAmount ? 'text' : 'hidden'}
+                    {...inputProps}
+                />
             </label>
-            {fieldError && (
-                <div className="error-message">
-                    <p role="alert">{fieldError}</p>
-                </div>
-            )}
+            <ErrorMessage />
         </div>
     );
 }

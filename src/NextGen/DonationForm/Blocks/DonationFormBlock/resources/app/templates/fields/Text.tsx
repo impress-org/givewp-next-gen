@@ -1,16 +1,12 @@
 import type {FieldProps} from '@givewp/forms/propTypes';
 
-export default function Text({requiredLabel, placeholder, fieldError, inputProps}: FieldProps) {
+export default function Text({Label, ErrorMessage, fieldError, placeholder, inputProps}: FieldProps) {
     return (
         <label>
-            <span>{requiredLabel}</span>
+            <Label />
             <input type="text" aria-invalid={fieldError ? 'true' : 'false'} placeholder={placeholder} {...inputProps} />
 
-            {fieldError && (
-                <div className="error-message">
-                    <p role="alert">{fieldError}</p>
-                </div>
-            )}
+            <ErrorMessage />
         </label>
     );
 }
