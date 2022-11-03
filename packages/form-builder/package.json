@@ -4,9 +4,7 @@
     "scripts": {
         "dev": "mix",
         "watch": "mix watch",
-        "build": "mix --production",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot"
+        "build": "mix --production"
     },
     "dependencies": {
         "@wordpress/block-editor": "^8.3.1",
