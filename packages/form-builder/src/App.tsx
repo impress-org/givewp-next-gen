@@ -25,11 +25,6 @@ const initialState = {
     ...initialFormSettings,
 };
 
-console.log(
-    initialFormSettings,
-    initialState
-)
-
 if (initialBlocks instanceof Error) {
     alert('Unable to load initial blocks.');
     console.error(initialBlocks);
