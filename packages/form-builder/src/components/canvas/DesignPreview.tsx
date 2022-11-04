@@ -5,18 +5,18 @@ import type {Block} from '@givewp/form-builder/types';
 import Storage from '@givewp/form-builder/common/storage';
 
 import IframeResizer from 'iframe-resizer-react';
+import {useFormSettings} from "../../stores/form-settings/index.tsx";
 
-type PropTypes = {
-    blocks: Block[];
-};
-
-const DesignPreview = ({blocks}: PropTypes) => {
+const DesignPreview = () => {
+    const {blocks, template} = useFormSettings();
     const [sourceDocument, setSourceDocument] = useState('');
 
     useEffect(() => {
-        Storage.preview(blocks).then(setSourceDocument);
-        // stringify to prevent re-renders caused by object as dep
-    }, [JSON.stringify(blocks)]);
+        Storage.preview(template, blocks).then(setSourceDocument);
+    }, [
+        template,
+        JSON.stringify(blocks) // stringify to prevent re-renders caused by object as dep
+    ]);
 
     return !sourceDocument ? (
         'Loading...'

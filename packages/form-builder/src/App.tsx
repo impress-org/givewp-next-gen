@@ -16,7 +16,6 @@ import {__} from '@wordpress/i18n';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
-
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
     formTitle: __('My Default Donation Form Title'),
@@ -24,6 +23,7 @@ const initialState = {
     enableAutoClose: false,
     registration: 'none',
     goalFormat: 'amount-raised',
+    template: 'classic',
     ...initialFormSettings,
 };
 
