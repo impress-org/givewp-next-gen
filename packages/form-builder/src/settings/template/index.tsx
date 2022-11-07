@@ -7,7 +7,7 @@ const TemplateSettings = () => {
     const dispatch = useFormSettingsDispatch();
 
     const templateOptions = [
-        {value: '', label: __('No Template', 'givewp')},
+        {value: 'markup', label: __('Markup', 'givewp')},
         {value: 'classic', label: __('Classic', 'givewp')},
     ]
 
