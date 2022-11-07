@@ -42,6 +42,7 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                     {fieldError && <p role="alert">{fieldError}</p>}
                 </div>
             </div>
+            {/*
             <div className="givewp-fields-amount__levels--container">
                 {levels.map((levelAmount) => {
                     const label = formatter.format(Number(levelAmount));
@@ -70,6 +71,7 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                     {__('Custom Amount', 'give')}
                 </button>
             </div>
+            */}
         </>
     );
 }
