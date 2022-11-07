@@ -24,7 +24,23 @@ window.storage = {
     load: () => {
         return {
             blocks: JSON.parse(window.storageData.blockData),
-            settings: JSON.parse( window.storageData.settings || "{}" ),
+            formSettings: JSON.parse(window.storageData.settings || '{}'),
         };
+    },
+    preview: ( template, blocks ) => {
+        return new Promise((resolve, reject) => {
+            jQuery
+                .post({
+                    url: window.storageData.previewURL,
+                    headers: {
+                        'X-WP-Nonce': window.storageData.nonce,
+                    },
+                    data: {
+                        'form-template-id': template,
+                        'form-blocks': JSON.stringify(blocks),
+                    },
+                })
+                .then(resolve);
+        });
     },
 }

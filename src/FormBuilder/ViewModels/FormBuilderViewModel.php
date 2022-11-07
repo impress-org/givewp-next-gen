@@ -13,6 +13,7 @@ class FormBuilderViewModel
     {
         return [
             'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $donationFormId),
+            'previewURL' => site_url("?givewp-view=donation-form&form-id=$donationFormId"),
             'nonce' => wp_create_nonce('wp_rest'),
             'blockData' => get_post($donationFormId)->post_content,
             'settings' => get_post_meta($donationFormId, 'formBuilderSettings', true),
@@ -37,26 +38,13 @@ class FormBuilderViewModel
     }
 
     /**
-     * Get manifest file
-     *
-     * @unreleased
-     */
-    protected function getAssetManifest()
-    {
-        return json_decode(
-            file_get_contents(GIVE_NEXT_GEN_DIR . 'packages/form-builder/build/asset-manifest.json'),
-            false
-        );
-    }
-
-    /**
      * Get main css path
      *
      * @unreleased
      */
     public function css(): string
     {
-        return $this->getAssetManifest()->files->{"main.css"};
+        return 'givewp-form-builder.css';
     }
 
     /**
@@ -66,6 +54,6 @@ class FormBuilderViewModel
      */
     public function js(): string
     {
-        return $this->getAssetManifest()->files->{"main.js"};
+        return 'givewp-form-builder.js';
     }
 }

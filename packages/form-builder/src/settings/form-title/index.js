@@ -1,10 +1,10 @@
-import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
-import {__} from "@wordpress/i18n";
-import {useFormSettings} from "../context";
+import {PanelBody, PanelRow, TextControl} from '@wordpress/components';
+import {__} from '@wordpress/i18n';
+import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '@givewp/form-builder/stores/form-settings';
 
 const FormTitleSettings = () => {
-
-    const [{formTitle}, updateFormSetting] = useFormSettings();
+    const {formTitle} = useFormSettings();
+    const dispatch = useFormSettingsDispatch();
 
     return (
         <PanelBody>
@@ -12,7 +12,7 @@ const FormTitleSettings = () => {
                 <TextControl
                     label={__('Form Title')}
                     value={formTitle}
-                    onChange={(formTitle) => updateFormSetting({formTitle})}
+                    onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
                 />
             </PanelRow>
         </PanelBody>

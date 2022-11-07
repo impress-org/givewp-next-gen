@@ -3,12 +3,12 @@ import {__} from '@wordpress/i18n';
 
 import TabPanel from './tab-panel';
 
-import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings} from '../../settings';
+import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings, TemplateSettings} from '../../settings/index.ts';
 import FormFields from "../../settings/form-fields";
 import {PopoutSlot} from "./popout";
-import {useState} from "@wordpress/element";
 import {useEffect} from "react";
 import useSelectedBlocks from "../../hooks/useSelectedBlocks";
+import {useFormSettings, useFormSettingsDispatch} from "../../stores/form-settings/index.tsx";
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill(
     'StandAloneBlockEditorSidebarInspector',
@@ -38,11 +38,15 @@ const tabs = [
             </>
         ),
     },
+    {
+        name: 'design',
+        title: __('Design'),
+        className: 'tab-block',
+        content: () => <TemplateSettings />
+    },
 ];
 
-function Sidebar() {
-
-    const [selectedTab, setSelectedTab] = useState(null);
+function Sidebar({selectedTab, setSelectedTab}) {
 
     const selectedBlocks = useSelectedBlocks();
 
@@ -50,7 +54,7 @@ function Sidebar() {
         () => {
             if (selectedBlocks.length) setSelectedTab('block');
         }
-        , [selectedBlocks], // only run effect when selectedBlocks changes
+        , [selectedBlocks, setSelectedTab], // only run effect when selectedBlocks changes
     );
 
     return (
