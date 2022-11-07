@@ -34,8 +34,8 @@ module.exports = {
         nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
         classicTemplateJs: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/js/template.ts'),
         classicTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/css/template.scss'),
-        markupTemplateJs: srcPath('NextGen/DonationForm/FormTemplates/MarkupFormTemplate/js/template.ts'),
-        markupTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/MarkupFormTemplate/css/template.scss'),
+        developerTemplateJs: srcPath('NextGen/DonationForm/FormTemplates/DeveloperFormTemplate/js/template.ts'),
+        developerTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/DeveloperFormTemplate/css/template.scss'),
     },
 };
 

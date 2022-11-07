@@ -1,19 +1,19 @@
 <?php
 
-namespace Give\NextGen\DonationForm\FormTemplates\MarkupFormTemplate;
+namespace Give\NextGen\DonationForm\FormTemplates\DeveloperFormTemplate;
 
 use Give\NextGen\Framework\FormTemplates\FormTemplate;
 
 /**
  * @unreleased
  */
-class MarkupFormTemplate extends FormTemplate {
+class DeveloperFormTemplate extends FormTemplate {
     /**
      * @unreleased
      */
      public static function id(): string
     {
-        return 'markup';
+        return 'developer';
     }
 
     /**
@@ -21,7 +21,7 @@ class MarkupFormTemplate extends FormTemplate {
      */
     public static function name(): string
     {
-        return __('Markup Template', 'give');
+        return __('Developer Template', 'give');
     }
 
     /**
@@ -29,7 +29,7 @@ class MarkupFormTemplate extends FormTemplate {
      */
     public function css(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/markupTemplateCss.css';
+        return GIVE_NEXT_GEN_URL . 'build/developerTemplateCss.css';
     }
 
     /**
@@ -37,7 +37,7 @@ class MarkupFormTemplate extends FormTemplate {
      */
     public function js(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/markupTemplateJs.js';
+        return GIVE_NEXT_GEN_URL . 'build/developerTemplateJs.js';
     }
 
     /**
@@ -45,7 +45,7 @@ class MarkupFormTemplate extends FormTemplate {
      */
     public function dependencies(): array
     {
-        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/markupTemplateJs.asset.php';
+        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/developerTemplateJs.asset.php';
 
         return $scriptAsset['dependencies'];
     }
