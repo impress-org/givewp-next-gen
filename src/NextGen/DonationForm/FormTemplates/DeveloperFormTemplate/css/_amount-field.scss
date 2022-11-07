@@ -8,7 +8,7 @@
         background-color: rgb(255, 255, 255);
         text-align: left;
         font-family: inherit;
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: 500;
         line-height: 1;
         color: rgb(51, 51, 51);
@@ -56,15 +56,15 @@
         align-items: center;
         border: 0.125rem solid var(--give-primary-color);
         border-radius: 0.5rem;
-        background-color: var(--give-primary-color);
-        color: rgb(255, 255, 255);
+        //background-color: var(--give-primary-color);
+        //color: rgb(255, 255, 255);
         text-align: center;
         font-family: inherit;
-        font-weight: 600;
+        font-weight: normal;
         line-height: 1.2;
         block-size: 100%;
-        font-size: clamp(1.5rem, 0.474359rem + 3.20513vw, 2.125rem);
-        padding: 1.5rem 0.5rem;
+        font-size: 1em;
+        padding: 0.5rem 0.5rem;
         transition-property: background-color, color, filter, box-shadow, transform;
         transition-duration: 200ms;
         transition-timing-function: ease-in;
@@ -72,19 +72,16 @@
         margin-bottom: 0.5rem;
 
         &:hover {
-            filter: brightness(1.2);
+            //filter: brightness(1.2);
         }
 
         &--custom {
             word-spacing: 9999px;
-            font-size: 1.5rem;
             line-height: 1.25;
-
         }
 
         &--selected {
-            background-color: rgb(255, 255, 255);
-            color: var(--give-primary-color);
+            //
         }
     }
 }
