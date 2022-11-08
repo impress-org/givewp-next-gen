@@ -313,7 +313,8 @@ class DonationFormRepository
         if ($lastSection) {
             $lastSection->append(
                 Hidden::make('formId')
-                    ->defaultValue($formId)
+                    // Casting this value to a string is a temporary solution for front-end validation until we have proper validation rule constructing in the Fields API.
+                    ->defaultValue((string)$formId)
                     ->required(),
 
                 Hidden::make('currency')
