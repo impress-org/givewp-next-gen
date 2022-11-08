@@ -1,7 +1,7 @@
 import GatewayRegistrar from './GatewayRegistrar';
 import TemplateRegistrar from './TemplateRegistrar';
 import type {FormServerExports} from '@givewp/forms/types';
-import type {UseFormReturn} from 'react-hook-form';
+import type {useWatch, useFormContext} from 'react-hook-form';
 
 import type {
     // import the functions as types so that they are not included in the bundle
@@ -33,14 +33,8 @@ declare global {
                 getGroup: typeof getGroupTemplate;
             };
             form: {
-                useFormContext(): UseFormReturn;
-                useWatch(options: {
-                    name: string | string[];
-                    defaultValue?: any;
-                    control?: object;
-                    disabled?: boolean;
-                    exact?: boolean;
-                }): any;
+                useFormContext: typeof useFormContext;
+                useWatch: typeof useWatch;
             };
         };
         giveNextGenExports: FormServerExports;
