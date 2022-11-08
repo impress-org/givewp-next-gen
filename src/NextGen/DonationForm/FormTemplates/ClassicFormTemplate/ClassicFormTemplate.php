@@ -31,14 +31,4 @@ class ClassicFormTemplate extends FormTemplate {
     {
         return GIVE_NEXT_GEN_URL . 'build/classicTemplateCss.css';
     }
-
-    /**
-     * @unreleased
-     */
-    public function dependencies(): array
-    {
-        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/classicTemplateJs.asset.php';
-
-        return $scriptAsset['dependencies'];
-    }
 }

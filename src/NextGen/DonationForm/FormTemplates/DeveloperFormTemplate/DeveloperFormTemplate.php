@@ -31,14 +31,4 @@ class DeveloperFormTemplate extends FormTemplate {
     {
         return GIVE_NEXT_GEN_URL . 'build/developerTemplateCss.css';
     }
-
-    /**
-     * @unreleased
-     */
-    public function dependencies(): array
-    {
-        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/developerTemplateJs.asset.php';
-
-        return $scriptAsset['dependencies'];
-    }
 }
