@@ -33,7 +33,6 @@ module.exports = {
         ),
         nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
         classicTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/css/template.scss'),
-        developerTemplateJs: srcPath('NextGen/DonationForm/FormTemplates/DeveloperFormTemplate/js/template.ts'),
         developerTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/DeveloperFormTemplate/css/template.scss'),
     },
 };

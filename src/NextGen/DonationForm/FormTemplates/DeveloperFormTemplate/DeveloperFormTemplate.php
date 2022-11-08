@@ -35,14 +35,6 @@ class DeveloperFormTemplate extends FormTemplate {
     /**
      * @unreleased
      */
-    public function js(): string
-    {
-        return GIVE_NEXT_GEN_URL . 'build/developerTemplateJs.js';
-    }
-
-    /**
-     * @unreleased
-     */
     public function dependencies(): array
     {
         $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/developerTemplateJs.asset.php';
