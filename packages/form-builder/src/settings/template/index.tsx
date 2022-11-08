@@ -4,13 +4,14 @@ import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../s
 
 declare global {
     interface Window {
-        storageData?
+        storageData?;
     }
 }
 
 const TemplateSettings = () => {
     const {template} = useFormSettings();
     const dispatch = useFormSettingsDispatch();
+    console.log(window?.storageData?.templates);
 
     const templateOptions = Object.values(window?.storageData?.templates).map(({id, name}) => {
         return { value: id, label: name}
