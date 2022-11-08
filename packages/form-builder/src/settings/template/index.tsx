@@ -1,10 +1,13 @@
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings';
+import {FormTemplate} from "@givewp/form-builder/types";
 
 declare global {
     interface Window {
-        storageData?;
+        storageData?: {
+            templates: FormTemplate[],
+        }
     }
 }
 
