@@ -1,9 +1,10 @@
-import type {FieldProps} from '@givewp/forms/propTypes';
+import {__} from '@wordpress/i18n';
 import {useMemo} from 'react';
-import {useFormContext, useWatch} from 'react-hook-form';
+import classNames from 'classnames';
+import type {FieldProps} from '@givewp/forms/propTypes';
 
 interface AmountProps extends FieldProps {
-    levels: bigint[];
+    levels: Number[];
     allowCustomAmount: boolean;
 }
 
@@ -16,9 +17,9 @@ export default function Amount({
     allowCustomAmount,
     fieldError,
 }: AmountProps) {
-    const {setValue} = useFormContext();
+    const {useWatch} = window.givewp.form;
     const currency = useWatch({name: 'currency'});
-    const formatter: Intl.NumberFormat = useMemo(
+    const formatter = useMemo(
         () =>
             new Intl.NumberFormat(navigator.language, {
                 style: 'currency',
@@ -28,24 +29,82 @@ export default function Amount({
     );
 
     return (
-        <div>
+        <>
+            <div className="givewp-fields-amount__amount--container">
+                <label
+                    className="givewp-fields-amount__input--label"
+                    htmlFor={name}
+                    aria-labelledby={name}
+                    style={{display: 'none'}}
+                >
+                    <Label />
+                </label>
+                <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
+                    <span className="givewp-fields-amount__input--currency-symbol">
+                        {formatter.formatToParts().find(({type}) => type === 'currency').value}
+                    </span>
+                    <input
+                        className="givewp-fields-amount__input"
+                        type={allowCustomAmount ? 'text' : 'hidden'}
+                        aria-invalid={fieldError ? 'true' : 'false'}
+                        id={name}
+                        inputMode="numeric"
+                        {...inputProps}
+                    />
+                </div>
+
+                <ErrorMessage />
+            </div>
+            <AmountButtons name={name} currency={currency} levels={levels} />
+        </>
+    );
+}
+
+function AmountButtons({name, currency, levels}: {name: string; currency: string; levels: Number[]}) {
+    const {useFormContext, useWatch} = window.givewp.form;
+    const {setValue, setFocus} = useFormContext();
+    const amount = useWatch({name});
+    const formatter = useMemo(
+        () =>
+            new Intl.NumberFormat(navigator.language, {
+                style: 'currency',
+                currency: currency,
+            }),
+        [currency, navigator.language]
+    );
+
+    return (
+        <div className="givewp-fields-amount__levels--container">
             {levels.map((levelAmount) => {
-                const label = formatter.format(levelAmount);
+                const label = formatter.format(Number(levelAmount));
+                const selected = levelAmount === Number(amount);
                 return (
-                    <button type="button" onClick={() => setValue(name, levelAmount)} key={label}>
+                    <button
+                        className={classNames('givewp-fields-amount__level', {
+                            'givewp-fields-amount__level--selected': selected,
+                        })}
+                        type="button"
+                        onClick={() => setValue(name, levelAmount)}
+                        key={label}
+                    >
                         {label}
                     </button>
                 );
             })}
-            <label>
-                <Label />
-                <input
-                    aria-invalid={fieldError ? 'true' : 'false'}
-                    type={allowCustomAmount ? 'text' : 'hidden'}
-                    {...inputProps}
-                />
-            </label>
-            <ErrorMessage />
+
+            <button
+                className={classNames('givewp-fields-amount__level', 'givewp-fields-amount__level--custom', {
+                    'givewp-fields-amount__level--selected': !levels.includes(Number(amount)),
+                })}
+                type="button"
+                onClick={() => {
+                    setValue(name, null);
+                    setFocus('amount', {shouldSelect: true});
+                }}
+                key="custom"
+            >
+                {__('Custom Amount', 'give')}
+            </button>
         </div>
     );
 }
