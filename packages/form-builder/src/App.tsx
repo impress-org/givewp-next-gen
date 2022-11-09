@@ -15,6 +15,7 @@ import defaultBlocks from './blocks.json';
 import {__} from '@wordpress/i18n';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
+console.log(initialFormSettings);
 
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
@@ -23,7 +24,7 @@ const initialState = {
     enableAutoClose: false,
     registration: 'none',
     goalFormat: 'amount-raised',
-    template: 'classic',
+    templateId: 'classic',
     ...initialFormSettings,
 };
 
