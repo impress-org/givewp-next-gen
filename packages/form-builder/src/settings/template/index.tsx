@@ -1,6 +1,6 @@
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings';
+import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-settings';
 import {getWindowData} from '@givewp/form-builder/common';
 
 const {templates} = getWindowData();
@@ -8,8 +8,10 @@ const {templates} = getWindowData();
 const templateOptions = Object.values(templates).map(({id, name}) => ({value: id, label: name}));
 
 const TemplateSettings = () => {
-    const {templateId} = useFormSettings();
-    const dispatch = useFormSettingsDispatch();
+    const {
+        settings: {templateId},
+    } = useFormState();
+    const dispatch = useFormStateDispatch();
 
     return (
         <PanelBody>

@@ -4,10 +4,13 @@ import {useEffect, useState} from 'react';
 import Storage from '@givewp/form-builder/common/storage';
 
 import IframeResizer from 'iframe-resizer-react';
-import {useFormSettings} from '../../stores/form-settings';
+import {useFormState} from '../../stores/form-settings';
 
 const DesignPreview = () => {
-    const {blocks, templateId} = useFormSettings();
+    const {
+        blocks,
+        settings: {templateId},
+    } = useFormState();
     const [sourceDocument, setSourceDocument] = useState('');
 
     useEffect(() => {
