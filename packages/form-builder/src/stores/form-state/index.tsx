@@ -3,10 +3,10 @@ import formSettingsReducer, {setFormBlocks, setFormSettings} from './reducer';
 import {FormState} from '@givewp/form-builder/types';
 
 const StoreContext = createContext(null);
-StoreContext.displayName = 'FormBuilderStoreContext';
+StoreContext.displayName = 'FormState';
 
 const StoreContextDispatch = createContext(null);
-StoreContextDispatch.displayName = 'FormBuilderStoreContextDispatch';
+StoreContextDispatch.displayName = 'FormStateDispatch';
 
 /**
  * This is our Form's store for its settings.

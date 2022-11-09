@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {AddIcon, GiveIcon, ListIcon, SettingsIcon} from '../components/icons';
-import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-settings/index.tsx';
+import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state/index.tsx';
 import {RichText} from '@wordpress/block-editor';
 import {Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';

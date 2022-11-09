@@ -1,4 +1,4 @@
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-settings';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {__} from '@wordpress/i18n';
 import {PanelBody, PanelRow, SelectControl, ToggleControl} from '@wordpress/components';
 

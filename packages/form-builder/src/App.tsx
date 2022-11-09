@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import BlockEditorContainer from './containers/BlockEditorContainer';
-import {FormStateProvider} from './stores/form-settings';
+import {FormStateProvider} from './stores/form-state';
 import {Storage} from './common';
 import type {Block} from '@givewp/form-builder/types';
 

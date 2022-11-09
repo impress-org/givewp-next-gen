@@ -1,6 +1,6 @@
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-settings';
+import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
 import {getWindowData} from '@givewp/form-builder/common';
 
 const {templates} = getWindowData();
