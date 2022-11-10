@@ -9,14 +9,15 @@ import {useFormState} from '../../stores/form-state';
 const DesignPreview = () => {
     const {
         blocks,
-        settings: {templateId},
+        settings,
     } = useFormState();
     const [sourceDocument, setSourceDocument] = useState('');
 
     useEffect(() => {
-        Storage.preview(templateId, blocks).then(setSourceDocument);
+        const formSettings = settings;
+        Storage.preview({blocks, formSettings}).then(setSourceDocument);
     }, [
-        templateId,
+        JSON.stringify(settings),
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 

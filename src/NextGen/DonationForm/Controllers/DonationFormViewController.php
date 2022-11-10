@@ -33,9 +33,9 @@ class DonationFormViewController
         $viewModel = new DonationFormViewModel($data->formId, $data->formBlocks);
 
         wp_enqueue_global_styles();
-        $this->enqueueFormScripts($data->formId, $data->formTemplateId);
+        $this->enqueueFormScripts($data->formId, $data->formSettings['templateId']);
 
-        $primaryColor = DonationForm::find($data->formId)->settings['primaryColor'];
+        $primaryColor = $data->formSettings['primaryColor'];
 
         ob_start();
         wp_print_styles();
@@ -48,7 +48,10 @@ class DonationFormViewController
 
         <div
             id="root-give-next-gen-donation-form-block"
-            style="--give-primary-color:<?= $primaryColor; ?>;"
+            style="
+                --give-primary-color:<?= $primaryColor; ?>;
+                --give-secondary-color:<?= $primaryColor; ?>;
+                "
         ></div>
 
         <?php

@@ -37,7 +37,7 @@ const TemplateSettings = () => {
                         value: primaryColor,
                         onChange: (primaryColor) => dispatch(setFormSettings({primaryColor})),
                         label: __('Primary Color', 'givewp'),
-                        disableCustomColors: false,
+                        // disableCustomColors: false,
                     },
                     {
                         value: secondaryColor,
