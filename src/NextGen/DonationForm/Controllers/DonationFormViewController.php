@@ -36,6 +36,7 @@ class DonationFormViewController
         $this->enqueueFormScripts($data->formId, $data->formSettings['templateId']);
 
         $primaryColor = $data->formSettings['primaryColor'];
+        $secondaryColor = $data->formSettings['secondaryColor'];
 
         ob_start();
         wp_print_styles();
@@ -50,7 +51,7 @@ class DonationFormViewController
             id="root-give-next-gen-donation-form-block"
             style="
                 --give-primary-color:<?= $primaryColor; ?>;
-                --give-secondary-color:<?= $primaryColor; ?>;
+                --give-secondary-color:<?= $secondaryColor; ?>;
                 "
         ></div>
 
