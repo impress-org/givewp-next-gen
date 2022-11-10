@@ -52,7 +52,7 @@ class RegisterFormBuilderPageRoute
         wp_enqueue_style(
             '@givewp/form-builder/style',
             GIVE_NEXT_GEN_URL . 'packages/form-builder/build/' . $formBuilderViewModel->css()
-        )
+        );
 
         $formBuilderStorage = (new EnqueueScript(
             '@givewp/form-builder/storage',
