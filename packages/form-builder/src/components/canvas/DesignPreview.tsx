@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {Spinner} from '@wordpress/components';
+import DesignPreviewLoading from './DesignPreviewLoading';
 
 import Storage from '@givewp/form-builder/common/storage';
 
@@ -28,17 +28,7 @@ const DesignPreview = () => {
     ]);
 
     return isLoading ? (
-        <div
-            style={{
-                width: '100%',
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'center',
-            }}
-        >
-            <Spinner />
-        </div>
+        <DesignPreviewLoading />
     ) : (
         <IframeResizer
             srcDoc={sourceDocument}
