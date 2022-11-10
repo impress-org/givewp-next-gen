@@ -23,7 +23,7 @@ class FormBuilderViewModel
             'templates' => array_map(static function ($templateClass) {
                 /** @var FormTemplate $template */
                 $template = give($templateClass);
-                
+
                 return [
                     'id' => $template::id(),
                     'name' => $template::name(),
@@ -45,7 +45,7 @@ class FormBuilderViewModel
      */
     public function attachShadowScript(): string
     {
-        return "document.getElementById('app').attachShadow({mode: 'open'}).appendChild( document.getElementById('root') ).appendChild( document.getElementById('shadowDomStyles') )";
+        return "document.getElementById('app').attachShadow({mode: 'open'}).appendChild( document.getElementById('root') ).appendChild( document.getElementById('@givewp/form-builder/style-css') )";
     }
 
     /**
