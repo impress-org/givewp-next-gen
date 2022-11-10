@@ -66,7 +66,7 @@ class RegisterFormBuilderPageRoute
 
         (new EnqueueScript(
             '@givewp/form-builder/script',
-            'packages/form-builder/build/' . $formBuilderViewModel->js(),
+            $formBuilderViewModel->jsPathFromRoot(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'

@@ -33,22 +33,10 @@ class FormBuilderViewModel
     }
 
     /**
-     * Get main css path
-     *
      * @unreleased
      */
-    public function css(): string
+    public function jsPathFromRoot(): string
     {
-        return 'givewp-form-builder.css';
-    }
-
-    /**
-     * Get main js path
-     *
-     * @unreleased
-     */
-    public function js(): string
-    {
-        return 'givewp-form-builder.js';
+        return 'packages/form-builder/build/givewp-form-builder.js';
     }
 }
