@@ -33,22 +33,6 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
-     */
-    public function shadowDomStyles(): string
-    {
-        return file_get_contents(trailingslashit(GIVE_NEXT_GEN_DIR) . 'packages/form-builder/build/' . $this->css());
-    }
-
-    /**
-     * @unreleased
-     */
-    public function attachShadowScript(): string
-    {
-        return "document.getElementById('app').attachShadow({mode: 'open'}).appendChild( document.getElementById('root') ).appendChild( document.getElementById('@givewp/form-builder/style-css') )";
-    }
-
-    /**
      * Get main css path
      *
      * @unreleased

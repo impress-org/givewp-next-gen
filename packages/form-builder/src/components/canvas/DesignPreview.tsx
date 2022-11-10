@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
+import {Spinner} from '@wordpress/components';
 
 import Storage from '@givewp/form-builder/common/storage';
 
@@ -16,7 +17,7 @@ const DesignPreview = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        
+
         Storage.preview(templateId, blocks).then((document) => {
             setSourceDocument(document);
             setIsLoading(false);
@@ -27,7 +28,7 @@ const DesignPreview = () => {
     ]);
 
     return isLoading ? (
-        'Loading...'
+        <Spinner />
     ) : (
         <IframeResizer
             srcDoc={sourceDocument}
