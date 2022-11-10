@@ -28,7 +28,17 @@ const DesignPreview = () => {
     ]);
 
     return isLoading ? (
-        <Spinner />
+        <div
+            style={{
+                width: '100%',
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+            }}
+        >
+            <Spinner />
+        </div>
     ) : (
         <IframeResizer
             srcDoc={sourceDocument}
