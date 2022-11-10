@@ -12,15 +12,21 @@ const DesignPreview = () => {
         settings: {templateId},
     } = useFormState();
     const [sourceDocument, setSourceDocument] = useState('');
+    const [isLoading, setIsLoading] = useState<boolean>();
 
     useEffect(() => {
-        Storage.preview(templateId, blocks).then(setSourceDocument);
+        setIsLoading(true);
+        
+        Storage.preview(templateId, blocks).then((document) => {
+            setSourceDocument(document);
+            setIsLoading(false);
+        });
     }, [
         templateId,
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
-    return !sourceDocument ? (
+    return isLoading ? (
         'Loading...'
     ) : (
         <IframeResizer
