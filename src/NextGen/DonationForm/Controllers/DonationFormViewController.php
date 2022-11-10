@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\Controllers;
 
 use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
+use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
@@ -34,6 +35,8 @@ class DonationFormViewController
         wp_enqueue_global_styles();
         $this->enqueueFormScripts($data->formId, $data->formTemplateId);
 
+        $primaryColor = DonationForm::find($data->formId)->settings['primaryColor'];
+
         ob_start();
         wp_print_styles();
         wp_print_head_scripts();
@@ -43,7 +46,10 @@ class DonationFormViewController
             window.giveNextGenExports = <?= wp_json_encode($viewModel->exports()) ?>;
         </script>
 
-        <div id="root-give-next-gen-donation-form-block"></div>
+        <div
+            id="root-give-next-gen-donation-form-block"
+            style="--give-primary-color:<?= $primaryColor; ?>;"
+        ></div>
 
         <?php
         wp_print_footer_scripts();
