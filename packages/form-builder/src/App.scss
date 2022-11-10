@@ -247,3 +247,36 @@
 .components-panel__row:first-of-type {
     margin-top: 0.5rem;
 }
+
+/** ------------------------------- */
+
+.block-editor-panel-color-gradient-settings__dropdown-content .components-popover__content {
+    margin-right: var(--give-sidebar-width) !important;
+}
+
+.block-editor-panel-color-gradient-settings__item {
+    width: 100%;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid var(--give-gray-20);
+    background-color: white;
+
+    &.is-open {
+        color: #113DD9;
+        background-color: var(--give-gray-10);
+    }
+}
+.block-editor-panel-color-gradient-settings__dropdown {
+    .components-flex {
+        display: flex;
+    }
+    .components-h-stack {
+        flex-direction: row;
+        gap: 10px;
+        margin-left: 10px;
+        align-items: center;
+    }
+}
+.block-editor-color-gradient-control__fieldset {
+    border: 0;
+}
