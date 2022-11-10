@@ -72,11 +72,6 @@ class RegisterFormBuilderPageRoute
             'give'
         ))->loadInFooter()->enqueue();
 
-        wp_add_inline_script(
-            '@givewp/form-builder/script',
-            $formBuilderViewModel->attachShadowScript()
-        );
-
         View::render('FormBuilder.admin-form-builder', [
             'shadowDomStyles' => $formBuilderViewModel->shadowDomStyles(),
         ]);
