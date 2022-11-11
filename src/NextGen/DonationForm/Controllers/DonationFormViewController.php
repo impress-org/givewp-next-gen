@@ -30,13 +30,17 @@ class DonationFormViewController
      */
     public function show(DonationFormViewRouteData $data): string
     {
-        $viewModel = new DonationFormViewModel($data->formId, $data->formBlocks);
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::find($data->formId);
+
+        $viewModel = new DonationFormViewModel($donationForm, $data->formBlocks, $data->formSettings);
 
         wp_enqueue_global_styles();
-        $this->enqueueFormScripts($data->formId, $data->formSettings['templateId']);
 
-        $primaryColor = $data->formSettings['primaryColor'];
-        $secondaryColor = $data->formSettings['secondaryColor'];
+        $this->enqueueFormScripts(
+            $data->formId,
+            $viewModel->templateId()
+        );
 
         ob_start();
         wp_print_styles();
@@ -50,8 +54,8 @@ class DonationFormViewController
         <div
             id="root-give-next-gen-donation-form-block"
             style="
-                --give-primary-color:<?= $primaryColor; ?>;
-                --give-secondary-color:<?= $secondaryColor; ?>;
+                --give-primary-color:<?= $viewModel->primaryColor() ?>;
+                --give-secondary-color:<?= $viewModel->secondaryColor() ?>;
                 "
         ></div>
 

@@ -21,7 +21,7 @@ class BlockRenderControllerTest extends TestCase
     {
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create();
-        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id, $donationForm->settings);
+        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
 
         $blockRenderController = new BlockRenderController();
 

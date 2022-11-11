@@ -13,21 +13,50 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
 class DonationFormViewModel
 {
     /**
-     * @var int
+     * @var DonationForm
      */
-    private $formId;
+    private $donationForm;
     /**
      * @var BlockCollection
      */
     private $blocks;
+    /**
+     * @var array
+     */
+    private $formSettings;
 
     /**
      * @unreleased
      */
-    public function __construct(int $formId, BlockCollection $blocks = null)
+    public function __construct(DonationForm $donationForm, BlockCollection $blocks = null, array $formSettings = [])
     {
-        $this->formId = $formId;
+        $this->donationForm = $donationForm;
         $this->blocks = $blocks;
+        $this->formSettings = $formSettings;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function templateId(): string
+    {
+        return $this->formSettings['templateId'] ?? ($this->donationForm->settings['templateId'] ?? '');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function primaryColor(): string
+    {
+        return $this->formSettings['primaryColor'] ?? ($this->donationForm->settings['primaryColor'] ?? '');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function secondaryColor(): string
+    {
+        return $this->formSettings['secondaryColor'] ?? ($this->donationForm->settings['secondaryColor'] ?? '');
     }
 
     /**
@@ -40,12 +69,10 @@ class DonationFormViewModel
 
         $donateUrl = (new GenerateDonateRouteUrl())();
 
-        /** @var DonationForm $donationForm */
-        $donationForm = DonationForm::find($this->formId);
-        $formDataGateways = $donationFormRepository->getFormDataGateways($this->formId);
+        $formDataGateways = $donationFormRepository->getFormDataGateways($this->donationForm->id);
         $formApi = $donationFormRepository->getFormSchemaFromBlocks(
-            $donationForm->id,
-            $this->blocks ?: $donationForm->blocks
+            $this->donationForm->id,
+            $this->blocks ?: $this->donationForm->blocks
         )->jsonSerialize();
 
         return [
