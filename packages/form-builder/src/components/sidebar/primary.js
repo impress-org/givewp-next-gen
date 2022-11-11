@@ -26,7 +26,6 @@ const tabs = [
         content: () => (
             <>
                 <FormTitleSettings />
-                <DonationGoalSettings />
                 <OfflineDonationsSettings />
                 <FormFields />
             </>
@@ -46,7 +45,12 @@ const tabs = [
         name: 'design',
         title: __('Design'),
         className: 'tab-block',
-        content: () => <TemplateSettings />
+        content: () => (
+            <>
+                <TemplateSettings />
+                <DonationGoalSettings />
+            </>
+        )
     },
 ];
 
