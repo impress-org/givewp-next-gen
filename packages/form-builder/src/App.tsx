@@ -25,6 +25,8 @@ const initialState = {
         registration: 'none',
         goalFormat: 'amount-raised',
         templateId: 'classic',
+        primaryColor: '#69b86b',
+        secondaryColor: '#f49420',
         ...initialFormSettings,
     },
 };
