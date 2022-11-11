@@ -7,7 +7,7 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
-use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
+use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
 class DonationFormViewController
 {
@@ -39,7 +39,7 @@ class DonationFormViewController
 
         $this->enqueueFormScripts(
             $data->formId,
-            $viewModel->templateId()
+            $viewModel->designId()
         );
 
         ob_start();
@@ -88,20 +88,20 @@ class DonationFormViewController
         ))->loadInFooter()->enqueue();
 
         // load template
-        /** @var FormTemplateRegistrar $formTemplateRegistrar */
-        $formTemplateRegistrar = give(FormTemplateRegistrar::class);
+        /** @var FormDesignRegistrar $formTemplateRegistrar */
+        $formTemplateRegistrar = give(FormDesignRegistrar::class);
 
-        // silently fail if template is missing for some reason
-        if ($formTemplateRegistrar->hasTemplate($formTemplateId)) {
-            $template = $formTemplateRegistrar->getTemplate($formTemplateId);
+        // silently fail if design is missing for some reason
+        if ($formTemplateRegistrar->hasDesign($formTemplateId)) {
+            $design = $formTemplateRegistrar->getDesign($formTemplateId);
 
-            if ($template->css()) {
-                wp_enqueue_style('givewp-form-template-' . $template::id(), $template->css());
+            if ($design->css()) {
+                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
             }
 
-            if ($template->js()) {
+            if ($design->js()) {
                 wp_enqueue_script(
-                    'givewp-form-template-' . $template::id(),
+                    'givewp-form-design-' . $design::id(),
                     $template->js(),
                     array_merge(
                         ['givewp-donation-form-registrars-js'],

@@ -1,21 +1,17 @@
-import {PanelBody, PanelRow, SelectControl, ColorPalette, BaseControl} from '@wordpress/components';
-import {PanelColorSettings} from '@wordpress/block-editor'
+import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
+import {PanelColorSettings} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
 import {getWindowData} from '@givewp/form-builder/common';
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce';
 
-const {templates} = getWindowData();
+const {formDesigns} = getWindowData();
 
-const templateOptions = Object.values(templates).map(({id, name}) => ({value: id, label: name}));
+const designOptions = Object.values(formDesigns).map(({id, name}) => ({value: id, label: name}));
 
-const TemplateSettings = () => {
+const FormDesignSettings = () => {
     const {
-        settings: {
-            templateId,
-            primaryColor,
-            secondaryColor,
-        },
+        settings: {templateId, primaryColor, secondaryColor},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -27,7 +23,7 @@ const TemplateSettings = () => {
                         label={__('Form template', 'give')}
                         value={templateId}
                         onChange={(templateId) => dispatch(setFormSettings({templateId}))}
-                        options={templateOptions}
+                        options={designOptions}
                     />
                 </PanelRow>
             </PanelBody>
@@ -36,13 +32,13 @@ const TemplateSettings = () => {
                 colorSettings={[
                     {
                         value: primaryColor,
-                        onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100 ),
+                        onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
                         label: __('Primary Color', 'givewp'),
                         disableCustomColors: false,
                     },
                     {
                         value: secondaryColor,
-                        onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100 ),
+                        onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
                         label: __('Secondary Color', 'givewp'),
                         disableCustomColors: false,
                     },
@@ -52,4 +48,4 @@ const TemplateSettings = () => {
     );
 };
 
-export default TemplateSettings;
+export default FormDesignSettings;
