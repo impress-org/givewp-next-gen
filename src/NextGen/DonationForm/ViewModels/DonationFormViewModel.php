@@ -19,20 +19,23 @@ class DonationFormViewModel
     /**
      * @var BlockCollection
      */
-    private $blocks;
+    private $formBlockOverrides;
     /**
      * @var array
      */
-    private $formSettings;
+    private $formSettingOverrides;
 
     /**
      * @unreleased
      */
-    public function __construct(DonationForm $donationForm, BlockCollection $blocks = null, array $formSettings = [])
-    {
+    public function __construct(
+        DonationForm $donationForm,
+        BlockCollection $formBlockOverrides = null,
+        array $formSettingOverrides = []
+    ) {
         $this->donationForm = $donationForm;
-        $this->blocks = $blocks;
-        $this->formSettings = $formSettings;
+        $this->formBlockOverrides = $formBlockOverrides;
+        $this->formSettingOverrides = $formSettingOverrides;
     }
 
     /**
@@ -40,7 +43,7 @@ class DonationFormViewModel
      */
     public function templateId(): string
     {
-        return $this->formSettings['templateId'] ?? ($this->donationForm->settings['templateId'] ?? '');
+        return $this->formSettingOverrides['templateId'] ?? ($this->donationForm->settings['templateId'] ?? '');
     }
 
     /**
@@ -48,7 +51,7 @@ class DonationFormViewModel
      */
     public function primaryColor(): string
     {
-        return $this->formSettings['primaryColor'] ?? ($this->donationForm->settings['primaryColor'] ?? '');
+        return $this->formSettingOverrides['primaryColor'] ?? ($this->donationForm->settings['primaryColor'] ?? '');
     }
 
     /**
@@ -56,7 +59,7 @@ class DonationFormViewModel
      */
     public function secondaryColor(): string
     {
-        return $this->formSettings['secondaryColor'] ?? ($this->donationForm->settings['secondaryColor'] ?? '');
+        return $this->formSettingOverrides['secondaryColor'] ?? ($this->donationForm->settings['secondaryColor'] ?? '');
     }
 
     /**
@@ -72,7 +75,7 @@ class DonationFormViewModel
         $formDataGateways = $donationFormRepository->getFormDataGateways($this->donationForm->id);
         $formApi = $donationFormRepository->getFormSchemaFromBlocks(
             $this->donationForm->id,
-            $this->blocks ?: $this->donationForm->blocks
+            $this->formBlockOverrides ?: $this->donationForm->blocks
         )->jsonSerialize();
 
         return [
