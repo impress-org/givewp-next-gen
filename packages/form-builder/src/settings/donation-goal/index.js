@@ -19,18 +19,18 @@ const DonationGoalSettings = () => {
             value: 'amount-raised',
             label: __('Amount Raised', 'give'),
         },
-        {
-            value: 'percentage-raised',
-            label: __('Percentage Raised', 'give'),
-        },
-        {
-            value: 'number-donations',
-            label: __('Number of Donations', 'give'),
-        },
-        {
-            value: 'number-donors',
-            label: __('Number of Donors', 'give'),
-        },
+        // {
+        //     value: 'percentage-raised',
+        //     label: __('Percentage Raised', 'give'),
+        // },
+        // {
+        //     value: 'number-donations',
+        //     label: __('Number of Donations', 'give'),
+        // },
+        // {
+        //     value: 'number-donors',
+        //     label: __('Number of Donors', 'give'),
+        // },
     ];
 
     return (
@@ -60,14 +60,6 @@ const DonationGoalSettings = () => {
                         />
                     </PanelRow>
                     <PanelRow>
-                        <NumberControl
-                            label={__('Goal Amount', 'give')}
-                            min={0}
-                            value={goalAmount}
-                            onChange={(goalAmount) => dispatch(setFormSettings({goalAmount}))}
-                        />
-                    </PanelRow>
-                    <PanelRow>
                         <SelectControl
                             label={__('Goal Format', 'give')}
                             help={__(
@@ -77,6 +69,19 @@ const DonationGoalSettings = () => {
                             value={goalFormat}
                             options={goalFormatOptions}
                             onChange={(goalFormat) => dispatch(setFormSettings({goalFormat}))}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        {/*
+                            @todo Do we need to reset the goal amount when the goal format changes?
+                                The context can be wildly different, ie Amount Raised vs Number of Donors.
+                                Perhaps we could implement smart default amounts for each goal format?
+                        */}
+                        <NumberControl
+                            label={__('Goal Amount', 'give')}
+                            min={0}
+                            value={goalAmount}
+                            onChange={(goalAmount) => dispatch(setFormSettings({goalAmount}))}
                         />
                     </PanelRow>
                 </>
