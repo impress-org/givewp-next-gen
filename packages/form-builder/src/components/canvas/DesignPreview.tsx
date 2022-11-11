@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
+import DesignPreviewLoading from './DesignPreviewLoading';
 
 import Storage from '@givewp/form-builder/common/storage';
 
@@ -12,17 +13,22 @@ const DesignPreview = () => {
         settings,
     } = useFormState();
     const [sourceDocument, setSourceDocument] = useState('');
+    const [isLoading, setIsLoading] = useState<boolean>();
 
     useEffect(() => {
         const formSettings = settings;
-        Storage.preview({blocks, formSettings}).then(setSourceDocument);
+        setIsLoading(true);
+        Storage.preview({blocks, formSettings}).then((document) => {
+            setSourceDocument(document);
+            setIsLoading(false);
+        });
     }, [
         JSON.stringify(settings),
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
-    return !sourceDocument ? (
-        'Loading...'
+    return isLoading ? (
+        <DesignPreviewLoading />
     ) : (
         <IframeResizer
             srcDoc={sourceDocument}
