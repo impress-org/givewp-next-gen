@@ -8,22 +8,18 @@ import IframeResizer from 'iframe-resizer-react';
 import {useFormState} from '../../stores/form-state';
 
 const DesignPreview = () => {
-    const {
-        blocks,
-        settings,
-    } = useFormState();
+    const {blocks, settings: formSettings} = useFormState();
     const [sourceDocument, setSourceDocument] = useState('');
     const [isLoading, setIsLoading] = useState<boolean>();
 
     useEffect(() => {
-        const formSettings = settings;
         setIsLoading(true);
         Storage.preview({blocks, formSettings}).then((document) => {
             setSourceDocument(document);
             setIsLoading(false);
         });
     }, [
-        JSON.stringify(settings),
+        JSON.stringify(formSettings),
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
