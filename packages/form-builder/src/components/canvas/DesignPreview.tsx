@@ -11,7 +11,7 @@ const DesignPreview = () => {
     const {blocks, settings: formSettings} = useFormState();
     const [isLoading, setLoading] = useState(true);
     const [sourceDocument, setSourceDocument] = useState(null);
-    const [previousPreviewHTML, setPreviousPreviewHTML] = useState(null);
+    const [previewHTML, setPreviewHTML] = useState(null);
 
     useEffect(() => {
         setLoading(true);
@@ -23,28 +23,28 @@ const DesignPreview = () => {
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
-    const iframeStyles = {
-        width: '1px',
-        minWidth: '100%',
-        border: '0',
-    }
-
     return (
         <>
             {isLoading && <DesignPreviewLoading />}
             <IframeResizer
+                srcDoc={previewHTML}
+                checkOrigin={false} /** The srcDoc property is not a URL and requires that the origin check be disabled. */
+                style={{
+                    width: '1px',
+                    minWidth: '100%',
+                    border: '0',
+                }}
+            />
+
+            {/* @note This iFrame is used to load and render the design preview document in the background. */}
+            <iframe
                 onLoad={(event) => {
                     const target = event.target as HTMLIFrameElement;
-                    setPreviousPreviewHTML(target.contentWindow.document.documentElement.innerHTML)
+                    setPreviewHTML(target.contentWindow.document.documentElement.innerHTML)
                     setLoading(false)
                 }}
                 srcDoc={sourceDocument}
                 style={{display: 'none'}}
-            />
-            <IframeResizer
-                srcDoc={previousPreviewHTML}
-                checkOrigin={false} /** The srcDoc property is not a URL and requires that the origin check be disabled. */
-                style={iframeStyles}
             />
         </>
     )
