@@ -37,6 +37,14 @@ class DonationFormViewController
 
         wp_enqueue_global_styles();
 
+        // Font
+        wp_enqueue_style(
+            'givewp-google-font',
+            'https://fonts.googleapis.com/css?family=' . urlencode('Montserrat') . ':400,500,600,700&display=swap',
+            [],
+            GIVE_VERSION
+        );
+
         $this->enqueueFormScripts(
             $data->formId,
             $viewModel->templateId()
@@ -53,9 +61,11 @@ class DonationFormViewController
 
         <div
             id="root-give-next-gen-donation-form-block"
+            class="givewp-donation-form-block"
             style="
                 --give-primary-color:<?= $viewModel->primaryColor() ?>;
                 --give-secondary-color:<?= $viewModel->secondaryColor() ?>;
+                --give-primary-font: <?= $viewModel->primaryFont() ?>;
                 "
         ></div>
 

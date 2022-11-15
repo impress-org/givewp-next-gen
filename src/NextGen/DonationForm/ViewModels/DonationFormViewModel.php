@@ -65,6 +65,14 @@ class DonationFormViewModel
     /**
      * @unreleased
      */
+    public function primaryFont(): string
+    {
+        return $this->formSettingOverrides['primaryFont'] ?? ($this->donationForm->settings['primaryFont'] ?? 'Montserrat');
+    }
+
+    /**
+     * @unreleased
+     */
     public function exports(): array
     {
         /** @var DonationFormRepository $donationFormRepository */
