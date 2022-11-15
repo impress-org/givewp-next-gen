@@ -1,15 +1,15 @@
 import GatewayRegistrar from './GatewayRegistrar';
 import TemplateRegistrar from './TemplateRegistrar';
 import type {FormServerExports} from '@givewp/forms/types';
-import type {useWatch, useFormContext} from 'react-hook-form';
+import type {useFormContext, useWatch} from 'react-hook-form';
 
 import type {
-    // import the functions as types so that they are not included in the bundle
-    getFieldLabelTemplate,
-    getFieldErrorTemplate,
-    getFieldTemplate,
     getElementTemplate,
+    getFieldErrorTemplate,
+    getFieldLabelTemplate,
+    getFieldTemplate,
     getGroupTemplate,
+    getHeaderTemplate,
 } from '../../Blocks/DonationFormBlock/resources/app/templates';
 
 if (!window.givewp) {
@@ -31,6 +31,7 @@ declare global {
                 getField: typeof getFieldTemplate;
                 getElement: typeof getElementTemplate;
                 getGroup: typeof getGroupTemplate;
+                getHeader: typeof getHeaderTemplate;
             };
             form: {
                 useFormContext: typeof useFormContext;

@@ -18,6 +18,10 @@ import Gateways from './fields/Gateways';
 import Paragraph from './elements/Paragraph';
 import FieldLabel, {FieldLabelProps} from './layouts/FieldLabel';
 import FieldError, {FieldErrorProps} from './layouts/FieldError';
+import Header, {HeaderProps} from './layouts/Header';
+import Title, {TitleProps} from './layouts/Title';
+import Description, {DescriptionProps} from './layouts/Description';
+import Goal, {GoalProps} from './layouts/Goal';
 
 export function NodeWrapper({
     type,
@@ -76,6 +80,10 @@ const defaultTemplate = {
         form: Form,
         fieldLabel: FieldLabel,
         fieldError: FieldError,
+        header: Header,
+        title: Title,
+        description: Description,
+        goal: Goal,
     },
 };
 
@@ -145,6 +153,22 @@ export function getFieldErrorTemplate(): FC<FieldErrorProps> {
     return getTemplate('fieldError', 'layouts');
 }
 
+export function getHeaderTemplate(): FC<HeaderProps> {
+    return getTemplate('header', 'layouts');
+}
+
+export function getTitleTemplate(): FC<TitleProps> {
+    return getTemplate('title', 'layouts');
+}
+
+export function getDescriptionTemplate(): FC<DescriptionProps> {
+    return getTemplate('description', 'layouts');
+}
+
+export function getGoalTemplate(): FC<GoalProps> {
+    return getTemplate('goal', 'layouts');
+}
+
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {
     return typeof Node === 'function';
 }
@@ -156,4 +180,5 @@ window.givewp.templates = {
     getField: getFieldTemplate,
     getElement: getElementTemplate,
     getGroup: getGroupTemplate,
+    getHeader: getHeaderTemplate,
 };
