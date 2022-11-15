@@ -36,11 +36,12 @@ class DonationFormViewController
         $viewModel = new DonationFormViewModel($donationForm, $data->formBlocks, $data->formSettings);
 
         wp_enqueue_global_styles();
-
-        // Font
+        
         wp_enqueue_style(
             'givewp-google-font',
-            'https://fonts.googleapis.com/css?family=' . urlencode('Montserrat') . ':400,500,600,700&display=swap',
+            'https://fonts.googleapis.com/css?family=' . urlencode(
+                $viewModel->primaryFont()
+            ) . ':400,500,600,700&display=swap',
             [],
             GIVE_VERSION
         );
