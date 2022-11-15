@@ -181,4 +181,7 @@ window.givewp.templates = {
     getElement: getElementTemplate,
     getGroup: getGroupTemplate,
     getHeader: getHeaderTemplate,
+    getTitle: getTitleTemplate,
+    getDescription: getDescriptionTemplate,
+    getGoal: getGoalTemplate,
 };

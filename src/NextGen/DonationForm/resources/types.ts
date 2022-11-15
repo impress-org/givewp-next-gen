@@ -99,6 +99,10 @@ export interface Template {
     layouts?: {
         section?: ReactNode;
         form?: ReactNode;
+        header?: ReactNode;
+        title?: ReactNode;
+        description?: ReactNode;
+        goal?: ReactNode;
     };
 }
 

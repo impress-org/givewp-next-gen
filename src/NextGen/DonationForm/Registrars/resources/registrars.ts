@@ -11,6 +11,11 @@ import type {
     getGroupTemplate,
     getHeaderTemplate,
 } from '../../Blocks/DonationFormBlock/resources/app/templates';
+import {
+    getDescriptionTemplate,
+    getGoalTemplate,
+    getTitleTemplate,
+} from '../../Blocks/DonationFormBlock/resources/app/templates';
 
 if (!window.givewp) {
     // @ts-ignore
@@ -32,6 +37,9 @@ declare global {
                 getElement: typeof getElementTemplate;
                 getGroup: typeof getGroupTemplate;
                 getHeader: typeof getHeaderTemplate;
+                getTitle: typeof getTitleTemplate;
+                getDescription: typeof getDescriptionTemplate;
+                getGoal: typeof getGoalTemplate;
             };
             form: {
                 useFormContext: typeof useFormContext;
