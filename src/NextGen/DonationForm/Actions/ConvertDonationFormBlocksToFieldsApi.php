@@ -25,7 +25,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param  BlockCollection  $blocks
+     * @param BlockCollection $blocks
      *
      * @return Form
      * @throws TypeNotSupported
@@ -44,7 +44,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param  BlockModel  $block
+     * @param BlockModel $block
      *
      * @return Section
      */
@@ -56,11 +56,10 @@ class ConvertDonationFormBlocksToFieldsApi
             ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
     }
 
-
     /**
      * @unreleased
      *
-     * @param  BlockModel  $block
+     * @param BlockModel $block
      *
      * @return Node
      * @throws EmptyNameException
@@ -68,6 +67,7 @@ class ConvertDonationFormBlocksToFieldsApi
     protected function convertInnerBlockToNode(BlockModel $block): Node
     {
         $node = $this->createNodeFromBlockWithUniqueAttributes($block);
+
         return $this->mapGenericBlockAttributesToNode($node, $block);
     }
 
@@ -86,9 +86,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Amount::make('amount')
                     ->label(__('Donation Amount', 'give'))
                     ->levels(...array_map('absint', $block->attributes['levels']))
+                    ->rules('required', 'numeric', 'min:1')
                     ->allowCustomAmount()
-                    ->defaultValue(50)
-                    ->required();
+                    ->defaultValue(50);
 
             case "custom-block-editor/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
@@ -98,7 +98,9 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->content($block->attributes['content']);
 
             case "custom-block-editor/email-field":
-                return Email::make('email')->emailTag('email')->required();
+                return Email::make('email')
+                    ->emailTag('email')
+                    ->rules('required', 'email');
 
             case "custom-block-editor/payment-gateways":
                 return PaymentGateways::make('gatewayId')->required();
@@ -121,7 +123,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param  BlockModel  $block
+     * @param BlockModel $block
      *
      * @return Node
      */
@@ -151,8 +153,8 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param  Node  $node
-     * @param  BlockModel  $block
+     * @param Node $node
+     * @param BlockModel $block
      *
      * @return Node
      */
