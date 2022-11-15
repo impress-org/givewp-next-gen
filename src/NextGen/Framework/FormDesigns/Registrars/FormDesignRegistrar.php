@@ -69,7 +69,7 @@ class FormDesignRegistrar
     /**
      * @unreleased
      */
-    public function unregisterTemplate(string $designId)
+    public function unregisterDesign(string $designId)
     {
         if (isset($this->designs[$designId])) {
             unset($this->designs[$designId]);

@@ -41,7 +41,7 @@ class TestFormDesignRegistrar extends TestCase
     public function testUnRegisterFormDesignShouldRemoveTemplate()
     {
         $this->registrar->registerDesign(MockFormDesign::class);
-        $this->registrar->unregisterTemplate(MockFormDesign::id());
+        $this->registrar->unregisterDesign(MockFormDesign::id());
 
         $this->assertFalse($this->registrar->hasDesign(MockFormDesign::id()));
     }

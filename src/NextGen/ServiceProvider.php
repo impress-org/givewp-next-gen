@@ -36,9 +36,9 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(NextGenStripeGateway::class);
         });
 
-        add_action('givewp_register_form_design', function (FormDesignRegistrar $formTemplateRegistrar) {
-            $formTemplateRegistrar->registerDesign(ClassicFormDesign::class);
-            $formTemplateRegistrar->registerDesign(DeveloperFormDesign::class);
+        add_action('givewp_register_form_design', function (FormDesignRegistrar $formDesignRegistrar) {
+            $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
+            $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
         });
     }
 }

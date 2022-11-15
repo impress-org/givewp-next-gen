@@ -73,7 +73,7 @@ class DonationFormViewController
      *
      * @return void
      */
-    private function enqueueFormScripts(int $formId, string $formTemplateId)
+    private function enqueueFormScripts(int $formId, string $formDesignId)
     {
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
@@ -88,12 +88,12 @@ class DonationFormViewController
         ))->loadInFooter()->enqueue();
 
         // load template
-        /** @var FormDesignRegistrar $formTemplateRegistrar */
-        $formTemplateRegistrar = give(FormDesignRegistrar::class);
+        /** @var FormDesignRegistrar $formDesignRegistrar */
+        $formDesignRegistrar = give(FormDesignRegistrar::class);
 
         // silently fail if design is missing for some reason
-        if ($formTemplateRegistrar->hasDesign($formTemplateId)) {
-            $design = $formTemplateRegistrar->getDesign($formTemplateId);
+        if ($formDesignRegistrar->hasDesign($formDesignId)) {
+            $design = $formDesignRegistrar->getDesign($formDesignId);
 
             if ($design->css()) {
                 wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
