@@ -14,6 +14,7 @@ const DonationGoalSettings = () => {
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
+    // @todo Starting with just the Amount Raised goal format.
     const goalFormatOptions = [
         {
             value: 'amount-raised',
