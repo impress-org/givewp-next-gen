@@ -103,7 +103,8 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->rules('required', 'email');
 
             case "custom-block-editor/payment-gateways":
-                return PaymentGateways::make('gatewayId')->required();
+                return PaymentGateways::make('gatewayId')
+                    ->required();
 
             case "custom-block-editor/donation-summary":
                 return DonationSummary::make('donation-summary');

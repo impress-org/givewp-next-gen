@@ -40,7 +40,7 @@ class DonationFormRepository
         'blocks',
     ];
 
-        /**
+    /**
      * @unreleased
      *
      * @param PaymentGatewayRegister $paymentGatewayRegister
@@ -160,7 +160,6 @@ class DonationFormRepository
                 ->update([
                     'meta_value' => json_encode($donationForm->settings),
                 ]);
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -195,7 +194,6 @@ class DonationFormRepository
             DB::table('give_formmeta')
                 ->where('form_id', $donationForm->id)
                 ->delete();
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -254,7 +252,7 @@ class DonationFormRepository
             ->where('post_type', 'give_forms');
     }
 
-         /**
+    /**
      * @return PaymentGateway[]
      */
     public function getEnabledPaymentGateways($formId): array
@@ -315,11 +313,11 @@ class DonationFormRepository
                 Hidden::make('formId')
                     // Casting this value to a string is a temporary solution for front-end validation until we have proper validation rule constructing in the Fields API.
                     ->defaultValue((string)$formId)
-                    ->required(),
+                    ->rules('required', 'integer'),
 
                 Hidden::make('currency')
                     ->defaultValue(give_get_currency($formId))
-                    ->required()
+                    ->rules('required', 'currency')
             );
         }
 
