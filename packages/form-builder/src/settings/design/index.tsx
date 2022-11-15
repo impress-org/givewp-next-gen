@@ -11,7 +11,7 @@ const designOptions = Object.values(formDesigns).map(({id, name}) => ({value: id
 
 const FormDesignSettings = () => {
     const {
-        settings: {templateId, primaryColor, secondaryColor},
+        settings: {designId, primaryColor, secondaryColor},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -20,9 +20,9 @@ const FormDesignSettings = () => {
             <PanelBody title={__('Donation Form', 'give')} initialOpen={true}>
                 <PanelRow>
                     <SelectControl
-                        label={__('Form template', 'give')}
-                        value={templateId}
-                        onChange={(templateId) => dispatch(setFormSettings({templateId}))}
+                        label={__('Form design', 'give')}
+                        value={designId}
+                        onChange={(designId) => dispatch(setFormSettings({designId}))}
                         options={designOptions}
                     />
                 </PanelRow>

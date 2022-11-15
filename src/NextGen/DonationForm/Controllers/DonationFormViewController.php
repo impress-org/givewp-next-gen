@@ -102,10 +102,10 @@ class DonationFormViewController
             if ($design->js()) {
                 wp_enqueue_script(
                     'givewp-form-design-' . $design::id(),
-                    $template->js(),
+                    $design->js(),
                     array_merge(
                         ['givewp-donation-form-registrars-js'],
-                        $template->dependencies()
+                        $design->dependencies()
                     ),
                     false,
                     true

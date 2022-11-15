@@ -30,6 +30,6 @@ class ClassicFormDesign extends FormDesign
      */
     public function css(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/classicFormTemplateCss.css';
+        return GIVE_NEXT_GEN_URL . 'build/classicFormDesignCss.css';
     }
 }

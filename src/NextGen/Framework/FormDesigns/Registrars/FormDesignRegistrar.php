@@ -98,7 +98,7 @@ class FormDesignRegistrar
         $designId = $designClass::id();
 
         if ($this->hasDesign($designId)) {
-            throw new OverflowException("Cannot register a design with an id that already exists: $templateId");
+            throw new OverflowException("Cannot register a design with an id that already exists: $designId");
         }
 
         $this->designs[$designId] = $designClass;
