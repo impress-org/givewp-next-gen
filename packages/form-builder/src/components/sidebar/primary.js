@@ -7,9 +7,9 @@ import TabPanel from './tab-panel';
 
 import {
     DonationGoalSettings,
+    FormDesignSettings,
     FormTitleSettings,
     OfflineDonationsSettings,
-    TemplateSettings,
 } from '../../settings/index.ts';
 import FormFields from '../../settings/form-fields';
 import {PopoutSlot} from './popout';
@@ -47,7 +47,7 @@ const tabs = [
         className: 'tab-block',
         content: () => (
             <>
-                <TemplateSettings />
+                <FormDesignSettings />
                 <DonationGoalSettings />
             </>
         )

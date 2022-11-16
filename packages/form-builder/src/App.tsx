@@ -21,7 +21,7 @@ const initialState = {
         enableAutoClose: false,
         registration: 'none',
         goalFormat: 'amount',
-        templateId: 'classic',
+        designId: 'classic',
         primaryColor: '#69b86b',
         secondaryColor: '#f49420',
         ...initialFormSettings,
