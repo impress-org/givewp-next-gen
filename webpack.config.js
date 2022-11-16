@@ -34,9 +34,9 @@ module.exports = {
         donationFormEmbedInside: srcPath('NextGen/DonationForm/resources/embedInside.ts'),
         nextGenStripeGateway: srcPath('NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'),
         nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
-        classicTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/css/template.scss'),
-        classicTemplateJs: srcPath('NextGen/DonationForm/FormTemplates/ClassicFormTemplate/js/template.ts'),
-        developerTemplateCss: srcPath('NextGen/DonationForm/FormTemplates/DeveloperFormTemplate/css/template.scss'),
+        developerFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/DeveloperFormDesign/css/main.scss'),
+        classicFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/css/main.scss'),
+        classicFormDesignJs: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/js/main.ts'),
     },
 };
 

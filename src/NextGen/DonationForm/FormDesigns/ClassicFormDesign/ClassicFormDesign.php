@@ -1,17 +1,18 @@
 <?php
 
-namespace Give\NextGen\DonationForm\FormTemplates\ClassicFormTemplate;
+namespace Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign;
 
-use Give\NextGen\Framework\FormTemplates\FormTemplate;
+use Give\NextGen\Framework\FormDesigns\FormDesign;
 
 /**
  * @unreleased
  */
-class ClassicFormTemplate extends FormTemplate {
+class ClassicFormDesign extends FormDesign
+{
     /**
      * @unreleased
      */
-     public static function id(): string
+    public static function id(): string
     {
         return 'classic';
     }
@@ -21,7 +22,7 @@ class ClassicFormTemplate extends FormTemplate {
      */
     public static function name(): string
     {
-        return __('Classic Template', 'give');
+        return __('Classic', 'give');
     }
 
     /**
@@ -29,7 +30,7 @@ class ClassicFormTemplate extends FormTemplate {
      */
     public function css(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/classicTemplateCss.css';
+        return GIVE_NEXT_GEN_URL . 'build/classicFormDesignCss.css';
     }
 
     /**
@@ -37,7 +38,7 @@ class ClassicFormTemplate extends FormTemplate {
      */
     public function js(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/classicTemplateJs.js';
+        return GIVE_NEXT_GEN_URL . 'build/classicFormDesignJs.js';
     }
 
     /**
@@ -45,7 +46,7 @@ class ClassicFormTemplate extends FormTemplate {
      */
     public function dependencies(): array
     {
-        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/classicTemplateJs.asset.php';
+        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/classicFormDesignJs.asset.php';
 
         return $scriptAsset['dependencies'];
     }
