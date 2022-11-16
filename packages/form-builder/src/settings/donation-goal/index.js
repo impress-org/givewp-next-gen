@@ -10,20 +10,16 @@ import {
 
 const DonationGoalSettings = () => {
     const {
-        settings: {enableDonationGoal, enableAutoClose, goalFormat, goalAmount},
+        settings: {enableDonationGoal, enableAutoClose, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
     // @todo Starting with just the Amount Raised goal format.
-    const goalFormatOptions = [
+    const goalTypeOptions = [
         {
             value: 'amount',
             label: __('Amount Raised', 'give'),
         },
-        // {
-        //     value: 'percentage',
-        //     label: __('Percentage Raised', 'give'),
-        // },
         // {
         //     value: 'donations',
         //     label: __('Number of Donations', 'give'),
@@ -62,14 +58,10 @@ const DonationGoalSettings = () => {
                     </PanelRow>
                     <PanelRow>
                         <SelectControl
-                            label={__('Goal Format', 'give')}
-                            help={__(
-                                'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".',
-                                'give'
-                            )}
-                            value={goalFormat}
-                            options={goalFormatOptions}
-                            onChange={(goalFormat) => dispatch(setFormSettings({goalFormat}))}
+                            label={__('Goal Type', 'give')}
+                            value={goalType}
+                            options={goalTypeOptions}
+                            onChange={(goalType) => dispatch(setFormSettings({goalType: goalType}))}
                         />
                     </PanelRow>
                     <PanelRow>
