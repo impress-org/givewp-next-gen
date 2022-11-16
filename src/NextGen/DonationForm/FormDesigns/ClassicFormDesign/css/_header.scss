@@ -4,22 +4,13 @@
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
     box-shadow: rgb(0 0 0 / 30%) 0 0.125rem 0.3125rem;
-    background-color: #fff;
+    background-color: var(--give-primary-color);
     max-width: min(100%, 51.5rem);
     margin: 0 auto;
     display: grid;
     justify-items: center;
     row-gap: 1.5rem;
     padding: 3rem;
-
-    --tint-color: rgba(var(--give-header-background-color--for-rgb), 0.75);
-    --tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
-    background-color: rgb(var(--give-header-background-color--for-rgb));
-    /* translucent tint gradient over image */
-    background-image: var(--tint, linear-gradient(transparent, transparent)), var(--give-header-background-image);
-    background-size: cover;
-    background-position: center;
-
     color: #fff;
     text-align: center;
 
@@ -95,7 +86,7 @@
 .givewp-form-secure-icon {
     position: relative;
     inset-block-start: -0.04em;
-    color: #77d006;
+    color: var(--give-secondary-color);
     block-size: 1em;
     aspect-ratio: 1;
     @supports not (aspect-ratio: 1) {
