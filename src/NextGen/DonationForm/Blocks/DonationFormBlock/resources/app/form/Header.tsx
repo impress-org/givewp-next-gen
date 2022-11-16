@@ -2,6 +2,9 @@ import {getDescriptionTemplate, getGoalTemplate, getHeaderTemplate, getTitleTemp
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 import useCurrencyFormatter from '../hooks/useCurrencyFormatter';
+import getWindowData from '../utilities/getWindowData';
+
+const {formSettings} = getWindowData();
 
 const HeaderTemplate = getHeaderTemplate();
 const TitleTemplate = getTitleTemplate();
@@ -31,7 +34,7 @@ const getGoalLabel = (type) => {
 const form = {
     showTitle: true,
     showDescription: true,
-    showGoal: true,
+    showGoal: formSettings.enableDonationGoal,
     title: __('Support Our Cause', 'give'),
     description: __(
         'Help our organization by donating today! All donations go directly to making a difference for our cause.',

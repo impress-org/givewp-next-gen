@@ -90,7 +90,8 @@ class DonationFormViewModel
             'form' => $formApi,
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
-            'gatewaySettings' => $formDataGateways
+            'gatewaySettings' => $formDataGateways,
+            'formSettings' => array_merge($this->donationForm->settings, $this->formSettingOverrides)
         ];
     }
 }

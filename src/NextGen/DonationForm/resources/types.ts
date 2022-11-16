@@ -1,4 +1,5 @@
 import {FC, ReactNode} from 'react';
+import {FormSettings} from '@givewp/form-builder/src/types';
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -32,6 +33,7 @@ export interface FormServerExports {
     attributes: object;
     donateUrl: string;
     successUrl: string;
+    formSettings: FormSettings;
 }
 
 export interface GatewaySettings {
