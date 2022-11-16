@@ -35,16 +35,7 @@ class DonationFormViewController
 
         $viewModel = new DonationFormViewModel($donationForm, $data->formBlocks, $data->formSettings);
 
-        wp_enqueue_global_styles();
-        
-        wp_enqueue_style(
-            'givewp-google-font',
-            'https://fonts.googleapis.com/css?family=' . urlencode(
-                $viewModel->primaryFont()
-            ) . ':400,500,600,700&display=swap',
-            [],
-            GIVE_VERSION
-        );
+        $this->enqueueFormStyles($viewModel);
 
         $this->enqueueFormScripts(
             $data->formId,
@@ -157,5 +148,25 @@ class DonationFormViewController
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
+    }
+
+    /**
+     * @unreleased
+     * @return void
+     */
+    private function enqueueFormStyles(DonationFormViewModel $viewModel)
+    {
+        wp_enqueue_global_styles();
+
+        if ($viewModel->primaryFont()) {
+            wp_enqueue_style(
+                'givewp-google-font',
+                'https://fonts.googleapis.com/css?family=' . urlencode(
+                    $viewModel->primaryFont()
+                ) . ':400,500,600,700&display=swap',
+                [],
+                GIVE_VERSION
+            );
+        }
     }
 }
