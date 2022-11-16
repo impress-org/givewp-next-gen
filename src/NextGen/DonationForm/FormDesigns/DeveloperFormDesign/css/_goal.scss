@@ -4,14 +4,9 @@
 
 .givewp-form-goal-progress {
     inline-size: 100%;
-    padding: 1.25rem;
-    border-block-start: 1px solid #ddd;
-    border-end-start-radius: 0.5rem;
-    border-end-end-radius: 0.5rem;
-    background-color: #fff;
 
     &-description {
-        display: none;
+        padding-bottom: 1rem;
     }
 
     /**

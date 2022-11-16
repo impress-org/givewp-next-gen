@@ -19,6 +19,7 @@ module.exports = {
             ...defaultConfig.resolve.alias,
             '@givewp/forms/types': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/types.ts'),
             '@givewp/forms/propTypes': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/propTypes.ts'),
+            '@givewp/forms': path.resolve(__dirname, 'src/NextGen/DonationForm/resources'),
         },
     },
     entry: {
