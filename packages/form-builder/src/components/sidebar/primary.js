@@ -26,6 +26,7 @@ const tabs = [
         content: () => (
             <>
                 <FormTitleSettings />
+                <DonationGoalSettings />
                 <OfflineDonationsSettings />
                 <FormFields />
             </>
