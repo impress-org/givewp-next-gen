@@ -65,11 +65,6 @@ const DonationGoalSettings = () => {
                         />
                     </PanelRow>
                     <PanelRow>
-                        {/*
-                            @todo Do we need to reset the goal amount when the goal format changes?
-                                The context can be wildly different, ie Amount Raised vs Number of Donors.
-                                Perhaps we could implement smart default amounts for each goal format?
-                        */}
                         <NumberControl
                             label={__('Goal Amount', 'give')}
                             min={0}
