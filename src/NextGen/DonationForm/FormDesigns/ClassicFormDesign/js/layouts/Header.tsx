@@ -1,8 +1,8 @@
+import {__} from '@wordpress/i18n';
+
 /**
  * @unreleased
  */
-import {__} from '@wordpress/i18n';
-
 const SecureBadge = () => {
     return (
         <aside className="givewp-form-secure-badge">
