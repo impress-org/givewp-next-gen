@@ -9,9 +9,9 @@ import DesignPreviewLoading from "@givewp/form-builder/components/canvas/DesignP
 
 const DesignPreview = () => {
     const {blocks, settings: formSettings} = useFormState();
-    const [isLoading, setLoading] = useState(true);
-    const [sourceDocument, setSourceDocument] = useState(null);
-    const [previewHTML, setPreviewHTML] = useState(null);
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [sourceDocument, setSourceDocument] = useState<string>(null);
+    const [previewHTML, setPreviewHTML] = useState<string>(null);
 
     useEffect(() => {
         setLoading(true);
