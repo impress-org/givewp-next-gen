@@ -1,37 +1,60 @@
-import {CSSProperties} from 'react';
+import {CSSProperties, useEffect, useMemo, useState} from 'react';
+import useCurrencyFormatter from '../../hooks/useCurrencyFormatter';
+import {__} from '@wordpress/i18n';
 
 export interface GoalProps {
+    currency: string;
     type: 'amount' | 'percentage' | 'donations' | 'donors';
     currentValue: number;
     goalValue: number;
 }
 
+const getProgressPercentage = (goalProgress, goalTarget) =>
+    Number(Math.min((goalProgress / goalTarget) * 100, 100).toFixed(2));
+
 /**
  * @unreleased
  */
-export default function Goal({type, currentValue, goalValue}: GoalProps) {
+export default function Goal({type = 'amount', currency = 'USD', currentValue, goalValue}: GoalProps) {
+    const [currentValueFormatted, setCurrentValueFormatted] = useState<string>();
+    const [goalValueFormatted, setGoalValueFormatted] = useState<string>();
+    
+    const progressPercentage = useMemo(() => getProgressPercentage(currentValue, goalValue), []);
+    const amountFormatter = useCurrencyFormatter(currency, {
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0,
+    });
+
+    useEffect(() => {
+        if (type === 'amount') {
+            setCurrentValueFormatted(amountFormatter.format(currentValue));
+            setGoalValueFormatted(amountFormatter.format(goalValue));
+        }
+    }, [type]);
+
     return (
         <aside className="give-form-stats-panel">
             <ul className="give-form-stats-panel-list">
                 <li className="give-form-stats-panel-stat">
-                    <span className="give-form-stats-panel-stat-number">{currentValue} </span> raised
+                    <span className="give-form-stats-panel-stat-number">{currentValueFormatted} </span>{' '}
+                    {__('raised', 'give')}
                 </li>
                 <li className="give-form-stats-panel-stat">
-                    <span className="give-form-stats-panel-stat-number">129 </span> donations
+                    <span className="give-form-stats-panel-stat-number">129 </span> {__('donations', 'give')}
                 </li>
                 <li className="give-form-stats-panel-stat">
-                    <span className="give-form-stats-panel-stat-number">{goalValue} </span> goal
+                    <span className="give-form-stats-panel-stat-number">{goalValueFormatted} </span>{' '}
+                    {__('goal', 'give')}
                 </li>
                 <li className="give-form-goal-progress">
                     <div
                         role="meter"
                         className="give-form-goal-progress-meter"
-                        style={{'--progress': '292.75%'} as CSSProperties}
-                        aria-label="$29,275 of $10,000 goal"
+                        style={{'--progress': `${progressPercentage}%`} as CSSProperties}
+                        aria-label={__(`${currentValue} of ${goalValue} goal`, 'give')}
                         aria-valuemin={0}
-                        aria-valuemax={10000}
-                        aria-valuenow={29275.37}
-                        aria-valuetext="292.75%"
+                        aria-valuemax={goalValue}
+                        aria-valuenow={currentValue}
                     ></div>
                 </li>
             </ul>
