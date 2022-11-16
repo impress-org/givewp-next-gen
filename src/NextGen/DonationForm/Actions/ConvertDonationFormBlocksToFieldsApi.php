@@ -121,12 +121,13 @@ class ConvertDonationFormBlocksToFieldsApi
             $group->getNodeByName('firstName')
                 ->label($block->attributes['firstNameLabel'])
                 ->placeholder($block->attributes['firstNamePlaceholder'])
-                ->required();
+                ->rules('required', 'max:255');
 
             $group->getNodeByName('lastName')
                 ->label($block->attributes['lastNameLabel'])
                 ->placeholder($block->attributes['lastNamePlaceholder'])
-                ->required($block->attributes['requireLastName']);
+                ->required($block->attributes['requireLastName'])
+                ->rules('max:255');
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')
