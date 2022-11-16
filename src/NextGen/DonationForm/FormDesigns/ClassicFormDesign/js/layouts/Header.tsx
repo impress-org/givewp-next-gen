@@ -1,6 +1,8 @@
 /**
  * @unreleased
  */
+import {__} from '@wordpress/i18n';
+
 const SecureBadge = () => {
     return (
         <aside className="givewp-form-secure-badge">
@@ -10,7 +12,7 @@ const SecureBadge = () => {
                     fill="currentColor"
                 />
             </svg>
-            100% Secure Donation
+            {__('100% Secure Donation', 'give')}
         </aside>
     );
 };
