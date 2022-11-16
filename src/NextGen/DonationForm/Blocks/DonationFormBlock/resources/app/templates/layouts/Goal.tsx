@@ -7,6 +7,7 @@ export interface GoalProps {
     type: 'amount' | 'percentage' | 'donations' | 'donors';
     currentValue: number;
     goalValue: number;
+    totalValue: number;
 }
 
 const getProgressPercentage = (goalProgress, goalTarget) =>
@@ -15,10 +16,10 @@ const getProgressPercentage = (goalProgress, goalTarget) =>
 /**
  * @unreleased
  */
-export default function Goal({type = 'amount', currency = 'USD', currentValue, goalValue}: GoalProps) {
+export default function Goal({type = 'amount', currency = 'USD', currentValue, goalValue, totalValue}: GoalProps) {
     const [currentValueFormatted, setCurrentValueFormatted] = useState<string>();
     const [goalValueFormatted, setGoalValueFormatted] = useState<string>();
-    
+
     const progressPercentage = useMemo(() => getProgressPercentage(currentValue, goalValue), []);
     const amountFormatter = useCurrencyFormatter(currency, {
         maximumFractionDigits: 0,
@@ -40,7 +41,8 @@ export default function Goal({type = 'amount', currency = 'USD', currentValue, g
                     {__('raised', 'give')}
                 </li>
                 <li className="give-form-stats-panel-stat">
-                    <span className="give-form-stats-panel-stat-number">129 </span> {__('donations', 'give')}
+                    <span className="give-form-stats-panel-stat-number">{totalValue} </span>{' '}
+                    {type === 'donors' ? __('donors', 'give') : __('donations', 'give')}
                 </li>
                 <li className="give-form-stats-panel-stat">
                     <span className="give-form-stats-panel-stat-number">{goalValueFormatted} </span>{' '}

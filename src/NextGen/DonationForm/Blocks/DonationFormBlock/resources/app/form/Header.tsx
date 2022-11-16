@@ -22,7 +22,9 @@ export default function Header()
                     )}
                 />
             )}
-            Goal={() => <GoalTemplate currency="USD" type="amount" currentValue={900} goalValue={1000} />}
+            Goal={() => (
+                <GoalTemplate currency="USD" type="amount" currentValue={900} goalValue={1000} totalValue={129} />
+            )}
         />
     );
 }
