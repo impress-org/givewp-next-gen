@@ -20,7 +20,7 @@ const initialState = {
         enableDonationGoal: false,
         enableAutoClose: false,
         registration: 'none',
-        goalFormat: 'amount-raised',
+        goalFormat: 'amount',
         templateId: 'classic',
         primaryColor: '#69b86b',
         secondaryColor: '#f49420',

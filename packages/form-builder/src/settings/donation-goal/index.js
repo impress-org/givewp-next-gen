@@ -17,19 +17,19 @@ const DonationGoalSettings = () => {
     // @todo Starting with just the Amount Raised goal format.
     const goalFormatOptions = [
         {
-            value: 'amount-raised',
+            value: 'amount',
             label: __('Amount Raised', 'give'),
         },
         // {
-        //     value: 'percentage-raised',
+        //     value: 'percentage',
         //     label: __('Percentage Raised', 'give'),
         // },
         // {
-        //     value: 'number-donations',
+        //     value: 'donations',
         //     label: __('Number of Donations', 'give'),
         // },
         // {
-        //     value: 'number-donors',
+        //     value: 'donors',
         //     label: __('Number of Donors', 'give'),
         // },
     ];
