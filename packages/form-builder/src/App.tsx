@@ -22,6 +22,8 @@ const initialState = {
         registration: 'none',
         goalType: 'amount',
         designId: 'classic',
+        heading: __('Support Our Cause'),
+        description: __('Help our organization by donating today! Dnations go to making a difference for our cause.'),
         primaryColor: '#69b86b',
         secondaryColor: '#f49420',
         ...initialFormSettings,
