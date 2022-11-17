@@ -1,7 +1,10 @@
 import {__} from '@wordpress/i18n';
 import {GoalProps} from '@givewp/blocks/form/app/templates/layouts/Goal';
-import {CSSProperties, useMemo} from 'react';
+import {useMemo} from 'react';
 
+/**
+ * @unreleased
+ */
 const FormStats = ({totalRevenue, goalTargetValue, totalNumber, totalLabel}) => {
     return (
         <aside className="givewp-form-stats-panel">
@@ -23,35 +26,10 @@ const FormStats = ({totalRevenue, goalTargetValue, totalNumber, totalLabel}) => 
 /**
  * @unreleased
  */
-export default function Goal({
-    currentValue,
-    currentValueFormatted,
-    targetValue,
-    targetValueFormatted,
-    goalLabel,
-    progressPercentage,
-    totalRevenueFormatted,
-    totalNumber,
-    totalNumberLabel
-}: GoalProps) {
-    const DefaultGoal = () => useMemo(() => {
-        return (
-            <div className="givewp-form-goal-progress">
-                <div className="givewp-form-goal-progress-description">
-                    <span>{__(`${currentValueFormatted} of ${targetValueFormatted} ${goalLabel} goal`, 'give')}</span>
-                </div>
-                <div
-                    role="meter"
-                    className="givewp-form-goal-progress-meter"
-                    style={{'--progress': `${progressPercentage}%`} as CSSProperties}
-                    aria-label={__(`${currentValue} of ${targetValue} ${goalLabel} goal`, 'give')}
-                    aria-valuemin={0}
-                    aria-valuemax={targetValue}
-                    aria-valuenow={currentValue}
-                ></div>
-            </div>
-        )
-    },[]);
+export default function Goal(props: GoalProps) {
+    const {targetValueFormatted, totalRevenueFormatted, totalNumber, totalNumberLabel} = props;
+
+    const DefaultGoalTemplate = useMemo(() => window.givewp.templates.getDefaultGoal(), []);
 
     return (
         <div style={{width: '100%'}}>
@@ -61,7 +39,8 @@ export default function Goal({
                 totalNumber={totalNumber}
                 totalLabel={totalNumberLabel}
             />
-            <DefaultGoal />
+
+            <DefaultGoalTemplate {...props} />
         </div>
     );
 }

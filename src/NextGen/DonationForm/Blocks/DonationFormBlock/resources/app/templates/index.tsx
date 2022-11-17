@@ -90,7 +90,7 @@ const defaultFormDesign = {
 // Retrieve the active form design and apply any overrides to generate the final templates.
 const activeFormDesign = window.givewp.form.designs.get();
 
-const template = {
+const activeFormDesignTemplate = {
     fields: {
         ...defaultFormDesign.fields,
         ...activeFormDesign?.fields,
@@ -110,7 +110,12 @@ const template = {
 };
 
 // The following functions are used to retrieve the various templates for the form.
-function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string): FC<NodeProps> {
+function getTemplate<NodeProps>(
+    type: string,
+    section: string,
+    htmlTag?: string,
+    template = activeFormDesignTemplate
+): FC<NodeProps> {
     const Node = template[section].hasOwnProperty(type)
         ? withWrapper(template[section][type], section, type, htmlTag)
         : null;
@@ -169,6 +174,10 @@ export function getGoalTemplate(): FC<GoalProps> {
     return getTemplate('goal', 'layouts');
 }
 
+export function getDefaultGoalTemplate(): FC<GoalProps> {
+    return getTemplate('goal', 'layouts', 'div', defaultFormDesign);
+}
+
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {
     return typeof Node === 'function';
 }
@@ -184,4 +193,5 @@ window.givewp.templates = {
     getTitle: getTitleTemplate,
     getDescription: getDescriptionTemplate,
     getGoal: getGoalTemplate,
+    getDefaultGoal: getDefaultGoalTemplate,
 };
