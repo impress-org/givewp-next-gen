@@ -99,7 +99,6 @@ class DonateRoute
                         'exceptionMessage' => $exception->getMessage(),
                         'formData' => $formData,
                         'gateway' => $gateway,
-                        'routeData' => $data
                     ]
                 );
 
