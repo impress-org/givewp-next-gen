@@ -1,19 +1,6 @@
 import {__} from '@wordpress/i18n';
 
 /**
- * TEMPORARY: This will come from the server
- */
-const form = {
-    currency: 'USD',
-    goalType: 'amount',
-    goalValue: 1000,
-    currentValue: 900,
-    totalValue: 29,
-    progressPercentage: 90,
-    goalLabel: 'donations',
-};
-
-/**
  * @unreleased
  */
 const SecureBadge = () => {
@@ -30,24 +17,6 @@ const SecureBadge = () => {
     );
 };
 
-const FormStats = ({currentValue, goalValue, totalValue, goalLabel}) => {
-    return (
-        <aside className="givewp-form-stats-panel">
-            <ul className="givewp-form-stats-panel-list">
-                <li className="givewp-form-stats-panel-stat">
-                    <span className="givewp-form-stats-panel-stat-number">{currentValue} </span> {__('raised', 'give')}
-                </li>
-                <li className="givewp-form-stats-panel-stat">
-                    <span className="givewp-form-stats-panel-stat-number">{totalValue} </span> {goalLabel}
-                </li>
-                <li className="givewp-form-stats-panel-stat">
-                    <span className="givewp-form-stats-panel-stat-number">{goalValue} </span> {__('goal', 'give')}
-                </li>
-            </ul>
-        </aside>
-    );
-};
-
 /**
  * @unreleased
  */
@@ -57,17 +26,7 @@ export default function Header({Title, Description, Goal}) {
             <Title />
             <Description />
             <SecureBadge />
-            {Goal && (
-                <div style={{width: '100%'}}>
-                    <FormStats
-                        currentValue={form.currentValue}
-                        goalValue={form.goalValue}
-                        totalValue={form.totalValue}
-                        goalLabel={form.goalLabel}
-                    />
-                    <Goal />
-                </div>
-            )}
+            <Goal />
         </>
     );
 }

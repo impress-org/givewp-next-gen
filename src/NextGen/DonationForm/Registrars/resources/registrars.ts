@@ -1,6 +1,6 @@
 import GatewayRegistrar from './GatewayRegistrar';
 import FormDesignRegistrar from './FormDesignRegistrar';
-import type {FormServerExports} from '@givewp/forms/types';
+import type {Form as DonationForm, FormServerExports} from '@givewp/forms/types';
 import type {useFormContext, useWatch} from 'react-hook-form';
 
 import type {
@@ -10,12 +10,8 @@ import type {
     getFieldTemplate,
     getGroupTemplate,
     getHeaderTemplate,
-} from '../../Blocks/DonationFormBlock/resources/app/templates';
-import {
-    getDescriptionTemplate,
-    getGoalTemplate,
-    getTitleTemplate,
-} from '../../Blocks/DonationFormBlock/resources/app/templates';
+} from '@givewp/blocks/form/app/templates';
+import {getDescriptionTemplate, getGoalTemplate, getTitleTemplate} from '@givewp/blocks/form/app/templates';
 
 if (!window.givewp) {
     // @ts-ignore
@@ -27,6 +23,14 @@ window.givewp.form = {
     ...window.givewp.form,
     designs: new FormDesignRegistrar(),
 };
+
+interface Form extends DonationForm {
+    designs: FormDesignRegistrar;
+    hooks: {
+        useFormContext: typeof useFormContext;
+        useWatch: typeof useWatch;
+    };
+}
 
 declare global {
     interface Window {
@@ -43,13 +47,7 @@ declare global {
                 getDescription: typeof getDescriptionTemplate;
                 getGoal: typeof getGoalTemplate;
             };
-            form: {
-                designs: FormDesignRegistrar;
-                hooks: {
-                    useFormContext: typeof useFormContext;
-                    useWatch: typeof useWatch;
-                };
-            };
+            form: Form;
         };
         giveNextGenExports: FormServerExports;
     }

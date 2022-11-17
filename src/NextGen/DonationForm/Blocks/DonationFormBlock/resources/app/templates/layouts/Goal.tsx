@@ -10,6 +10,10 @@ export interface GoalProps {
     targetValueFormatted: string;
     goalLabel: string;
     progressPercentage: number;
+    totalRevenue: number;
+    totalRevenueFormatted: string;
+    totalNumber: number;
+    totalNumberLabel: string;
 }
 
 /**

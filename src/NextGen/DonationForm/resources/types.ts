@@ -176,11 +176,21 @@ export interface Section extends Group {
 
 export interface Form extends Group {
     currency: string;
+    settings: FormSettings;
+    stats: {
+        totalRevenue: number;
+        totalRevenueFormatted: string;
+        totalNumber: number;
+        totalNumberLabel: string;
+    };
     goal: {
         type: string;
-        showGoal: boolean;
+        enabled: boolean;
+        show: boolean;
         currentValue: number;
+        currentValueFormatted: string;
         targetValue: number;
+        targetValueFormatted: string;
         label: string;
         progressPercentage: number;
     };

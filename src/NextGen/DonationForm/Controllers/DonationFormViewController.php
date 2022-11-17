@@ -33,7 +33,11 @@ class DonationFormViewController
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($data->formId);
 
-        $viewModel = new DonationFormViewModel($donationForm, $data->formBlocks, $data->formSettings);
+        $viewModel = new DonationFormViewModel(
+            $donationForm->id,
+            $data->formBlocks ?: $donationForm->blocks,
+            array_merge($donationForm->settings, $data->formSettings)
+        );
 
         $this->enqueueFormStyles($viewModel);
 
