@@ -175,6 +175,15 @@ export interface Section extends Group {
 }
 
 export interface Form extends Group {
+    currency: string;
+    goal: {
+        type: string;
+        showGoal: boolean;
+        currentValue: number;
+        targetValue: number;
+        label: string;
+        progressPercentage: number;
+    };
     nodes: Section[];
 }
 

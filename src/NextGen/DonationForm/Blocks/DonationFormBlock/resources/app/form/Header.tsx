@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import useCurrencyFormatter from '../hooks/useCurrencyFormatter';
 import getWindowData from '../utilities/getWindowData';
 
-const {formSettings} = getWindowData();
+const {form} = getWindowData();
 
 const HeaderTemplate = getHeaderTemplate();
 const TitleTemplate = getTitleTemplate();
@@ -20,64 +20,45 @@ const getProgressPercentage = (goalProgress, goalTarget) =>
 /**
  * TEMPORARY: This will come from the server
  */
-const getGoalLabel = (type) => {
-    if (type === 'donor') {
-        return __('donor', 'give');
-    }
-
-    return 'donation';
-};
-
-/**
- * TEMPORARY: This will come from the server
- */
-const form = {
+const donationForm = {
     showTitle: true,
     showDescription: true,
-    showGoal: formSettings.enableDonationGoal,
     title: __('Support Our Cause', 'give'),
     description: __(
         'Help our organization by donating today! All donations go directly to making a difference for our cause.',
         'give'
     ),
-    currency: 'USD',
-    goalType: 'amount' as 'amount',
-    goalValue: 1000,
-    currentValue: 900,
-    totalValue: 29,
-    progressPercentage: getProgressPercentage(900, 1000),
-    goalLabel: getGoalLabel('amount'),
 };
 
 /**
- * @unreleased
+ /**
+ * TODO: Determine if formatting should come from server
  */
 const Goal = () => {
     const [currentValueFormatted, setCurrentValueFormatted] = useState<string>();
-    const [goalValueFormatted, setGoalValueFormatted] = useState<string>();
+    const [targetValueFormatted, setTargetValueFormatted] = useState<string>();
     const amountFormatter = useCurrencyFormatter(form.currency, {
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
     });
 
     useEffect(() => {
-        if (form.goalType === 'amount') {
-            setCurrentValueFormatted(amountFormatter.format(form.currentValue));
-            setGoalValueFormatted(amountFormatter.format(form.goalValue));
+        if (form.goal.type === 'amount') {
+            setCurrentValueFormatted(amountFormatter.format(form.goal.currentValue));
+            setTargetValueFormatted(amountFormatter.format(form.goal.targetValue));
         }
-    }, [form.goalType]);
+    }, [form.goal.type]);
 
     return (
         <GoalTemplate
             currency={form.currency}
-            type={form.goalType}
-            currentValue={form.currentValue}
+            type={form.goal.type}
+            currentValue={form.goal.currentValue}
             currentValueFormatted={currentValueFormatted}
-            goalValueFormatted={goalValueFormatted}
-            goalValue={form.goalValue}
-            totalValue={form.totalValue}
-            goalLabel={form.goalLabel}
-            progressPercentage={form.progressPercentage}
+            targetValueFormatted={targetValueFormatted}
+            targetValue={form.goal.targetValue}
+            goalLabel={form.goal.label}
+            progressPercentage={form.goal.progressPercentage}
         />
     );
 };
@@ -88,9 +69,9 @@ const Goal = () => {
 export default function Header() {
     return (
         <HeaderTemplate
-            Title={() => form.showTitle && <TitleTemplate text={form.title} />}
-            Description={() => form.showDescription && <DescriptionTemplate text={form.description} />}
-            Goal={() => form.showGoal && <Goal />}
+            Title={() => donationForm.showTitle && <TitleTemplate text={donationForm.title} />}
+            Description={() => donationForm.showDescription && <DescriptionTemplate text={donationForm.description} />}
+            Goal={form.goal.showGoal ? () => <Goal /> : null}
         />
     );
 }

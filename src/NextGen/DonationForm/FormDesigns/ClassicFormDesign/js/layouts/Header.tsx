@@ -57,15 +57,17 @@ export default function Header({Title, Description, Goal}) {
             <Title />
             <Description />
             <SecureBadge />
-            <div style={{width: '100%'}}>
-                <FormStats
-                    currentValue={form.currentValue}
-                    goalValue={form.goalValue}
-                    totalValue={form.totalValue}
-                    goalLabel={form.goalLabel}
-                />
-                <Goal />
-            </div>
+            {Goal && (
+                <div style={{width: '100%'}}>
+                    <FormStats
+                        currentValue={form.currentValue}
+                        goalValue={form.goalValue}
+                        totalValue={form.totalValue}
+                        goalLabel={form.goalLabel}
+                    />
+                    <Goal />
+                </div>
+            )}
         </>
     );
 }

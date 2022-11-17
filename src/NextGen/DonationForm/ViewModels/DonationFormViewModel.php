@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\ViewModels;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
+use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
@@ -73,6 +74,16 @@ class DonationFormViewModel
     /**
      * @unreleased
      */
+    public function goalType(): GoalTypeOptions
+    {
+        return new GoalTypeOptions(
+            $this->formSettingOverrides['goalType'] ?? ($this->donationForm->settings['goalType'] ?? GoalTypeOptions::AMOUNT)
+        );
+    }
+
+    /**
+     * @unreleased
+     */
     public function exports(): array
     {
         /** @var DonationFormRepository $donationFormRepository */
@@ -87,11 +98,28 @@ class DonationFormViewModel
         )->jsonSerialize();
 
         return [
-            'form' => $formApi,
+            'form' => array_merge($formApi, [
+                'currency' => give_get_currency(),
+                'goal' => [
+                    'type' => $this->goalType()->getValue(),
+                    'showGoal' => $this->formSettingOverrides['enableDonationGoal'] ?? ($this->donationForm->settings['enableDonationGoal'] ?? false),
+                    'currentValue' => 90,
+                    'targetValue' => 100,
+                    'label' => $this->goalType()->isDonors() ? __('donors', 'give') : __('donations', 'give'),
+                    'progressPercentage' => (90 / 100) * 100
+                ],
+                'settings' => array_merge($this->donationForm->settings, $this->formSettingOverrides),
+                'stats' => [
+                    'totalRevenue' => give_get_meta($this->donationForm->id, '_give_form_earnings', true),
+                    'goalTargetValue' => $this->formSettingOverrides['goalAmount'] ?? ($this->donationForm->settings['goalAmount'] ?? 0),
+                    'totalNumberOfDonations' => give()->donationFormsRepository->getFormDonationsCount(
+                        $this->donationForm->id
+                    ),
+                ]
+            ]),
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
             'gatewaySettings' => $formDataGateways,
-            'formSettings' => array_merge($this->donationForm->settings, $this->formSettingOverrides)
         ];
     }
 }
