@@ -1,5 +1,6 @@
 import {getDescriptionTemplate, getGoalTemplate, getHeaderTemplate, getTitleTemplate} from '../templates';
 import getWindowData from '../utilities/getWindowData';
+import {GoalType} from '@givewp/blocks/form/app/templates/layouts/Goal';
 
 const {form} = getWindowData();
 
@@ -22,7 +23,7 @@ export default function Header() {
                 form.goal?.show ? (
                     <GoalTemplate
                         currency={form.currency}
-                        type={form.goal.type}
+                        type={form.goal.type as GoalType}
                         goalLabel={form.goal.label}
                         progressPercentage={form.goal.progressPercentage}
                         currentAmount={form.goal.currentAmount}

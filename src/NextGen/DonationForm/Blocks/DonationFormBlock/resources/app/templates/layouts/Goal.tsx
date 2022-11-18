@@ -1,9 +1,15 @@
 import {CSSProperties} from 'react';
 import {__} from '@wordpress/i18n';
 
+export enum GoalType {
+    AMOUNT = 'amount',
+    DONATIONS = 'donations',
+    DONORS = 'donors',
+}
+
 export interface GoalProps {
     currency: string;
-    type: string | 'amount' | 'percentage' | 'donations' | 'donors';
+    type: GoalType;
     currentAmount: number;
     currentAmountFormatted: string;
     targetAmount: number;

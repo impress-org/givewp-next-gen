@@ -2,8 +2,8 @@
  * @unreleased
  */
 export type FormSettings = {
-    showHeading?: boolean;
-    showDescription?: boolean;
+    showHeading: boolean;
+    showDescription: boolean;
     formTitle: string;
     enableDonationGoal: boolean;
     enableAutoClose: boolean;
