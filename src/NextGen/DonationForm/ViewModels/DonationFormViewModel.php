@@ -107,7 +107,7 @@ class DonationFormViewModel
      *
      * @unreleased
      */
-    private function goalTargetValue(): int
+    private function goalTargetAmount(): int
     {
         return $this->formSettings['goalAmount'] ?? 0;
     }
@@ -126,13 +126,13 @@ class DonationFormViewModel
                 $this->goalCurrentAmount($this->goalType()),
                 give_get_currency()
             )->formatToLocale() : $this->goalCurrentAmount($this->goalType()),
-            'targetAmount' => $this->goalTargetValue(),
+            'targetAmount' => $this->goalTargetAmount(),
             'targetAmountFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
-                $this->goalTargetValue(),
+                $this->goalTargetAmount(),
                 give_get_currency()
-            )->formatToLocale() : $this->goalTargetValue(),
+            )->formatToLocale() : $this->goalTargetAmount(),
             'label' => $this->goalType()->isDonors() ? __('donors', 'give') : __('donations', 'give'),
-            'progressPercentage' => ($this->goalCurrentAmount($this->goalType()) / $this->goalTargetValue()) * 100
+            'progressPercentage' => ($this->goalCurrentAmount($this->goalType()) / $this->goalTargetAmount()) * 100
         ];
     }
 
