@@ -12,6 +12,8 @@ export type FormSettings = {
     registration: string;
     goalType: string;
     designId: string;
+    heading: string;
+    description: string;
     primaryColor: string;
     secondaryColor: string;
 };
