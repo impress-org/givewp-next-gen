@@ -7,13 +7,14 @@ import {
     SelectControl,
     ToggleControl,
 } from '@wordpress/components';
+import debounce from 'lodash.debounce';
 
 const DonationGoalSettings = () => {
     const {
         settings: {enableDonationGoal, enableAutoClose, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-    
+
     const goalTypeOptions = [
         {
             value: 'amount',
@@ -68,7 +69,7 @@ const DonationGoalSettings = () => {
                             label={__('Goal Amount', 'give')}
                             min={0}
                             value={goalAmount}
-                            onChange={(goalAmount) => dispatch(setFormSettings({goalAmount}))}
+                            onChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 100)}
                         />
                     </PanelRow>
                 </>
