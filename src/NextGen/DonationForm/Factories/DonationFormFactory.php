@@ -25,7 +25,14 @@ class DonationFormFactory extends ModelFactory
                 'enableAutoClose' => false,
                 'registration' => 'none',
                 'goalType' => GoalTypeOptions::AMOUNT,
-                'designId' => 'classic'
+                'designId' => 'classic',
+                'showHeading' => true,
+                'showDescription' => true,
+                'heading' => __('Support Our Cause', 'give'),
+                'description' => __(
+                    'Help our organization by donating today! All donations go directly to making a difference for our cause.',
+                    'give'
+                )
             ],
             'blocks' => BlockCollection::fromJson($blocksJson),
         ];

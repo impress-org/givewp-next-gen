@@ -58,6 +58,10 @@ class DonationFormViewRouteData
                 return false;
             }
 
+            if ($setting === 'true') {
+                return true;
+            }
+
             if (filter_var($setting, FILTER_VALIDATE_BOOLEAN)) {
                 return (bool)$setting;
             }

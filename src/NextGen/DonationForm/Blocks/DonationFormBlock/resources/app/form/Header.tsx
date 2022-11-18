@@ -14,12 +14,12 @@ const GoalTemplate = getGoalTemplate();
 export default function Header() {
     return (
         <HeaderTemplate
-            Title={() => form.settings.showHeading && <TitleTemplate text={form.settings.heading} />}
+            Title={() => (form.settings?.showHeading ? <TitleTemplate text={form.settings.heading} /> : <></>)}
             Description={() =>
-                form.settings.showDescription && <DescriptionTemplate text={form.settings.description} />
+                form.settings?.showDescription ? <DescriptionTemplate text={form.settings.description} /> : <></>
             }
             Goal={() =>
-                form.goal.show && (
+                form.goal?.show ? (
                     <GoalTemplate
                         currency={form.currency}
                         type={form.goal.type}
@@ -34,6 +34,8 @@ export default function Header() {
                         totalNumberOfDonationsOrDonors={form.stats.totalNumberOfDonationsOrDonors}
                         totalNumberOfDonationsOrDonorsLabel={form.stats.totalNumberOfDonationsOrDonorsLabel}
                     />
+                ) : (
+                    <></>
                 )
             }
         />

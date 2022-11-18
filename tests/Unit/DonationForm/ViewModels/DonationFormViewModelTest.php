@@ -43,16 +43,7 @@ class DonationFormViewModelTest extends TestCase
             'successUrl' => give_get_success_page_uri(),
             'gatewaySettings' => $formDataGateways,
             'form' => array_merge($formApi, [
-                'settings' => array_merge($donationForm->settings, [
-                    'showHeading' => true,
-                    'heading' => __('Support Our Cause', 'give'),
-                    'showDescription' => true,
-                    'description' => __(
-                        'Help our organization by donating today! All donations go directly to making a difference for our cause.',
-                        'give'
-                    ),
-
-                ]),
+                'settings' => $donationForm->settings,
                 'currency' => give_get_currency(),
                 'goal' => $donationFormGoalData->toArray(),
                 'stats' => [
