@@ -1,11 +1,15 @@
 import {__} from '@wordpress/i18n';
 import {GoalProps} from '@givewp/blocks/form/app/templates/layouts/Goal';
-import {useMemo} from 'react';
 
 /**
  * @unreleased
  */
-const FormStats = ({totalRevenue, goalTargetValue, totalNumber, totalLabel}) => {
+const FormStats = ({
+                       totalRevenue,
+                       goalTargetAmount,
+                       totalNumberOfDonationsOrDonors,
+                       totalNumberOfDonationsOrDonorsLabel,
+                   }) => {
     return (
         <aside className="givewp-form-stats-panel">
             <ul className="givewp-form-stats-panel-list">
@@ -13,10 +17,12 @@ const FormStats = ({totalRevenue, goalTargetValue, totalNumber, totalLabel}) => 
                     <span className="givewp-form-stats-panel-stat-number">{totalRevenue} </span> {__('raised', 'give')}
                 </li>
                 <li className="givewp-form-stats-panel-stat">
-                    <span className="givewp-form-stats-panel-stat-number">{totalNumber} </span> {totalLabel}
+                    <span className="givewp-form-stats-panel-stat-number">{totalNumberOfDonationsOrDonors} </span>{' '}
+                    {totalNumberOfDonationsOrDonorsLabel}
                 </li>
                 <li className="givewp-form-stats-panel-stat">
-                    <span className="givewp-form-stats-panel-stat-number">{goalTargetValue} </span> {__('goal', 'give')}
+                    <span className="givewp-form-stats-panel-stat-number">{goalTargetAmount} </span>{' '}
+                    {__('goal', 'give')}
                 </li>
             </ul>
         </aside>
@@ -27,17 +33,22 @@ const FormStats = ({totalRevenue, goalTargetValue, totalNumber, totalLabel}) => 
  * @unreleased
  */
 export default function Goal(props: GoalProps) {
-    const {targetValueFormatted, totalRevenueFormatted, totalNumber, totalNumberLabel} = props;
+    const {
+        targetAmountFormatted,
+        totalRevenueFormatted,
+        totalNumberOfDonationsOrDonors,
+        totalNumberOfDonationsOrDonorsLabel,
+    } = props;
 
-    const DefaultGoalTemplate = useMemo(() => window.givewp.templates.getDefaultGoal(), []);
+    const DefaultGoalTemplate = window.givewp.templates.getDefaultGoal();
 
     return (
         <div style={{width: '100%'}}>
             <FormStats
                 totalRevenue={totalRevenueFormatted}
-                goalTargetValue={targetValueFormatted}
-                totalNumber={totalNumber}
-                totalLabel={totalNumberLabel}
+                goalTargetAmount={targetAmountFormatted}
+                totalNumberOfDonationsOrDonors={totalNumberOfDonationsOrDonors}
+                totalNumberOfDonationsOrDonorsLabel={totalNumberOfDonationsOrDonorsLabel}
             />
 
             <DefaultGoalTemplate {...props} />

@@ -2,7 +2,6 @@
 
 namespace Give\NextGen\DonationForm\ViewModels;
 
-use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
@@ -26,6 +25,10 @@ class DonationFormViewModel
      * @var array
      */
     private $formSettings;
+    /**
+     * @var DonationFormRepository
+     */
+    private $donationFormRepository;
 
     /**
      * @unreleased
@@ -38,6 +41,7 @@ class DonationFormViewModel
         $this->donationFormId = $donationFormId;
         $this->formBlocks = $formBlocks;
         $this->formSettings = $formSettings;
+        $this->donationFormRepository = give(DonationFormRepository::class);
     }
 
     /**
@@ -73,8 +77,6 @@ class DonationFormViewModel
     }
 
     /**
-     * TEMPORARY
-     *
      * @unreleased
      */
     private function goalType(): GoalTypeOptions
@@ -87,19 +89,17 @@ class DonationFormViewModel
      *
      * @unreleased
      */
-    private function goalCurrentValue(): int
+    private function goalCurrentValue(GoalTypeOptions $goalType): int
     {
-        $goalType = $this->goalType();
-
         if ($goalType->isDonors()) {
-            return $this->totalNumberOfDonors();
+            return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
         }
 
         if ($goalType->isDonations()) {
-            return $this->totalNumberOfDonations();
+            return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
         }
 
-        return $this->totalRevenue();
+        return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
     }
 
     /**
@@ -117,72 +117,24 @@ class DonationFormViewModel
      *
      * @unreleased
      */
-    private function totalNumberOfDonations(): int
-    {
-        return give()->donationFormsRepository->getFormDonationsCount($this->donationFormId);
-    }
-
-    /**
-     * TEMPORARY
-     *
-     * @unreleased
-     */
-    private function totalNumberOfDonors(): int
-    {
-        return DB::table('give_donationmeta')
-            ->where('meta_key', '_give_payment_donor_id')
-            ->whereIn('donation_id', function ($builder) {
-                $builder
-                    ->select('donation_id')
-                    ->from('give_donationmeta')
-                    ->where('meta_key', '_give_payment_form_id')
-                    ->where('meta_value', $this->donationFormId);
-            })->count('DISTINCT meta_value');
-    }
-
-    /**
-     * TEMPORARY
-     *
-     * @unreleased
-     */
-    private function totalRevenue(): int
-    {
-        $query = DB::table('give_formmeta')
-            ->select('meta_value as totalRevenue')
-            ->where('form_id', $this->donationFormId)
-            ->where('meta_key', '_give_form_earnings')
-            ->get();
-
-        if (!$query) {
-            return 0;
-        }
-
-        return $query->totalRevenue;
-    }
-
-    /**
-     * TEMPORARY
-     *
-     * @unreleased
-     */
     private function formGoalData(): array
     {
         return [
             'type' => $this->goalType()->getValue(),
             'enabled' => $this->formSettings['enableDonationGoal'] ?? false,
             'show' => $this->formSettings['enableDonationGoal'] ?? false,
-            'currentValue' => $this->goalCurrentValue(),
-            'currentValueFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
-                $this->goalCurrentValue(),
+            'currentAmount' => $this->goalCurrentValue($this->goalType()),
+            'currentAmountFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
+                $this->goalCurrentValue($this->goalType()),
                 give_get_currency()
-            )->formatToLocale() : $this->goalCurrentValue(),
-            'targetValue' => $this->goalTargetValue(),
-            'targetValueFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
+            )->formatToLocale() : $this->goalCurrentValue($this->goalType()),
+            'targetAmount' => $this->goalTargetValue(),
+            'targetAmountFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
                 $this->goalTargetValue(),
                 give_get_currency()
             )->formatToLocale() : $this->goalTargetValue(),
             'label' => $this->goalType()->isDonors() ? __('donors', 'give') : __('donations', 'give'),
-            'progressPercentage' => ($this->goalCurrentValue() / $this->goalTargetValue()) * 100
+            'progressPercentage' => ($this->goalCurrentValue($this->goalType()) / $this->goalTargetValue()) * 100
         ];
     }
 
@@ -193,7 +145,7 @@ class DonationFormViewModel
      */
     private function formStatsData(): array
     {
-        $totalRevenue = $this->totalRevenue();
+        $totalRevenue = $this->donationFormRepository->getTotalRevenue($this->donationFormId);
 
         return [
             'totalRevenue' => $totalRevenue,
@@ -201,9 +153,10 @@ class DonationFormViewModel
                 $totalRevenue,
                 give_get_currency()
             )->formatToLocale(),
-            'totalNumber' => $this->goalType()->isDonors() ? $this->totalNumberOfDonors(
-            ) : $this->totalNumberOfDonations(),
-            'totalNumberLabel' => $this->goalType()->isDonors() ? __('donors', 'give') : __(
+            'totalNumberOfDonationsOrDonors' => $this->goalType()->isDonors() ?
+                $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
+                $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
+            'totalNumberOfDonationsOrDonorsLabel' => $this->goalType()->isDonors() ? __('donors', 'give') : __(
                 'donations',
                 'give'
             ),
@@ -215,13 +168,10 @@ class DonationFormViewModel
      */
     public function exports(): array
     {
-        /** @var DonationFormRepository $donationFormRepository */
-        $donationFormRepository = give(DonationFormRepository::class);
-
         $donateUrl = (new GenerateDonateRouteUrl())();
 
-        $formDataGateways = $donationFormRepository->getFormDataGateways($this->donationFormId);
-        $formApi = $donationFormRepository->getFormSchemaFromBlocks(
+        $formDataGateways = $this->donationFormRepository->getFormDataGateways($this->donationFormId);
+        $formApi = $this->donationFormRepository->getFormSchemaFromBlocks(
             $this->donationFormId,
             $this->formBlocks
         )->jsonSerialize();

@@ -180,17 +180,17 @@ export interface Form extends Group {
     stats: {
         totalRevenue: number;
         totalRevenueFormatted: string;
-        totalNumber: number;
-        totalNumberLabel: string;
+        totalNumberOfDonationsOrDonors: number;
+        totalNumberOfDonationsOrDonorsLabel: string;
     };
     goal: {
         type: string;
         enabled: boolean;
         show: boolean;
-        currentValue: number;
-        currentValueFormatted: string;
-        targetValue: number;
-        targetValueFormatted: string;
+        currentAmount: number;
+        currentAmountFormatted: string;
+        targetAmount: number;
+        targetAmountFormatted: string;
         label: string;
         progressPercentage: number;
     };

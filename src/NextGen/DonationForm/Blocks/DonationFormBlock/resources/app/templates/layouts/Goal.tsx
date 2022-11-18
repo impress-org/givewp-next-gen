@@ -4,42 +4,42 @@ import {__} from '@wordpress/i18n';
 export interface GoalProps {
     currency: string;
     type: string | 'amount' | 'percentage' | 'donations' | 'donors';
-    currentValue: number;
-    currentValueFormatted: string;
-    targetValue: number;
-    targetValueFormatted: string;
+    currentAmount: number;
+    currentAmountFormatted: string;
+    targetAmount: number;
+    targetAmountFormatted: string;
     goalLabel: string;
     progressPercentage: number;
     totalRevenue: number;
     totalRevenueFormatted: string;
-    totalNumber: number;
-    totalNumberLabel: string;
+    totalNumberOfDonationsOrDonors: number;
+    totalNumberOfDonationsOrDonorsLabel: string;
 }
 
 /**
  * @unreleased
  */
 export default function Goal({
-    currentValue,
-    currentValueFormatted,
-    targetValue,
-    targetValueFormatted,
+    currentAmount,
+    currentAmountFormatted,
+    targetAmount,
+    targetAmountFormatted,
     goalLabel,
     progressPercentage,
 }: GoalProps) {
     return (
         <div className="givewp-form-goal-progress">
             <div className="givewp-form-goal-progress-description">
-                <span>{__(`${currentValueFormatted} of ${targetValueFormatted} ${goalLabel} goal`, 'give')}</span>
+                <span>{__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel} goal`, 'give')}</span>
             </div>
             <div
                 role="meter"
                 className="givewp-form-goal-progress-meter"
                 style={{'--progress': `${progressPercentage}%`} as CSSProperties}
-                aria-label={__(`${currentValue} of ${targetValue} ${goalLabel} goal`, 'give')}
+                aria-label={__(`${currentAmount} of ${targetAmount} ${goalLabel} goal`, 'give')}
                 aria-valuemin={0}
-                aria-valuemax={targetValue}
-                aria-valuenow={currentValue}
+                aria-valuemax={targetAmount}
+                aria-valuenow={currentAmount}
             ></div>
         </div>
     );
