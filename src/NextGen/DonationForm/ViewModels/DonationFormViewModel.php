@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
@@ -85,63 +86,12 @@ class DonationFormViewModel
     }
 
     /**
-     * TEMPORARY
-     *
-     * @unreleased
-     */
-    private function goalCurrentAmount(GoalTypeOptions $goalType): int
-    {
-        if ($goalType->isDonors()) {
-            return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
-        }
-
-        if ($goalType->isDonations()) {
-            return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
-        }
-
-        return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
-    }
-
-    /**
-     * TEMPORARY
-     *
-     * @unreleased
-     */
-    private function goalTargetAmount(): int
-    {
-        return $this->formSettings['goalAmount'] ?? 0;
-    }
-
-    /**
-     * @unreleased
-     */
-    private function formGoalData(): array
-    {
-        return [
-            'type' => $this->goalType()->getValue(),
-            'enabled' => $this->formSettings['enableDonationGoal'] ?? false,
-            'show' => $this->formSettings['enableDonationGoal'] ?? false,
-            'currentAmount' => $this->goalCurrentAmount($this->goalType()),
-            'currentAmountFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
-                $this->goalCurrentAmount($this->goalType()),
-                give_get_currency()
-            )->formatToLocale() : $this->goalCurrentAmount($this->goalType()),
-            'targetAmount' => $this->goalTargetAmount(),
-            'targetAmountFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
-                $this->goalTargetAmount(),
-                give_get_currency()
-            )->formatToLocale() : $this->goalTargetAmount(),
-            'label' => $this->goalType()->isDonors() ? __('donors', 'give') : __('donations', 'give'),
-            'progressPercentage' => ($this->goalCurrentAmount($this->goalType()) / $this->goalTargetAmount()) * 100
-        ];
-    }
-
-    /**
      * @unreleased
      */
     private function formStatsData(): array
     {
         $totalRevenue = $this->donationFormRepository->getTotalRevenue($this->donationFormId);
+        $goalType = $this->goalType();
 
         return [
             'totalRevenue' => $totalRevenue,
@@ -149,10 +99,10 @@ class DonationFormViewModel
                 $totalRevenue,
                 give_get_currency()
             )->formatToLocale(),
-            'totalNumberOfDonationsOrDonors' => $this->goalType()->isDonors() ?
+            'totalNumberOfDonationsOrDonors' => $goalType->isDonors() ?
                 $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
                 $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
-            'totalNumberOfDonationsOrDonorsLabel' => $this->goalType()->isDonors() ? __('donors', 'give') : __(
+            'totalNumberOfDonationsOrDonorsLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
                 'donations',
                 'give'
             ),
@@ -165,6 +115,7 @@ class DonationFormViewModel
     public function exports(): array
     {
         $donateUrl = (new GenerateDonateRouteUrl())();
+        $donationFormGoalData = new DonationFormGoalData($this->donationFormId, $this->formSettings);
 
         $formDataGateways = $this->donationFormRepository->getFormDataGateways($this->donationFormId);
         $formApi = $this->donationFormRepository->getFormSchemaFromBlocks(
@@ -188,7 +139,7 @@ class DonationFormViewModel
 
                 ]),
                 'currency' => give_get_currency(),
-                'goal' => $this->formGoalData(),
+                'goal' => $donationFormGoalData->toArray(),
                 'stats' => $this->formStatsData()
             ]),
         ];
