@@ -26,8 +26,6 @@ const FormDesignSettings = () => {
                         options={designOptions}
                     />
                 </PanelRow>
-            </PanelBody>
-            <PanelBody>
                 <PanelRow>
                     <TextControl
                         label={__('Heading')}
