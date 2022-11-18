@@ -174,10 +174,6 @@ export function getGoalTemplate(): FC<GoalProps> {
     return getTemplate('goal', 'layouts');
 }
 
-export function getDefaultGoalTemplate(): FC<GoalProps> {
-    return getTemplate('goal', 'layouts', 'div', defaultFormDesign);
-}
-
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {
     return typeof Node === 'function';
 }
@@ -193,5 +189,4 @@ window.givewp.templates = {
     getTitle: getTitleTemplate,
     getDescription: getDescriptionTemplate,
     getGoal: getGoalTemplate,
-    getDefaultGoal: getDefaultGoalTemplate,
 };

@@ -11,12 +11,7 @@ import type {
     getGroupTemplate,
     getHeaderTemplate,
 } from '@givewp/blocks/form/app/templates';
-import {
-    getDefaultGoalTemplate,
-    getDescriptionTemplate,
-    getGoalTemplate,
-    getTitleTemplate,
-} from '@givewp/blocks/form/app/templates';
+import {getDescriptionTemplate, getGoalTemplate, getTitleTemplate} from '@givewp/blocks/form/app/templates';
 
 if (!window.givewp) {
     // @ts-ignore
@@ -43,7 +38,6 @@ declare global {
                 getTitle: typeof getTitleTemplate;
                 getDescription: typeof getDescriptionTemplate;
                 getGoal: typeof getGoalTemplate;
-                getDefaultGoal: typeof getDefaultGoalTemplate;
             };
             form: {
                 designs: FormDesignRegistrar;

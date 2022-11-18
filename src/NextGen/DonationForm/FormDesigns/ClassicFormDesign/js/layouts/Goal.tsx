@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {GoalProps} from '@givewp/blocks/form/app/templates/layouts/Goal';
+import GoalTemplate, {GoalProps} from '@givewp/blocks/form/app/templates/layouts/Goal';
 
 /**
  * @unreleased
@@ -40,8 +40,6 @@ export default function Goal(props: GoalProps) {
         totalNumberOfDonationsOrDonorsLabel,
     } = props;
 
-    const DefaultGoalTemplate = window.givewp.templates.getDefaultGoal();
-
     return (
         <div style={{width: '100%'}}>
             <FormStats
@@ -51,7 +49,7 @@ export default function Goal(props: GoalProps) {
                 totalNumberOfDonationsOrDonorsLabel={totalNumberOfDonationsOrDonorsLabel}
             />
 
-            <DefaultGoalTemplate {...props} />
+            <GoalTemplate {...props} />
         </div>
     );
 }
