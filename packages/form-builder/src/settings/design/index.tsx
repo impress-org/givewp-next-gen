@@ -28,32 +28,32 @@ const FormDesignSettings = () => {
                 </PanelRow>
                 <PanelRow>
                     <TextControl
-                        label={__('Heading')}
+                        label={__('Heading', 'give')}
                         value={heading}
                         onChange={(heading) => dispatch(setFormSettings({heading}))}
                     />
                 </PanelRow>
                 <PanelRow>
                     <TextareaControl
-                        label={__('Description')}
+                        label={__('Description', 'give')}
                         value={description}
                         onChange={(description) => dispatch(setFormSettings({description}))}
                     />
                 </PanelRow>
             </PanelBody>
             <PanelColorSettings
-                title={__('Colors')}
+                title={__('Colors', 'give')}
                 colorSettings={[
                     {
                         value: primaryColor,
                         onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
-                        label: __('Primary Color', 'givewp'),
+                        label: __('Primary Color', 'give'),
                         disableCustomColors: false,
                     },
                     {
                         value: secondaryColor,
                         onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
-                        label: __('Secondary Color', 'givewp'),
+                        label: __('Secondary Color', 'give'),
                         disableCustomColors: false,
                     },
                 ]}
