@@ -21,6 +21,7 @@ class DonationFormFactory extends ModelFactory
             'status' => DonationFormStatus::PUBLISHED(),
             'settings' => [
                 'enableDonationGoal' => false,
+                'goalAmount' => $this->faker->numberBetween(100, 5000),
                 'enableAutoClose' => false,
                 'registration' => 'none',
                 'goalType' => GoalTypeOptions::AMOUNT,
