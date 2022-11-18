@@ -13,21 +13,20 @@ const DonationGoalSettings = () => {
         settings: {enableDonationGoal, enableAutoClose, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-
-    // @todo Starting with just the Amount goal type.
+    
     const goalTypeOptions = [
         {
             value: 'amount',
             label: __('Amount Raised', 'give'),
         },
-        // {
-        //     value: 'donations',
-        //     label: __('Number of Donations', 'give'),
-        // },
-        // {
-        //     value: 'donors',
-        //     label: __('Number of Donors', 'give'),
-        // },
+        {
+            value: 'donations',
+            label: __('Number of Donations', 'give'),
+        },
+        {
+            value: 'donors',
+            label: __('Number of Donors', 'give'),
+        },
     ];
 
     return (

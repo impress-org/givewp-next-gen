@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\ViewModels;
 
+use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
@@ -78,9 +79,7 @@ class DonationFormViewModel
      */
     private function goalType(): GoalTypeOptions
     {
-        return new GoalTypeOptions(
-            $this->formSettings['goalType'] ?? GoalTypeOptions::AMOUNT
-        );
+        return new GoalTypeOptions($this->formSettings['goalType'] ?? GoalTypeOptions::AMOUNT);
     }
 
     /**
@@ -93,7 +92,7 @@ class DonationFormViewModel
         $goalType = $this->goalType();
 
         if ($goalType->isDonors()) {
-            return 100;
+            return $this->totalNumberOfDonors();
         }
 
         if ($goalType->isDonations()) {
@@ -128,9 +127,37 @@ class DonationFormViewModel
      *
      * @unreleased
      */
+    private function totalNumberOfDonors(): int
+    {
+        return DB::table('give_donationmeta')
+            ->where('meta_key', '_give_payment_donor_id')
+            ->whereIn('donation_id', function ($builder) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', '_give_payment_form_id')
+                    ->where('meta_value', $this->donationFormId);
+            })->count('DISTINCT meta_value');
+    }
+
+    /**
+     * TEMPORARY
+     *
+     * @unreleased
+     */
     private function totalRevenue(): int
     {
-        return give_get_meta($this->donationFormId, '_give_form_earnings', true) ?: 0;
+        $query = DB::table('give_formmeta')
+            ->select('meta_value as totalRevenue')
+            ->where('form_id', $this->donationFormId)
+            ->where('meta_key', '_give_form_earnings')
+            ->get();
+
+        if (!$query) {
+            return 0;
+        }
+
+        return $query->totalRevenue;
     }
 
     /**
@@ -150,10 +177,10 @@ class DonationFormViewModel
                 give_get_currency()
             )->formatToLocale() : $this->goalCurrentValue(),
             'targetValue' => $this->goalTargetValue(),
-            'targetValueFormatted' => $this->goalType()->isDonors() ? 100 : Money::fromDecimal(
+            'targetValueFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
                 $this->goalTargetValue(),
                 give_get_currency()
-            )->formatToLocale(),
+            )->formatToLocale() : $this->goalTargetValue(),
             'label' => $this->goalType()->isDonors() ? __('donors', 'give') : __('donations', 'give'),
             'progressPercentage' => ($this->goalCurrentValue() / $this->goalTargetValue()) * 100
         ];
@@ -174,7 +201,8 @@ class DonationFormViewModel
                 $totalRevenue,
                 give_get_currency()
             )->formatToLocale(),
-            'totalNumber' => $this->goalType()->isDonors() ? 100 : $this->totalNumberOfDonations(),
+            'totalNumber' => $this->goalType()->isDonors() ? $this->totalNumberOfDonors(
+            ) : $this->totalNumberOfDonations(),
             'totalNumberLabel' => $this->goalType()->isDonors() ? __('donors', 'give') : __(
                 'donations',
                 'give'
