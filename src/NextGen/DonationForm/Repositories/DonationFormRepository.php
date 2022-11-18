@@ -177,8 +177,6 @@ class DonationFormRepository
     /**
      * @unreleased
      *
-     * @param DonationForm $donationForm
-     *
      * @throws Exception
      */
     public function delete(DonationForm $donationForm): bool
