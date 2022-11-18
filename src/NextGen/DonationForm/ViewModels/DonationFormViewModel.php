@@ -89,7 +89,7 @@ class DonationFormViewModel
      *
      * @unreleased
      */
-    private function goalCurrentValue(GoalTypeOptions $goalType): int
+    private function goalCurrentAmount(GoalTypeOptions $goalType): int
     {
         if ($goalType->isDonors()) {
             return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
@@ -113,8 +113,6 @@ class DonationFormViewModel
     }
 
     /**
-     * TEMPORARY
-     *
      * @unreleased
      */
     private function formGoalData(): array
@@ -123,24 +121,22 @@ class DonationFormViewModel
             'type' => $this->goalType()->getValue(),
             'enabled' => $this->formSettings['enableDonationGoal'] ?? false,
             'show' => $this->formSettings['enableDonationGoal'] ?? false,
-            'currentAmount' => $this->goalCurrentValue($this->goalType()),
+            'currentAmount' => $this->goalCurrentAmount($this->goalType()),
             'currentAmountFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
-                $this->goalCurrentValue($this->goalType()),
+                $this->goalCurrentAmount($this->goalType()),
                 give_get_currency()
-            )->formatToLocale() : $this->goalCurrentValue($this->goalType()),
+            )->formatToLocale() : $this->goalCurrentAmount($this->goalType()),
             'targetAmount' => $this->goalTargetValue(),
             'targetAmountFormatted' => $this->goalType()->isAmount() ? Money::fromDecimal(
                 $this->goalTargetValue(),
                 give_get_currency()
             )->formatToLocale() : $this->goalTargetValue(),
             'label' => $this->goalType()->isDonors() ? __('donors', 'give') : __('donations', 'give'),
-            'progressPercentage' => ($this->goalCurrentValue($this->goalType()) / $this->goalTargetValue()) * 100
+            'progressPercentage' => ($this->goalCurrentAmount($this->goalType()) / $this->goalTargetValue()) * 100
         ];
     }
 
     /**
-     * TEMPORARY
-     *
      * @unreleased
      */
     private function formStatsData(): array
