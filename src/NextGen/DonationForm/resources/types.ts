@@ -33,7 +33,6 @@ export interface FormServerExports {
     attributes: object;
     donateUrl: string;
     successUrl: string;
-    formSettings: FormSettings;
 }
 
 export interface GatewaySettings {
