@@ -24,9 +24,9 @@ class GenerateDonationFormViewRouteUrlTest extends TestCase
                 [
                     'givewp-view' => 'donation-form',
                     'form-id' => 1,
-                    'form-settings' => [
+                    'form-settings' => json_encode([
                         'designId' => 'classic'
-                    ]
+                    ])
                 ],
                 home_url()
             )

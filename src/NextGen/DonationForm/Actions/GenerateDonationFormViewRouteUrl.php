@@ -19,7 +19,7 @@ class GenerateDonationFormViewRouteUrl
         ];
 
         if (!empty($formSettings)) {
-            $args['form-settings'] = $formSettings;
+            $args['form-settings'] = json_encode($formSettings);
         }
 
         return esc_url_raw(
