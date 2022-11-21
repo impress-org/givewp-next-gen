@@ -50,8 +50,8 @@ export default function Header() {
                         }
                         totalRevenue={form.stats.totalRevenue}
                         totalRevenueFormatted={formatGoalAmount(form.stats.totalRevenue)}
-                        totalNumberOfDonationsOrDonors={form.stats.totalNumberOfDonationsOrDonors}
-                        totalNumberOfDonationsOrDonorsLabel={form.stats.totalNumberOfDonationsOrDonorsLabel}
+                        totalCountValue={form.stats.totalCountValue}
+                        totalCountLabel={form.stats.totalCountLabel}
                     />
                 )
             }

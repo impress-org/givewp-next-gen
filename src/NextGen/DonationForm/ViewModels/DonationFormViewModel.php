@@ -108,10 +108,10 @@ class DonationFormViewModel
                 $totalRevenue,
                 give_get_currency()
             )->formatToLocale(),
-            'totalNumberOfDonationsOrDonors' => $goalType->isDonors() ?
+            'totalCountValue' => $goalType->isDonors() ?
                 $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
                 $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
-            'totalNumberOfDonationsOrDonorsLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
+            'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
                 'donations',
                 'give'
             ),

@@ -18,8 +18,8 @@ export interface GoalProps {
     progressPercentage: number;
     totalRevenue: number;
     totalRevenueFormatted: string;
-    totalNumberOfDonationsOrDonors: number;
-    totalNumberOfDonationsOrDonorsLabel: string;
+    totalCountValue: number;
+    totalCountLabel: string;
 }
 
 /**

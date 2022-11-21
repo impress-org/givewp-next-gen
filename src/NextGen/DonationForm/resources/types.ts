@@ -179,8 +179,8 @@ export interface Form extends Group {
     stats: {
         totalRevenue: number;
         totalRevenueFormatted: string;
-        totalNumberOfDonationsOrDonors: number;
-        totalNumberOfDonationsOrDonorsLabel: string;
+        totalCountValue: number;
+        totalCountLabel: string;
     };
     goal: {
         type: string;
