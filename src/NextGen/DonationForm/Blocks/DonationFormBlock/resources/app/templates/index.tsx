@@ -17,10 +17,13 @@ import classNames from 'classnames';
 import Gateways from './fields/Gateways';
 import Paragraph from './elements/Paragraph';
 import FieldLabel, {FieldLabelProps} from './layouts/FieldLabel';
-import FieldError, {FieldErrorProps} from './layouts/FieldError';
+import type {FieldErrorProps} from './layouts/FieldError';
+import FieldError from './layouts/FieldError';
 import Header, {HeaderProps} from './layouts/Header';
-import Title, {TitleProps} from './layouts/Title';
-import Description, {DescriptionProps} from './layouts/Description';
+import type {HeaderTitleProps} from './layouts/HeaderTitle';
+import HeaderTitle from './layouts/HeaderTitle';
+import type {HeaderDescriptionProps} from './layouts/HeaderDescription';
+import HeaderDescription from './layouts/HeaderDescription';
 import Goal, {GoalProps} from './layouts/Goal';
 
 export function NodeWrapper({
@@ -81,8 +84,8 @@ const defaultFormDesign = {
         fieldLabel: FieldLabel,
         fieldError: FieldError,
         header: Header,
-        title: Title,
-        description: Description,
+        headerTitle: HeaderTitle,
+        headerDescription: HeaderDescription,
         goal: Goal,
     },
 };
@@ -162,12 +165,12 @@ export function getHeaderTemplate(): FC<HeaderProps> {
     return getTemplate('header', 'layouts');
 }
 
-export function getTitleTemplate(): FC<TitleProps> {
-    return getTemplate('title', 'layouts');
+export function getHeaderTitleTemplate(): FC<HeaderTitleProps> {
+    return getTemplate('headerTitle', 'layouts');
 }
 
-export function getDescriptionTemplate(): FC<DescriptionProps> {
-    return getTemplate('description', 'layouts');
+export function getHeaderDescriptionTemplate(): FC<HeaderDescriptionProps> {
+    return getTemplate('headerDescription', 'layouts');
 }
 
 export function getGoalTemplate(): FC<GoalProps> {
@@ -186,7 +189,7 @@ window.givewp.templates = {
     getElement: getElementTemplate,
     getGroup: getGroupTemplate,
     getHeader: getHeaderTemplate,
-    getTitle: getTitleTemplate,
-    getDescription: getDescriptionTemplate,
+    getHeaderTitle: getHeaderTitleTemplate,
+    getHeaderDescription: getHeaderDescriptionTemplate,
     getGoal: getGoalTemplate,
 };

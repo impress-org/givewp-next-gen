@@ -8,10 +8,12 @@ import type {
     getFieldErrorTemplate,
     getFieldLabelTemplate,
     getFieldTemplate,
+    getGoalTemplate,
     getGroupTemplate,
+    getHeaderDescriptionTemplate,
     getHeaderTemplate,
+    getHeaderTitleTemplate,
 } from '@givewp/blocks/form/app/templates';
-import {getDescriptionTemplate, getGoalTemplate, getTitleTemplate} from '@givewp/blocks/form/app/templates';
 
 if (!window.givewp) {
     // @ts-ignore
@@ -35,8 +37,8 @@ declare global {
                 getElement: typeof getElementTemplate;
                 getGroup: typeof getGroupTemplate;
                 getHeader: typeof getHeaderTemplate;
-                getTitle: typeof getTitleTemplate;
-                getDescription: typeof getDescriptionTemplate;
+                getHeaderTitle: typeof getHeaderTitleTemplate;
+                getHeaderDescription: typeof getHeaderDescriptionTemplate;
                 getGoal: typeof getGoalTemplate;
             };
             form: {

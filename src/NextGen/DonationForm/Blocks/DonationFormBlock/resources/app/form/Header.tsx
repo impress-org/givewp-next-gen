@@ -1,4 +1,4 @@
-import {getDescriptionTemplate, getGoalTemplate, getHeaderTemplate, getTitleTemplate} from '../templates';
+import {getGoalTemplate, getHeaderDescriptionTemplate, getHeaderTemplate, getHeaderTitleTemplate} from '../templates';
 import getWindowData from '../utilities/getWindowData';
 import {GoalType} from '@givewp/blocks/form/app/templates/layouts/Goal';
 import amountFormatter from '@givewp/blocks/form/app/utilities/amountFormatter';
@@ -6,8 +6,8 @@ import amountFormatter from '@givewp/blocks/form/app/utilities/amountFormatter';
 const {form} = getWindowData();
 
 const HeaderTemplate = getHeaderTemplate();
-const TitleTemplate = getTitleTemplate();
-const DescriptionTemplate = getDescriptionTemplate();
+const HeaderTitleTemplate = getHeaderTitleTemplate();
+const HeaderDescriptionTemplate = getHeaderDescriptionTemplate();
 const GoalTemplate = getGoalTemplate();
 
 /**
@@ -25,9 +25,9 @@ const formatGoalAmount = (amount: number) => {
 export default function Header() {
     return (
         <HeaderTemplate
-            Title={() => form.settings?.showHeading && <TitleTemplate text={form.settings.heading} />}
+            Title={() => form.settings?.showHeading && <HeaderTitleTemplate text={form.settings.heading} />}
             Description={() =>
-                form.settings?.showDescription && <DescriptionTemplate text={form.settings.description} />
+                form.settings?.showDescription && <HeaderDescriptionTemplate text={form.settings.description} />
             }
             Goal={() =>
                 form.goal?.show && (
