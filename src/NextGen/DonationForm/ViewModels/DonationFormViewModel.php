@@ -2,7 +2,6 @@
 
 namespace Give\NextGen\DonationForm\ViewModels;
 
-use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
@@ -104,10 +103,6 @@ class DonationFormViewModel
 
         return [
             'totalRevenue' => $totalRevenue,
-            'totalRevenueFormatted' => Money::fromDecimal(
-                $totalRevenue,
-                give_get_currency()
-            )->formatToLocale(),
             'totalCountValue' => $goalType->isDonors() ?
                 $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
                 $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),

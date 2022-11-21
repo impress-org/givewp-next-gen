@@ -184,15 +184,13 @@ export interface Form extends Group {
     };
     goal: {
         type: string;
-        typeIsCount: boolean;
-        typeIsMoney: boolean;
+        label: string;
         enabled: boolean;
         show: boolean;
+        typeIsCount: boolean;
+        typeIsMoney: boolean;
         currentAmount: number;
-        currentAmountFormatted: string;
         targetAmount: number;
-        targetAmountFormatted: string;
-        label: string;
         progressPercentage: number;
     };
     nodes: Section[];

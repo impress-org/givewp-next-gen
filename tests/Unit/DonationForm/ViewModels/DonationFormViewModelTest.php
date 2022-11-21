@@ -3,7 +3,6 @@
 namespace TestsNextGen\Unit\DonationForm\VieModels;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -48,14 +47,10 @@ class DonationFormViewModelTest extends TestCase
                 'goal' => $donationFormGoalData->toArray(),
                 'stats' => [
                     'totalRevenue' => $totalRevenue,
-                    'totalRevenueFormatted' => Money::fromDecimal(
-                        $totalRevenue,
-                        give_get_currency()
-                    )->formatToLocale(),
-                    'totalNumberOfDonationsOrDonors' => $goalType->isDonors() ?
+                    'totalCountValue' => $goalType->isDonors() ?
                         $donationFormRepository->getTotalNumberOfDonors($donationForm->id) :
                         $donationFormRepository->getTotalNumberOfDonations($donationForm->id),
-                    'totalNumberOfDonationsOrDonorsLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
+                    'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
                         'donations',
                         'give'
                     ),
