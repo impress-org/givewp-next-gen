@@ -6,3 +6,8 @@
 @import 'gateways';
 @import 'goal';
 @import 'header';
+
+body,
+.givewp-donation-form-block {
+    font-family: var(--give-primary-font, inherit), sans-serif;
+}

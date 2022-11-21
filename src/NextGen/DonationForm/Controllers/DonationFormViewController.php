@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\Controllers;
 
 use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
+use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
@@ -162,7 +163,8 @@ class DonationFormViewController
     {
         wp_enqueue_global_styles();
 
-        if ($viewModel->primaryFont()) {
+        // TODO: update font loading to be form design specific. Currently this is only used for classic form design until we introduce font settings to our form builder.
+        if ($viewModel->primaryFont() && $viewModel->designId() === ClassicFormDesign::id()) {
             wp_enqueue_style(
                 'givewp-google-font',
                 'https://fonts.googleapis.com/css?family=' . urlencode(
