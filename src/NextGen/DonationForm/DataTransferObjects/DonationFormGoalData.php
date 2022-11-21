@@ -3,7 +3,6 @@
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use Give\Framework\Support\Contracts\Arrayable;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 
@@ -73,18 +72,12 @@ class DonationFormGoalData implements Arrayable
 
         return [
             'type' => $this->goalType->getValue(),
+            'typeIsCount' => !$this->goalType->isAmount(),
+            'typeIsMoney' => $this->goalType->isAmount(),
             'enabled' => $this->isEnabled,
             'show' => $this->isEnabled,
             'currentAmount' => $currentAmount,
-            'currentAmountFormatted' => $this->goalType->isAmount() ? Money::fromDecimal(
-                $currentAmount,
-                give_get_currency()
-            )->formatToLocale() : $currentAmount,
             'targetAmount' => $this->targetAmount,
-            'targetAmountFormatted' => $this->goalType->isAmount() ? Money::fromDecimal(
-                $this->targetAmount,
-                give_get_currency()
-            )->formatToLocale() : $this->targetAmount,
             'label' => $this->goalType->isDonors() ? __('donors', 'give') : __('donations', 'give'),
             'progressPercentage' => !$currentAmount ? 0 : ($currentAmount / $this->targetAmount) * 100
         ];

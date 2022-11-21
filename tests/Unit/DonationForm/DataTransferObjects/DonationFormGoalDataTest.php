@@ -2,7 +2,6 @@
 
 namespace TestsNextGen\Unit\DonationForm\VieModels;
 
-use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
@@ -28,18 +27,12 @@ class DonationFormGoalDataTest extends TestCase
 
         $this->assertEquals($donationFormGoalData->toArray(),  [
             'type' => $goalType->getValue(),
+            'typeIsCount' => !$goalType->isAmount(),
+            'typeIsMoney' => $goalType->isAmount(),
             'enabled' => $isEnabled,
             'show' => $isEnabled,
             'currentAmount' => $currentAmount,
-            'currentAmountFormatted' => $goalType->isAmount() ? Money::fromDecimal(
-                $currentAmount,
-                give_get_currency()
-            )->formatToLocale() : $currentAmount,
             'targetAmount' => $targetAmount,
-            'targetAmountFormatted' => $goalType->isAmount() ? Money::fromDecimal(
-                $targetAmount,
-                give_get_currency()
-            )->formatToLocale() : $targetAmount,
             'label' => $goalType->isDonors() ? __('donors', 'give') : __('donations', 'give'),
             'progressPercentage' => !$currentAmount ? 0 : ($currentAmount / $targetAmount) * 100
         ]);

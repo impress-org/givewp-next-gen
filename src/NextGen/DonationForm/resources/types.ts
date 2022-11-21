@@ -184,6 +184,8 @@ export interface Form extends Group {
     };
     goal: {
         type: string;
+        typeIsCount: boolean;
+        typeIsMoney: boolean;
         enabled: boolean;
         show: boolean;
         currentAmount: number;
