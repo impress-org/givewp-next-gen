@@ -24,7 +24,9 @@ class DonationFormViewModel
      */
     private $formBlocks;
     /**
-     * @var array
+     * TODO: replace formSettings array with $donationForm->settings object when property gets updated
+     *
+     * @var array{designId: string, primaryColor: string, secondaryColor: string, goalType: string}
      */
     private $formSettings;
     /**
@@ -80,7 +82,7 @@ class DonationFormViewModel
         if ($this->designId() === ClassicFormDesign::id()) {
             return 'Montserrat';
         }
-        
+
         return 'system-ui';
     }
 
