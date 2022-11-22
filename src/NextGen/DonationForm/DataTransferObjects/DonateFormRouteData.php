@@ -2,7 +2,6 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
-use Give\Framework\FieldsAPI\Field;
 use Give\Framework\Validation\Validator;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
