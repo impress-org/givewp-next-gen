@@ -63,10 +63,11 @@ class DonateFormRouteData
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
-        foreach($validator->validated() as $fieldId => $value) {
+        foreach ($validator->validated() as $fieldId => $value) {
             $validData->{$fieldId} = $value;
         }
 
+        $validData->formTitle = $form->title;
         $validData->wpUserId = get_current_user_id();
 
         return $validData;
