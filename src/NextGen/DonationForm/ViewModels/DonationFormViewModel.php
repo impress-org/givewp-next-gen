@@ -4,7 +4,6 @@ namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
-use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
@@ -69,20 +68,6 @@ class DonationFormViewModel
     public function secondaryColor(): string
     {
         return $this->formSettings['secondaryColor'] ?? '';
-    }
-
-    /**
-     * TODO: update font settings to be form design specific.
-     *
-     * @unreleased
-     */
-    public function primaryFont(): string
-    {
-        if ($this->designId() === ClassicFormDesign::id()) {
-            return 'Montserrat';
-        }
-
-        return 'system-ui';
     }
 
     /**
