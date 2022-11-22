@@ -1,4 +1,5 @@
 import {FC, ReactNode} from 'react';
+import {FormSettings} from '@givewp/form-builder/src/types';
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -81,7 +82,7 @@ export interface Gateway {
     afterCreatePayment?(response: object): Promise<void> | Error;
 }
 
-export interface Template {
+export interface FormDesign {
     id: string;
     fields?: {
         amount?: ReactNode;
@@ -99,6 +100,10 @@ export interface Template {
     layouts?: {
         section?: ReactNode;
         form?: ReactNode;
+        header?: ReactNode;
+        title?: ReactNode;
+        description?: ReactNode;
+        goal?: ReactNode;
     };
 }
 
@@ -169,6 +174,25 @@ export interface Section extends Group {
 }
 
 export interface Form extends Group {
+    currency: string;
+    settings: FormSettings;
+    stats: {
+        totalRevenue: number;
+        totalRevenueFormatted: string;
+        totalCountValue: number;
+        totalCountLabel: string;
+    };
+    goal: {
+        type: string;
+        label: string;
+        enabled: boolean;
+        show: boolean;
+        typeIsCount: boolean;
+        typeIsMoney: boolean;
+        currentAmount: number;
+        targetAmount: number;
+        progressPercentage: number;
+    };
     nodes: Section[];
 }
 

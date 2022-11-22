@@ -16,12 +16,19 @@ const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load(
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
     settings: {
-        formTitle: __('My Default Donation Form Title'),
+        formTitle: __('My Default Donation Form Title', 'give'),
         enableDonationGoal: false,
         enableAutoClose: false,
         registration: 'none',
-        goalFormat: 'amount-raised',
-        templateId: 'classic',
+        goalType: 'amount',
+        designId: 'classic',
+        showHeading: true,
+        showDescription: true,
+        heading: __('Support Our Cause', 'give'),
+        description: __(
+            'Help our organization by donating today! Donations go to making a difference for our cause.',
+            'give'
+        ),
         primaryColor: '#69b86b',
         secondaryColor: '#f49420',
         ...initialFormSettings,

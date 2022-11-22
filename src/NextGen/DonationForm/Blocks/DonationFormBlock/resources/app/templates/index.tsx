@@ -17,7 +17,14 @@ import classNames from 'classnames';
 import Gateways from './fields/Gateways';
 import Paragraph from './elements/Paragraph';
 import FieldLabel, {FieldLabelProps} from './layouts/FieldLabel';
-import FieldError, {FieldErrorProps} from './layouts/FieldError';
+import type {FieldErrorProps} from './layouts/FieldError';
+import FieldError from './layouts/FieldError';
+import Header, {HeaderProps} from './layouts/Header';
+import type {HeaderTitleProps} from './layouts/HeaderTitle';
+import HeaderTitle from './layouts/HeaderTitle';
+import type {HeaderDescriptionProps} from './layouts/HeaderDescription';
+import HeaderDescription from './layouts/HeaderDescription';
+import Goal, {GoalProps} from './layouts/Goal';
 
 export function NodeWrapper({
     type,
@@ -53,7 +60,7 @@ export function withWrapper(NodeComponent, section, type, htmlTag) {
     };
 }
 
-const defaultTemplate = {
+const defaultFormDesign = {
     fields: {
         amount: AmountField,
         text: TextField,
@@ -76,33 +83,42 @@ const defaultTemplate = {
         form: Form,
         fieldLabel: FieldLabel,
         fieldError: FieldError,
+        header: Header,
+        headerTitle: HeaderTitle,
+        headerDescription: HeaderDescription,
+        goal: Goal,
     },
 };
 
-// Retrieve the active template and apply any overrides to generate the final templates.
-const activeTemplate = window.givewp.template.get();
+// Retrieve the active form design and apply any overrides to generate the final templates.
+const activeFormDesign = window.givewp.form.designs.get();
 
-const template = {
+const activeFormDesignTemplate = {
     fields: {
-        ...defaultTemplate.fields,
-        ...activeTemplate?.fields,
+        ...defaultFormDesign.fields,
+        ...activeFormDesign?.fields,
     },
     elements: {
-        ...defaultTemplate.elements,
-        ...activeTemplate?.elements,
+        ...defaultFormDesign.elements,
+        ...activeFormDesign?.elements,
     },
     groups: {
-        ...defaultTemplate.groups,
-        ...activeTemplate?.groups,
+        ...defaultFormDesign.groups,
+        ...activeFormDesign?.groups,
     },
     layouts: {
-        ...defaultTemplate.layouts,
-        ...activeTemplate?.layouts,
+        ...defaultFormDesign.layouts,
+        ...activeFormDesign?.layouts,
     },
 };
 
 // The following functions are used to retrieve the various templates for the form.
-function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string): FC<NodeProps> {
+function getTemplate<NodeProps>(
+    type: string,
+    section: string,
+    htmlTag?: string,
+    template = activeFormDesignTemplate
+): FC<NodeProps> {
     const Node = template[section].hasOwnProperty(type)
         ? withWrapper(template[section][type], section, type, htmlTag)
         : null;
@@ -145,6 +161,22 @@ export function getFieldErrorTemplate(): FC<FieldErrorProps> {
     return getTemplate('fieldError', 'layouts');
 }
 
+export function getHeaderTemplate(): FC<HeaderProps> {
+    return getTemplate('header', 'layouts');
+}
+
+export function getHeaderTitleTemplate(): FC<HeaderTitleProps> {
+    return getTemplate('headerTitle', 'layouts');
+}
+
+export function getHeaderDescriptionTemplate(): FC<HeaderDescriptionProps> {
+    return getTemplate('headerDescription', 'layouts');
+}
+
+export function getGoalTemplate(): FC<GoalProps> {
+    return getTemplate('goal', 'layouts');
+}
+
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {
     return typeof Node === 'function';
 }
@@ -156,4 +188,8 @@ window.givewp.templates = {
     getField: getFieldTemplate,
     getElement: getElementTemplate,
     getGroup: getGroupTemplate,
+    getHeader: getHeaderTemplate,
+    getHeaderTitle: getHeaderTitleTemplate,
+    getHeaderDescription: getHeaderDescriptionTemplate,
+    getGoal: getGoalTemplate,
 };

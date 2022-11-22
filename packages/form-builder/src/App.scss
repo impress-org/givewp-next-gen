@@ -251,13 +251,6 @@ svg {
     width: 100%;
 }
 
-.components-select-control, // Select control has a different structure, apparently.
-.components-base-control:not(.components-toggle-control) .components-base-control__field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
 /** ------------------------------- */
 
 /**

@@ -1,16 +1,19 @@
 import GatewayRegistrar from './GatewayRegistrar';
-import TemplateRegistrar from './TemplateRegistrar';
+import FormDesignRegistrar from './FormDesignRegistrar';
 import type {FormServerExports} from '@givewp/forms/types';
-import type {useWatch, useFormContext} from 'react-hook-form';
+import type {useFormContext, useWatch} from 'react-hook-form';
 
 import type {
-    // import the functions as types so that they are not included in the bundle
-    getFieldLabelTemplate,
-    getFieldErrorTemplate,
-    getFieldTemplate,
     getElementTemplate,
+    getFieldErrorTemplate,
+    getFieldLabelTemplate,
+    getFieldTemplate,
+    getGoalTemplate,
     getGroupTemplate,
-} from '../../Blocks/DonationFormBlock/resources/app/templates';
+    getHeaderDescriptionTemplate,
+    getHeaderTemplate,
+    getHeaderTitleTemplate,
+} from '@givewp/blocks/form/app/templates';
 
 if (!window.givewp) {
     // @ts-ignore
@@ -18,23 +21,32 @@ if (!window.givewp) {
 }
 
 window.givewp.gateways = new GatewayRegistrar();
-window.givewp.template = new TemplateRegistrar();
+window.givewp.form = {
+    ...window.givewp.form,
+    designs: new FormDesignRegistrar(),
+};
 
 declare global {
     interface Window {
         givewp: {
             gateways: GatewayRegistrar;
-            template: TemplateRegistrar;
             templates: {
                 getFieldLabel: typeof getFieldLabelTemplate;
                 getFieldError: typeof getFieldErrorTemplate;
                 getField: typeof getFieldTemplate;
                 getElement: typeof getElementTemplate;
                 getGroup: typeof getGroupTemplate;
+                getHeader: typeof getHeaderTemplate;
+                getHeaderTitle: typeof getHeaderTitleTemplate;
+                getHeaderDescription: typeof getHeaderDescriptionTemplate;
+                getGoal: typeof getGoalTemplate;
             };
             form: {
-                useFormContext: typeof useFormContext;
-                useWatch: typeof useWatch;
+                designs: FormDesignRegistrar;
+                hooks: {
+                    useFormContext: typeof useFormContext;
+                    useWatch: typeof useWatch;
+                };
             };
         };
         giveNextGenExports: FormServerExports;

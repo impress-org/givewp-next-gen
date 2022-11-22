@@ -7,28 +7,25 @@ import {
     SelectControl,
     ToggleControl,
 } from '@wordpress/components';
+import debounce from 'lodash.debounce';
 
 const DonationGoalSettings = () => {
     const {
-        settings: {enableDonationGoal, enableAutoClose, goalFormat, goalAmount},
+        settings: {enableDonationGoal, enableAutoClose, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
-    const goalFormatOptions = [
+    const goalTypeOptions = [
         {
-            value: 'amount-raised',
+            value: 'amount',
             label: __('Amount Raised', 'give'),
         },
         {
-            value: 'percentage-raised',
-            label: __('Percentage Raised', 'give'),
-        },
-        {
-            value: 'number-donations',
+            value: 'donations',
             label: __('Number of Donations', 'give'),
         },
         {
-            value: 'number-donors',
+            value: 'donors',
             label: __('Number of Donors', 'give'),
         },
     ];
@@ -60,23 +57,19 @@ const DonationGoalSettings = () => {
                         />
                     </PanelRow>
                     <PanelRow>
+                        <SelectControl
+                            label={__('Goal Type', 'give')}
+                            value={goalType}
+                            options={goalTypeOptions}
+                            onChange={(goalType) => dispatch(setFormSettings({goalType: goalType}))}
+                        />
+                    </PanelRow>
+                    <PanelRow>
                         <NumberControl
                             label={__('Goal Amount', 'give')}
                             min={0}
                             value={goalAmount}
-                            onChange={(goalAmount) => dispatch(setFormSettings({goalAmount}))}
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Goal Format', 'give')}
-                            help={__(
-                                'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".',
-                                'give'
-                            )}
-                            value={goalFormat}
-                            options={goalFormatOptions}
-                            onChange={(goalFormat) => dispatch(setFormSettings({goalFormat}))}
+                            onChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 100)}
                         />
                     </PanelRow>
                 </>
