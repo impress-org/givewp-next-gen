@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
@@ -20,7 +21,7 @@ class DonationFormPreviewRouteData
     public $formBlocks;
 
     /**
-     * @var array
+     * @var FormSettings|null
      */
     public $formSettings;
 
@@ -36,7 +37,9 @@ class DonationFormPreviewRouteData
         $self = new static();
 
         $self->formId = (int)$request['form-id'];
-        $self->formSettings = !empty($request['form-settings']) ? json_decode($request['form-settings'], true) : [];
+        $self->formSettings = !empty($request['form-settings']) ? FormSettings::fromJson(
+            $request['form-settings']
+        ) : null;
         $self->formBlocks = !empty($request['form-blocks']) ? BlockCollection::fromJson(
             $request['form-blocks']
         ) : null;

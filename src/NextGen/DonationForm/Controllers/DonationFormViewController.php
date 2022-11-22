@@ -37,11 +37,17 @@ class DonationFormViewController
     {
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($data->formId);
+        
+        if ($data->formSettings) {
+            foreach ($data->formSettings->toArray() as $key => $value) {
+                $donationForm->settings->{$key} = $value;
+            }
+        }
 
         $viewModel = new DonationFormViewModel(
             $donationForm->id,
             $data->formBlocks ?: $donationForm->blocks,
-            array_merge($donationForm->settings, $data->formSettings)
+            $donationForm->settings
         );
 
         return $viewModel->render();

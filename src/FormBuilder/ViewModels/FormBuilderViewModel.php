@@ -23,7 +23,7 @@ class FormBuilderViewModel
             'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($donationFormId),
             'nonce' => wp_create_nonce('wp_rest'),
             'blockData' => $donationForm->blocks->toJson(),
-            'settings' => json_encode($donationForm->settings),
+            'settings' => $donationForm->settings->toJson(),
             'currency' => give_get_currency(),
             'formDesigns' => array_map(static function ($designClass) {
                 /** @var FormDesign $design */

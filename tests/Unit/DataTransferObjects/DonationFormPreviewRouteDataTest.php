@@ -40,7 +40,7 @@ class DonationFormPreviewRouteDataTest extends TestCase
             ]),
         ]);
 
-        $this->assertSame('classic', $data->formSettings['designId']);
+        $this->assertSame('classic', $data->formSettings->designId);
     }
 
     /**

@@ -5,8 +5,9 @@ namespace Give\NextGen\DonationForm\ViewModels;
 use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
+use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
-use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
+use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
@@ -40,7 +41,7 @@ class DonationFormViewModel
     public function __construct(
         int $donationFormId,
         BlockCollection $formBlocks,
-        array $formSettings = []
+        FormSettings $formSettings
     ) {
         $this->donationFormId = $donationFormId;
         $this->formBlocks = $formBlocks;
@@ -53,7 +54,7 @@ class DonationFormViewModel
      */
     public function designId(): string
     {
-        return $this->formSettings['designId'] ?? '';
+        return $this->formSettings->designId ?? '';
     }
 
     /**
@@ -61,7 +62,7 @@ class DonationFormViewModel
      */
     public function primaryColor(): string
     {
-        return $this->formSettings['primaryColor'] ?? '';
+        return $this->formSettings->primaryColor ?? '';
     }
 
     /**
@@ -69,15 +70,15 @@ class DonationFormViewModel
      */
     public function secondaryColor(): string
     {
-        return $this->formSettings['secondaryColor'] ?? '';
+        return $this->formSettings->secondaryColor ?? '';
     }
 
     /**
      * @unreleased
      */
-    private function goalType(): GoalTypeOptions
+    private function goalType(): GoalType
     {
-        return new GoalTypeOptions($this->formSettings['goalType'] ?? GoalTypeOptions::AMOUNT);
+        return $this->formSettings->goalType ?? GoalType::AMOUNT();
     }
 
     /**
