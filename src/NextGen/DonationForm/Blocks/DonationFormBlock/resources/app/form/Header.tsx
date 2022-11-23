@@ -1,6 +1,6 @@
 import {getGoalTemplate, getHeaderDescriptionTemplate, getHeaderTemplate, getHeaderTitleTemplate} from '../templates';
 import getWindowData from '../utilities/getWindowData';
-import {GoalType} from '@givewp/blocks/form/app/templates/layouts/Goal';
+import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/blocks/form/app/utilities/amountFormatter';
 
 const {form} = getWindowData();

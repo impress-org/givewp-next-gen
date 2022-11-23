@@ -1,15 +1,4 @@
 import {useFormContext, useFormState, useWatch} from 'react-hook-form';
-import {
-    getElementTemplate,
-    getFieldErrorTemplate,
-    getFieldLabelTemplate,
-    getFieldTemplate,
-    getGoalTemplate,
-    getGroupTemplate,
-    getHeaderDescriptionTemplate,
-    getHeaderTemplate,
-    getHeaderTitleTemplate,
-} from '@givewp/blocks/form/app/templates';
 
 /**
  *
@@ -22,17 +11,5 @@ export default function mountWindowData(): void {
         useFormContext,
         useWatch,
         useFormState,
-    };
-
-    window.givewp.form.templates = {
-        getFieldLabel: getFieldLabelTemplate,
-        getFieldError: getFieldErrorTemplate,
-        getField: getFieldTemplate,
-        getElement: getElementTemplate,
-        getGroup: getGroupTemplate,
-        getHeader: getHeaderTemplate,
-        getHeaderTitle: getHeaderTitleTemplate,
-        getHeaderDescription: getHeaderDescriptionTemplate,
-        getGoal: getGoalTemplate,
     };
 }
