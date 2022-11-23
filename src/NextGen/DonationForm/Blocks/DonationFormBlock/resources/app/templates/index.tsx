@@ -1,30 +1,20 @@
-import {FC, ReactNode} from 'react';
-import {applyFilters} from '@wordpress/hooks';
-import type {Element} from '@givewp/forms/types';
-import type {ElementProps, FieldProps, GroupProps} from '@givewp/forms/propTypes';
-import TextField from './fields/Text';
-import TextAreaField from './fields/TextArea';
-import EmailField from './fields/Email';
-import HiddenField from './fields/Hidden';
-import HtmlElement from './elements/Html';
-import DonationSummaryElement from './elements/DonationSummary';
-import NameGroup from './groups/Name';
-import SectionLayout, {SectionProps} from './layouts/Section';
-import Form, {FormProps} from './layouts/Form';
-import AmountField from './fields/Amount';
-import SelectField from './fields/Select';
+import type {FC, ReactNode} from 'react';
 import classNames from 'classnames';
-import Gateways from './fields/Gateways';
-import Paragraph from './elements/Paragraph';
-import FieldLabel, {FieldLabelProps} from './layouts/FieldLabel';
-import type {FieldErrorProps} from './layouts/FieldError';
-import FieldError from './layouts/FieldError';
-import Header, {HeaderProps} from './layouts/Header';
-import type {HeaderTitleProps} from './layouts/HeaderTitle';
-import HeaderTitle from './layouts/HeaderTitle';
-import type {HeaderDescriptionProps} from './layouts/HeaderDescription';
-import HeaderDescription from './layouts/HeaderDescription';
-import Goal, {GoalProps} from './layouts/Goal';
+import {applyFilters} from '@wordpress/hooks';
+import type {Element, FormDesign} from '@givewp/forms/types';
+import type {
+    ElementProps,
+    FieldErrorProps,
+    FieldLabelProps,
+    FieldProps,
+    FormProps,
+    GoalProps,
+    GroupProps,
+    HeaderDescriptionProps,
+    HeaderProps,
+    HeaderTitleProps,
+    SectionProps,
+} from '@givewp/forms/propTypes';
 
 export function NodeWrapper({
     type,
@@ -60,65 +50,11 @@ export function withWrapper(NodeComponent, section, type, htmlTag) {
     };
 }
 
-const defaultFormDesign = {
-    fields: {
-        amount: AmountField,
-        text: TextField,
-        textarea: TextAreaField,
-        email: EmailField,
-        hidden: HiddenField,
-        gateways: Gateways,
-        select: SelectField,
-    },
-    elements: {
-        paragraph: Paragraph,
-        html: HtmlElement,
-        donationSummary: DonationSummaryElement,
-    },
-    groups: {
-        name: NameGroup,
-    },
-    layouts: {
-        section: SectionLayout,
-        form: Form,
-        fieldLabel: FieldLabel,
-        fieldError: FieldError,
-        header: Header,
-        headerTitle: HeaderTitle,
-        headerDescription: HeaderDescription,
-        goal: Goal,
-    },
-};
-
 // Retrieve the active form design and apply any overrides to generate the final templates.
-const activeFormDesign = window.givewp.form.designs.get();
-
-const activeFormDesignTemplate = {
-    fields: {
-        ...defaultFormDesign.fields,
-        ...activeFormDesign?.fields,
-    },
-    elements: {
-        ...defaultFormDesign.elements,
-        ...activeFormDesign?.elements,
-    },
-    groups: {
-        ...defaultFormDesign.groups,
-        ...activeFormDesign?.groups,
-    },
-    layouts: {
-        ...defaultFormDesign.layouts,
-        ...activeFormDesign?.layouts,
-    },
-};
+const template: FormDesign = window.givewp.form.designs.get();
 
 // The following functions are used to retrieve the various templates for the form.
-function getTemplate<NodeProps>(
-    type: string,
-    section: string,
-    htmlTag?: string,
-    template = activeFormDesignTemplate
-): FC<NodeProps> {
+function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string): FC<NodeProps> {
     const Node = template[section].hasOwnProperty(type)
         ? withWrapper(template[section][type], section, type, htmlTag)
         : null;
@@ -180,16 +116,3 @@ export function getGoalTemplate(): FC<GoalProps> {
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {
     return typeof Node === 'function';
 }
-
-// Mount the templates to the window object, so they can be accessed within the form by third parties.
-window.givewp.templates = {
-    getFieldLabel: getFieldLabelTemplate,
-    getFieldError: getFieldErrorTemplate,
-    getField: getFieldTemplate,
-    getElement: getElementTemplate,
-    getGroup: getGroupTemplate,
-    getHeader: getHeaderTemplate,
-    getHeaderTitle: getHeaderTitleTemplate,
-    getHeaderDescription: getHeaderDescriptionTemplate,
-    getGoal: getGoalTemplate,
-};

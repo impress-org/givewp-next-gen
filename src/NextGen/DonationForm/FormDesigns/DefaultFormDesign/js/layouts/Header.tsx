@@ -1,10 +1,4 @@
-import {FC} from 'react';
-
-export interface HeaderProps {
-    Title: FC;
-    Description: FC;
-    Goal: FC;
-}
+import {HeaderProps} from "@givewp/forms/propTypes";
 
 /**
  * @unreleased

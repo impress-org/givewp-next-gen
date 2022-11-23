@@ -1,6 +1,4 @@
-export interface HeaderTitleProps {
-    text: string;
-}
+import {HeaderTitleProps} from '@givewp/forms/propTypes';
 
 /**
  * @unreleased

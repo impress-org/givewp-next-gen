@@ -1,5 +1,7 @@
 import {__} from '@wordpress/i18n';
-import GoalTemplate, {GoalProps} from '@givewp/blocks/form/app/templates/layouts/Goal';
+
+const defaultTemplate = window.givewp.form.designs.get();
+const GoalTemplate = defaultTemplate.layouts.goal;
 
 /**
  * @unreleased
@@ -12,8 +14,7 @@ const FormStats = ({totalRevenue, goalTargetAmount, totalCountValue, totalCountL
                     <span className="givewp-form-stats-panel-stat-number">{totalRevenue} </span> {__('raised', 'give')}
                 </li>
                 <li className="givewp-form-stats-panel-stat">
-                    <span className="givewp-form-stats-panel-stat-number">{totalCountValue} </span>{' '}
-                    {totalCountLabel}
+                    <span className="givewp-form-stats-panel-stat-number">{totalCountValue} </span> {totalCountLabel}
                 </li>
                 <li className="givewp-form-stats-panel-stat">
                     <span className="givewp-form-stats-panel-stat-number">{goalTargetAmount} </span>{' '}
@@ -27,7 +28,7 @@ const FormStats = ({totalRevenue, goalTargetAmount, totalCountValue, totalCountL
 /**
  * @unreleased
  */
-export default function Goal(props: GoalProps) {
+export default function Goal(props) {
     const {targetAmountFormatted, totalRevenueFormatted, totalCountValue, totalCountLabel} = props;
 
     return (

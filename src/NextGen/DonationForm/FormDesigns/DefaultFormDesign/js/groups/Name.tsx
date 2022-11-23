@@ -1,15 +1,7 @@
-import {NodeWrapper} from '../index';
-import type {FieldProps, GroupProps, SelectFieldProps} from '@givewp/forms/propTypes';
+import {NodeWrapper} from '../utilities';
+import type {NameProps} from '@givewp/forms/propTypes';
 import Text from '../fields/Text';
 import Select from '../fields/Select';
-
-interface NameProps extends GroupProps {
-    fieldProps: {
-        honorific: SelectFieldProps | null;
-        firstName: FieldProps;
-        lastName: FieldProps | null;
-    };
-}
 
 export default function Name({fieldProps}: NameProps) {
     return (

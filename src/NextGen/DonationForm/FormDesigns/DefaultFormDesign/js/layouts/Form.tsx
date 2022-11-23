@@ -1,12 +1,5 @@
-import {FormHTMLAttributes, ReactNode} from 'react';
+import {FormProps} from '@givewp/forms/propTypes';
 import {__} from '@wordpress/i18n';
-
-export interface FormProps {
-    formProps: FormHTMLAttributes<unknown>;
-    children: ReactNode;
-    formError: string | null;
-    isSubmitting: boolean;
-}
 
 export default function Form({children, formProps, formError, isSubmitting}: FormProps) {
     return (
@@ -14,9 +7,7 @@ export default function Form({children, formProps, formError, isSubmitting}: For
             {children}
             {formError && (
                 <div style={{textAlign: 'center'}}>
-                    <p>
-                        {__('The following error occurred when submitting the form:', 'give')}
-                    </p>
+                    <p>{__('The following error occurred when submitting the form:', 'give')}</p>
                     <p>{formError}</p>
                 </div>
             )}

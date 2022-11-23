@@ -1,10 +1,8 @@
-export interface HeaderDescriptionProps {
-    text: string;
-}
+import {HeaderDescriptionProps} from '@givewp/forms/propTypes';
 
 /**
  * @unreleased
  */
 export default function HeaderDescription({text}: HeaderDescriptionProps) {
-    return <p>{text}</p>
+    return <p>{text}</p>;
 }

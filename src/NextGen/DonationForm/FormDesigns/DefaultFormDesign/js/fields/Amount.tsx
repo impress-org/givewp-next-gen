@@ -1,12 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useMemo} from 'react';
 import classNames from 'classnames';
-import type {FieldProps} from '@givewp/forms/propTypes';
-
-interface AmountProps extends FieldProps {
-    levels: Number[];
-    allowCustomAmount: boolean;
-}
+import type {AmountProps} from '@givewp/forms/propTypes';
 
 export default function Amount({
     name,

@@ -1,6 +1,5 @@
 import {createContext, ReactChild, useContext} from 'react';
-// import type {Gateway} from '../types/Gateway';
-import {Gateway} from '@givewp/forms/types';
+import type {Gateway} from '@givewp/forms/types';
 
 const GiveDonationFormStore = createContext(null);
 GiveDonationFormStore.displayName = 'GiveDonationFormStore';

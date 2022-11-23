@@ -1,5 +1,22 @@
-import {FC, ReactNode} from 'react';
-import {FormSettings} from '@givewp/form-builder/src/types';
+import type {FC} from 'react';
+import type {FormSettings} from '@givewp/form-builder/src/types';
+import type {
+    AmountProps,
+    FieldErrorProps,
+    FieldLabelProps,
+    FieldProps,
+    FormProps,
+    GatewayFieldProps,
+    GoalProps,
+    HeaderDescriptionProps,
+    HeaderProps,
+    HeaderTitleProps,
+    HtmlProps,
+    NameProps,
+    ParagraphProps,
+    SectionProps,
+    SelectFieldProps,
+} from '@givewp/forms/propTypes';
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -85,25 +102,33 @@ export interface Gateway {
 export interface FormDesign {
     id: string;
     fields?: {
-        amount?: ReactNode;
-        text?: ReactNode;
-        textarea?: ReactNode;
-        email?: ReactNode;
-        hidden?: ReactNode;
+        amount?: FC<AmountProps>;
+        text?: FC<FieldProps>;
+        textarea?: FC<FieldProps>;
+        email?: FC<FieldProps>;
+        hidden?: FC<FieldProps>;
+        gateways?: FC<GatewayFieldProps>;
+        select?: FC<SelectFieldProps>;
     };
     elements?: {
-        html?: ReactNode;
+        paragraph?: FC<ParagraphProps>;
+        html?: FC<HtmlProps>;
+        donationSummary?: FC;
     };
     groups?: {
-        name?: ReactNode;
+        name?: FC<NameProps>;
     };
     layouts?: {
-        section?: ReactNode;
-        form?: ReactNode;
-        header?: ReactNode;
-        title?: ReactNode;
-        description?: ReactNode;
-        goal?: ReactNode;
+        section?: FC<SectionProps>;
+        form?: FC<FormProps>;
+        header?: FC<HeaderProps>;
+        title?: FC<HeaderTitleProps>;
+        description?: FC<HeaderDescriptionProps>;
+        goal?: FC<GoalProps>;
+        fieldLabel?: FC<FieldLabelProps>;
+        fieldError?: FC<FieldErrorProps>;
+        headerTitle?: FC<HeaderTitleProps>;
+        headerDescription?: FC<HeaderDescriptionProps>;
     };
 }
 

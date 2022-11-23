@@ -1,12 +1,11 @@
-import {UseFormRegisterReturn, useFormState} from 'react-hook-form';
+import {UseFormRegisterReturn} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
-import {useGiveDonationFormStore} from '../../store';
-import {FieldProps} from '@givewp/forms/propTypes';
-import {Gateway} from '@givewp/forms/types';
+import type {GatewayFieldProps} from '@givewp/forms/propTypes';
+import type {Gateway} from '@givewp/forms/types';
 
-export default function Gateways({inputProps}: FieldProps) {
-    const {errors} = useFormState();
-    const {gateways} = useGiveDonationFormStore();
+export default function Gateways({inputProps}: GatewayFieldProps) {
+    const gateways = window.givewp.gateways.getAll();
+    const {errors} = window.givewp.form.hooks.useFormState();
 
     return (
         <>

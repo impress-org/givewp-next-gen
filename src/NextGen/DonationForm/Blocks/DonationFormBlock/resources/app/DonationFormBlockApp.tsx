@@ -6,6 +6,7 @@ import getWindowData from './utilities/getWindowData';
 import prepareFormData from './utilities/PrepareFormData';
 import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
 import Header from './form/Header';
+import mountWindowData from '@givewp/blocks/form/app/utilities/mountWIndowData';
 
 /**
  * Get data from the server
@@ -13,6 +14,8 @@ import Header from './form/Header';
 const {form} = getWindowData();
 
 prepareFormData(form);
+
+mountWindowData();
 
 /**
  * Prepare default values for form
@@ -24,6 +27,7 @@ const schema = getJoiRulesForForm(form);
 const initialState = {
     gateways: window.givewp.gateways.getAll(),
 };
+
 
 function App() {
     return (

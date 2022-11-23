@@ -1,4 +1,4 @@
-import {FormProvider, useForm, useFormContext, useFormState, useWatch} from 'react-hook-form';
+import {FormProvider, useForm, useFormState} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 
 import getWindowData from '../utilities/getWindowData';
@@ -12,11 +12,6 @@ import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import DonationReceipt from './DonationReceipt';
 import {ObjectSchema} from 'joi';
-
-window.givewp.form.hooks = {
-    useFormContext,
-    useWatch,
-};
 
 const {donateUrl} = getWindowData();
 

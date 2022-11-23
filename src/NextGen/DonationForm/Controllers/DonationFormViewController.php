@@ -92,6 +92,15 @@ class DonationFormViewController
             'give'
         ))->loadInFooter()->enqueue();
 
+        // load default givewp design template
+        (new EnqueueScript(
+            'givewp-default-donation-form-design-js',
+            'build/defaultFormDesignJs.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        ))->loadInFooter()->enqueue();
+
         // load template
         /** @var FormDesignRegistrar $formDesignRegistrar */
         $formDesignRegistrar = give(FormDesignRegistrar::class);

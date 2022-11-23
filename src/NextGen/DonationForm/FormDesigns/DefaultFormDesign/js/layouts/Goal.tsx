@@ -1,26 +1,6 @@
 import {CSSProperties} from 'react';
 import {__} from '@wordpress/i18n';
-
-export enum GoalType {
-    AMOUNT = 'amount',
-    DONATIONS = 'donations',
-    DONORS = 'donors',
-}
-
-export interface GoalProps {
-    currency: string;
-    type: GoalType;
-    currentAmount: number;
-    currentAmountFormatted: string;
-    targetAmount: number;
-    targetAmountFormatted: string;
-    goalLabel: string;
-    progressPercentage: number;
-    totalRevenue: number;
-    totalRevenueFormatted: string;
-    totalCountValue: number;
-    totalCountLabel: string;
-}
+import {GoalProps} from '@givewp/forms/propTypes';
 
 /**
  * @unreleased
