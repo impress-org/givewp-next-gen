@@ -7,7 +7,7 @@ const Header = ({title, closeCallback}) => {
         <header style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
+            alignItems: 'center',
         }}>
             <div style={{
                 display: 'flex',
