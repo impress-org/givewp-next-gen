@@ -323,3 +323,15 @@ svg {
     // Prevent scrollbar in popover color picker.
     .components-color-picker .components-h-stack { width: auto; }
 }
+
+/** ------------------------------- */
+
+/**
+ * Add space to avoid overlap with elements fixed to the bottom right of the editor.
+ */
+
+.sidebar-panel {
+    padding-bottom: 80px;
+}
+
+/** ------------------------------- */
