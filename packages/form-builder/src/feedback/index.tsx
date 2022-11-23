@@ -29,13 +29,13 @@ const Feedback = () => {
                     <div>
                         {__('Let us know what you think about the form builder to help improve the product experience.', 'givewp')}
                         {' '}
-                        <a href={feedbackUrl} target="_blank" rel="noopener noreferrer" onClick={closeCallback}>
+                        <a href={feedbackUrl} target="_blank" rel="noopener noreferrer" onClick={closeCallback} style={{color: 'var(--give-primary-600)'}}>
                             {__('Click here', 'givewp')}
                         </a>
                     </div>
                 </PopupContainer>
             )}
-            <FeedbackButton href={feedbackUrl}>
+            <FeedbackButton href={feedbackUrl} onClick={closeCallback}>
                 {__('Feedback', 'givewp')}
             </FeedbackButton>
         </Container>
