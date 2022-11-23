@@ -1,10 +1,7 @@
-import {UseFormRegisterReturn} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
-import type {GatewayFieldProps} from '@givewp/forms/propTypes';
-import type {Gateway} from '@givewp/forms/types';
+import type {GatewayFieldProps, GatewayOptionProps} from '@givewp/forms/propTypes';
 
-export default function Gateways({inputProps}: GatewayFieldProps) {
-    const gateways = window.givewp.gateways.getAll();
+export default function Gateways({inputProps, gateways}: GatewayFieldProps) {
     const {errors} = window.givewp.form.hooks.useFormState();
 
     return (
@@ -23,12 +20,6 @@ export default function Gateways({inputProps}: GatewayFieldProps) {
         </>
     );
 }
-
-type GatewayOptionProps = {
-    inputProps: UseFormRegisterReturn;
-    gateway: Gateway;
-    index: number;
-};
 
 function GatewayOption({gateway, index, inputProps}: GatewayOptionProps) {
     const Fields = gateway.Fields;

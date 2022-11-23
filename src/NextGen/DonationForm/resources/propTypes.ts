@@ -12,6 +12,12 @@ export interface GatewayFieldProps extends FieldProps {
     gateways: Gateway[];
 }
 
+export type GatewayOptionProps = {
+    inputProps: UseFormRegisterReturn;
+    gateway: Gateway;
+    index: number;
+};
+
 export interface SelectFieldProps extends FieldProps {
     options: Array<SelectOption>;
 }

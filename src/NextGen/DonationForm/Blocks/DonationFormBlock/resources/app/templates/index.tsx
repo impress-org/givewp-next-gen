@@ -8,6 +8,7 @@ import type {
     FieldLabelProps,
     FieldProps,
     FormProps,
+    GatewayFieldProps,
     GoalProps,
     GroupProps,
     HeaderDescriptionProps,
@@ -71,6 +72,10 @@ function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string)
 
 export function getFieldTemplate(type: string): FC<FieldProps> {
     return getTemplate<FieldProps>(type, 'fields');
+}
+
+export function getGatewaysFieldTemplate(): FC<GatewayFieldProps> {
+    return getTemplate<GatewayFieldProps>('gateways', 'fields');
 }
 
 export function getElementTemplate(type: string): FC<ElementProps> {
