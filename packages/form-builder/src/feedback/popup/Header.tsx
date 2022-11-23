@@ -13,6 +13,9 @@ const Header = ({title, closeCallback}) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '10px',
+                fontSize: '16px',
+                fontWeight: 500,
+                lineHeight: '16px',
             }}>
                 <Icon icon={HeaderIcon} />
                 {title}

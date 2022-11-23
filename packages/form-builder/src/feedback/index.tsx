@@ -3,7 +3,11 @@ import {__} from '@wordpress/i18n';
 import Container from './Container'
 import FeedbackButton from "./FeedbackButton";
 
-import {Container as PopupContainer, Header as PopupHeader} from './popup'
+import {
+    Container as PopupContainer,
+    Header as PopupHeader,
+    Content as PopupContent,
+} from './popup'
 
 const feedbackUrl = 'https://feedback.givewp.com/next-gen';
 
@@ -26,13 +30,13 @@ const Feedback = () => {
             {!hidden && (
                 <PopupContainer>
                     <PopupHeader title={__('Have feedback?', 'givewp')} closeCallback={closeCallback} />
-                    <div>
+                    <PopupContent>
                         {__('Let us know what you think about the form builder to help improve the product experience.', 'givewp')}
                         {' '}
                         <a href={feedbackUrl} target="_blank" rel="noopener noreferrer" onClick={closeCallback} style={{color: 'var(--give-primary-600)'}}>
                             {__('Click here', 'givewp')}
                         </a>
-                    </div>
+                    </PopupContent>
                 </PopupContainer>
             )}
             <FeedbackButton href={feedbackUrl} onClick={closeCallback}>
