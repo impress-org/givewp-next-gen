@@ -7,7 +7,7 @@ export interface FormDesignRegistrar {
     mount(design: FormDesign): void;
 
     get(): FormDesign;
-    
+
     getAll(): FormDesign[];
 }
 
