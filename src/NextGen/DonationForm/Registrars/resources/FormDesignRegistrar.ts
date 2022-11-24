@@ -7,6 +7,8 @@ export interface FormDesignRegistrar {
     mount(design: FormDesign): void;
 
     get(): FormDesign;
+    
+    getAll(): FormDesign[];
 }
 
 /**
@@ -15,44 +17,57 @@ export interface FormDesignRegistrar {
 export default class Registrar implements FormDesignRegistrar {
     private designs: FormDesign[] = [];
 
+    /**
+     * Mounting a form design allows for overriding form design templates
+     *
+     * @unreleased
+     */
     public mount(design: FormDesign): void {
         this.designs.push(design);
     }
 
+    /**
+     * Retrieve the final form design structure by merging designs in cascading order.
+     *
+     * @unreleased
+     */
     public get(): FormDesign {
-        const givewp = this.designs.find(({id}) => id === 'givewp');
-        const active = this.designs[this.designs.length - 1];
-
-        return mergeDesigns(givewp, active);
+        return this.designs.reduce((previousFormDesign: FormDesign, nextFormDesign: FormDesign) =>
+            mergeFormDesigns(previousFormDesign, nextFormDesign)
+        );
     }
 
+    /**
+     * Retrieve all form designs that have been mounted.
+     *
+     * @unreleased
+     */
     public getAll(): FormDesign[] {
         return this.designs;
     }
 }
 
 /**
- *
  * @unreleased
  */
-const mergeDesigns = (defaultFormDesign: FormDesign, activeFormDesign: FormDesign): FormDesign => {
+const mergeFormDesigns = (previousFormDesign: FormDesign, nextFormDesign: FormDesign): FormDesign => {
     return {
-        id: activeFormDesign.id,
+        id: nextFormDesign.id,
         fields: {
-            ...defaultFormDesign.fields,
-            ...activeFormDesign?.fields,
+            ...previousFormDesign.fields,
+            ...nextFormDesign?.fields,
         },
         elements: {
-            ...defaultFormDesign.elements,
-            ...activeFormDesign?.elements,
+            ...previousFormDesign.elements,
+            ...nextFormDesign?.elements,
         },
         groups: {
-            ...defaultFormDesign.groups,
-            ...activeFormDesign?.groups,
+            ...previousFormDesign.groups,
+            ...nextFormDesign?.groups,
         },
         layouts: {
-            ...defaultFormDesign.layouts,
-            ...activeFormDesign?.layouts,
+            ...previousFormDesign.layouts,
+            ...nextFormDesign?.layouts,
         },
     };
 };

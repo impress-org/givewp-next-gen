@@ -17,6 +17,8 @@ prepareFormData(form);
 
 mountWindowData();
 
+console.log(window.givewp.form.designs.get());
+
 /**
  * Prepare default values for form
  */
