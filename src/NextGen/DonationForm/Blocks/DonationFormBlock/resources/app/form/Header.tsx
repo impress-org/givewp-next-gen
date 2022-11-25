@@ -2,10 +2,10 @@ import {TemplateWrapper} from '../templates';
 import getWindowData from '../utilities/getWindowData';
 import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/blocks/form/app/utilities/amountFormatter';
+import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
 
 const {form} = getWindowData();
-
-const formDesign = window.givewp.form.designs.get();
+const formDesign = getFormDesign();
 
 const HeaderTemplate = formDesign.layouts.header;
 const HeaderTitleTemplate = formDesign.layouts.headerTitle;

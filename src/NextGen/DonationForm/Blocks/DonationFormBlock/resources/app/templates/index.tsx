@@ -2,22 +2,15 @@ import type {FC, ReactNode} from 'react';
 import {useMemo} from 'react';
 import {applyFilters} from '@wordpress/hooks';
 import type {FormDesign} from '@givewp/forms/types';
-import type {
-    ElementProps,
-    FieldErrorProps,
-    FieldLabelProps,
-    FieldProps,
-    FormProps,
-    GroupProps,
-    SectionProps,
-} from '@givewp/forms/propTypes';
+import type {ElementProps, FieldProps, GroupProps,} from '@givewp/forms/propTypes';
+import getFormDesign from "@givewp/blocks/form/app/utilities/getFormDesign";
 
 /**
  * Get the active template from the window
  *
  * @unreleased
  */
-const template: FormDesign = window.givewp.form.designs.get();
+const template: FormDesign = getFormDesign();
 
 /**
  * Get the NodeWrapper from active template
@@ -58,11 +51,11 @@ export function findTemplateKeys<S extends keyof typeof template, T extends keyo
  *
  * @unreleased
  */
-export function TemplateWrapper({children}: {children: JSX.Element}) {
+export function TemplateWrapper({children, htmlTag}: { children: JSX.Element, htmlTag?: keyof JSX.IntrinsicElements }) {
     const {nodeType, type} = useMemo(() => findTemplateKeys(children.type), []);
 
     return (
-        <NodeWrapper nodeType={nodeType} type={type}>
+        <NodeWrapper nodeType={nodeType} type={type} htmlTag={htmlTag}>
             {children}
         </NodeWrapper>
     );
@@ -120,34 +113,6 @@ export function getElementTemplate(type: string): FC<ElementProps> {
  */
 export function getGroupTemplate(type: string): FC<GroupProps> {
     return getTemplate<GroupProps>(type, 'groups');
-}
-
-/**
- * @unreleased
- */
-export function getSectionTemplate(): FC<SectionProps> {
-    return getTemplate<SectionProps>('section', 'layouts', 'section');
-}
-
-/**
- * @unreleased
- */
-export function getFormTemplate(): FC<FormProps> {
-    return getTemplate<FormProps>('form', 'layouts');
-}
-
-/**
- * @unreleased
- */
-export function getFieldLabelTemplate(): FC<FieldLabelProps> {
-    return getTemplate('fieldLabel', 'layouts');
-}
-
-/**
- * @unreleased
- */
-export function getFieldErrorTemplate(): FC<FieldErrorProps> {
-    return getTemplate('fieldError', 'layouts');
 }
 
 /**

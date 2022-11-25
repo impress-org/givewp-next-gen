@@ -5,18 +5,20 @@ import getWindowData from '../utilities/getWindowData';
 import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
 import postData from '../utilities/postData';
-import {getFormTemplate, getSectionTemplate} from '../templates';
+import {TemplateWrapper} from '../templates';
 import {useCallback} from 'react';
 import SectionNode from '../fields/SectionNode';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import DonationReceipt from './DonationReceipt';
 import {ObjectSchema} from 'joi';
+import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
 
 const {donateUrl} = getWindowData();
+const formDesign = getFormDesign();
 
-const FormTemplate = getFormTemplate();
-const FormSectionTemplate = getSectionTemplate();
+const FormTemplate = formDesign.layouts.form;
+const FormSectionTemplate = formDesign.layouts.section;
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};
@@ -84,28 +86,32 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
 
     return (
         <FormProvider {...methods}>
-            <FormTemplate
-                formProps={{
-                    id: 'give-next-gen',
-                    onSubmit: handleSubmit((values) =>
-                        handleSubmitRequest(values, setError, getGateway(values.gatewayId))
-                    ),
-                }}
-                isSubmitting={isSubmitting}
-                formError={formError}
-            >
-                <>
-                    {sections.map((section) => {
-                        return (
-                            <FormSectionTemplate key={section.name} section={section}>
-                                {section.nodes.map((node) => (
-                                    <SectionNode key={node.name} node={node} />
-                                ))}
-                            </FormSectionTemplate>
-                        );
-                    })}
-                </>
-            </FormTemplate>
+            <TemplateWrapper>
+                <FormTemplate
+                    formProps={{
+                        id: 'give-next-gen',
+                        onSubmit: handleSubmit((values) =>
+                            handleSubmitRequest(values, setError, getGateway(values.gatewayId))
+                        ),
+                    }}
+                    isSubmitting={isSubmitting}
+                    formError={formError}
+                >
+                    <>
+                        {sections.map((section) => {
+                            return (
+                                <TemplateWrapper htmlTag="section">
+                                    <FormSectionTemplate key={section.name} section={section}>
+                                        {section.nodes.map((node) => (
+                                            <SectionNode key={node.name} node={node} />
+                                        ))}
+                                    </FormSectionTemplate>
+                                </TemplateWrapper>
+                            );
+                        })}
+                    </>
+                </FormTemplate>
+            </TemplateWrapper>
         </FormProvider>
     );
 }

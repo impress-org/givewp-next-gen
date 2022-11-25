@@ -2,8 +2,10 @@ import {Field} from '@givewp/forms/types';
 import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
 import {useGiveDonationFormStore} from '@givewp/blocks/form/app/store';
 import {TemplateWrapper} from '@givewp/blocks/form/app/templates';
+import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
 
-const GatewayFieldTemplate = window.givewp.form.designs.get().fields.gateways;
+const formDesign = getFormDesign();
+const GatewayFieldTemplate = formDesign.fields.gateways;
 
 export default function GatewayFieldNode({node}: {node: Field}) {
     const {register} = window.givewp.form.hooks.useFormContext();
