@@ -15,7 +15,7 @@ import {ObjectSchema} from 'joi';
 
 const {donateUrl} = getWindowData();
 
-const FormDesign = getFormTemplate();
+const FormTemplate = getFormTemplate();
 const FormSectionTemplate = getSectionTemplate();
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
@@ -84,7 +84,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
 
     return (
         <FormProvider {...methods}>
-            <FormDesign
+            <FormTemplate
                 formProps={{
                     id: 'give-next-gen',
                     onSubmit: handleSubmit((values) =>
@@ -105,7 +105,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                         );
                     })}
                 </>
-            </FormDesign>
+            </FormTemplate>
         </FormProvider>
     );
 }

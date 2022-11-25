@@ -17,6 +17,7 @@ import Header from './layouts/Header';
 import HeaderTitle from './layouts/HeaderTitle';
 import HeaderDescription from './layouts/HeaderDescription';
 import Goal from './layouts/Goal';
+import {NodeWrapper} from './layouts/NodeWrapper';
 
 window.givewp.form.designs.mount({
     id: 'givewp',
@@ -38,6 +39,7 @@ window.givewp.form.designs.mount({
         name: NameGroup,
     },
     layouts: {
+        wrapper: NodeWrapper,
         section: SectionLayout,
         form: Form,
         fieldLabel: FieldLabel,

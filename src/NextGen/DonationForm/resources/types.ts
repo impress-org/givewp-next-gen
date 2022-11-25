@@ -13,6 +13,7 @@ import type {
     HeaderTitleProps,
     HtmlProps,
     NameProps,
+    NodeWrapperProps,
     ParagraphProps,
     SectionProps,
     SelectFieldProps,
@@ -119,6 +120,7 @@ export interface FormDesign {
         name?: FC<NameProps>;
     };
     layouts?: {
+        wrapper?: FC<NodeWrapperProps>;
         section?: FC<SectionProps>;
         form?: FC<FormProps>;
         header?: FC<HeaderProps>;
