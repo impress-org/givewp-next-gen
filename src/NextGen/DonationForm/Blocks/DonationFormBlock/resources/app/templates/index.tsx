@@ -62,6 +62,8 @@ export function TemplateWrapper({children, htmlTag}: { children: JSX.Element, ht
 }
 
 /**
+ * This HOC will wrap a template component in our NodeWrapper and automatically figure out what nodeType and type to use as props.
+ *
  * @unreleased
  */
 export function withTemplateWrapper<TemplateProps>(Template: FC<TemplateProps>, htmlTag: keyof JSX.IntrinsicElements = 'div'): FC<TemplateProps> {
