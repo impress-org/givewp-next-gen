@@ -3,12 +3,12 @@ import {FieldProps} from '@givewp/forms/propTypes';
 import {UseFormReturn} from 'react-hook-form';
 import buildRegisterValidationOptions from './buildRegisterValidationOptions';
 import getErrorByFieldName from './getErrorByFieldName';
-import {TemplateWrapper} from '@givewp/blocks/form/app/templates';
+import {withTemplateWrapper} from '@givewp/blocks/form/app/templates';
 import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
 
 const formDesign = getFormDesign();
-const LabelTemplate = formDesign.layouts.fieldLabel;
-const ErrorMessageTemplate = formDesign.layouts.fieldError;
+const LabelTemplate = withTemplateWrapper(formDesign.layouts.fieldLabel);
+const ErrorMessageTemplate = withTemplateWrapper(formDesign.layouts.fieldError);
 
 export default function registerFieldAndBuildProps(
     field: Field,
@@ -21,15 +21,7 @@ export default function registerFieldAndBuildProps(
         ...field,
         inputProps: register(field.name, buildRegisterValidationOptions(field.validationRules)),
         fieldError,
-        Label: () => (
-            <TemplateWrapper>
-                <LabelTemplate label={field.label} required={field.validationRules.required} />
-            </TemplateWrapper>
-        ),
-        ErrorMessage: () => (
-            <TemplateWrapper>
-                <ErrorMessageTemplate error={fieldError} />
-            </TemplateWrapper>
-        ),
+        Label: () => <LabelTemplate label={field.label} required={field.validationRules.required} />,
+        ErrorMessage: () => <ErrorMessageTemplate error={fieldError} />,
     };
 }

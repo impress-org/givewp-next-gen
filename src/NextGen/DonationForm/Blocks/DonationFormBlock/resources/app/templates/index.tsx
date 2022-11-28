@@ -64,6 +64,19 @@ export function TemplateWrapper({children, htmlTag}: { children: JSX.Element, ht
 /**
  * @unreleased
  */
+export function withTemplateWrapper<TemplateProps>(Template: FC<TemplateProps>, htmlTag: keyof JSX.IntrinsicElements = 'div'): FC<TemplateProps> {
+    const {nodeType, type} = findTemplateKeys(Template);
+
+    return (props: TemplateProps) => (
+        <NodeWrapper nodeType={nodeType} type={type} htmlTag={htmlTag}>
+            <Template {...props as TemplateProps} />
+        </NodeWrapper>
+    );
+}
+
+/**
+ * @unreleased
+ */
 export function withWrapper(NodeComponent: FC, nodeType, type, htmlTag: keyof JSX.IntrinsicElements = 'div') {
     return (props) => {
         return (
