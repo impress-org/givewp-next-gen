@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "dev": "wp-scripts build --webpack-devtool=source-map",
+        "dev": "wp-scripts build",
         "watch": "wp-scripts start",
         "build": "wp-scripts build && npm run build --workspaces",
         "dev:form-builder": "npm run dev --workspace=packages/form-builder",
