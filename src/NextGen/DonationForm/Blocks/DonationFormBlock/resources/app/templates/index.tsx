@@ -50,12 +50,13 @@ export function findTemplateKeys<S extends keyof typeof template, T extends keyo
  */
 export function withTemplateWrapper<TemplateProps>(
     Template: FC<TemplateProps>,
-    htmlTag: keyof JSX.IntrinsicElements = 'div'
+    htmlTag: keyof JSX.IntrinsicElements = 'div',
+    name?: string
 ): FC<TemplateProps> {
     const {nodeType, type} = findTemplateKeys(Template);
 
     return (props: TemplateProps) => (
-        <NodeWrapper nodeType={nodeType} type={type} htmlTag={htmlTag}>
+        <NodeWrapper nodeType={nodeType} type={type} htmlTag={htmlTag} name={name}>
             <Template {...(props as TemplateProps)} />
         </NodeWrapper>
     );
@@ -83,7 +84,8 @@ export function TemplateWrapper({children, htmlTag}: {children: JSX.Element; htm
  */
 export function useTemplateWrapper<TemplateProps>(
     Template: FC<TemplateProps>,
-    htmlTag: keyof JSX.IntrinsicElements = 'div'
+    htmlTag: keyof JSX.IntrinsicElements = 'div',
+    name?: string
 ): FC<TemplateProps> {
-    return useMemo(() => withTemplateWrapper(Template, htmlTag), [Template]);
+    return useMemo(() => withTemplateWrapper(Template, htmlTag, name), [Template]);
 }

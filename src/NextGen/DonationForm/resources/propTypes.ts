@@ -1,11 +1,11 @@
 import {Element, Field, FormDesign, Gateway, Group, Section as SectionType, SelectOption} from '@givewp/forms/types';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
 import {FC, FormHTMLAttributes, ReactNode} from 'react';
 
 export interface FieldProps extends Field {
     inputProps: UseFormRegisterReturn;
-    Label: FC;
-    ErrorMessage: FC;
+    Label: FC<FieldLabelProps | {}>;
+    ErrorMessage: FC<FieldErrors | {}>;
 }
 
 export interface GatewayFieldProps extends FieldProps {
@@ -25,8 +25,8 @@ export interface SelectFieldProps extends FieldProps {
 export interface ElementProps extends Element {}
 
 export interface GroupProps extends Group {
-    fieldProps: {
-        [key: string]: FieldProps;
+    fields: {
+        [key: string]: FC<FieldProps>;
     };
 }
 
@@ -35,10 +35,10 @@ export interface HtmlProps extends ElementProps {
 }
 
 export interface NameProps extends GroupProps {
-    fieldProps: {
-        honorific: SelectFieldProps | null;
-        firstName: FieldProps;
-        lastName: FieldProps | null;
+    fields: {
+        honorific?: FC<SelectFieldProps | {}>;
+        firstName: FC<FieldProps | {}>;
+        lastName: FC<FieldProps | {}>;
     };
 }
 
@@ -94,9 +94,9 @@ export interface GoalProps {
 }
 
 export interface HeaderProps {
-    Title: FC;
-    Description: FC;
-    Goal: FC;
+    Title: FC<HeaderTitleProps | {}>;
+    Description: FC<HeaderDescriptionProps | {}>;
+    Goal: FC<GoalProps | {}>;
 }
 
 export interface HeaderDescriptionProps {

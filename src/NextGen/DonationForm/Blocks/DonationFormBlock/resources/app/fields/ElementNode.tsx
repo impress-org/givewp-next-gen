@@ -6,7 +6,7 @@ import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
 const formDesign = getFormDesign();
 
 export default function ElementNode({node}: {node: Element}) {
-    const Element = useTemplateWrapper<ElementProps>(formDesign.elements[node.type]);
+    const Element = useTemplateWrapper<ElementProps>(formDesign.elements[node.type], 'div', node.name);
 
     return <Element key={node.name} {...node} />;
 }
