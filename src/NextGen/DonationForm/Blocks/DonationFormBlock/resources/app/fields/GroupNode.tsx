@@ -1,12 +1,15 @@
 import {Field, Group, isField} from '@givewp/forms/types';
-import {getGroupTemplate} from '../templates';
-import {useMemo} from 'react';
+import {useTemplateWrapper} from '../templates';
 import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
+import type {GroupProps} from '@givewp/forms/propTypes';
+import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
+
+const formDesign = getFormDesign();
 
 export default function GroupNode({node}: {node: Group}) {
     const {register} = window.givewp.form.hooks.useFormContext();
     const {errors} = window.givewp.form.hooks.useFormState();
-    const Group = useMemo(() => getGroupTemplate(node.type), [node.type]);
+    const Group = useTemplateWrapper<GroupProps>(formDesign.groups[node.type]);
 
     const fieldProps = node.reduceNodes(
         (fieldProps, field: Field) => {

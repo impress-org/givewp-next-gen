@@ -1,8 +1,5 @@
 import type {FC, ReactNode} from 'react';
 import {useMemo} from 'react';
-import {applyFilters} from '@wordpress/hooks';
-import type {FormDesign} from '@givewp/forms/types';
-import type {ElementProps, FieldProps, GroupProps,} from '@givewp/forms/propTypes';
 import getFormDesign from "@givewp/blocks/form/app/utilities/getFormDesign";
 
 /**
@@ -10,7 +7,7 @@ import getFormDesign from "@givewp/blocks/form/app/utilities/getFormDesign";
  *
  * @unreleased
  */
-const template: FormDesign = getFormDesign();
+const template = getFormDesign();
 
 /**
  * Get the NodeWrapper from active template
@@ -47,11 +44,29 @@ export function findTemplateKeys<S extends keyof typeof template, T extends keyo
 }
 
 /**
- * This template wrapper will render and figure out what props to pass the wrapper supplied by the active design based on it child component.
+ * This HOC will wrap a template component in our NodeWrapper and automatically figure out what nodeType and type to use as props.
  *
  * @unreleased
  */
-export function TemplateWrapper({children, htmlTag}: { children: JSX.Element, htmlTag?: keyof JSX.IntrinsicElements }) {
+export function withTemplateWrapper<TemplateProps>(
+    Template: FC<TemplateProps>,
+    htmlTag: keyof JSX.IntrinsicElements = 'div'
+): FC<TemplateProps> {
+    const {nodeType, type} = findTemplateKeys(Template);
+
+    return (props: TemplateProps) => (
+        <NodeWrapper nodeType={nodeType} type={type} htmlTag={htmlTag}>
+            <Template {...(props as TemplateProps)} />
+        </NodeWrapper>
+    );
+}
+
+/**
+ * A component version of withTemplateWrapper that uses the child component to determine the NodeWrapper props.
+ *
+ * @unreleased
+ */
+export function TemplateWrapper({children, htmlTag}: {children: JSX.Element; htmlTag?: keyof JSX.IntrinsicElements}) {
     const {nodeType, type} = useMemo(() => findTemplateKeys(children.type), []);
 
     return (
@@ -62,77 +77,13 @@ export function TemplateWrapper({children, htmlTag}: { children: JSX.Element, ht
 }
 
 /**
- * This HOC will wrap a template component in our NodeWrapper and automatically figure out what nodeType and type to use as props.
+ * A hook version of withTemplateWrapper
  *
  * @unreleased
  */
-export function withTemplateWrapper<TemplateProps>(Template: FC<TemplateProps>, htmlTag: keyof JSX.IntrinsicElements = 'div'): FC<TemplateProps> {
-    const {nodeType, type} = findTemplateKeys(Template);
-
-    return (props: TemplateProps) => (
-        <NodeWrapper nodeType={nodeType} type={type} htmlTag={htmlTag}>
-            <Template {...props as TemplateProps} />
-        </NodeWrapper>
-    );
-}
-
-/**
- * @unreleased
- */
-export function withWrapper(NodeComponent: FC, nodeType, type, htmlTag: keyof JSX.IntrinsicElements = 'div') {
-    return (props) => {
-        return (
-            <NodeWrapper nodeType={nodeType} type={type} htmlTag={htmlTag}>
-                <NodeComponent {...props} />
-            </NodeWrapper>
-        );
-    };
-}
-
-/**
- * The following functions are used to retrieve the various templates for the form.
- *
- * @unreleased
- */
-function getTemplate<NodeProps>(type: string, section: string, htmlTag?: keyof JSX.IntrinsicElements): FC<NodeProps> {
-    const Node = template[section].hasOwnProperty(type)
-        ? withWrapper(template[section][type], section, type, htmlTag)
-        : null;
-
-    let FilteredNode = applyFilters(`givewp/form/${section}/${type}`, Node);
-    FilteredNode = applyFilters(`givewp/form/${section}`, Node, type);
-
-    if (nodeIsFunctionalComponent(FilteredNode)) {
-        return FilteredNode as FC<NodeProps>;
-    } else {
-        throw new Error(`Invalid field type: ${type}`);
-    }
-}
-
-/**
- * @unreleased
- */
-export function getFieldTemplate(type: string): FC<FieldProps> {
-    return getTemplate<FieldProps>(type, 'fields');
-}
-
-/**
- * @unreleased
- */
-export function getElementTemplate(type: string): FC<ElementProps> {
-    return getTemplate<ElementProps>(type, 'elements');
-}
-
-/**
- * @unreleased
- */
-export function getGroupTemplate(type: string): FC<GroupProps> {
-    return getTemplate<GroupProps>(type, 'groups');
-}
-
-/**
- * @unreleased
- */
-function nodeIsFunctionalComponent(Node: unknown): Node is FC {
-    return typeof Node === 'function';
+export function useTemplateWrapper<TemplateProps>(
+    Template: FC<TemplateProps>,
+    htmlTag: keyof JSX.IntrinsicElements = 'div'
+): FC<TemplateProps> {
+    return useMemo(() => withTemplateWrapper(Template, htmlTag), [Template]);
 }

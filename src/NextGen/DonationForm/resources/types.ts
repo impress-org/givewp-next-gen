@@ -227,12 +227,24 @@ export function isField(node: Node): node is Field {
     return node.nodeType === 'field';
 }
 
+export function fieldExists(field: Field, template: FormDesign): boolean {
+    return template.fields.hasOwnProperty(field.type);
+}
+
 export function isElement(node: Node): node is Element {
     return node.nodeType === 'element';
 }
 
+export function elementExists(element: Element, template: FormDesign): boolean {
+    return template.elements.hasOwnProperty(element.type);
+}
+
 export function isGroup(node: Node): node is Group {
     return node.nodeType === 'group';
+}
+
+export function groupExists(group: Group, template: FormDesign): boolean {
+    return template.groups.hasOwnProperty(group.type);
 }
 
 export interface SelectOption {
