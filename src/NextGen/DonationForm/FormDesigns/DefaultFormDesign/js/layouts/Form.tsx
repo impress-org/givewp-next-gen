@@ -1,4 +1,4 @@
-import {FormProps} from '@givewp/forms/propTypes';
+import type {FormProps} from '@givewp/forms/propTypes';
 import {__} from '@wordpress/i18n';
 
 export default function Form({children, formProps, formError, isSubmitting}: FormProps) {

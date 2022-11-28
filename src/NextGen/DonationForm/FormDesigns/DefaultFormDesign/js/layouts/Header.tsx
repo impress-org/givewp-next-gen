@@ -1,4 +1,4 @@
-import {HeaderProps} from "@givewp/forms/propTypes";
+import type {HeaderProps} from '@givewp/forms/propTypes';
 
 /**
  * @unreleased

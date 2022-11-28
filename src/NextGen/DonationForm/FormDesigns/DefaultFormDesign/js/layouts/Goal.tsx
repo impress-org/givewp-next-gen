@@ -1,6 +1,6 @@
 import {CSSProperties} from 'react';
 import {__} from '@wordpress/i18n';
-import {GoalProps} from '@givewp/forms/propTypes';
+import type {GoalProps} from '@givewp/forms/propTypes';
 
 /**
  * @unreleased

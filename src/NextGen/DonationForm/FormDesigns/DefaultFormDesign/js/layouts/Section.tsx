@@ -1,4 +1,4 @@
-import {SectionProps} from '@givewp/forms/propTypes';
+import type {SectionProps} from '@givewp/forms/propTypes';
 
 export default function Section({section: {name, label, description}, children}: SectionProps) {
     return (

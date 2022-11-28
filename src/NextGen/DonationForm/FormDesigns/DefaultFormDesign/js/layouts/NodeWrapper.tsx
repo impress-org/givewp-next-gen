@@ -1,6 +1,6 @@
 import type {Element} from '@givewp/forms/types';
 import classNames from 'classnames';
-import {NodeWrapperProps} from '@givewp/forms/propTypes';
+import type {NodeWrapperProps} from '@givewp/forms/propTypes';
 
 export function NodeWrapper({nodeType, type, name, htmlTag: Element = 'div', children}: NodeWrapperProps) {
     return (

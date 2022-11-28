@@ -1,4 +1,4 @@
-import {FieldLabelProps} from '@givewp/forms/propTypes';
+import type {FieldLabelProps} from '@givewp/forms/propTypes';
 
 /**
  * The label for a field with the required indicator if applicable.
