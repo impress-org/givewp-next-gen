@@ -29,18 +29,18 @@ const Feedback = () => {
         <Container>
             {!hidden && (
                 <PopupContainer>
-                    <PopupHeader title={__('Have feedback?', 'givewp')} closeCallback={closeCallback} />
+                    <PopupHeader title={__('Have feedback?', 'give')} closeCallback={closeCallback} />
                     <PopupContent>
-                        {__('Let us know what you think about the form builder to help improve the product experience.', 'givewp')}
+                        {__('Let us know what you think about the form builder to help improve the product experience.', 'give')}
                         {' '}
                         <a href={feedbackUrl} target="_blank" rel="noopener noreferrer" onClick={closeCallback} style={{color: 'var(--give-primary-600)'}}>
-                            {__('Click here', 'givewp')}
+                            {__('Click here', 'give')}
                         </a>
                     </PopupContent>
                 </PopupContainer>
             )}
             <FeedbackButton href={feedbackUrl} onClick={closeCallback}>
-                {__('Feedback', 'givewp')}
+                {__('Feedback', 'give')}
             </FeedbackButton>
         </Container>
     )
