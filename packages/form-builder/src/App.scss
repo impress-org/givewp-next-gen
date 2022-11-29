@@ -323,3 +323,11 @@ svg {
     // Prevent scrollbar in popover color picker.
     .components-color-picker .components-h-stack { width: auto; }
 }
+
+/** ------------------------------- */
+
+.components-modal__screen-overlay {
+    z-index: 9999999999;
+}
+
+/** ------------------------------- */

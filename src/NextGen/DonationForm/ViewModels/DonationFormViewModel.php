@@ -160,6 +160,10 @@ class DonationFormViewModel
             window.giveNextGenExports = <?= wp_json_encode($this->exports()) ?>;
         </script>
 
+        <?php if($this->formSettings->customCss): ?>
+        <style><?php echo $this->formSettings->customCss; ?></style>
+        <?php endif; ?>
+
         <div
             id="root-give-next-gen-donation-form-block"
             class="givewp-donation-form-block"
