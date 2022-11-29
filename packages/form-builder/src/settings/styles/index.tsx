@@ -33,7 +33,7 @@ const CustomStyleSettings = () => {
                     <div style={{
                         margin: '.5rem -16px -16px -16px', // Offset the panel padding in order to fill the inspector width.
                     }}>
-                        <CodeControl />
+                        <CustomStyleCodeControl />
                     </div>
 
                 </div>
@@ -49,7 +49,7 @@ const CustomStyleSettings = () => {
                         <div style={{
                             margin: '-25px -31px -23px -31px', // Offset the modal padding in order to fill the available space.
                         }}>
-                            <CodeControl />
+                            <CustomStyleCodeControl />
                         </div>
                     </Modal>
                 ) }
@@ -59,7 +59,7 @@ const CustomStyleSettings = () => {
     )
 }
 
-const CodeControl = () => {
+const CustomStyleCodeControl = () => {
 
     const {
         settings: {customCss},
