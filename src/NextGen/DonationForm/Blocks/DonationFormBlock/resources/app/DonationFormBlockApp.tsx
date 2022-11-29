@@ -6,7 +6,7 @@ import getWindowData from './utilities/getWindowData';
 import prepareFormData from './utilities/PrepareFormData';
 import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
 import Header from './form/Header';
-import mountWindowData from '@givewp/blocks/form/app/utilities/mountWIndowData';
+import mountWindowData from '@givewp/blocks/form/app/utilities/mountWindowData';
 
 /**
  * Get data from the server
