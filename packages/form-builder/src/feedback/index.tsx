@@ -9,7 +9,7 @@ import {
     Content as PopupContent,
 } from './popup'
 
-const feedbackUrl = 'https://feedback.givewp.com/next-gen';
+const feedbackUrl = 'https://docs.givewp.com/nextgenfeedback';
 
 const HIDE_FEEDBACK = 'givewpNextGenHideFeedback'
 
