@@ -247,8 +247,8 @@ class DonationFormViewModel
 
         // load block - since this is using render_callback viewScript in blocks.json will not work.
         (new EnqueueScript(
-            'givewp-next-gen-donation-form-block-js',
-            'build/donationFormBlockApp.js',
+            'givewp-next-gen-donation-form-js',
+            'build/donationFormApp.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'

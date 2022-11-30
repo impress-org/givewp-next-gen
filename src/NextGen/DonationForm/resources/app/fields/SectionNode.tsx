@@ -2,9 +2,9 @@ import {isElement, isField, isGroup, Node} from '@givewp/forms/types';
 import FieldNode from './FieldNode';
 import ElementNode from './ElementNode';
 import GroupNode from './GroupNode';
-import GatewayFieldNode from '@givewp/blocks/form/app/fields/GatewayFieldNode';
-import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
-import {elementTemplateExists, fieldTemplateExists, groupTemplateExists} from '@givewp/blocks/form/app/templates';
+import GatewayFieldNode from '@givewp/forms/app/fields/GatewayFieldNode';
+import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
+import {elementTemplateExists, fieldTemplateExists, groupTemplateExists} from '@givewp/forms/app/templates';
 
 const formDesign = getFormDesign();
 

@@ -1,6 +1,6 @@
 import type {FC, ReactNode} from 'react';
 import {useMemo} from 'react';
-import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
+import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 import {Element, Field, Group} from '@givewp/forms/types';
 
 /**

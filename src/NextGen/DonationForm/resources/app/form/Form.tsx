@@ -12,7 +12,7 @@ import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import DonationReceipt from './DonationReceipt';
 import {ObjectSchema} from 'joi';
-import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
+import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 
 const {donateUrl} = getWindowData();
 const formDesign = getFormDesign();

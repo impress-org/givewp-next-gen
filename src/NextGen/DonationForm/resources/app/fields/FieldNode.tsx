@@ -2,7 +2,7 @@ import {Field} from '@givewp/forms/types';
 import {useTemplateWrapper} from '../templates';
 import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
 import type {FieldProps} from '@givewp/forms/propTypes';
-import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
+import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 
 const formDesign = getFormDesign();
 

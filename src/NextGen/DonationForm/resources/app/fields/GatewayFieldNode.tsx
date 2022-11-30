@@ -1,8 +1,8 @@
 import {Field} from '@givewp/forms/types';
 import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
-import {useGiveDonationFormStore} from '@givewp/blocks/form/app/store';
-import {withTemplateWrapper} from '@givewp/blocks/form/app/templates';
-import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
+import {useGiveDonationFormStore} from '@givewp/forms/app/store';
+import {withTemplateWrapper} from '@givewp/forms/app/templates';
+import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 
 const formDesign = getFormDesign();
 const GatewayFieldTemplate = withTemplateWrapper(formDesign.fields.gateways);

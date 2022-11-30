@@ -1,8 +1,8 @@
 import {withTemplateWrapper} from '../templates';
 import getWindowData from '../utilities/getWindowData';
 import type {GoalType} from '@givewp/forms/propTypes';
-import amountFormatter from '@givewp/blocks/form/app/utilities/amountFormatter';
-import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
+import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
+import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 
 const {form} = getWindowData();
 const formDesign = getFormDesign();

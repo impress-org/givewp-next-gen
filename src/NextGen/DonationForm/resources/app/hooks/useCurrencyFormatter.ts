@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import amountFormatter from '@givewp/blocks/form/app/utilities/amountFormatter';
+import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 
 /**
  * @unreleased
