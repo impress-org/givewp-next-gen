@@ -40,4 +40,4 @@ function App() {
     );
 }
 
-render(<App />, document.getElementById('root-give-next-gen-donation-form-block'));
+render(<App />, document.getElementById('root-givewp-donation-form'));

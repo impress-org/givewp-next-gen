@@ -161,8 +161,8 @@ class DonationFormViewModel
         </script>
 
         <div
-            id="root-give-next-gen-donation-form-block"
-            class="givewp-donation-form-block"
+            id="root-givewp-donation-form"
+            class="givewp-donation-form"
             style="
                 --give-primary-color:<?= $this->primaryColor() ?>;
                 --give-secondary-color:<?= $this->secondaryColor() ?>;
