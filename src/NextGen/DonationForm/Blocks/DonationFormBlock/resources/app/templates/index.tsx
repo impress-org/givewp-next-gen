@@ -1,6 +1,7 @@
 import type {FC, ReactNode} from 'react';
 import {useMemo} from 'react';
-import getFormDesign from "@givewp/blocks/form/app/utilities/getFormDesign";
+import getFormDesign from '@givewp/blocks/form/app/utilities/getFormDesign';
+import {Element, Field, Group} from '@givewp/forms/types';
 
 /**
  * Get the active template from the window
@@ -88,4 +89,25 @@ export function useTemplateWrapper<TemplateProps>(
     name?: string
 ): FC<TemplateProps> {
     return useMemo(() => withTemplateWrapper(Template, htmlTag, name), [Template]);
+}
+
+/**
+ * @unreleased
+ */
+export function fieldTemplateExists(field: Field): boolean {
+    return template.fields.hasOwnProperty(field.type);
+}
+
+/**
+ * @unreleased
+ */
+export function elementTemplateExists(element: Element): boolean {
+    return template.elements.hasOwnProperty(element.type);
+}
+
+/**
+ * @unreleased
+ */
+export function groupTemplateExists(group: Group): boolean {
+    return template.groups.hasOwnProperty(group.type);
 }
