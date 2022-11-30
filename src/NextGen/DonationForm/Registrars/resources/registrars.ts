@@ -25,11 +25,10 @@ if (!window.givewp) {
     window.givewp = {};
 }
 
-window.givewp = {
-    ...window.givewp,
-    gateways: new GatewayRegistrar(),
-    form: {
-        ...window.givewp.form,
-        designs: new FormDesignRegistrar(),
-    },
-};
+if (!window.givewp.form) {
+    // @ts-ignore
+    window.givewp.form = {};
+}
+
+window.givewp.gateways = new GatewayRegistrar();
+window.givewp.form.designs = new FormDesignRegistrar();
