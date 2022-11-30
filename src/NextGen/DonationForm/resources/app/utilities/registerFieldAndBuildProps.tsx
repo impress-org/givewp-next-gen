@@ -3,12 +3,10 @@ import {FieldProps} from '@givewp/forms/propTypes';
 import {UseFormReturn} from 'react-hook-form';
 import buildRegisterValidationOptions from './buildRegisterValidationOptions';
 import getErrorByFieldName from './getErrorByFieldName';
-import {withTemplateWrapper} from '@givewp/forms/app/templates';
-import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 
-const formDesign = getFormDesign();
-const LabelTemplate = withTemplateWrapper(formDesign.layouts.fieldLabel);
-const ErrorMessageTemplate = withTemplateWrapper(formDesign.layouts.fieldError);
+const formTemplates = window.givewp.form.templates;
+const LabelTemplate = formTemplates.layouts.fieldLabel;
+const ErrorMessageTemplate = formTemplates.layouts.fieldError;
 
 export default function registerFieldAndBuildProps(
     field: Field,

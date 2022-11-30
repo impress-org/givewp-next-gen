@@ -1,8 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {GoalProps} from '@givewp/forms/propTypes';
 
-const defaultTemplate = window.givewp.form.designs.get();
-const GoalTemplate = defaultTemplate.layouts.goal;
+const GoalTemplate = window.givewp.form.templates.layouts.goal;
 
 /**
  * @unreleased

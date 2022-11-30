@@ -19,8 +19,7 @@ import HeaderDescription from './layouts/HeaderDescription';
 import Goal from './layouts/Goal';
 import {NodeWrapper} from './layouts/NodeWrapper';
 
-window.givewp.form.designs.mount({
-    id: 'givewp',
+window.givewp.form.api.templates.extend({
     fields: {
         amount: AmountField,
         text: TextField,

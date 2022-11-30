@@ -12,13 +12,12 @@ import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import DonationReceipt from './DonationReceipt';
 import {ObjectSchema} from 'joi';
-import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 
 const {donateUrl} = getWindowData();
-const formDesign = getFormDesign();
+const formTemplates = window.givewp.form.templates;
 
-const FormTemplate = withTemplateWrapper(formDesign.layouts.form);
-const FormSectionTemplate = withTemplateWrapper(formDesign.layouts.section, 'section');
+const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
+const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};

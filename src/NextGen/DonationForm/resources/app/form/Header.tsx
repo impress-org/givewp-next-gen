@@ -2,15 +2,14 @@ import {withTemplateWrapper} from '../templates';
 import getWindowData from '../utilities/getWindowData';
 import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
-import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 
 const {form} = getWindowData();
-const formDesign = getFormDesign();
+const formTemplates = window.givewp.form.templates;
 
-const HeaderTemplate = withTemplateWrapper(formDesign.layouts.header);
-const HeaderTitleTemplate = withTemplateWrapper(formDesign.layouts.headerTitle);
-const HeaderDescriptionTemplate = withTemplateWrapper(formDesign.layouts.headerDescription);
-const GoalTemplate = withTemplateWrapper(formDesign.layouts.goal);
+const HeaderTemplate = withTemplateWrapper(formTemplates.layouts.header);
+const HeaderTitleTemplate = withTemplateWrapper(formTemplates.layouts.headerTitle);
+const HeaderDescriptionTemplate = withTemplateWrapper(formTemplates.layouts.headerDescription);
+const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 
 /**
  * @unreleased

@@ -3,10 +3,9 @@ import FieldNode from './FieldNode';
 import ElementNode from './ElementNode';
 import GroupNode from './GroupNode';
 import GatewayFieldNode from '@givewp/forms/app/fields/GatewayFieldNode';
-import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 import {elementTemplateExists, fieldTemplateExists, groupTemplateExists} from '@givewp/forms/app/templates';
 
-const formDesign = getFormDesign();
+const formTemplates = window.givewp.form.templates;
 
 /**
  * Determine which node template to render
@@ -24,7 +23,7 @@ export default function SectionNode({node}: {node: Node}) {
     } else if (isGroup(node) && groupTemplateExists(node)) {
         return <GroupNode node={node} />;
     } else {
-        console.error(`Node: ${JSON.stringify(node)} does not exist in Form Design: ${JSON.stringify(formDesign)}`);
+        console.error(`Node: ${JSON.stringify(node)} does not exist in Form Design: ${JSON.stringify(formTemplates)}`);
 
         return null;
     }

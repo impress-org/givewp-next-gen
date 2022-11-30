@@ -1,6 +1,5 @@
 import type {FC, ReactNode} from 'react';
 import {useMemo} from 'react';
-import getFormDesign from '@givewp/forms/app/utilities/getFormDesign';
 import {Element, Field, Group} from '@givewp/forms/types';
 
 /**
@@ -8,7 +7,7 @@ import {Element, Field, Group} from '@givewp/forms/types';
  *
  * @unreleased
  */
-const template = getFormDesign();
+const template = window.givewp.form.templates
 
 /**
  * Get the NodeWrapper from active template

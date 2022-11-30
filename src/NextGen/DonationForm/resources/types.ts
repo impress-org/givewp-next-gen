@@ -134,6 +134,45 @@ export interface FormDesign {
     };
 }
 
+export interface FormTemplateFields {
+    amount: FC<AmountProps>;
+    text: FC<FieldProps>;
+    textarea: FC<FieldProps>;
+    email: FC<FieldProps>;
+    hidden: FC<FieldProps>;
+    gateways: FC<GatewayFieldProps>;
+    select: FC<SelectFieldProps>;
+}
+
+export interface FormTemplateElements {
+    paragraph: FC<ParagraphProps>;
+    html: FC<HtmlProps>;
+    donationSummary: FC;
+}
+
+export interface FormTemplateGroups {
+    name: FC<NameProps>;
+}
+
+export interface FormTemplateLayouts {
+    wrapper: FC<NodeWrapperProps>;
+    section: FC<SectionProps>;
+    form: FC<FormProps>;
+    header: FC<HeaderProps>;
+    goal: FC<GoalProps>;
+    fieldLabel: FC<FieldLabelProps>;
+    fieldError: FC<FieldErrorProps>;
+    headerTitle: FC<HeaderTitleProps>;
+    headerDescription: FC<HeaderDescriptionProps>;
+}
+
+export interface FormTemplates {
+    fields: FormTemplateFields;
+    elements: FormTemplateElements;
+    groups: FormTemplateGroups;
+    layouts: FormTemplateLayouts;
+}
+
 export interface VisibilityCondition {
     type: string;
     field: string;
