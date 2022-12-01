@@ -1,7 +1,7 @@
 import GatewayRegistrar from './GatewayRegistrar';
 import type {FormServerExports, FormTemplates} from '@givewp/forms/types';
 import type {useFormContext, useFormState, useWatch} from 'react-hook-form';
-import FormTemplateApi from './FormTemplateApi';
+import defaultFormDesign from '../../FormDesigns/DefaultFormDesign/js/main';
 
 declare global {
     interface Window {
@@ -9,9 +9,6 @@ declare global {
         givewp: {
             gateways: GatewayRegistrar;
             form: {
-                api: {
-                    templates: FormTemplateApi;
-                };
                 templates: FormTemplates;
                 hooks: {
                     useFormContext: typeof useFormContext;
@@ -27,12 +24,9 @@ if (!window.givewp) {
     // @ts-ignore
     window.givewp = {
         // @ts-ignore
-        form: {
-            // @ts-ignore
-            api: {},
-        },
+        form: {},
     };
 }
 
 window.givewp.gateways = new GatewayRegistrar();
-window.givewp.form.api.templates = new FormTemplateApi();
+window.givewp.form.templates = Object.freeze(defaultFormDesign);

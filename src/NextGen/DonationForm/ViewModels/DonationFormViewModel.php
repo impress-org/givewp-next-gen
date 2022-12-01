@@ -202,15 +202,6 @@ class DonationFormViewModel
         /** @var FormDesignRegistrar $formDesignRegistrar */
         $formDesignRegistrar = give(FormDesignRegistrar::class);
 
-        // load default givewp design template
-        (new EnqueueScript(
-            'givewp-default-donation-form-design-js',
-            'build/defaultFormDesignJs.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->loadInFooter()->enqueue();
-
         // silently fail if design is missing for some reason
         if ($formDesignRegistrar->hasDesign($formDesignId)) {
             $design = $formDesignRegistrar->getDesign($formDesignId);
