@@ -33,6 +33,10 @@ function extendTemplate<T extends keyof FormTemplates>(
     templates: Partial<FormTemplates[keyof FormTemplates]>
 ): void {
     Object.keys(templates).forEach((template) => {
+        if (!window.givewp.form.templates[templateType].hasOwnProperty(template)) {
+            throw Error(`${template} does not exist on ${templateType}`);
+        }
+        
         window.givewp.form.templates[templateType][template] = templates[template];
     });
 }
