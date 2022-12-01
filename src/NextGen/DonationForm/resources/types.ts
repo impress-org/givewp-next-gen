@@ -100,40 +100,6 @@ export interface Gateway {
     afterCreatePayment?(response: object): Promise<void> | Error;
 }
 
-export interface FormDesign {
-    id: string;
-    fields?: {
-        amount?: FC<AmountProps>;
-        text?: FC<FieldProps>;
-        textarea?: FC<FieldProps>;
-        email?: FC<FieldProps>;
-        hidden?: FC<FieldProps>;
-        gateways?: FC<GatewayFieldProps>;
-        select?: FC<SelectFieldProps>;
-    };
-    elements?: {
-        paragraph?: FC<ParagraphProps>;
-        html?: FC<HtmlProps>;
-        donationSummary?: FC;
-    };
-    groups?: {
-        name?: FC<NameProps>;
-    };
-    layouts?: {
-        wrapper?: FC<NodeWrapperProps>;
-        section?: FC<SectionProps>;
-        form?: FC<FormProps>;
-        header?: FC<HeaderProps>;
-        title?: FC<HeaderTitleProps>;
-        description?: FC<HeaderDescriptionProps>;
-        goal?: FC<GoalProps>;
-        fieldLabel?: FC<FieldLabelProps>;
-        fieldError?: FC<FieldErrorProps>;
-        headerTitle?: FC<HeaderTitleProps>;
-        headerDescription?: FC<HeaderDescriptionProps>;
-    };
-}
-
 export interface FormTemplateFields {
     amount: FC<AmountProps>;
     text: FC<FieldProps>;
