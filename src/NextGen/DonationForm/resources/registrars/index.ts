@@ -1,7 +1,7 @@
 import GatewayRegistrar from './gateways';
 import type {FormServerExports, FormTemplates} from '@givewp/forms/types';
 import type {useFormContext, useFormState, useWatch} from 'react-hook-form';
-import defaultFormTemplates from '../formTemplates';
+import defaultFormTemplates from './templates';
 
 declare global {
     interface Window {

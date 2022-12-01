@@ -1,100 +1,54 @@
-'use strict';
+import TextField from './fields/Text';
+import TextAreaField from './fields/TextArea';
+import EmailField from './fields/Email';
+import HiddenField from './fields/Hidden';
+import HtmlElement from './elements/Html';
+import DonationSummaryElement from './elements/DonationSummary';
+import NameGroup from './groups/Name';
+import SectionLayout from './layouts/Section';
+import Form from './layouts/Form';
+import AmountField from './fields/Amount';
+import SelectField from './fields/Select';
+import Gateways from './fields/Gateways';
+import Paragraph from './elements/Paragraph';
+import FieldLabel from './layouts/FieldLabel';
+import FieldError from './layouts/FieldError';
+import Header from './layouts/Header';
+import HeaderTitle from './layouts/HeaderTitle';
+import HeaderDescription from './layouts/HeaderDescription';
+import Goal from './layouts/Goal';
+import {NodeWrapper} from './layouts/NodeWrapper';
+import {FormTemplates} from '@givewp/forms/types';
 
-import type {
-    FormTemplateElements,
-    FormTemplateFields,
-    FormTemplateGroups,
-    FormTemplateLayouts,
-    FormTemplates,
-} from '@givewp/forms/types';
+const defaultFormTemplates: FormTemplates = {
+    fields: {
+        amount: AmountField,
+        text: TextField,
+        textarea: TextAreaField,
+        email: EmailField,
+        hidden: HiddenField,
+        gateways: Gateways,
+        select: SelectField,
+    },
+    elements: {
+        paragraph: Paragraph,
+        html: HtmlElement,
+        donationSummary: DonationSummaryElement,
+    },
+    groups: {
+        name: NameGroup,
+    },
+    layouts: {
+        wrapper: NodeWrapper,
+        section: SectionLayout,
+        form: Form,
+        fieldLabel: FieldLabel,
+        fieldError: FieldError,
+        header: Header,
+        headerTitle: HeaderTitle,
+        headerDescription: HeaderDescription,
+        goal: Goal,
+    },
+};
 
-/**
- * @unreleased
- */
-interface SubTemplateExtension {
-    extend(templates: Partial<FormTemplates[keyof FormTemplates]>): void;
-}
-
-/**
- * @unreleased
- */
-interface TemplateApi {
-    layouts: FormTemplateLayoutsApi;
-    fields: FormTemplateFieldsApi;
-    elements: FormTemplateElementsApi;
-    groups: FormTemplateGroupsApi;
-}
-
-/**
- * @unreleased
- */
-function extendTemplate<T extends keyof FormTemplates>(
-    templateType: T,
-    templates: Partial<FormTemplates[keyof FormTemplates]>
-): void {
-    Object.keys(templates).forEach((template) => {
-        if (!window.givewp.form.templates[templateType].hasOwnProperty(template)) {
-            throw Error(`${template} does not exist on ${templateType}`);
-        }
-
-        window.givewp.form.templates[templateType][template] = templates[template];
-    });
-}
-
-/**
- * @unreleased
- */
-class FormTemplateLayoutsApi implements SubTemplateExtension {
-    public extend(layouts: Partial<FormTemplateLayouts>): void {
-        extendTemplate('layouts', layouts);
-    }
-}
-
-/**
- * @unreleased
- */
-class FormTemplateFieldsApi implements SubTemplateExtension {
-    public extend(fields: Partial<FormTemplateFields>): void {
-        extendTemplate('fields', fields);
-    }
-}
-
-/**
- * @unreleased
- */
-class FormTemplateElementsApi implements SubTemplateExtension {
-    public extend(elements: Partial<FormTemplateElements>): void {
-        extendTemplate('elements', elements);
-    }
-}
-
-/**
- * @unreleased
- */
-class FormTemplateGroupsApi implements SubTemplateExtension {
-    public extend(groups: Partial<FormTemplateGroups>): void {
-        extendTemplate('groups', groups);
-    }
-}
-
-/**
- * @unreleased
- */
-export default class FormTemplateApi implements TemplateApi {
-    private hasTemplates: boolean = false;
-    public layouts = new FormTemplateLayoutsApi();
-    public fields = new FormTemplateFieldsApi();
-    public elements = new FormTemplateElementsApi();
-    public groups = new FormTemplateGroupsApi();
-
-    /**
-     * @unreleased
-     */
-    public init(templates: FormTemplates): void {
-        if (!this.hasTemplates) {
-            window.givewp.form.templates = Object.freeze(templates);
-
-            this.hasTemplates = true;
-        }
-    }
-}
+export default defaultFormTemplates;
