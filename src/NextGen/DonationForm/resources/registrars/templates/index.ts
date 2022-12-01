@@ -18,9 +18,8 @@ import HeaderTitle from './layouts/HeaderTitle';
 import HeaderDescription from './layouts/HeaderDescription';
 import Goal from './layouts/Goal';
 import {NodeWrapper} from './layouts/NodeWrapper';
-import {FormTemplates} from '@givewp/forms/types';
 
-const defaultFormTemplates: FormTemplates = {
+const defaultFormTemplates = {
     fields: {
         amount: AmountField,
         text: TextField,

@@ -1,23 +1,5 @@
 import type {FC} from 'react';
 import type {FormSettings} from '@givewp/form-builder/src/types';
-import type {
-    AmountProps,
-    FieldErrorProps,
-    FieldLabelProps,
-    FieldProps,
-    FormProps,
-    GatewayFieldProps,
-    GoalProps,
-    HeaderDescriptionProps,
-    HeaderProps,
-    HeaderTitleProps,
-    HtmlProps,
-    NameProps,
-    NodeWrapperProps,
-    ParagraphProps,
-    SectionProps,
-    SelectFieldProps,
-} from '@givewp/forms/propTypes';
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -98,45 +80,6 @@ export interface Gateway {
      * A hook after the form is submitted.
      */
     afterCreatePayment?(response: object): Promise<void> | Error;
-}
-
-export interface FormTemplateFields {
-    amount: FC<AmountProps>;
-    text: FC<FieldProps>;
-    textarea: FC<FieldProps>;
-    email: FC<FieldProps>;
-    hidden: FC<FieldProps>;
-    gateways: FC<GatewayFieldProps>;
-    select: FC<SelectFieldProps>;
-}
-
-export interface FormTemplateElements {
-    paragraph: FC<ParagraphProps>;
-    html: FC<HtmlProps>;
-    donationSummary: FC;
-}
-
-export interface FormTemplateGroups {
-    name: FC<NameProps>;
-}
-
-export interface FormTemplateLayouts {
-    wrapper: FC<NodeWrapperProps>;
-    section: FC<SectionProps>;
-    form: FC<FormProps>;
-    header: FC<HeaderProps>;
-    goal: FC<GoalProps>;
-    fieldLabel: FC<FieldLabelProps>;
-    fieldError: FC<FieldErrorProps>;
-    headerTitle: FC<HeaderTitleProps>;
-    headerDescription: FC<HeaderDescriptionProps>;
-}
-
-export interface FormTemplates {
-    fields: FormTemplateFields;
-    elements: FormTemplateElements;
-    groups: FormTemplateGroups;
-    layouts: FormTemplateLayouts;
 }
 
 export interface VisibilityCondition {
