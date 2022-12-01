@@ -28,7 +28,7 @@ module.exports = {
             'NextGen/DonationForm/Blocks/DonationFormBlock/resources/editor/styles/index.scss'
         ),
         donationFormApp: srcPath('NextGen/DonationForm/resources/app/DonationFormApp.tsx'),
-        donationFormRegistrars: srcPath('NextGen/DonationForm/Registrars/resources/registrars.ts'),
+        donationFormRegistrars: srcPath('NextGen/DonationForm/resources/registrars/index.ts'),
         donationFormEmbed: srcPath('NextGen/DonationForm/resources/embed.ts'),
         donationFormEmbedInside: srcPath('NextGen/DonationForm/resources/embedInside.ts'),
         nextGenStripeGateway: srcPath('NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'),

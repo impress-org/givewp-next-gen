@@ -19,7 +19,7 @@ import HeaderDescription from './layouts/HeaderDescription';
 import Goal from './layouts/Goal';
 import {NodeWrapper} from './layouts/NodeWrapper';
 
-const defaultFormDesign = {
+const defaultFormTemplates = {
     fields: {
         amount: AmountField,
         text: TextField,
@@ -50,4 +50,4 @@ const defaultFormDesign = {
     },
 };
 
-export default defaultFormDesign;
+export default defaultFormTemplates;
