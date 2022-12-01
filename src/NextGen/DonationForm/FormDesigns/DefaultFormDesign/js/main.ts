@@ -19,7 +19,7 @@ import HeaderDescription from './layouts/HeaderDescription';
 import Goal from './layouts/Goal';
 import {NodeWrapper} from './layouts/NodeWrapper';
 
-window.givewp.form.api.templates.extend({
+window.givewp.form.api.templates.init({
     fields: {
         amount: AmountField,
         text: TextField,
