@@ -4,7 +4,6 @@ namespace Give\CustomFields;
 
 use Give\CustomFields\Controllers\DonationDetailsController;
 use Give\CustomFields\Controllers\DonorDetailsController;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Field;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -30,7 +29,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @inheritDoc
-     * @throws Exception
      */
     public function boot()
     {

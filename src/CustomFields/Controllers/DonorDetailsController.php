@@ -8,9 +8,19 @@ use Give\Donors\Models\Donor;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give_Donor as LegacyDonor;
 
+/**
+ * @unreleased
+ */
 class DonorDetailsController
 {
-    public function __invoke(LegacyDonor $legacyDonor)
+    /**
+     * @unreleased
+     *
+     * @param LegacyDonor $legacyDonor
+     *
+     * @return void
+     */
+    public function __invoke(LegacyDonor $legacyDonor): void
     {
         $donor = Donor::find($legacyDonor->id);
 
@@ -24,6 +34,13 @@ class DonorDetailsController
         echo $view->render();
     }
 
+    /**
+     * @unreleased
+     *
+     * @param Donor $donor
+     *
+     * @return array
+     */
     protected function getUniqueDonationFormsForDonor(Donor $donor): array
     {
         $formIds = array_map(function(Donation $donation) {
@@ -35,6 +52,13 @@ class DonorDetailsController
         }, array_unique($formIds));
     }
 
+    /**
+     * @unreleased
+     *
+     * @param DonationForm $form
+     *
+     * @return array
+     */
     protected function getDisplayedDonorMetaFieldsForForm(DonationForm $form): array
     {
         return array_filter($form->schema()->getFields(), function($field) {

@@ -6,9 +6,19 @@ use Give\CustomFields\Views\DonationDetailsView;
 use Give\Donations\Models\Donation;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
+/**
+ * @unreleased
+ */
 class DonationDetailsController
 {
-    public function __invoke($donationID)
+    /**
+     * @unreleased
+     *
+     * @param int $donationID
+     *
+     * @return void
+     */
+    public function __invoke(int $donationID): void
     {
         $donation = Donation::find($donationID);
         $form = DonationForm::find($donation->formId);

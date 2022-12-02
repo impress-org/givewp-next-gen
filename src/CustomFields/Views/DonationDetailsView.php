@@ -5,18 +5,35 @@ namespace Give\CustomFields\Views;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Field;
 
+/**
+ * @unreleased
+ */
 class DonationDetailsView
 {
+    /** @var Donation */
     protected $donation;
+
+    /** @var Field[] */
     protected $fields;
 
-    public function __construct(Donation $donation, $fields)
+    /**
+     * @unreleased
+     *
+     * @param Donation      $donation
+     * @param array|Field[] $fields
+     */
+    public function __construct(Donation $donation, array $fields)
     {
         $this->donation = $donation;
         $this->fields = $fields;
     }
 
-    public function render()
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    public function render(): string
     {
         return "
         <div class='postbox' style='padding-bottom: 15px;'>
@@ -26,12 +43,22 @@ class DonationDetailsView
         ";
     }
 
-    protected function getTitle()
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    protected function getTitle(): string
     {
         return __('Custom Fields', 'givewp');
     }
 
-    protected function getContents()
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    protected function getContents(): string
     {
         return array_reduce($this->fields, function($output, Field $field) {
             return $output . "
@@ -43,8 +70,15 @@ class DonationDetailsView
         }, '');
     }
 
+    /**
+     * @unreleased
+     *
+     * @param Field $field
+     *
+     * @return mixed
+     */
     protected function getFieldValue(Field $field)
     {
-        return give_get_meta( $this->donation->id, $field->getName(), true );
+        return give()->payment_meta->get_meta($this->donation->id, $field->getName(), true );
     }
 }

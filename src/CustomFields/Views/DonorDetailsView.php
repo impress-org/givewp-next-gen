@@ -3,19 +3,37 @@
 namespace Give\CustomFields\Views;
 
 use Give\Donations\Models\Donation;
+use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
 
+/**
+ * @unreleased
+ */
 class DonorDetailsView
 {
+    /** @var Donor */
     protected $donor;
+
+    /** @var Field[] */
     protected $fields;
 
-    public function __construct($donor, $fields)
+    /**
+     * @unreleased
+     *
+     * @param Donor $donor
+     * @param Field[] $fields
+     */
+    public function __construct(Donor $donor, array $fields)
     {
         $this->donor = $donor;
         $this->fields = $fields;
     }
 
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
     public function render(): string
     {
         return "
@@ -34,12 +52,22 @@ class DonorDetailsView
         ";
     }
 
-    protected function getTitle()
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    protected function getTitle(): string
     {
         return __('Custom Fields', 'givewp');
     }
 
-    protected function getTableRows()
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    protected function getTableRows(): string
     {
         return array_reduce($this->fields, function($output, Field $field) {
             return $output . "
@@ -51,6 +79,13 @@ class DonorDetailsView
         }, '');
     }
 
+    /**
+     * @unreleased
+     *
+     * @param Field $field
+     *
+     * @return mixed
+     */
     protected function getFieldValue(Field $field)
     {
         return give()->donor_meta->get_meta($this->donor->userId, $field->getName(), true);
