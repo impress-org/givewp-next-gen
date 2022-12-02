@@ -20,7 +20,7 @@ class DonorDetailsController
      *
      * @return void
      */
-    public function __invoke(LegacyDonor $legacyDonor): void
+    public function show(LegacyDonor $legacyDonor): void
     {
         $donor = Donor::find($legacyDonor->id);
 

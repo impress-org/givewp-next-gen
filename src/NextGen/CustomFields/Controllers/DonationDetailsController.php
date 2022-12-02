@@ -18,7 +18,7 @@ class DonationDetailsController
      *
      * @return void
      */
-    public function __invoke(int $donationID): void
+    public function show(int $donationID): void
     {
         $donation = Donation::find($donationID);
         $form = DonationForm::find($donation->formId);
