@@ -12,7 +12,7 @@ import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-
 
 const CustomStyleSettings = () => {
 
-    const [ isOpen, setOpen ] = useState( false );
+    const [ isOpen, setOpen ] = useState<boolean>( false );
     const openModal = () => setOpen( true );
     const closeModal = () => setOpen( false );
 
