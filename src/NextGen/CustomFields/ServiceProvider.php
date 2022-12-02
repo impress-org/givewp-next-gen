@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\CustomFields;
+namespace Give\NextGen\CustomFields;
 
-use Give\CustomFields\Controllers\DonationDetailsController;
-use Give\CustomFields\Controllers\DonorDetailsController;
 use Give\Framework\FieldsAPI\Field;
 use Give\Helpers\Hooks;
+use Give\NextGen\CustomFields\Controllers\DonationDetailsController;
+use Give\NextGen\CustomFields\Controllers\DonorDetailsController;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**

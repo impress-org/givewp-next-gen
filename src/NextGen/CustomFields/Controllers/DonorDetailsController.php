@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\CustomFields\Controllers;
+namespace Give\NextGen\CustomFields\Controllers;
 
-use Give\CustomFields\Views\DonorDetailsView;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
+use Give\NextGen\CustomFields\Views\DonorDetailsView;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give_Donor as LegacyDonor;
 

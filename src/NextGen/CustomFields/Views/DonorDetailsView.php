@@ -1,8 +1,7 @@
 <?php
 
-namespace Give\CustomFields\Views;
+namespace Give\NextGen\CustomFields\Views;
 
-use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
 
