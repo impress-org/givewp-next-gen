@@ -113,7 +113,7 @@ const field = {
             displayInAdmin: {
                 type: 'boolean',
                 source: 'attribute',
-                default: false,
+                default: true,
             },
         },
         title: __('Text', 'custom-block-editor'),
