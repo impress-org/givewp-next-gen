@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
 use Give\Framework\Validation\Validator;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -57,7 +58,7 @@ class DonateFormRouteData
         /** @var DonationForm $form */
         $form = DonationForm::find($this->formId);
 
-        $validator = Validator::fromForm($form->schema(), $request);
+        $validator = (new CreateValidatorFromForm())($form->schema(), $request);
 
         if ($validator->fails()) {
             $this->throwDonationFormFieldErrorsException($validator->errors());
