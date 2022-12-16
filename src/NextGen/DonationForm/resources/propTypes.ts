@@ -93,6 +93,10 @@ export interface GoalProps {
     totalCountLabel: string;
 }
 
+export interface GoalAchievedProps {
+    goalAchievedMessage: string;
+}
+
 export interface HeaderProps {
     Title: FC<HeaderTitleProps | {}>;
     Description: FC<HeaderDescriptionProps | {}>;
