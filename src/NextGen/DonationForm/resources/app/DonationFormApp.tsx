@@ -7,7 +7,7 @@ import prepareFormData from './utilities/PrepareFormData';
 import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
 import Header from './form/Header';
 import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
-import {withTemplateWrapper} from "@givewp/forms/app/templates";
+import {withTemplateWrapper} from '@givewp/forms/app/templates';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -34,9 +34,10 @@ const initialState = {
 
 
 function App() {
-    if(form.settings.enableAutoClose && 100 === form.goal.progressPercentage) {
+    if (form.goal.isAchieved) {
         return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />;
     }
+
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
             <>
