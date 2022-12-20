@@ -1,6 +1,24 @@
-.givewp-layouts-goal {
-    width: 100%;
+.givewp-layouts {
+    &-goal {
+        width: 100%;
+    }
+
+    &-goalAchieved {
+        border-radius: 0.5rem;
+        box-shadow: rgb(0 0 0 / 30%) 0 0.125rem 0.3125rem;
+        background-color: #fff;
+        max-width: min(100%, 51.5rem);
+        margin: 0 auto;
+        background: var(--give-primary-color);
+        color: var(--give-secondary-color);
+        display: flex;
+        justify-content: center;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+        font-size: 2rem;
+    }
 }
+
 
 .givewp-form-goal-progress {
     inline-size: 100%;
