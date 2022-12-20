@@ -1,4 +1,4 @@
-import {Element, Field, FormDesign, Gateway, Group, Section as SectionType, SelectOption} from '@givewp/forms/types';
+import {Element, Field, Gateway, Group, Section as SectionType, SelectOption} from '@givewp/forms/types';
 import {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
 import {FC, FormHTMLAttributes, ReactNode} from 'react';
 
@@ -112,7 +112,7 @@ export interface HeaderTitleProps {
 }
 
 export interface NodeWrapperProps {
-    nodeType: keyof FormDesign & string;
+    nodeType: keyof typeof window.givewp.form.templates & string;
     // TODO: make type work as this keyof (keyof FormDesign) & string
     type: string;
     name?: string;
