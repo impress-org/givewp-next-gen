@@ -167,6 +167,9 @@ svg {
         display: flex;
         gap: 24px;
         flex-direction: column;
+    }
+
+    &.is-selected > div > .block-editor-inner-blocks > .block-editor-block-list__layout {
         margin-bottom: 40px;
     }
 }
