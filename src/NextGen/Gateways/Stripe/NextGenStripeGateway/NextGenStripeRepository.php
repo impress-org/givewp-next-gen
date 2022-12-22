@@ -124,23 +124,49 @@ trait NextGenStripeRepository {
      */
    protected function updateDonationMetaFromPaymentIntent(Donation $donation, PaymentIntent $intent)
    {
-        $donation->gatewayTransactionId = $intent->id;
-        $donation->save();
+       $donation->gatewayTransactionId = $intent->id;
+       $donation->save();
 
-         DonationNote::create([
-            'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id)
-        ]);
+       DonationNote::create([
+           'donationId' => $donation->id,
+           'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id)
+       ]);
 
-        DonationNote::create([
-            'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
-        ]);
+       DonationNote::create([
+           'donationId' => $donation->id,
+           'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
+       ]);
 
-        give_update_meta(
-            $donation->id,
-            '_give_stripe_payment_intent_client_secret',
-            $intent->client_secret
-        );
+       give_update_meta(
+           $donation->id,
+           '_give_stripe_payment_intent_client_secret',
+           $intent->client_secret
+       );
    }
+
+    /**
+     * @unreleased
+     */
+    protected function getStripePublishableKey(int $formId): string
+    {
+        return give_stripe_get_publishable_key($formId);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getStripeConnectedAccountKey(int $formId): string
+    {
+        return give_stripe_get_connected_account_id($formId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void;
+     */
+    protected function setUpStripeAppInfo(int $formId)
+    {
+        give_stripe_set_app_info($formId);
+    }
 }
