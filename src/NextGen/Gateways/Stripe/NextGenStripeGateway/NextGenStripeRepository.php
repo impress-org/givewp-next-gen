@@ -90,9 +90,9 @@ trait NextGenStripeRepository {
      *
      * @throws InvalidPropertyName
      */
-    protected function getPaymentIntentArgsFromDonation(Donation $donation, Customer $customer)
-   {
-       // Collect intent args to be updated
+    protected function getPaymentIntentArgsFromDonation(Donation $donation, Customer $customer): array
+    {
+        // Collect intent args to be updated
         $intentArgs = [
             'amount' => $donation->amount->formatToMinorAmount(),
             'customer' => $customer->id,
