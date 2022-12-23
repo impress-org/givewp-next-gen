@@ -349,11 +349,15 @@ svg {
 /** ------------------------------- */
 
 /*
-Add top border to block card (block tab) to match panel body elements.
+Add border bottom to tabs, while removing body top border.
 This creates a consistent separator between the tabs and the rest of the sidebar.
 */
-.block-editor-block-card {
-    border-top: 1px solid #e0e0e0;
+.components-tab-panel__tabs {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.components-panel__body {
+    border-top: none;
 }
 
 /** ------------------------------- */
