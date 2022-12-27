@@ -368,4 +368,12 @@ class DonationFormRepository
 
         return $form;
     }
+
+    /**
+     * @unreleased
+     */
+    public function isLegacyForm(int $formId): bool
+    {
+        return !get_post($formId)->post_content;
+    }
 }
