@@ -33,6 +33,9 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         Hooks::addAction('give_donor_after_tables', DonorDetailsController::class, 'show');
-        Hooks::addAction('give_view_donation_details_billing_after', DonationDetailsController::class, 'show');
+
+        add_action('give_view_donation_details_billing_after', static function ($donationId) {
+            echo give(DonationDetailsController::class)->show($donationId);
+        });
     }
 }

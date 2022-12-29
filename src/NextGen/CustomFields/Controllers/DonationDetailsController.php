@@ -15,17 +15,17 @@ class DonationDetailsController
     /**
      * @unreleased
      *
-     * @param int $donationID
+     * @param  int  $donationID
      *
-     * @return void
+     * @return string
      */
-    public function show(int $donationID): void
+    public function show(int $donationID): string
     {
         /** @var Donation $donation */
         $donation = Donation::find($donationID);
 
         if (give(DonationFormRepository::class)->isLegacyForm($donation->formId)) {
-            return;
+            return '';
         }
 
         /** @var DonationForm $form */
@@ -35,8 +35,6 @@ class DonationDetailsController
             return $field->shouldDisplayInAdmin() && !$field->shouldStoreAsDonorMeta();
         });
 
-        $view = new DonationDetailsView($donation, $fields);
-
-        echo $view->render();
+        return (new DonationDetailsView($donation, $fields))->render();
     }
 }
