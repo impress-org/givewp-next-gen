@@ -374,6 +374,8 @@ class DonationFormRepository
      */
     public function isLegacyForm(int $formId): bool
     {
-        return !get_post($formId)->post_content;
+        $form = DB::table('posts')->select(['post_content', 'data'])->where('ID', $formId)->get();
+
+        return !$form->data;
     }
 }
