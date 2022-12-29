@@ -11,8 +11,6 @@ use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-use function str_replace;
-
 class TestDonationDetailsView extends TestCase
 {
     use RefreshDatabase;
@@ -71,14 +69,14 @@ class TestDonationDetailsView extends TestCase
         </div>";
 
         $this->assertSame(
-            str_replace(
-                ' ',
-                '',
+            preg_replace(
+                "/\s+/",
+                "",
                 $mockRender
             ),
-            str_replace(
-                ' ',
-                '',
+            preg_replace(
+                "/\s+/",
+                "",
                 $donationDetailsView->render()
             )
         );
