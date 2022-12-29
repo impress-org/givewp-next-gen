@@ -7,7 +7,6 @@ use Give\Donors\Models\Donor;
 use Give\NextGen\CustomFields\Views\DonorDetailsView;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
-use Give_Donor as LegacyDonor;
 
 use function array_reduce;
 
@@ -18,29 +17,20 @@ class DonorDetailsController
 {
     /**
      * @unreleased
-     *
-     * @param  LegacyDonor  $legacyDonor
-     *
-     * @return void
      */
-    public function show(LegacyDonor $legacyDonor): void
+    public function show(Donor $donor): string
     {
-        /** @var Donor $donor */
-        $donor = Donor::find($legacyDonor->id);
-
         $forms = $this->getUniqueDonationFormsForDonor($donor);
 
         if (!$forms) {
-            return;
+            return '';
         }
 
         $fields = array_reduce($forms, function ($fields, DonationForm $form) {
             return $fields + $this->getDisplayedDonorMetaFieldsForForm($form);
         }, []);
 
-        $view = new DonorDetailsView($donor, $fields);
-
-        echo $view->render();
+        return (new DonorDetailsView($donor, $fields))->render();
     }
 
     /**

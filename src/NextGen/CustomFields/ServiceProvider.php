@@ -2,11 +2,12 @@
 
 namespace Give\NextGen\CustomFields;
 
+use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
-use Give\Helpers\Hooks;
 use Give\NextGen\CustomFields\Controllers\DonationDetailsController;
 use Give\NextGen\CustomFields\Controllers\DonorDetailsController;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give_Donor as LegacyDonor;
 
 /**
  * @unreleased
@@ -32,10 +33,15 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        Hooks::addAction('give_donor_after_tables', DonorDetailsController::class, 'show');
+        add_action('give_donor_after_tables', static function (LegacyDonor $legacyDonor) {
+            /** @var Donor $donor */
+            $donor = Donor::find($legacyDonor->id);
+            
+            echo (new DonorDetailsController())->show($donor);
+        });
 
         add_action('give_view_donation_details_billing_after', static function ($donationId) {
-            echo give(DonationDetailsController::class)->show($donationId);
+            echo (new DonationDetailsController())->show($donationId);
         });
     }
 }
