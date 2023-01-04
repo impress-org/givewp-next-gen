@@ -57,6 +57,62 @@ class TestDonationReceipt extends TestCase
                     $donation->amount->formatToDecimal()
                 ),
             ],
+            'additionalDetails' => [],
+        ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testAddAdditionalDetailWithToArrayReturnsExpectedArrayShape()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create();
+
+        $receipt = new DonationReceipt($donation);
+        $receipt->addAdditionalDetail(
+            __('Additional Detail', 'give'),
+            'Additional Detail Value'
+        );
+
+        $this->assertSame($receipt->toArray(), [
+            'settings' => [
+                'currency' => $donation->amount->getCurrency()->getCode(),
+            ],
+            'donorDetails' => [
+                $this->addDetail(
+                    __('Donor Name', 'give'),
+                    trim("{$donation->firstName} {$donation->lastName}")
+                ),
+                $this->addDetail(
+                    __('Email Address', 'give'),
+                    $donation->email
+                ),
+            ],
+            'donationDetails' => [
+                $this->addDetail(
+                    __('Payment Status', 'give'),
+                    give_get_payment_statuses()[$donation->status->getValue()]
+                ),
+                $this->addDetail(
+                    __('Payment Method', 'give'),
+                    $donation->gateway()->getPaymentMethodLabel()
+                ),
+                $this->addDetail(
+                    __('Donation Amount', 'give'),
+                    $donation->amount->formatToDecimal()
+                ),
+                $this->addDetail(
+                    __('Donation Total', 'give'),
+                    $donation->amount->formatToDecimal()
+                ),
+            ],
+            'additionalDetails' => [
+                $this->addDetail(
+                    __('Additional Detail', 'give'),
+                    'Additional Detail Value'
+                ),
+            ],
         ]);
     }
 
@@ -85,8 +141,7 @@ class TestDonationReceipt extends TestCase
                         ]
                     ]
                 ])
-            ],
-            ['custom_text_block_meta' => 'Custom Text Block Value']
+            ]
         );
 
         /** @var Donation $donation */
