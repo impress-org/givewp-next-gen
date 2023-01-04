@@ -33,7 +33,7 @@ class ServiceProvider implements ServiceProviderInterface {
         Hooks::addAction('template_redirect', DonationFormViewRoute::class);
         Hooks::addAction('template_redirect', DonationFormPreviewRoute::class);
 
-        Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class, 'storeDonationLevels');
-        Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class, 'storeDonationGoal');
+        Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
+        Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
     }
 }

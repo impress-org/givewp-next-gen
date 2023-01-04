@@ -7,6 +7,12 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 
 class StoreBackwardsCompatibleFormMeta
 {
+    public function __invoke(DonationForm $donationForm)
+    {
+        $this->storeDonationLevels($donationForm);
+        $this->storeDonationGoal($donationForm);
+    }
+
     public function storeDonationLevels(DonationForm $donationForm)
     {
         $donationLevels = $donationForm->schema()->getNodeByName('amount')->getLevels();
