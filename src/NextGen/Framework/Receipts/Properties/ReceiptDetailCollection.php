@@ -10,14 +10,15 @@ class ReceiptDetailCollection implements Arrayable {
     /**
      * @var ReceiptDetail[]
      */
-    public $receiptDetails;
+    protected $receiptDetails;
 
     /**
      * @unreleased
      *
      * @param  ReceiptDetail[]  $receiptDetails
      */
-    public function __construct(array $receiptDetails = []) {
+    public function __construct(array $receiptDetails = [])
+    {
         $this->receiptDetails = $receiptDetails;
     }
 
@@ -27,7 +28,8 @@ class ReceiptDetailCollection implements Arrayable {
      * @param  ReceiptDetail  $receiptDetail
      * @return void
      */
-    public function addDetail( ReceiptDetail $receiptDetail ) {
+    public function addDetail(ReceiptDetail $receiptDetail)
+    {
         $this->receiptDetails[] = $receiptDetail;
     }
 
@@ -37,10 +39,19 @@ class ReceiptDetailCollection implements Arrayable {
      * @param  ReceiptDetail[]  $receiptDetails
      * @return void
      */
-    public function addDetails( array $receiptDetails ) {
-        foreach($receiptDetails as $detail){
+    public function addDetails(array $receiptDetails)
+    {
+        foreach ($receiptDetails as $detail) {
             $this->receiptDetails[] = $detail;
         }
+    }
+
+    /**
+     * @return ReceiptDetail[]
+     */
+    public function getDetails(): array
+    {
+        return $this->receiptDetails;
     }
 
     /**
@@ -50,6 +61,6 @@ class ReceiptDetailCollection implements Arrayable {
     {
         return array_map(static function (ReceiptDetail $receiptDetail) {
             return $receiptDetail->toArray();
-        },$this->receiptDetails);
+        }, $this->receiptDetails);
     }
 }

@@ -10,15 +10,15 @@ class ReceiptDetail implements Arrayable {
      */
     public $label;
     /**
-     * @var string
+     * @var mixed
      */
     public $value;
 
     /**
-     * @param string $label
-     * @param mixed $value
-     *
      * @unreleased
+     *
+     * @param  string  $label
+     * @param  mixed  $value
      */
     public function __construct(string $label, $value) {
         $this->label = $label;
