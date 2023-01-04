@@ -7,7 +7,7 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 
 class StoreBackwardsCompatibleFormMeta
 {
-    protected function storeDonationLevels(DonationForm $donationForm)
+    public function storeDonationLevels(DonationForm $donationForm)
     {
         $donationLevels = $donationForm->schema()->getNodeByName('amount')->getLevels();
         $donationLevels = array_map(function ($donationLevel, $index) {
@@ -22,7 +22,7 @@ class StoreBackwardsCompatibleFormMeta
         give()->form_meta->update_meta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, $donationLevels);
     }
 
-    protected function storeDonationGoal(DonationForm $donationForm)
+    public function storeDonationGoal(DonationForm $donationForm)
     {
         give()->form_meta->update_meta($donationForm->id, DonationFormMetaKeys::GOAL_OPTION, $donationForm->settings->enableDonationGoal ? 'enabled' : 'disabled');
 
