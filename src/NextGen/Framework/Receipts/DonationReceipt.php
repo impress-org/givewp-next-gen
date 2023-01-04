@@ -7,6 +7,8 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
+use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
+use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
 
 class DonationReceipt implements Arrayable, Jsonable
 {
@@ -15,17 +17,21 @@ class DonationReceipt implements Arrayable, Jsonable
      */
     public $donation;
     /**
-     * @var array
+     * @var ReceiptDetailCollection
      */
     protected $donorDetails;
     /**
-     * @var array
+     * @var ReceiptDetailCollection
      */
     protected $donationDetails;
     /**
-     * @var array
+     * @var ReceiptDetailCollection
      */
     protected $additionalDetails;
+    /**
+     * @var ReceiptDetailCollection
+     */
+    protected $subscriptionDetails;
 
     /**
      * @unreleased
@@ -33,54 +39,21 @@ class DonationReceipt implements Arrayable, Jsonable
     public function __construct(Donation $donation)
     {
         $this->donation = $donation;
-
-        $this->donorDetails = [
-            $this->detail(
-                __('Donor Name', 'give'),
-                trim("{$this->donation->firstName} {$this->donation->lastName}")
-            ),
-            $this->detail(
-                __('Email Address', 'give'),
-                $this->donation->email
-            ),
-        ];
-
-        $this->donationDetails = [
-            $this->detail(
-                __('Payment Status', 'give'),
-                give_get_payment_statuses()[$this->donation->status->getValue()]
-            ),
-            $this->detail(
-                __('Payment Method', 'give'),
-                $this->donation->gateway()->getPaymentMethodLabel()
-            ),
-            $this->detail(
-                __('Donation Amount', 'give'),
-                $this->donation->amount->formatToDecimal()
-            ),
-            $this->detail(
-                __('Donation Total', 'give'),
-                $this->donation->amount->formatToDecimal()
-            ),
-        ];
-
-        if ($customFields = $this->getCustomFields()) {
-            $this->additionalDetails = $customFields;
-        } else {
-            $this->additionalDetails = [];
-        }
+        $this->donorDetails = new ReceiptDetailCollection();
+        $this->donationDetails = new ReceiptDetailCollection();
+        $this->subscriptionDetails = new ReceiptDetailCollection();
+        $this->additionalDetails = new ReceiptDetailCollection();
     }
 
     /**
      * @unreleased
      */
-    public function addAdditionalDetail($label, $value)
+    public function addAdditionalDetail(string $label, $value)
     {
-        $this->additionalDetails[] = $this->detail($label, $value);
+        $this->additionalDetails->addDetail(new ReceiptDetail($label, $value));
     }
 
     /**
-     * TODO: add subscription details
      * TODO: add support for heading, description settings
      * TODO: support dynamic tags for content
      * TODO: support pdf links
@@ -91,13 +64,19 @@ class DonationReceipt implements Arrayable, Jsonable
      */
     public function toArray(): array
     {
+        $this->fillDonorDetails();
+        $this->fillDonationDetails();
+        $this->fillSubscriptionDetails();
+        $this->fillAdditionalDetails();
+
         return [
             'settings' => [
                 'currency' => $this->donation->amount->getCurrency()->getCode(),
             ],
-            'donorDetails' => $this->donorDetails,
-            'donationDetails' => $this->donationDetails,
-            'additionalDetails' => $this->additionalDetails,
+            'donorDetails' => $this->donorDetails->toArray(),
+            'donationDetails' => $this->donationDetails->toArray(),
+            'subscriptionDetails' => $this->subscriptionDetails->toArray(),
+            'additionalDetails' => $this->additionalDetails->toArray(),
         ];
     }
 
@@ -107,15 +86,6 @@ class DonationReceipt implements Arrayable, Jsonable
     public function toJson($options = 0): string
     {
         return json_encode($this->toArray(), $options);
-    }
-
-
-    /**
-     * @unreleased
-     */
-    protected function detail(string $label, $value): array
-    {
-        return compact('label', 'value');
     }
 
     /**
@@ -134,7 +104,7 @@ class DonationReceipt implements Arrayable, Jsonable
 
         $form->schema()->walkFields(function ($field) use (&$customFields) {
             if ($field->shouldDisplayInReceipt()) {
-                $customFields[] = $this->detail(
+                $customFields[] = new ReceiptDetail(
                     $field->getLabel(),
                     give()->payment_meta->get_meta($this->donation->id, $field->getName(), true)
                 );
@@ -142,5 +112,117 @@ class DonationReceipt implements Arrayable, Jsonable
         });
 
         return $customFields;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function fillDonationDetails()
+    {
+        $this->donationDetails->addDetails([
+                new ReceiptDetail(
+                    __('Payment Status', 'give'),
+                    give_get_payment_statuses()[$this->donation->status->getValue()]
+                ),
+                new ReceiptDetail(
+                    __('Payment Method', 'give'),
+                    $this->donation->gateway()->getPaymentMethodLabel()
+                ),
+                new ReceiptDetail(
+                    __('Donation Amount', 'give'),
+                    $this->donation->intendedAmount()->formatToDecimal()
+                ),
+            ]
+        );
+
+        if ($this->donation->feeAmountRecovered) {
+            $this->donationDetails->addDetail(
+                new ReceiptDetail(
+                    __('Processing Fee', 'give'),
+                    $this->donation->feeAmountRecovered->formatToDecimal()
+                )
+            );
+        }
+
+        $this->donationDetails->addDetail(
+            new ReceiptDetail(
+                __('Donation Total', 'give'),
+                $this->donation->amount->formatToDecimal()
+            )
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function fillDonorDetails()
+    {
+        $this->donorDetails->addDetails(
+            [
+                new ReceiptDetail(
+                    __('Donor Name', 'give'),
+                    trim("{$this->donation->firstName} {$this->donation->lastName}")
+                ),
+                new ReceiptDetail(
+                    __('Email Address', 'give'),
+                    $this->donation->email
+                ),
+            ]
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function fillAdditionalDetails()
+    {
+        if ($customFields = $this->getCustomFields()) {
+            $this->additionalDetails->addDetails($customFields);
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function fillSubscriptionDetails()
+    {
+        if ($this->donation->subscriptionId) {
+            $subscription = $this->donation->subscription;
+
+            $this->subscriptionDetails->addDetails([
+                new ReceiptDetail(
+                    __('Subscription', 'give'),
+                    sprintf(
+                        '%s / %s',
+                        $subscription->amount->formatToDecimal(),
+                        $subscription->period->getValue()
+                    )
+                ),
+                new ReceiptDetail(
+                    __('Subscription Status', 'give'),
+                    $subscription->status->getValue()
+                ),
+                new ReceiptDetail(
+                    __('Renewal Date', 'give'),
+                    $subscription->renewsAt->format('F j, Y')
+                ),
+                new ReceiptDetail(
+                    __('Progress', 'give'),
+                    sprintf(
+                        '%s / %s',
+                        count($subscription->donations),
+                        $subscription->installments > 0 ? $subscription->installments : 'Ongoing'
+                    )
+                ),
+            ]);
+        }
     }
 }
