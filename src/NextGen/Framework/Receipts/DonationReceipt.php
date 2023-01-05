@@ -48,9 +48,11 @@ class DonationReceipt implements Arrayable, Jsonable
     /**
      * @unreleased
      */
-    public function addAdditionalDetail(string $label, $value)
+    public function addAdditionalDetail(string $label, $value): DonationReceipt
     {
         $this->additionalDetails->addDetail(new ReceiptDetail($label, $value));
+
+        return $this;
     }
 
     /**
@@ -64,11 +66,6 @@ class DonationReceipt implements Arrayable, Jsonable
      */
     public function toArray(): array
     {
-        $this->fillDonorDetails();
-        $this->fillDonationDetails();
-        $this->fillSubscriptionDetails();
-        $this->fillAdditionalDetails();
-
         return [
             'settings' => [
                 'currency' => $this->donation->amount->getCurrency()->getCode(),
@@ -219,10 +216,23 @@ class DonationReceipt implements Arrayable, Jsonable
                     sprintf(
                         '%s / %s',
                         count($subscription->donations),
-                        $subscription->installments > 0 ? $subscription->installments : 'Ongoing'
+                        $subscription->installments > 0 ? $subscription->installments : __('Ongoing', 'give')
                     )
                 ),
             ]);
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function generate(): DonationReceipt
+    {
+        $this->fillDonorDetails();
+        $this->fillDonationDetails();
+        $this->fillSubscriptionDetails();
+        $this->fillAdditionalDetails();
+
+        return $this;
     }
 }

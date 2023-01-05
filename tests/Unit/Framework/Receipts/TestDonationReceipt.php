@@ -28,6 +28,8 @@ class TestDonationReceipt extends TestCase
         $donation = Donation::factory()->create();
 
         $receipt = new DonationReceipt($donation);
+        $receipt->generate();
+
         $donorDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
                 __('Donor Name', 'give'),
@@ -75,11 +77,36 @@ class TestDonationReceipt extends TestCase
     /**
      * @unreleased
      */
+    public function testToArrayShouldBeEmptyWithoutGenerate()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create();
+
+        $receipt = new DonationReceipt($donation);
+
+        $this->assertSame(
+            $receipt->toArray(),
+            [
+                'settings' => [
+                    'currency' => $donation->amount->getCurrency()->getCode(),
+                ],
+                'donorDetails' => [],
+                'donationDetails' => [],
+                'subscriptionDetails' => [],
+                'additionalDetails' => [],
+            ]
+        );
+    }
+
+    /**
+     * @unreleased
+     */
     public function testToArrayReturnsExpectedArrayShapeWithSubscriptionDetails()
     {
         $subscription = Subscription::factory()->createWithDonation();
         $donation = $subscription->initialDonation();
         $receipt = new DonationReceipt($donation);
+        $receipt->generate();
 
         $subscriptionDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
@@ -122,6 +149,7 @@ class TestDonationReceipt extends TestCase
         ]);
 
         $receipt = new DonationReceipt($donation);
+        $receipt->generate();
 
         $donationDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
@@ -161,6 +189,7 @@ class TestDonationReceipt extends TestCase
         $donation = Donation::factory()->create();
 
         $receipt = new DonationReceipt($donation);
+        $receipt->generate();
 
         $receipt->addAdditionalDetail(
             __('Additional Detail', 'give'),
@@ -171,6 +200,44 @@ class TestDonationReceipt extends TestCase
             new ReceiptDetail(
                 __('Additional Detail', 'give'),
                 'Additional Detail Value'
+            ),
+        ]);
+
+        $this->assertSame(
+            $receipt->toArray()['additionalDetails'],
+            $additionalDetails->toArray()
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testAddAdditionalDetailWithToArrayReturnsExpectedArrayShapeBeforeAndAfterGenerate()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create();
+
+        $receipt = new DonationReceipt($donation);
+        $receipt->addAdditionalDetail(
+            __('Additional Detail Before Generate', 'give'),
+            'Additional Detail Before Generate Value'
+        );
+
+        $receipt->generate();
+
+        $receipt->addAdditionalDetail(
+            __('Additional Detail After Generate', 'give'),
+            'Additional Detail After Generate Value'
+        );
+
+        $additionalDetails = new ReceiptDetailCollection([
+            new ReceiptDetail(
+                __('Additional Detail Before Generate', 'give'),
+                'Additional Detail Before Generate Value'
+            ),
+            new ReceiptDetail(
+                __('Additional Detail After Generate', 'give'),
+                'Additional Detail After Generate Value'
             ),
         ]);
 
@@ -216,6 +283,7 @@ class TestDonationReceipt extends TestCase
         (new StoreCustomFields())($donationForm, $donation, ['custom_text_block_meta' => 'Custom Text Block Value']);
 
         $receipt = new DonationReceipt($donation);
+        $receipt->generate();
 
         $additionalDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
