@@ -249,6 +249,9 @@ class DonationReceipt implements Arrayable, Jsonable
         return $this;
     }
 
+    /**
+     * @unreleased
+     */
     private function fillSettings()
     {
         $this->settings = array_merge($this->settings, [
