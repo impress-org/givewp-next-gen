@@ -64,7 +64,8 @@ class TestDonationReceipt extends TestCase
             $receipt->toArray(),
             [
                 'settings' => [
-                    'currency' => $donation->amount->getCurrency()->getCode(),
+                    'currency' => $receipt->donation->amount->getCurrency()->getCode(),
+                    'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
                 ],
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
@@ -87,9 +88,7 @@ class TestDonationReceipt extends TestCase
         $this->assertSame(
             $receipt->toArray(),
             [
-                'settings' => [
-                    'currency' => $donation->amount->getCurrency()->getCode(),
-                ],
+                'settings' => [],
                 'donorDetails' => [],
                 'donationDetails' => [],
                 'subscriptionDetails' => [],

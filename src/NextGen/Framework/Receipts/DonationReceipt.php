@@ -32,6 +32,10 @@ class DonationReceipt implements Arrayable, Jsonable
      * @var ReceiptDetailCollection
      */
     protected $subscriptionDetails;
+    /**
+     * @var array
+     */
+    protected $settings;
 
     /**
      * @unreleased
@@ -43,6 +47,7 @@ class DonationReceipt implements Arrayable, Jsonable
         $this->donationDetails = new ReceiptDetailCollection();
         $this->subscriptionDetails = new ReceiptDetailCollection();
         $this->additionalDetails = new ReceiptDetailCollection();
+        $this->settings = [];
     }
 
     /**
@@ -56,20 +61,27 @@ class DonationReceipt implements Arrayable, Jsonable
     }
 
     /**
-     * TODO: add support for heading, description settings
-     * TODO: support dynamic tags for content
-     * TODO: support pdf links
-     * TODO: support link to donor dashboard
-     * TODO: maybe support social sharing
+     * @unreleased
      *
+     * @param  string  $key
+     * @param  mixed  $value
+     *
+     * @return DonationReceipt
+     */
+    public function addSetting(string $key, $value): DonationReceipt
+    {
+        $this->settings[$key] = $value;
+
+        return $this;
+    }
+
+    /**
      * @unreleased
      */
     public function toArray(): array
     {
         return [
-            'settings' => [
-                'currency' => $this->donation->amount->getCurrency()->getCode(),
-            ],
+            'settings' => $this->settings,
             'donorDetails' => $this->donorDetails->toArray(),
             'donationDetails' => $this->donationDetails->toArray(),
             'subscriptionDetails' => $this->subscriptionDetails->toArray(),
@@ -228,11 +240,20 @@ class DonationReceipt implements Arrayable, Jsonable
      */
     public function generate(): DonationReceipt
     {
+        $this->fillSettings();
         $this->fillDonorDetails();
         $this->fillDonationDetails();
         $this->fillSubscriptionDetails();
         $this->fillAdditionalDetails();
 
         return $this;
+    }
+
+    private function fillSettings()
+    {
+        $this->settings = array_merge($this->settings, [
+            'currency' => $this->donation->amount->getCurrency()->getCode(),
+            'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+        ]);
     }
 }
