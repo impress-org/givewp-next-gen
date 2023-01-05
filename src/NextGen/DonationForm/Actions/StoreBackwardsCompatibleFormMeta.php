@@ -31,6 +31,7 @@ class StoreBackwardsCompatibleFormMeta
             ];
         }, $donationLevels, array_keys($donationLevels));
 
+        give()->form_meta->update_meta($donationForm->id, DonationFormMetaKeys::PRICE_OPTION, 'multi');
         give()->form_meta->update_meta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, $donationLevels);
     }
 
