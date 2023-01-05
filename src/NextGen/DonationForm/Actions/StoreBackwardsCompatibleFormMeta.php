@@ -15,7 +15,13 @@ class StoreBackwardsCompatibleFormMeta
 
     public function storeDonationLevels(DonationForm $donationForm)
     {
-        $donationLevels = $donationForm->schema()->getNodeByName('amount')->getLevels();
+        $amountField = $donationForm->schema()->getNodeByName('amount');
+
+        if( ! $amountField ) {
+            return;
+        }
+
+        $donationLevels = $amountField->getLevels();
         $donationLevels = array_map(function ($donationLevel, $index) {
             return [
                 '_give_id' => [
