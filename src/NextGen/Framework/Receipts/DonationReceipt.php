@@ -3,12 +3,17 @@
 namespace Give\NextGen\Framework\Receipts;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\FieldsAPI\Concerns\HasLabel;
+use Give\Framework\FieldsAPI\Concerns\HasName;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
+
+use function array_map;
 
 class DonationReceipt implements Arrayable, Jsonable
 {
@@ -109,18 +114,18 @@ class DonationReceipt implements Arrayable, Jsonable
         /** @var DonationForm $form */
         $form = DonationForm::find($this->donation->formId);
 
-        $customFields = [];
-
-        $form->schema()->walkFields(function ($field) use (&$customFields) {
-            if ($field->shouldDisplayInReceipt()) {
-                $customFields[] = new ReceiptDetail(
-                    $field->getLabel(),
-                    give()->payment_meta->get_meta($this->donation->id, $field->getName(), true)
-                );
-            }
+        $customFields = array_filter($form->schema()->getFields(), static function (Field $field) {
+            /** $field->shouldDisplayInReceipt is a temporary macro */
+            return $field->shouldDisplayInReceipt();
         });
 
-        return $customFields;
+        return array_map(function (Field $field) {
+            /** @var Field|HasLabel|HasName $field */
+            return new ReceiptDetail(
+                $field->getLabel(),
+                give()->payment_meta->get_meta($this->donation->id, $field->getName(), true)
+            );
+        }, $customFields);
     }
 
     /**
