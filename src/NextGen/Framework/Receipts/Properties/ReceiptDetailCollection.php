@@ -5,6 +5,7 @@ namespace Give\NextGen\Framework\Receipts\Properties;
 use Give\Framework\Support\Contracts\Arrayable;
 
 use function array_map;
+use function array_merge;
 
 class ReceiptDetailCollection implements Arrayable {
     /**
@@ -41,9 +42,7 @@ class ReceiptDetailCollection implements Arrayable {
      */
     public function addDetails(array $receiptDetails)
     {
-        foreach ($receiptDetails as $detail) {
-            $this->receiptDetails[] = $detail;
-        }
+        $this->receiptDetails = array_merge($this->receiptDetails, $receiptDetails);
     }
 
     /**
