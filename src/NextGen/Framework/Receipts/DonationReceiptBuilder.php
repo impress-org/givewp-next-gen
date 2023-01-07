@@ -2,15 +2,28 @@
 
 namespace Give\NextGen\Framework\Receipts;
 
-use Give\Donations\Models\Donation;
-use Give\NextGen\Framework\Receipts\Actions\GenerateReceiptFromDonation;
+use Give\NextGen\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
 
-class DonationReceiptBuilder {
+class DonationReceiptBuilder
+{
+    /**
+     * @var DonationReceipt
+     */
+    public $donationReceipt;
+
     /**
      * @unreleased
      */
-    public static function fromDonation(Donation $donation): DonationReceipt
+    public function __construct(DonationReceipt $donationReceipt)
     {
-        return (new GenerateReceiptFromDonation())($donation);
+        $this->donationReceipt = $donationReceipt;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toConfirmationPage(): DonationReceipt
+    {
+        return (new GenerateConfirmationPageReceipt())($this->donationReceipt);
     }
 }

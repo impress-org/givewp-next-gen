@@ -10,69 +10,45 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\Receipts\DonationReceipt;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
-use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
-use Give\NextGen\Framework\Receipts\Properties\ReceiptSettings;
 
-class GenerateReceiptFromDonation
+class GenerateConfirmationPageReceipt
 {
     /**
-     * @var Donation
-     */
-    protected $donation;
-
-    /**
      * @unreleased
-     *
-     * @param  Donation  $donation
-     *
-     * @return DonationReceipt
      */
-    public function __invoke(Donation $donation): DonationReceipt
+    public function __invoke(DonationReceipt $receipt): DonationReceipt
     {
-        $this->donation = $donation;
-        $receipt = new DonationReceipt($donation);
-
-        $this->generate($receipt);
+        $this->fillSettings($receipt);
+        $this->fillDonorDetails($receipt);
+        $this->fillDonationDetails($receipt);
+        $this->fillSubscriptionDetails($receipt);
+        $this->fillAdditionalDetails($receipt);
 
         return $receipt;
     }
 
     /**
      * @unreleased
-     *
-     * @return void
      */
-    public function generate(DonationReceipt $receipt)
+    protected function getCustomFields(Donation $donation): array
     {
-        $this->fillSettings($receipt->settings);
-        $this->fillDonorDetails($receipt->donorDetails);
-        $this->fillDonationDetails($receipt->donationDetails);
-        $this->fillSubscriptionDetails($receipt->subscriptionDetails);
-        $this->fillAdditionalDetails($receipt->additionalDetails);
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function getCustomFields(): array
-    {
-        if (give(DonationFormRepository::class)->isLegacyForm($this->donation->formId)) {
+        if (give(DonationFormRepository::class)->isLegacyForm($donation->formId)) {
             return [];
         }
 
         /** @var DonationForm $form */
-        $form = DonationForm::find($this->donation->formId);
+        $form = DonationForm::find($donation->formId);
 
         $customFields = array_filter($form->schema()->getFields(), static function (Field $field) {
             /** $field->shouldDisplayInReceipt is a temporary macro */
             return $field->shouldDisplayInReceipt();
         });
 
-        return array_map(function (Field $field) {
+        return array_map(static function (Field $field) use ($donation) {
             /** @var Field|HasLabel|HasName $field */
             return new ReceiptDetail(
                 $field->getLabel(),
-                give()->payment_meta->get_meta($this->donation->id, $field->getName(), true)
+                give()->payment_meta->get_meta($donation->id, $field->getName(), true)
             );
         }, $customFields);
     }
@@ -82,37 +58,37 @@ class GenerateReceiptFromDonation
      *
      * @return void
      */
-    private function fillDonationDetails(ReceiptDetailCollection $donationDetails)
+    private function fillDonationDetails(DonationReceipt $receipt)
     {
-        $donationDetails->addDetails([
+        $receipt->donationDetails->addDetails([
                 new ReceiptDetail(
                     __('Payment Status', 'give'),
-                    give_get_payment_statuses()[$this->donation->status->getValue()]
+                    give_get_payment_statuses()[$receipt->donation->status->getValue()]
                 ),
                 new ReceiptDetail(
                     __('Payment Method', 'give'),
-                    $this->donation->gateway()->getPaymentMethodLabel()
+                    $receipt->donation->gateway()->getPaymentMethodLabel()
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
-                    $this->donation->intendedAmount()->formatToDecimal()
+                    $receipt->donation->intendedAmount()->formatToDecimal()
                 ),
             ]
         );
 
-        if ($this->donation->feeAmountRecovered) {
-            $donationDetails->addDetail(
+        if ($receipt->donation->feeAmountRecovered) {
+            $receipt->donationDetails->addDetail(
                 new ReceiptDetail(
                     __('Processing Fee', 'give'),
-                    $this->donation->feeAmountRecovered->formatToDecimal()
+                    $receipt->donation->feeAmountRecovered->formatToDecimal()
                 )
             );
         }
 
-        $donationDetails->addDetail(
+        $receipt->donationDetails->addDetail(
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $this->donation->amount->formatToDecimal()
+                $receipt->donation->amount->formatToDecimal()
             )
         );
     }
@@ -122,17 +98,17 @@ class GenerateReceiptFromDonation
      *
      * @return void
      */
-    private function fillDonorDetails(ReceiptDetailCollection $donorDetails)
+    private function fillDonorDetails(DonationReceipt $receipt)
     {
-        $donorDetails->addDetails(
+        $receipt->donorDetails->addDetails(
             [
                 new ReceiptDetail(
                     __('Donor Name', 'give'),
-                    trim("{$this->donation->firstName} {$this->donation->lastName}")
+                    trim("{$receipt->donation->firstName} {$receipt->donation->lastName}")
                 ),
                 new ReceiptDetail(
                     __('Email Address', 'give'),
-                    $this->donation->email
+                    $receipt->donation->email
                 ),
             ]
         );
@@ -143,10 +119,10 @@ class GenerateReceiptFromDonation
      *
      * @return void
      */
-    private function fillAdditionalDetails(ReceiptDetailCollection $additionalDetails)
+    private function fillAdditionalDetails(DonationReceipt $receipt)
     {
-        if ($customFields = $this->getCustomFields()) {
-            $additionalDetails->addDetails($customFields);
+        if ($customFields = $this->getCustomFields($receipt->donation)) {
+            $receipt->additionalDetails->addDetails($customFields);
         }
     }
 
@@ -155,12 +131,12 @@ class GenerateReceiptFromDonation
      *
      * @return void
      */
-    private function fillSubscriptionDetails(ReceiptDetailCollection $subscriptionDetails)
+    private function fillSubscriptionDetails(DonationReceipt $receipt)
     {
-        if ($this->donation->subscriptionId) {
-            $subscription = $this->donation->subscription;
+        if ($receipt->donation->subscriptionId) {
+            $subscription = $receipt->donation->subscription;
 
-            $subscriptionDetails->addDetails([
+            $receipt->subscriptionDetails->addDetails([
                 new ReceiptDetail(
                     __('Subscription', 'give'),
                     sprintf(
@@ -192,9 +168,9 @@ class GenerateReceiptFromDonation
     /**
      * @unreleased
      */
-    private function fillSettings(ReceiptSettings $settings)
+    private function fillSettings(DonationReceipt $receipt)
     {
-        $settings->addSetting('currency', $this->donation->amount->getCurrency()->getCode());
-        $settings->addSetting('donorDashboardUrl', get_permalink(give_get_option('donor_dashboard_page')));
+        $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
+        $receipt->settings->addSetting('donorDashboardUrl', get_permalink(give_get_option('donor_dashboard_page')));
     }
 }

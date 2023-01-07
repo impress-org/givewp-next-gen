@@ -3,24 +3,28 @@
 namespace Give\NextGen\Framework\Receipts;
 
 use Give\Donations\Models\Donation;
-use Give\NextGen\Framework\Receipts\Actions\GenerateReceiptFromDonation;
+use Give\NextGen\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class TestGenerateReceiptFromDonation extends TestCase {
+class TestGenerateConfirmationPageReceipt extends TestCase
+{
     use RefreshDatabase;
 
     /**
      * @unreleased
      */
-    public function testShouldGenerateReceiptForOneTimeDonation() {
-          /** @var Donation $donation */
+    public function testShouldGenerateReceiptForOneTimeDonation()
+    {
+        /** @var Donation $donation */
         $donation = Donation::factory()->create();
 
-        $receipt = (new GenerateReceiptFromDonation())($donation);
+        $initialReceipt = new DonationReceipt($donation);
+
+        $receipt = (new GenerateConfirmationPageReceipt())($initialReceipt);
 
         $donorDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
@@ -70,11 +74,14 @@ class TestGenerateReceiptFromDonation extends TestCase {
     /**
      * @unreleased
      */
-    public function testShouldGenerateReceiptForRecurringDonation() {
+    public function testShouldGenerateReceiptForRecurringDonation()
+    {
         $subscription = Subscription::factory()->createWithDonation();
         $donation = $subscription->initialDonation();
 
-        $receipt = (new GenerateReceiptFromDonation())($donation);
+        $initialReceipt = new DonationReceipt($donation);
+
+        $receipt = (new GenerateConfirmationPageReceipt())($initialReceipt);
 
         $donorDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
@@ -106,7 +113,7 @@ class TestGenerateReceiptFromDonation extends TestCase {
             ),
         ]);
 
-             $subscriptionDetails = new ReceiptDetailCollection([
+        $subscriptionDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
                 __('Subscription', 'give'),
                 sprintf(

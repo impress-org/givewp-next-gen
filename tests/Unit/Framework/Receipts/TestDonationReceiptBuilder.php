@@ -3,24 +3,27 @@
 namespace Give\Tests\Unit\Framework\Receipts;
 
 use Give\Donations\Models\Donation;
+use Give\NextGen\Framework\Receipts\DonationReceipt;
 use Give\NextGen\Framework\Receipts\DonationReceiptBuilder;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class TestDonationReceiptBuilder  extends TestCase {
+class TestDonationReceiptBuilder extends TestCase
+{
     use RefreshDatabase;
 
     /**
      * @unreleased
      */
-    public function testFromDonationShouldReturnDonationReceiptWithExpectedShape()
+    public function testToConfirmationPageShouldReturnDonationReceipt()
     {
-         /** @var Donation $donation */
+        /** @var Donation $donation */
         $donation = Donation::factory()->create();
 
-        $receipt = DonationReceiptBuilder::fromDonation($donation);
+        $receipt = new DonationReceipt($donation);
+        $receiptBuilder = new DonationReceiptBuilder($receipt);
 
         $donorDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
@@ -53,7 +56,7 @@ class TestDonationReceiptBuilder  extends TestCase {
         ]);
 
         $this->assertSame(
-            $receipt->toArray(),
+            $receiptBuilder->toConfirmationPage()->toArray(),
             [
                 'settings' => [
                     'currency' => $receipt->donation->amount->getCurrency()->getCode(),
