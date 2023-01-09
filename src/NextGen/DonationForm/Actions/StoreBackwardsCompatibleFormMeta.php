@@ -31,17 +31,18 @@ class StoreBackwardsCompatibleFormMeta
             ];
         }, $donationLevels, array_keys($donationLevels));
 
-        give()->form_meta->update_meta($donationForm->id, '_give_price_option', 'multi'); // @todo: Replace with DonationFormMetaKeys::PRICE_OPTION
-        give()->form_meta->update_meta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, $donationLevels);
+        // @todo: Replace with DonationFormMetaKeys::PRICE_OPTION when available.
+        $this->saveSingleFormMeta($donationForm->id, '_give_price_option', 'multi');
+        $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, $donationLevels);
     }
 
     public function storeDonationGoal(DonationForm $donationForm)
     {
-        give()->form_meta->update_meta($donationForm->id, DonationFormMetaKeys::GOAL_OPTION, $donationForm->settings->enableDonationGoal ? 'enabled' : 'disabled');
+        $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::GOAL_OPTION, $donationForm->settings->enableDonationGoal ? 'enabled' : 'disabled');
 
         $goalType = $donationForm->settings->goalType->getValue();
         $goalType = ($goalType === 'donations') ? 'donation' : $goalType; // @todo Mismatch. Legacy uses "donation" instead of "donations".
-        give()->form_meta->update_meta($donationForm->id, '_give_goal_format', $goalType);
+        $this->saveSingleFormMeta($donationForm->id, '_give_goal_format', $goalType);
 
         $metaLookup = [
             'donation' => '_give_number_of_donation_goal',
@@ -50,10 +51,15 @@ class StoreBackwardsCompatibleFormMeta
         ];
 
         $goalAmount = ('amount' === $goalType) ? give_sanitize_amount_for_db($donationForm->settings->goalAmount) : $donationForm->settings->goalAmount;
-        if( give()->form_meta->get_meta($donationForm->id, $metaLookup[$goalType], true)) {
-            give()->form_meta->update_meta($donationForm->id, $metaLookup[$goalType], $goalAmount);
+        $this->saveSingleFormMeta($donationForm->id, $metaLookup[$goalType], $goalAmount);
+    }
+
+    protected function saveSingleFormMeta($formId, $metaKey, $metaValue)
+    {
+        if( give()->form_meta->get_meta($formId, $metaKey, true)) {
+            give()->form_meta->update_meta($formId, $metaKey, $metaValue);
         } else {
-            give()->form_meta->add_meta($donationForm->id, $metaLookup[$goalType], $goalAmount);
+            give()->form_meta->add_meta($formId, $metaKey, $metaValue);
         }
     }
 }
