@@ -14,7 +14,7 @@ class GenerateDonationFormViewRouteUrl
     public function __invoke(int $formId): string
     {
         $args = [
-            'givewp-view' => 'donation-form',
+            'givewp-route' => 'donation-form-view',
             'form-id' => $formId
         ];
 

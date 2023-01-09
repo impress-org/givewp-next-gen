@@ -18,13 +18,13 @@ class GenerateDonateRouteUrl
      */
     public function __invoke(): string
     {
-        $signature = new DonateRouteSignature('give-donate');
+        $signature = new DonateRouteSignature('givewp-donate');
 
         $queryArgs = [
-            'give-listener' => 'give-donate',
-            'give-route-signature' => $signature->toHash(),
-            'give-route-signature-id' => 'give-donate',
-            'give-route-signature-expiration' => $signature->expiration,
+            'givewp-route' => 'donate',
+            'givewp-route-signature' => $signature->toHash(),
+            'givewp-route-signature-id' => 'givewp-donate',
+            'givewp-route-signature-expiration' => $signature->expiration,
         ];
 
         return esc_url_raw(
