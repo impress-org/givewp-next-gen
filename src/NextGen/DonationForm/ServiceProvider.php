@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm;
 
 use Give\Helpers\Hooks;
+use Give\NextGen\DonationForm\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\NextGen\DonationForm\Controllers\DonationFormViewController;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
@@ -31,6 +32,17 @@ class ServiceProvider implements ServiceProviderInterface
             Hooks::addAction('init', DonationFormBlock::class, 'register');
         }
 
+        $this->registerRoutes();
+
+        Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
+        Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerRoutes()
+    {
         /**
          * @unreleased
          */
