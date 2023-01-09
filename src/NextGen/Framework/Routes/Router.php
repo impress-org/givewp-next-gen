@@ -117,4 +117,15 @@ class Router
             return give($action)->$method($request);
         });
     }
+
+    /**
+     * @unreleased
+     */
+    public function url(string $uri): string
+    {
+        return add_query_arg(
+            ['givewp-route' => $uri],
+            home_url()
+        );
+    }
 }
