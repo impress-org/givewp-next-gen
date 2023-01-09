@@ -78,6 +78,45 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
         $this->assertSame('500.000000', $this->getSingleFormMeta($donationForm->id, '_give_set_goal' ));
     }
 
+    /**
+     * @unreleased
+     */
+    public function testDonationGoalMetaUsesGoalTypeMetaKeyAmount()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->make();
+        $donationForm->settings->goalType = GoalType::AMOUNT();
+        $donationForm->save();
+
+        $this->assertNotNull($this->getSingleFormMeta($donationForm->id, '_give_set_goal' ));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationGoalMetaUsesGoalTypeMetaKeyDonations()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->make();
+        $donationForm->settings->goalType = GoalType::DONATIONS();
+        $donationForm->save();
+
+        $this->assertNotNull($this->getSingleFormMeta($donationForm->id, '_give_number_of_donation_goal' ));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationGoalMetaUsesGoalTypeMetaKeyDonors()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->make();
+        $donationForm->settings->goalType = GoalType::DONORS();
+        $donationForm->save();
+
+        $this->assertNotNull($this->getSingleFormMeta($donationForm->id, '_give_number_of_donor_goal' ));
+    }
+
     protected function getSingleFormMeta($formId, $metaKey)
     {
         return give()->form_meta->get_meta($formId, $metaKey, $single = true);
