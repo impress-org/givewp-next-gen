@@ -45,6 +45,7 @@ const Details = ({heading, details}: { heading: string; details: ReceiptDetail[]
 export default function DonationReceipt({
     heading,
     description,
+    donorDashboardUrl,
     donorDetails,
     donationDetails,
     subscriptionDetails,
@@ -65,6 +66,12 @@ export default function DonationReceipt({
                 <Details heading={__('Donation Details', 'give')} details={donationDetails} />
                 <Details heading={__('Subscription Details', 'give')} details={subscriptionDetails} />
                 <Details heading={__('Additional Details', 'give')} details={additionalDetails} />
+            </div>
+
+            <div className="receipt-footer">
+                <a className="donor-dashboard-link" href={donorDashboardUrl} target="_parent">
+                    Go to my Donor Dashboard<i className="fas fa-long-arrow-alt-right"></i>
+                </a>
             </div>
         </article>
     );

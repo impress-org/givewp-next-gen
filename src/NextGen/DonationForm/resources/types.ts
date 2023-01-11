@@ -43,6 +43,8 @@ export interface ReceiptDetail {
 export interface DonationConfirmationReceiptServerExports {
     receipt: {
         settings: {
+            heading: string;
+            description: string;
             currency: string;
             donorDashboardUrl: string;
         };

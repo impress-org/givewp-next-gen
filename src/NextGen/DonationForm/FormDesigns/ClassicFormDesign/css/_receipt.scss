@@ -169,7 +169,7 @@
         }
     }
 
-    .dashboard-link-container {
+    .receipt-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -177,7 +177,7 @@
         padding-block-end: fn.scaleBetween(1.5rem, 3.625rem);
         padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
 
-        .dashboard-link {
+        .donor-dashboard-link {
             color: var(--givewp-primary-color);
 
             > i {

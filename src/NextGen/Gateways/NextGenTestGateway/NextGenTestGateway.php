@@ -4,10 +4,11 @@ namespace Give\NextGen\Gateways\NextGenTestGateway;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
-use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
@@ -92,11 +93,9 @@ class NextGenTestGateway extends PaymentGateway
         $donation->gatewayTransactionId = $transactionId;
         $donation->save();
 
-        return new RespondToBrowser([
-            'donation' => $donation->toArray(),
-            'redirectUrl' => give_get_success_page_uri(),
-            'intent' => $intent
-        ]);
+        $redirectUrl = (new GenerateDonationConfirmationReceiptUrl())($donation->purchaseKey);
+
+        return new RedirectOffsite($redirectUrl);
     }
 
     /**

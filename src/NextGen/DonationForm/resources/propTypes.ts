@@ -123,6 +123,7 @@ export interface NodeWrapperProps {
 export interface DonationReceiptProps {
     heading: string;
     description: string;
+    donorDashboardUrl: string;
     donorDetails: ReceiptDetail[];
     donationDetails: ReceiptDetail[];
     subscriptionDetails: ReceiptDetail[];

@@ -12,14 +12,21 @@ const {receipt} = window.givewpDonationConfirmationReceiptExports
 function DonationConfirmationReceiptApp() {
     return (
         <DonationReceiptTemplate
-            heading="Hey Jonathan, thanks for your donation!"
-            description="Jonathan, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to jpwaldstein@gmail.com."
+            heading={receipt.settings.heading}
+            description={receipt.settings.description}
+            donorDashboardUrl={receipt.settings.donorDashboardUrl}
             donorDetails={receipt.donorDetails}
             donationDetails={receipt.donationDetails}
             subscriptionDetails={receipt.subscriptionDetails}
             additionalDetails={receipt.additionalDetails}
-         />
+        />
     );
 }
 
-render(<DonationConfirmationReceiptApp />, document.getElementById('root-givewp-donation-confirmation-receipt'));
+const root = document.getElementById('root-givewp-donation-confirmation-receipt');
+
+render(<DonationConfirmationReceiptApp />, root);
+
+root.scrollIntoView({
+    behavior: 'smooth',
+});

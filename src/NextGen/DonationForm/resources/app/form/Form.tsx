@@ -10,7 +10,6 @@ import {useCallback} from 'react';
 import SectionNode from '../fields/SectionNode';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
-import DonationReceipt from './DonationReceipt';
 import {ObjectSchema} from 'joi';
 
 const {donateUrl} = getWindowData();
@@ -27,10 +26,14 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
 
-        const {response} = await postData(donateUrl, {
+        const {response, redirected} = await postData(donateUrl, {
             ...values,
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
+
+        if (redirected) {
+            await window.location.assign(response.url);
+        }
 
         if (response.data?.errors) {
             throw new FormRequestError(response.data.errors.errors);
@@ -65,23 +68,6 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
     const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
 
     const formError = errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null;
-
-    if (isSubmitSuccessful) {
-        const {amount, firstName, lastName, email, gatewayId} = getValues();
-        const gateway = gateways.find(({id}) => id === gatewayId);
-
-        return (
-            <DonationReceipt
-                amount={amount}
-                email={email}
-                firstName={firstName}
-                lastName={lastName}
-                gateway={gateway}
-                status={'Complete'}
-                total={amount}
-            />
-        );
-    }
 
     return (
         <FormProvider {...methods}>
