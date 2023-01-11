@@ -14,6 +14,8 @@ class Router
      * @param  string  $uri
      * @param  string|callable  $action
      * @param  string  $method
+     *
+     * @return void
      */
     public function get(string $uri, $action, $method = '__invoke')
     {
@@ -25,6 +27,8 @@ class Router
      * @param  string  $uri
      * @param  string|callable  $action
      * @param  string  $method
+     *
+     * @return void
      */
     public function post(string $uri, $action, $method = '__invoke')
     {
@@ -94,6 +98,7 @@ class Router
      * @param  string  $method
      * @param  string  $uri
      * @param $action
+     *
      * @return void
      */
     protected function addRoute(string $type, string $method, string $uri, $action)
