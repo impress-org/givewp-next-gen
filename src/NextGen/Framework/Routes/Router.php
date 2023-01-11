@@ -121,10 +121,13 @@ class Router
     /**
      * @unreleased
      */
-    public function url(string $uri): string
+    public function url(string $uri, array $args = []): string
     {
         return add_query_arg(
-            ['givewp-route' => $uri],
+            array_merge(
+                ['givewp-route' => $uri],
+                $args
+            ),
             home_url()
         );
     }

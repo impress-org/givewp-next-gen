@@ -35,6 +35,24 @@ export interface FormServerExports {
     successUrl: string;
 }
 
+export interface ReceiptDetail {
+    label: string;
+    value: string;
+}
+
+export interface DonationConfirmationReceiptServerExports {
+    receipt: {
+        settings: {
+            currency: string;
+            donorDashboardUrl: string;
+        };
+        donorDetails: ReceiptDetail[];
+        donationDetails: ReceiptDetail[];
+        subscriptionDetails: ReceiptDetail[];
+        additionalDetails: ReceiptDetail[];
+    };
+}
+
 export interface GatewaySettings {
     label: string;
 }
