@@ -35,9 +35,10 @@ export interface FormServerExports {
     successUrl: string;
 }
 
+
 export interface ReceiptDetail {
     label: string;
-    value: string;
+    value: any;
 }
 
 export interface DonationConfirmationReceiptServerExports {

@@ -1,5 +1,7 @@
 import {render} from '@wordpress/element';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
+import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
+import {ReceiptDetail} from '@givewp/forms/types';
 
 const formTemplates = window.givewp.form.templates;
 const DonationReceiptTemplate = withTemplateWrapper(formTemplates.layouts.receipt);
@@ -7,8 +9,27 @@ const DonationReceiptTemplate = withTemplateWrapper(formTemplates.layouts.receip
 /**
  * Get data from the server
  */
-const {receipt} = window.givewpDonationConfirmationReceiptExports
+const {receipt} = window.givewpDonationConfirmationReceiptExports;
 
+const getDetailValue = (value) => {
+    if (typeof value === 'string') {
+        return value;
+    }
+
+    return value?.amount ? amountFormatter(receipt.settings.currency, {}).format(value.amount) : JSON.stringify(value);
+};
+
+const prepareDetails = (details: ReceiptDetail[]) => {
+    return details?.map(({label, value}) => ({
+        label,
+        value: getDetailValue(value),
+    }));
+};
+
+/**
+ *
+ * @unreleased
+ */
 function DonationConfirmationReceiptApp() {
     return (
         <DonationReceiptTemplate
@@ -16,9 +37,9 @@ function DonationConfirmationReceiptApp() {
             description={receipt.settings.description}
             donorDashboardUrl={receipt.settings.donorDashboardUrl}
             donorDetails={receipt.donorDetails}
-            donationDetails={receipt.donationDetails}
-            subscriptionDetails={receipt.subscriptionDetails}
-            additionalDetails={receipt.additionalDetails}
+            donationDetails={prepareDetails(receipt.donationDetails)}
+            subscriptionDetails={prepareDetails(receipt.subscriptionDetails)}
+            additionalDetails={prepareDetails(receipt.additionalDetails)}
         />
     );
 }

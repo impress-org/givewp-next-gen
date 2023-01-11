@@ -47,11 +47,11 @@ class TestDonationReceiptBuilder extends TestCase
             ),
             new ReceiptDetail(
                 __('Donation Amount', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
         ]);
 

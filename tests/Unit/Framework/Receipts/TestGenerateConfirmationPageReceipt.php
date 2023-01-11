@@ -48,11 +48,11 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
             new ReceiptDetail(
                 __('Donation Amount', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
         ]);
 
@@ -105,22 +105,25 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
             new ReceiptDetail(
                 __('Donation Amount', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
         ]);
 
         $subscriptionDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
                 __('Subscription', 'give'),
-                sprintf(
-                    '%s / %s',
-                    $subscription->amount->formatToDecimal(),
-                    $subscription->period->getValue()
-                )
+                [
+                    'amount' =>
+                        sprintf(
+                            '%s / %s',
+                            $subscription->amount->formatToDecimal(),
+                            $subscription->period->getValue()
+                        )
+                ]
             ),
             new ReceiptDetail(
                 __('Subscription Status', 'give'),

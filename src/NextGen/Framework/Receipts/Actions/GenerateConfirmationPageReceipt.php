@@ -71,7 +71,7 @@ class GenerateConfirmationPageReceipt
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
-                    $receipt->donation->intendedAmount()->formatToDecimal()
+                    ['amount' => $receipt->donation->intendedAmount()->formatToDecimal()]
                 ),
             ]
         );
@@ -80,7 +80,7 @@ class GenerateConfirmationPageReceipt
             $receipt->donationDetails->addDetail(
                 new ReceiptDetail(
                     __('Processing Fee', 'give'),
-                    $receipt->donation->feeAmountRecovered->formatToDecimal()
+                    ['amount' => $receipt->donation->feeAmountRecovered->formatToDecimal()]
                 )
             );
         }
@@ -88,7 +88,7 @@ class GenerateConfirmationPageReceipt
         $receipt->donationDetails->addDetail(
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $receipt->donation->amount->formatToDecimal()
+                ['amount' => $receipt->donation->amount->formatToDecimal()]
             )
         );
     }
@@ -139,11 +139,14 @@ class GenerateConfirmationPageReceipt
             $receipt->subscriptionDetails->addDetails([
                 new ReceiptDetail(
                     __('Subscription', 'give'),
-                    sprintf(
-                        '%s / %s',
-                        $subscription->amount->formatToDecimal(),
-                        $subscription->period->getValue()
-                    )
+                    [
+                        'amount' =>
+                            sprintf(
+                                '%s / %s',
+                                $subscription->amount->formatToDecimal(),
+                                $subscription->period->getValue()
+                            )
+                    ]
                 ),
                 new ReceiptDetail(
                     __('Subscription Status', 'give'),
