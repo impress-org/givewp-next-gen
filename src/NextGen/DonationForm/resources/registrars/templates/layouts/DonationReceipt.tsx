@@ -70,7 +70,8 @@ export default function DonationReceipt({
 
             <div className="receipt-footer">
                 <a className="donor-dashboard-link" href={donorDashboardUrl} target="_parent">
-                    Go to my Donor Dashboard<i className="fas fa-long-arrow-alt-right"></i>
+                    {__('Go to my Donor Dashboard', 'give')}
+                    <i className="fas fa-long-arrow-alt-right"></i>
                 </a>
             </div>
         </article>
