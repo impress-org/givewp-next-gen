@@ -3,7 +3,8 @@
 namespace Give\Tests\Feature\Gateways;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -12,7 +13,7 @@ class NextGenTestGatewayTest extends TestCase
 {
     use RefreshDatabase;
 
-     public function testShouldCreatePaymentAndReturnRespondToBrowser()
+    public function testShouldCreatePaymentAndReturnRedirect()
     {
         $gateway = new NextGenTestGateway();
         $donation = Donation::factory()->create();
@@ -20,13 +21,11 @@ class NextGenTestGatewayTest extends TestCase
 
         $response = $gateway->createPayment($donation, $gatewayData);
 
-        $command = new RespondToBrowser([
-            'donation' => $donation->toArray(),
-            'redirectUrl' => give_get_success_page_uri(),
-            'intent' => $gatewayData['testGatewayIntent']
-        ]);
+        $redirectUrl = (new GenerateDonationConfirmationReceiptUrl())($donation->purchaseKey);
 
-        $this->assertInstanceOf(RespondToBrowser::class, $response);
-        $this->assertSame($command->data, $response->data);
+        $command = new RedirectOffsite($redirectUrl);
+
+        $this->assertInstanceOf(RedirectOffsite::class, $response);
+        $this->assertSame($command->redirectUrl, $response->redirectUrl);
     }
 }
