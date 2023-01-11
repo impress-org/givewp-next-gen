@@ -18,6 +18,18 @@ const formTemplates = window.givewp.form.templates;
 const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
 
+async function handleRedirect(response: any | Response) {
+    const redirectUrl = new URL(response.url);
+
+    if (redirectUrl.host === window.location.host) {
+        // onsite redirect
+        await window.location.assign(redirectUrl);
+    } else {
+        // offsite redirect
+        await window.top.location.assign(redirectUrl);
+    }
+}
+
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};
 
@@ -26,13 +38,13 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
 
-        const {response, redirected} = await postData(donateUrl, {
+        const {response, isRedirect} = await postData(donateUrl, {
             ...values,
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
 
-        if (redirected) {
-            await window.location.assign(response.url);
+        if (isRedirect) {
+            await handleRedirect(response);
         }
 
         if (response.data?.errors) {

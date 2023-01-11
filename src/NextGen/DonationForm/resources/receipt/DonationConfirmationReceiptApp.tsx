@@ -11,6 +11,11 @@ const DonationReceiptTemplate = withTemplateWrapper(formTemplates.layouts.receip
  */
 const {receipt} = window.givewpDonationConfirmationReceiptExports;
 
+/**
+ * Return readable value
+ *
+ * @unreleased
+ */
 const getDetailValue = (value) => {
     if (typeof value === 'string') {
         return value;
@@ -19,6 +24,11 @@ const getDetailValue = (value) => {
     return value?.amount ? amountFormatter(receipt.settings.currency, {}).format(value.amount) : JSON.stringify(value);
 };
 
+/**
+ * Prepare detail values before render
+ *
+ * @unreleased
+ */
 const prepareDetails = (details: ReceiptDetail[]) => {
     return details?.map(({label, value}) => ({
         label,

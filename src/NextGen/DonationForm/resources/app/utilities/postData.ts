@@ -18,7 +18,7 @@ export default async function postData(url: string, data: object = {}) {
     });
 
     return {
-        redirected: response.redirected,
+        isRedirect: response.redirected,
         response: !response.redirected ? await response.json() : await response,
     };
 }
