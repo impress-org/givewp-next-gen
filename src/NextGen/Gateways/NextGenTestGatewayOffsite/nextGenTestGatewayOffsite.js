@@ -1,7 +1,12 @@
+const state = {};
+
 const gateway = {
     id: 'test-gateway-next-gen-offsite',
+    initialize() {
+        state.message = this.settings.message;
+    },
     Fields() {
-        return "There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.";
+        return state.message;
     },
 };
 

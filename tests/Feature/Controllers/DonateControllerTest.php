@@ -64,6 +64,7 @@ class DonateControllerTest extends TestCase
             'company' => null,
             'honorific' => null,
             'originUrl' => 'https://givewp.com',
+            'originId' => '123',
             'text_block_meta' => ''
         ]);
 

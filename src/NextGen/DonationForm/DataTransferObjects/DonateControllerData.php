@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
@@ -59,6 +60,10 @@ class DonateControllerData
      * @var string
      */
     public $originUrl;
+    /**
+     * @var string
+     */
+    public $originId;
 
     /**
      * @unreleased
@@ -82,12 +87,27 @@ class DonateControllerData
         ]);
     }
 
+    public function getReceiptUrl(Donation $donation)
+    {
+        return !empty($this->originId) ?
+            $this->getDonationConfirmationReceiptUrl($donation) :
+            $this->getDonationConfirmationReceiptViewRouteUrl($donation);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationConfirmationReceiptViewRouteUrl(Donation $donation): string
+    {
+        return (new GenerateDonationConfirmationReceiptViewRouteUrl())($donation->purchaseKey);
+    }
+
     /**
      * @unreleased
      */
     public function getDonationConfirmationReceiptUrl(Donation $donation): string
     {
-        return (new GenerateDonationConfirmationReceiptViewRouteUrl())($donation->purchaseKey);
+        return (new GenerateDonationConfirmationReceiptUrl())($donation, $this->originUrl, $this->originId);
     }
 
     /**
@@ -119,7 +139,8 @@ class DonateControllerData
                         'currency',
                         'wpUserId',
                         'honorific',
-                        'originUrl'
+                        'originUrl',
+                        'originId'
                     ]
                 ),
                 true

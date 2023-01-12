@@ -105,6 +105,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
         $originUrl = $gatewayData['originUrl'];
+        $originId = $gatewayData['originId'];
 
         /**
          * Get or create a Stripe customer
@@ -137,7 +138,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          *
          * @see https://stripe.com/docs/js/payment_intents/confirm_payment
          */
-        $returnUrl = $this->getReturnUrl($originUrl, $donation);
+        $returnUrl = $this->getReturnUrl($donation, $originUrl, $originId);
 
         /**
          * Return response to client
@@ -167,8 +168,8 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     /**
      * @unreleased
      */
-    protected function getReturnUrl(string $originUrl, Donation $donation): string
+    protected function getReturnUrl(Donation $donation, string $originUrl, string $originId): string
     {
-        return (new GenerateDonationConfirmationReceiptUrl())($originUrl, $donation);
+        return (new GenerateDonationConfirmationReceiptUrl())($donation, $originUrl, $originId);
     }
 }

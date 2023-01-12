@@ -22,6 +22,7 @@ class BlockRenderController
             return null;
         }
 
+
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
         if (!$blockAttributes->formId) {
@@ -45,8 +46,9 @@ class BlockRenderController
         $donationForm = DonationForm::find($blockAttributes->formId);
 
         $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
+        $originId = $blockAttributes->blockId;
 
-        if ($this->shouldDisplayDonationConfirmationReceipt()) {
+        if ($this->shouldDisplayDonationConfirmationReceipt($originId)) {
             $receiptId = give_clean($_GET['givewpReceiptId']);
 
             $viewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
@@ -56,15 +58,14 @@ class BlockRenderController
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<iframe data-givewp-embed src='$viewUrl'
-                style='width: 1px;min-width: 100%;border: 0;'></iframe>";
+        return "<iframe data-givewp-embed src='$viewUrl' data-givewp-embed-id='$originId' style='width: 1px;min-width: 100%;border: 0;'></iframe>";
     }
 
     /**
      * @unreleased
      */
-    protected function shouldDisplayDonationConfirmationReceipt(): bool
+    protected function shouldDisplayDonationConfirmationReceipt(string $originId): bool
     {
-        return isset($_GET['givewpDonationAction'], $_GET['givewpReceiptId']) && $_GET['givewpDonationAction'] === 'show-donation-confirmation-receipt';
+        return isset($_GET['givewpDonationAction'], $_GET['givewpReceiptId'], $_GET['givewpOriginId']) && $_GET['givewpDonationAction'] === 'show-donation-confirmation-receipt' && $_GET['givewpOriginId'] === $originId;
     }
 }

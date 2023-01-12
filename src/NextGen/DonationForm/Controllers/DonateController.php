@@ -8,7 +8,6 @@ use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\Actions\StoreCustomFields;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\DataTransferObjects\LegacyPurchaseFormData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
@@ -41,7 +40,7 @@ class DonateController
         $this->saveCustomFields($form, $donation, $formData->getCustomFields());
 
         // use our new receipt url for the success page uri
-        $this->filterSuccessPageUri($formData->getDonationConfirmationReceiptUrl($donation));
+        $this->filterSuccessPageUri($formData->getDonationConfirmationReceiptViewRouteUrl($donation));
 
         $registeredGateway->handleCreatePayment($donation);
     }
@@ -89,31 +88,6 @@ class DonateController
         }
 
         return $donor;
-    }
-
-    /**
-     * This logic is intended to work with the legacy receipt functionality
-     * by setting and updating the give_purchase session.
-     *
-     * @unreleased
-     *
-     * @return void
-     */
-    private function setSession(Donation $donation, Donor $donor)
-    {
-        give()->session->maybe_start_session();
-
-        $purchaseSession = (array)give()->session->get('give_purchase');
-
-        if ($purchaseSession && array_key_exists('donation_id', $purchaseSession)) {
-            $purchaseSession['donation_id'] = $donation->id;
-
-            give()->session->set('give_purchase', $purchaseSession);
-        } else {
-            $legacyPurchaseFormData = LegacyPurchaseFormData::fromArray(['donation' => $donation, 'donor' => $donor]);
-
-            give_set_purchase_session($legacyPurchaseFormData->toPurchaseData());
-        }
     }
 
     /**

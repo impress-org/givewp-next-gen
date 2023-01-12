@@ -130,9 +130,14 @@ class NextGenStripeGatewayTest extends TestCase
             'stripePaymentIntentId' => $stripePaymentIntent->id,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
             'originUrl' => 'https://givewp.com',
+            'originId' => '123',
         ];
 
-        $returnUrl = (new GenerateDonationConfirmationReceiptUrl())($gatewayData['originUrl'], $donation);
+        $returnUrl = (new GenerateDonationConfirmationReceiptUrl())(
+            $donation,
+            $gatewayData['originUrl'],
+            $gatewayData['originId']
+        );
 
         $response = $mockGateway->createPayment($donation, $gatewayData);
 

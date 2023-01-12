@@ -41,11 +41,18 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
 
+        const originUrl = window.top.location.href;
+        const isEmbed = window.frameElement !== null;
+        const originId = window.frameElement?.getAttribute('data-givewp-embed-id') ?? '';
+
         const {response, isRedirect} = await postData(donateUrl, {
             ...values,
-            originUrl: window.top.location.href,
+            isEmbed,
+            originUrl,
+            originId,
             gatewayData: {
-                originUrl: window.top.location.href,
+                originUrl,
+                originId,
                 ...beforeCreatePaymentGatewayResponse,
             },
         });

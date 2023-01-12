@@ -4,6 +4,7 @@ namespace Give\NextGen\Gateways\NextGenTestGatewayOffsite;
 use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
@@ -11,7 +12,7 @@ use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 /**
  * @unreleased
  */
-class NextGenTestGatewayOffsite extends PaymentGateway
+class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
     use HasRequest;
 
@@ -75,8 +76,8 @@ class NextGenTestGatewayOffsite extends PaymentGateway
      */
     public function createPayment(Donation $donation, $gatewayData): RedirectOffsite
     {
-        $receiptUrl = (new GenerateDonationConfirmationReceiptUrl())($gatewayData['originUrl'], $donation);
-        $redirectUrl =$this->getRedirectUrl($receiptUrl, $donation);
+        $receiptUrl = $this->generateRedirectReturnUrl($donation, $gatewayData['originUrl'], $gatewayData['originId']);
+        $redirectUrl = $this->getRedirectUrl($receiptUrl, $donation);
 
         return new RedirectOffsite($redirectUrl);
     }
@@ -84,26 +85,15 @@ class NextGenTestGatewayOffsite extends PaymentGateway
     /**
      * @unreleased
      */
-    protected function getRedirectUrl(string $receiptUrl, Donation $donation, string $redirectUrlHost = ''): string
+    protected function getRedirectUrl(string $receiptUrl, Donation $donation): string
     {
-        $redirectUrl = $this->generateSecureGatewayRouteUrl(
+        return $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
             $donation->id,
             [
                 'givewp-donation-id' => $donation->id,
-                'givewp-receipt-url' => rawurlencode($receiptUrl)
+                'givewp-return-url' => rawurlencode($receiptUrl)
             ]
-        );
-
-        if (empty($redirectUrlHost)) {
-            return $redirectUrl;
-        }
-
-        return add_query_arg(
-            [
-                'returnUrl' => urlencode($redirectUrl)
-            ],
-            $redirectUrlHost
         );
     }
 
@@ -112,7 +102,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway
      */
     protected function securelyReturnFromOffsiteRedirect(array $queryParams)
     {
-        wp_redirect($queryParams['givewp-receipt-url']);
+        wp_redirect($queryParams['givewp-return-url']);
     }
 
     /**
@@ -126,10 +116,36 @@ class NextGenTestGatewayOffsite extends PaymentGateway
     /**
      * @inerhitDoc
      */
-    public function refundDonation(Donation $donation)
+    public function refundDonation(Donation $donation): bool
     {
         return false;
         // TODO: Implement refundDonation() method.
     }
 
+    /**
+     * @unreleased
+     */
+    public function formSettings(int $formId): array
+    {
+        return [
+            'message' => __(
+                'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.',
+                'give'
+            ),
+        ];
+    }
+
+    /**
+     * @unreleased
+     *
+     * TODO: This should be moved into the framework
+     */
+    public function generateRedirectReturnUrl(Donation $donation, string $originUrl, string $originId = ''): string
+    {
+        return !empty($originId) ? (new GenerateDonationConfirmationReceiptUrl())(
+            $donation,
+            $originUrl,
+            $originId
+        ) : give_get_success_page_uri();
+    }
 }

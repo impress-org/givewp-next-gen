@@ -22,13 +22,14 @@ class GenerateDonationConfirmationReceiptUrlTest extends TestCase
         $donation = Donation::factory()->create();
         $originUrl = 'https://example.com/donation-page';
 
-        $url = (new GenerateDonationConfirmationReceiptUrl())($originUrl, $donation);
+        $url = (new GenerateDonationConfirmationReceiptUrl())($donation, $originUrl, '123');
 
         $mockUrl = esc_url_raw(
             add_query_arg(
                 [
                     'givewpDonationAction' => 'show-donation-confirmation-receipt',
                     'givewpReceiptId' => $donation->purchaseKey,
+                    'givewpOriginId' => '123'
                 ],
                 $originUrl
             )
