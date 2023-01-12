@@ -12,6 +12,8 @@ use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Framework\Support\ValueObjects\Money;
 use Stripe\Exception\ApiErrorException;
 
+use function add_query_arg;
+
 /**
  * @unreleased
  */
@@ -85,7 +87,6 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         );
 
         return [
-            'successUrl' => give_get_success_page_uri(),
             'stripeKey' => $stripePublishableKey,
             'stripeClientSecret' => $stripePaymentIntent->client_secret,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
@@ -104,6 +105,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
+        $parentPageUrl = $gatewayData['parentPageUrl'];
 
         /**
          * Get or create a Stripe customer
@@ -131,12 +133,14 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $this->updateDonationMetaFromPaymentIntent($donation, $intent);
 
+        $returnUrl = $this->getReturnUrl($parentPageUrl, $donation);
+
         /**
          * Return response to client
          */
         return new RespondToBrowser([
-            'status' => 200,
-            'intentStatus' => $intent->status
+            'intentStatus' => $intent->status,
+            'returnUrl' => $returnUrl,
         ]);
     }
 
@@ -154,5 +158,20 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getReturnUrl(string $parentPageUrl, Donation $donation): string
+    {
+        return esc_url_raw(
+            add_query_arg(
+                [
+                    'givewp-receipt-id' => $donation->purchaseKey,
+                ],
+                $parentPageUrl
+            )
+        );
     }
 }

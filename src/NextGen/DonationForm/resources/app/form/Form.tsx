@@ -23,10 +23,10 @@ async function handleRedirect(response: any | Response) {
 
     if (redirectUrl.host === window.location.host) {
         // onsite redirect
-        await window.location.assign(redirectUrl);
+        window.location.assign(redirectUrl);
     } else {
         // offsite redirect
-        await window.top.location.assign(redirectUrl);
+        window.top.location.assign(redirectUrl);
     }
 }
 
@@ -40,7 +40,10 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
 
         const {response, isRedirect} = await postData(donateUrl, {
             ...values,
-            gatewayData: beforeCreatePaymentGatewayResponse,
+            gatewayData: {
+                parentPageUrl: window.top.location.href,
+                ...beforeCreatePaymentGatewayResponse,
+            },
         });
 
         if (isRedirect) {

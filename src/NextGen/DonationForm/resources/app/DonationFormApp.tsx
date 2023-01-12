@@ -8,6 +8,7 @@ import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
 import Header from './form/Header';
 import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
+import {checkForReceipt, redirectToReceipt} from '@givewp/forms/app/utilities/checkForReceipt';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -32,7 +33,6 @@ const initialState = {
     gateways: window.givewp.gateways.getAll(),
 };
 
-
 function App() {
     if (form.goal.isAchieved) {
         return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />;
@@ -48,4 +48,10 @@ function App() {
     );
 }
 
-render(<App />, document.getElementById('root-givewp-donation-form'));
+const {isReceipt, receiptId} = checkForReceipt();
+
+if (isReceipt) {
+    redirectToReceipt(receiptId);
+} else {
+    render(<App />, document.getElementById('root-givewp-donation-form'));
+}
