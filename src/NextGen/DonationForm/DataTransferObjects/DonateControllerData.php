@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
 class DonateControllerData
@@ -54,6 +55,10 @@ class DonateControllerData
      * @var string|null
      */
     public $honorific;
+    /**
+     * @var string
+     */
+    public $originUrl;
 
     /**
      * @unreleased
@@ -75,6 +80,14 @@ class DonateControllerData
             'company' => $this->company,
             'type' => DonationType::SINGLE()
         ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationConfirmationReceiptUrl(Donation $donation): string
+    {
+        return (new GenerateDonationConfirmationReceiptViewRouteUrl())($donation->purchaseKey);
     }
 
     /**
@@ -106,6 +119,7 @@ class DonateControllerData
                         'currency',
                         'wpUserId',
                         'honorific',
+                        'originUrl'
                     ]
                 ),
                 true

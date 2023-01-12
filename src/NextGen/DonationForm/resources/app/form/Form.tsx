@@ -40,8 +40,9 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
 
         const {response, isRedirect} = await postData(donateUrl, {
             ...values,
+            originUrl: window.top.location.href,
             gatewayData: {
-                parentPageUrl: window.top.location.href,
+                originUrl: window.top.location.href,
                 ...beforeCreatePaymentGatewayResponse,
             },
         });

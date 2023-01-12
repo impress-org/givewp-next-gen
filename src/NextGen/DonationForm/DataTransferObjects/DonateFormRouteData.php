@@ -24,6 +24,10 @@ class DonateFormRouteData
      * @var int
      */
     public $formId;
+    /**
+     * @var string
+     */
+    public $originUrl;
 
     /**
      * Convert data from request into DTO
@@ -35,6 +39,7 @@ class DonateFormRouteData
         $self = new static();
         $self->formId = (int)$requestData['formId'];
         $self->gatewayId = $requestData['gatewayId'];
+        $self->originUrl = $requestData['originUrl'];
         $self->requestData = $requestData;
 
         return $self;
@@ -69,6 +74,7 @@ class DonateFormRouteData
 
         $validData->formTitle = $form->title;
         $validData->wpUserId = get_current_user_id();
+        $validData->originUrl = $this->originUrl;
 
         return $validData;
     }

@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock\Controllers;
 
 use Give\Framework\EnqueueScript;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -45,11 +46,25 @@ class BlockRenderController
 
         $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
 
+        if ($this->shouldDisplayDonationConfirmationReceipt()) {
+            $receiptId = give_clean($_GET['givewpReceiptId']);
+
+            $viewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
+        }
+
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
         return "<iframe data-givewp-embed src='$viewUrl'
                 style='width: 1px;min-width: 100%;border: 0;'></iframe>";
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function shouldDisplayDonationConfirmationReceipt(): bool
+    {
+        return isset($_GET['givewpDonationAction'], $_GET['givewpReceiptId']) && $_GET['givewpDonationAction'] === 'show-donation-confirmation-receipt';
     }
 }

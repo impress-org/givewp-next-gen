@@ -40,8 +40,8 @@ class DonateController
 
         $this->saveCustomFields($form, $donation, $formData->getCustomFields());
 
-        // setting sessions is required for legacy receipts
-        $this->setSession($donation, $donor);
+        // use our new receipt url for the success page uri
+        $this->filterSuccessPageUri($formData->getDonationConfirmationReceiptUrl($donation));
 
         $registeredGateway->handleCreatePayment($donation);
     }
@@ -124,5 +124,17 @@ class DonateController
     private function saveCustomFields(DonationForm $form, Donation $donation, array $customFields)
     {
         (new StoreCustomFields())($form, $donation, $customFields);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    protected function filterSuccessPageUri(string $filteredUrl)
+    {
+        add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl) {
+            return $filteredUrl;
+        });
     }
 }

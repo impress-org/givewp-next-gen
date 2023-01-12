@@ -42,6 +42,7 @@ class DonateControllerDataTest extends TestCase
         $data->company = null;
         $data->wpUserId = null;
         $data->honorific = "Mr";
+        $data->originUrl = "https://givewp.com";
 
         $donation = new Donation([
             'status' => DonationStatus::PENDING(),
@@ -84,6 +85,7 @@ class DonateControllerDataTest extends TestCase
         $data->company = null;
         $data->wpUserId = null;
         $data->honorific = "Mr";
+        $data->originUrl = "https://givewp.com";
         $data->customFieldString = 'customFieldString';
         $data->customFieldInteger = 2;
         $data->customFieldBoolean = false;

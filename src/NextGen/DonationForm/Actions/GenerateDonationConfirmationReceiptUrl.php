@@ -2,23 +2,23 @@
 
 namespace Give\NextGen\DonationForm\Actions;
 
+use Give\Donations\Models\Donation;
 
-use Give\NextGen\Framework\Routes\Route;
-
-/**
- * @unreleased
- */
 class GenerateDonationConfirmationReceiptUrl
 {
     /**
      * @unreleased
      */
-    public function __invoke(string $receiptId): string
+    public function __invoke(string $originUrl, Donation $donation): string
     {
-        $args = [
-            'receipt-id' => $receiptId
-        ];
-
-        return esc_url_raw(Route::url('donation-confirmation-receipt-view', $args));
+        return esc_url_raw(
+            add_query_arg(
+                [
+                    'givewpDonationAction' => 'show-donation-confirmation-receipt',
+                    'givewpReceiptId' => $donation->purchaseKey,
+                ],
+                $originUrl
+            )
+        );
     }
 }

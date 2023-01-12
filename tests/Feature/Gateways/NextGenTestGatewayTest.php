@@ -4,7 +4,7 @@ namespace Give\Tests\Feature\Gateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -21,7 +21,7 @@ class NextGenTestGatewayTest extends TestCase
 
         $response = $gateway->createPayment($donation, $gatewayData);
 
-        $redirectUrl = (new GenerateDonationConfirmationReceiptUrl())($donation->purchaseKey);
+        $redirectUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($donation->purchaseKey);
 
         $command = new RedirectOffsite($redirectUrl);
 

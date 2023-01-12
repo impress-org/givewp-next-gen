@@ -10,9 +10,8 @@ use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Stripe\Exception\ApiErrorException;
-
-use function add_query_arg;
 
 /**
  * @unreleased
@@ -105,7 +104,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $parentPageUrl = $gatewayData['parentPageUrl'];
+        $originUrl = $gatewayData['originUrl'];
 
         /**
          * Get or create a Stripe customer
@@ -133,7 +132,12 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $this->updateDonationMetaFromPaymentIntent($donation, $intent);
 
-        $returnUrl = $this->getReturnUrl($parentPageUrl, $donation);
+        /**
+         * Create return url for Stripe to use during confirmPayment
+         *
+         * @see https://stripe.com/docs/js/payment_intents/confirm_payment
+         */
+        $returnUrl = $this->getReturnUrl($originUrl, $donation);
 
         /**
          * Return response to client
@@ -163,15 +167,8 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     /**
      * @unreleased
      */
-    private function getReturnUrl(string $parentPageUrl, Donation $donation): string
+    protected function getReturnUrl(string $originUrl, Donation $donation): string
     {
-        return esc_url_raw(
-            add_query_arg(
-                [
-                    'givewp-receipt-id' => $donation->purchaseKey,
-                ],
-                $parentPageUrl
-            )
-        );
+        return (new GenerateDonationConfirmationReceiptUrl())($originUrl, $donation);
     }
 }
