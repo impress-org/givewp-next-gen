@@ -32,7 +32,7 @@ export interface FormServerExports {
     form: Form;
     attributes: object;
     donateUrl: string;
-    successUrl: string;
+    inlineRedirectRoutes: string[];
 }
 
 

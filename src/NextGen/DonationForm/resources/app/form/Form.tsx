@@ -11,8 +11,9 @@ import SectionNode from '../fields/SectionNode';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import {ObjectSchema} from 'joi';
+import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 
-const {donateUrl} = getWindowData();
+const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
 
 const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
@@ -20,12 +21,14 @@ const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, '
 
 async function handleRedirect(response: any | Response) {
     const redirectUrl = new URL(response.url);
+    const redirectUrlParams = new URLSearchParams(redirectUrl.search);
+    const shouldRedirectInline = isRouteInlineRedirect(redirectUrlParams, inlineRedirectRoutes);
 
-    if (redirectUrl.host === window.location.host) {
-        // onsite redirect
+    if (shouldRedirectInline) {
+        // redirect inside iframe
         window.location.assign(redirectUrl);
     } else {
-        // offsite redirect
+        // redirect outside iframe
         window.top.location.assign(redirectUrl);
     }
 }
@@ -79,9 +82,9 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
         resolver: joiResolver(validationSchema),
     });
 
-    const {handleSubmit, setError, getValues, control} = methods;
+    const {handleSubmit, setError, control} = methods;
 
-    const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
+    const {errors, isSubmitting} = useFormState({control});
 
     const formError = errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null;
 

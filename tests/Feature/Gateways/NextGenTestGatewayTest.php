@@ -3,8 +3,7 @@
 namespace Give\Tests\Feature\Gateways;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -13,7 +12,7 @@ class NextGenTestGatewayTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testShouldCreatePaymentAndReturnRedirect()
+    public function testShouldCreatePaymentAndReturnPaymentComplete()
     {
         $gateway = new NextGenTestGateway();
         $donation = Donation::factory()->create();
@@ -21,11 +20,12 @@ class NextGenTestGatewayTest extends TestCase
 
         $response = $gateway->createPayment($donation, $gatewayData);
 
-        $redirectUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($donation->purchaseKey);
+        $intent = $gatewayData['testGatewayIntent'];
+        $transactionId = "test-gateway-transaction-id-{$intent}-{$donation->id}-";
 
-        $command = new RedirectOffsite($redirectUrl);
+        $command = new PaymentComplete($transactionId);
 
-        $this->assertInstanceOf(RedirectOffsite::class, $response);
-        $this->assertSame($command->redirectUrl, $response->redirectUrl);
+        $this->assertInstanceOf(PaymentComplete::class, $response);
+        $this->assertSame($command->gatewayTransactionId, $response->gatewayTransactionId);
     }
 }
