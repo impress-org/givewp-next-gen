@@ -122,10 +122,22 @@ class DonateController
      */
     protected function filterGatewayData(DonateControllerData $formData, $donation)
     {
-         add_filter("givewp_create_payment_gateway_data_{$donation->gatewayId}", static function($data) use ($formData, $donation) {
-            return array_merge($data, [
-                'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
-            ]);
-        });
+        add_filter(
+            "givewp_create_payment_gateway_data_{$donation->gatewayId}",
+            static function ($data) use ($formData, $donation) {
+                return array_merge($data, [
+                    'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
+                ]);
+            }
+        );
+
+        add_filter(
+            "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
+            static function ($data) use ($formData, $donation) {
+                return array_merge($data, [
+                    'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
+                ]);
+            }
+        );
     }
 }
