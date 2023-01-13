@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
+use Give\NextGen\DonationForm\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
@@ -76,10 +77,12 @@ class DonationConfirmationReceiptViewModel
         $donationFormRepository = give(DonationFormRepository::class);
 
         $formDataGateways = $donationFormRepository->getFormDataGateways($this->donation->formId);
-        $formApi = $donationFormRepository->getFormSchemaFromBlocks(
+        $formApi = !$donationFormRepository->isLegacyForm(
+            $this->donation->formId
+        ) ? $donationFormRepository->getFormSchemaFromBlocks(
             $this->donation->formId,
             $this->getDonationForm()->blocks
-        )->jsonSerialize();
+        )->jsonSerialize() : null;
 
         return [
             'gatewaySettings' => $formDataGateways,
@@ -92,13 +95,23 @@ class DonationConfirmationReceiptViewModel
      */
     public function render(): string
     {
-        $donationForm = $this->getDonationForm();
+        /** @var DonationFormRepository $donationFormRepository */
+        $donationFormRepository = give(DonationFormRepository::class);
+
+        $donationForm = !$donationFormRepository->isLegacyForm(
+            $this->donation->formId
+        ) ? $this->getDonationForm() : null;
+        
+        $formDesignId = $donationForm ? $donationForm->settings->designId : DeveloperFormDesign::id();
+        $customCss = $donationForm && $donationForm->settings->customCss ? $donationForm->settings->customCss : null;
+        $primaryColor = $donationForm ? $donationForm->settings->primaryColor : '#69B868';
+        $secondaryColor = $donationForm ? $donationForm->settings->secondaryColor : '#000000';
 
         wp_enqueue_global_styles();
 
         $this->enqueueFormScripts(
             $this->donation->formId,
-            $donationForm->settings->designId ?? ''
+            $formDesignId
         );
 
         ob_start();
@@ -112,15 +125,15 @@ class DonationConfirmationReceiptViewModel
         </script>
 
         <?php
-        if ($donationForm->settings->customCss): ?>
-            <style><?= $donationForm->settings->customCss ?></style>
+        if ($customCss): ?>
+            <style><?= $customCss ?></style>
         <?php
         endif; ?>
 
         <div id="root-givewp-donation-confirmation-receipt" class="givewp-donation-confirmation-receipt"
              style="
-                     --givewp-primary-color:<?= $donationForm->settings->primaryColor ?? '' ?>;
-                     --givewp-secondary-color:<?= $donationForm->settings->secondaryColor ?? '' ?>;
+                     --givewp-primary-color:<?= $primaryColor ?>;
+                     --givewp-secondary-color:<?= $secondaryColor ?>;
                      "
         ></div>
 

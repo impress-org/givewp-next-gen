@@ -2,13 +2,15 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use function strlen;
+
 /**
  * @unreleased
  */
 class DonationConfirmationReceiptViewRouteData
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $receiptId;
 
@@ -20,8 +22,18 @@ class DonationConfirmationReceiptViewRouteData
     {
         $self = new self();
 
-        $self->receiptId = (string)$request['receipt-id'];
+        $self->receiptId = isset($request['receipt-id']) && $self->isValidReceiptId(
+            $request['receipt-id']
+        ) ? $request['receipt-id'] : null;
 
         return $self;
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function isValidReceiptId(string $receiptId): bool
+    {
+        return strlen($receiptId) === 32;
     }
 }

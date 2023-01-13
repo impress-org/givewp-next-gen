@@ -17,10 +17,26 @@ class DonationConfirmationReceiptViewRouteDataTest extends TestCase
      */
     public function testShouldReturnReceiptId()
     {
+        $receiptId = md5('unique-receipt-id');
+
         $data = DonationConfirmationReceiptViewRouteData::fromRequest([
-            'receipt-id' => 'unique-receipt-id',
+            'receipt-id' => $receiptId
         ]);
 
-        $this->assertSame('unique-receipt-id', $data->receiptId);
+        $this->assertSame($receiptId, $data->receiptId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function testReceiptIdShouldReturnNullIfNotValid()
+    {
+        $data = DonationConfirmationReceiptViewRouteData::fromRequest([
+            'receipt-id' => 'unique-receipt-id'
+        ]);
+
+        $this->assertNull($data->receiptId);
     }
 }

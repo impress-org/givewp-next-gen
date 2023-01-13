@@ -17,6 +17,10 @@ class DonationConfirmationReceiptViewController
      */
     public function show(DonationConfirmationReceiptViewRouteData $data): string
     {
+        if (!$data->receiptId) {
+            return '';
+        }
+
         $donation = $this->getDonationByReceiptId($data->receiptId);
 
         if (!$donation) {
