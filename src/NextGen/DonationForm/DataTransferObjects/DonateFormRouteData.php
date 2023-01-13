@@ -29,9 +29,13 @@ class DonateFormRouteData
      */
     public $originUrl;
     /**
-     * @var string
+     * @var string|null
      */
-    public $originId;
+    public $embedId;
+    /**
+     * @var bool
+     */
+    public $isEmbed;
 
     /**
      * Convert data from request into DTO
@@ -44,7 +48,8 @@ class DonateFormRouteData
         $self->formId = (int)$requestData['formId'];
         $self->gatewayId = $requestData['gatewayId'];
         $self->originUrl = $requestData['originUrl'];
-        $self->originId = $requestData['originId'];
+        $self->isEmbed = $requestData['isEmbed'];
+        $self->embedId = $self->isEmbed ? $requestData['embedId'] : null;
         $self->requestData = $requestData;
 
         return $self;
@@ -80,7 +85,8 @@ class DonateFormRouteData
         $validData->formTitle = $form->title;
         $validData->wpUserId = get_current_user_id();
         $validData->originUrl = $this->originUrl;
-        $validData->originId = $this->originId;
+        $validData->embedId = $this->embedId;
+        $validData->isEmbed = $this->isEmbed;
 
         return $validData;
     }

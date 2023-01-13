@@ -42,12 +42,26 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         }
 
         const originUrl = window.top.location.href;
-        const originId = window.frameElement?.getAttribute('data-givewp-embed-id') ?? '';
+
+        const isEmbed = window.frameElement !== null;
+
+        const getEmbedId = () => {
+            if (!isEmbed) {
+                return null;
+            }
+
+            if (window.frameElement.hasAttribute('data-givewp-embed-id')) {
+                return window.frameElement.getAttribute('data-givewp-embed-id');
+            }
+
+            return window.frameElement.id;
+        };
 
         const {response, isRedirect} = await postData(donateUrl, {
             ...values,
             originUrl,
-            originId,
+            isEmbed,
+            embedId: getEmbedId(),
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
 

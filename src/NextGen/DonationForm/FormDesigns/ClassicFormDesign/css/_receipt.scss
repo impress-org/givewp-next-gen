@@ -84,7 +84,7 @@
         }
     }
 
-    .receipt-sections {
+    .receipt-body {
         .details {
             .headline {
                 color: #333333;
@@ -216,7 +216,7 @@
 }
 
 .givewp-layouts-receipt {
-    .receipt-sections {
+    .receipt-body {
         padding-block-start: fn.scaleBetween(2.375rem, 3rem);
         padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
     }

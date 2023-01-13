@@ -23,7 +23,7 @@ const SecureBadge = () => {
  *
  * @unreleased
  */
-const Details = ({heading, details}: { heading: string; details: ReceiptDetail[] }) =>
+const Details = ({heading, details}: {heading: string; details: ReceiptDetail[]}) =>
     details?.length > 0 && (
         <div className="details">
             <h3 className="headline">{heading}</h3>
@@ -61,7 +61,7 @@ export default function DonationReceipt({
                 </div>
             </div>
 
-            <div className="receipt-sections">
+            <div className="receipt-body">
                 <Details heading={__('Donor Details', 'give')} details={donorDetails} />
                 <Details heading={__('Donation Details', 'give')} details={donationDetails} />
                 <Details heading={__('Subscription Details', 'give')} details={subscriptionDetails} />

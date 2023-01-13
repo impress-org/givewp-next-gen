@@ -61,9 +61,14 @@ class DonateControllerData
      */
     public $originUrl;
     /**
-     * @var string
+     * @var string|null
      */
-    public $originId;
+    public $embedId;
+
+    /**
+     * @var bool
+     */
+    public $isEmbed;
 
     /**
      * @unreleased
@@ -92,7 +97,7 @@ class DonateControllerData
      */
     public function getRedirectReturnUrl(Donation $donation)
     {
-        return !empty($this->originId) ?
+        return $this->isEmbed ?
             $this->getDonationConfirmationReceiptUrl($donation) :
             $this->getDonationConfirmationReceiptViewRouteUrl($donation);
     }
@@ -110,7 +115,7 @@ class DonateControllerData
      */
     public function getDonationConfirmationReceiptUrl(Donation $donation): string
     {
-        return (new GenerateDonationConfirmationReceiptUrl())($donation, $this->originUrl, $this->originId);
+        return (new GenerateDonationConfirmationReceiptUrl())($donation, $this->originUrl, $this->embedId);
     }
 
     /**
@@ -143,7 +148,8 @@ class DonateControllerData
                         'wpUserId',
                         'honorific',
                         'originUrl',
-                        'originId'
+                        'isEmbed',
+                        'embedId',
                     ]
                 ),
                 true

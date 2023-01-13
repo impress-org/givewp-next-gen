@@ -7,6 +7,7 @@ use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRou
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\Framework\Routes\RouteListener;
 
 class BlockRenderController
 {
@@ -46,9 +47,9 @@ class BlockRenderController
         $donationForm = DonationForm::find($blockAttributes->formId);
 
         $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
-        $originId = $blockAttributes->blockId;
+        $embedId = $blockAttributes->blockId;
 
-        if ($this->shouldDisplayDonationConfirmationReceipt($originId)) {
+        if ($this->shouldDisplayDonationConfirmationReceipt($embedId)) {
             $receiptId = give_clean($_GET['givewp-receipt-id']);
 
             $viewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
@@ -58,29 +59,23 @@ class BlockRenderController
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<iframe data-givewp-embed src='$viewUrl' data-givewp-embed-id='$originId' style='width: 1px;min-width: 100%;border: 0;'></iframe>";
+        return "<iframe data-givewp-embed src='$viewUrl' data-givewp-embed-id='$embedId' style='width: 1px;min-width: 100%;border: 0;'></iframe>";
     }
 
     /**
      * @unreleased
      */
-    protected function shouldDisplayDonationConfirmationReceipt(string $originId): bool
+    protected function shouldDisplayDonationConfirmationReceipt(string $embedId): bool
     {
-        $hasParams = isset(
-            $_GET['givewp-event'],
-            $_GET['givewp-listener'],
-            $_GET['givewp-receipt-id'],
-            $_GET['givewp-embed-id']
+        $routeListener = new RouteListener(
+            'donation-completed',
+            'show-donation-confirmation-receipt'
         );
 
-        if (!$hasParams) {
-            return false;
-        }
-
-        $event = $_GET['givewp-event'] === 'donation-completed';
-        $listener = $_GET['givewp-listener'] === 'show-donation-confirmation-receipt';
-        $args = $_GET['givewp-embed-id'] === $originId && strlen($_GET['givewp-receipt-id']) === 32;
-
-        return $event && $listener && $args;
+        return $routeListener->isValid($_GET, function ($request) use ($embedId) {
+            $isset = isset($request['givewp-embed-id'], $request['givewp-receipt-id']);
+            
+            return $isset && $request['givewp-embed-id'] === $embedId && strlen($request['givewp-receipt-id']) === 32;
+        });
     }
 }
