@@ -1,14 +1,15 @@
 <?php
+
 namespace Give\NextGen\Gateways\NextGenTestGatewayOffsite;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 
 /**
  * @unreleased
@@ -72,7 +73,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
         );
     }
 
-     /**
+    /**
      * @inheritDoc
      */
     public function createPayment(Donation $donation, $gatewayData): RedirectOffsite
@@ -91,6 +92,8 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
 
     /**
      * @unreleased
+     * 
+     * @throws Exception
      */
     protected function securelyReturnFromOffsiteRedirect(array $queryParams)
     {
@@ -98,7 +101,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
         $donation = Donation::find($queryParams['givewp-donation-id']);
         $donation->status = DonationStatus::COMPLETE();
         $donation->save();
-        
+
         wp_redirect($queryParams['givewp-return-url']);
     }
 
@@ -107,7 +110,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-       return 'Legacy Stripe Fields Not Supported.';
+        return 'Legacy Stripe Fields Not Supported.';
     }
 
     /**
@@ -116,11 +119,12 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     public function refundDonation(Donation $donation): bool
     {
         return false;
-        // TODO: Implement refundDonation() method.
     }
 
     /**
      * @unreleased
+     *
+     * @inerhitDoc
      */
     public function formSettings(int $formId): array
     {
@@ -130,19 +134,5 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
                 'give'
             ),
         ];
-    }
-
-    /**
-     * @unreleased
-     *
-     * TODO: This should be moved into the framework
-     */
-    public function generateRedirectReturnUrl(Donation $donation, string $originUrl, string $originId = ''): string
-    {
-        return !empty($originId) ? (new GenerateDonationConfirmationReceiptUrl())(
-            $donation,
-            $originUrl,
-            $originId
-        ) : give_get_success_page_uri();
     }
 }
