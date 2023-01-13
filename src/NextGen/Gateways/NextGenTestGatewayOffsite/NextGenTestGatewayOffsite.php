@@ -2,6 +2,7 @@
 namespace Give\NextGen\Gateways\NextGenTestGatewayOffsite;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
@@ -76,7 +77,14 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function createPayment(Donation $donation, $gatewayData): RedirectOffsite
     {
-        $redirectUrl = $this->getRedirectUrl($gatewayData['redirectReturnUrl'], $donation);
+        $redirectUrl = $this->generateSecureGatewayRouteUrl(
+            'securelyReturnFromOffsiteRedirect',
+            $donation->id,
+            [
+                'givewp-donation-id' => $donation->id,
+                'givewp-return-url' => rawurlencode($gatewayData['redirectReturnUrl'])
+            ]
+        );
 
         return new RedirectOffsite($redirectUrl);
     }
@@ -84,23 +92,13 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     /**
      * @unreleased
      */
-    protected function getRedirectUrl(string $receiptUrl, Donation $donation): string
-    {
-        return $this->generateSecureGatewayRouteUrl(
-            'securelyReturnFromOffsiteRedirect',
-            $donation->id,
-            [
-                'givewp-donation-id' => $donation->id,
-                'givewp-return-url' => rawurlencode($receiptUrl)
-            ]
-        );
-    }
-
-    /**
-     * @unreleased
-     */
     protected function securelyReturnFromOffsiteRedirect(array $queryParams)
     {
+        /** @var Donation $donation */
+        $donation = Donation::find($queryParams['givewp-donation-id']);
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->save();
+        
         wp_redirect($queryParams['givewp-return-url']);
     }
 
