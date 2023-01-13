@@ -39,8 +39,9 @@ class DonateController
 
         $this->saveCustomFields($form, $donation, $formData->getCustomFields());
 
-        // use our new receipt url for the success page uri
         $this->filterSuccessPageUri($formData->getDonationConfirmationReceiptViewRouteUrl($donation));
+
+        $this->filterGatewayData($formData, $donation);
 
         $registeredGateway->handleCreatePayment($donation);
     }
@@ -101,6 +102,8 @@ class DonateController
     }
 
     /**
+     * Use our new receipt url for the success page uri
+     *
      * @unreleased
      *
      * @return void
@@ -109,6 +112,20 @@ class DonateController
     {
         add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl) {
             return $filteredUrl;
+        });
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    protected function filterGatewayData(DonateControllerData $formData, $donation)
+    {
+         add_filter("givewp_create_payment_gateway_data_{$donation->gatewayId}", static function($data) use ($formData, $donation) {
+            return array_merge($data, [
+                'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
+            ]);
         });
     }
 }

@@ -10,7 +10,6 @@ use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Stripe\Exception\ApiErrorException;
 
 /**
@@ -104,8 +103,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $originUrl = $gatewayData['originUrl'];
-        $originId = $gatewayData['originId'];
+        $redirectReturnUrl = $gatewayData['redirectReturnUrl'];
 
         /**
          * Get or create a Stripe customer
@@ -134,18 +132,11 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         $this->updateDonationMetaFromPaymentIntent($donation, $intent);
 
         /**
-         * Create return url for Stripe to use during confirmPayment
-         *
-         * @see https://stripe.com/docs/js/payment_intents/confirm_payment
-         */
-        $returnUrl = $this->getReturnUrl($donation, $originUrl, $originId);
-
-        /**
          * Return response to client
          */
         return new RespondToBrowser([
             'intentStatus' => $intent->status,
-            'returnUrl' => $returnUrl,
+            'returnUrl' => $redirectReturnUrl,
         ]);
     }
 
@@ -163,13 +154,5 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function getReturnUrl(Donation $donation, string $originUrl, string $originId): string
-    {
-        return (new GenerateDonationConfirmationReceiptUrl())($donation, $originUrl, $originId);
     }
 }

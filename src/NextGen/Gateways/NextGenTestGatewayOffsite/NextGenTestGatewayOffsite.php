@@ -76,8 +76,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function createPayment(Donation $donation, $gatewayData): RedirectOffsite
     {
-        $receiptUrl = $this->generateRedirectReturnUrl($donation, $gatewayData['originUrl'], $gatewayData['originId']);
-        $redirectUrl = $this->getRedirectUrl($receiptUrl, $donation);
+        $redirectUrl = $this->getRedirectUrl($gatewayData['redirectReturnUrl'], $donation);
 
         return new RedirectOffsite($redirectUrl);
     }

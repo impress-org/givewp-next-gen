@@ -87,7 +87,10 @@ class DonateControllerData
         ]);
     }
 
-    public function getReceiptUrl(Donation $donation)
+    /**
+     * @unreleased
+     */
+    public function getRedirectReturnUrl(Donation $donation)
     {
         return !empty($this->originId) ?
             $this->getDonationConfirmationReceiptUrl($donation) :
