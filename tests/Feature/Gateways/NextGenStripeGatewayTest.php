@@ -126,18 +126,17 @@ class NextGenStripeGatewayTest extends TestCase
             ->method('updateDonationMetaFromPaymentIntent')
             ->with($donation, $stripePaymentIntent);
 
+        $redirectReturnUrl = (new GenerateDonationConfirmationReceiptUrl())(
+            $donation,
+            'https://givewp.com',
+            '123'
+        );
+
         $gatewayData = [
             'stripePaymentIntentId' => $stripePaymentIntent->id,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
-            'originUrl' => 'https://givewp.com',
-            'originId' => '123',
+            'redirectReturnUrl' => $redirectReturnUrl,
         ];
-
-        $returnUrl = (new GenerateDonationConfirmationReceiptUrl())(
-            $donation,
-            $gatewayData['originUrl'],
-            $gatewayData['originId']
-        );
 
         $response = $mockGateway->createPayment($donation, $gatewayData);
 
@@ -145,7 +144,7 @@ class NextGenStripeGatewayTest extends TestCase
             $response,
             new RespondToBrowser([
                 'intentStatus' => $stripePaymentIntent->status,
-                'returnUrl' => $returnUrl
+                'returnUrl' => $gatewayData['redirectReturnUrl'],
             ])
         );
     }
