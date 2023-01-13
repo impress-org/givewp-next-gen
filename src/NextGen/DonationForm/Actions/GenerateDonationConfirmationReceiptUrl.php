@@ -14,9 +14,10 @@ class GenerateDonationConfirmationReceiptUrl
         return esc_url_raw(
             add_query_arg(
                 [
-                    'givewpDonationAction' => 'show-donation-confirmation-receipt',
-                    'givewpReceiptId' => $donation->purchaseKey,
-                    'givewpOriginId' => $originId
+                    'givewp-event' => 'donation-completed',
+                    'givewp-listener' => 'show-donation-confirmation-receipt',
+                    'givewp-receipt-id' => $donation->purchaseKey,
+                    'givewp-embed-id' => $originId,
                 ],
                 $originUrl
             )

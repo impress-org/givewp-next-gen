@@ -27,9 +27,10 @@ class GenerateDonationConfirmationReceiptUrlTest extends TestCase
         $mockUrl = esc_url_raw(
             add_query_arg(
                 [
-                    'givewpDonationAction' => 'show-donation-confirmation-receipt',
-                    'givewpReceiptId' => $donation->purchaseKey,
-                    'givewpOriginId' => '123'
+                    'givewp-event' => 'donation-completed',
+                    'givewp-listener' => 'show-donation-confirmation-receipt',
+                    'givewp-receipt-id' => $donation->purchaseKey,
+                    'givewp-embed-id' => '123',
                 ],
                 $originUrl
             )

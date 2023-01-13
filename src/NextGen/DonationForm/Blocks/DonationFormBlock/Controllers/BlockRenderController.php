@@ -49,7 +49,7 @@ class BlockRenderController
         $originId = $blockAttributes->blockId;
 
         if ($this->shouldDisplayDonationConfirmationReceipt($originId)) {
-            $receiptId = give_clean($_GET['givewpReceiptId']);
+            $receiptId = give_clean($_GET['givewp-receipt-id']);
 
             $viewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
         }
@@ -66,6 +66,21 @@ class BlockRenderController
      */
     protected function shouldDisplayDonationConfirmationReceipt(string $originId): bool
     {
-        return isset($_GET['givewpDonationAction'], $_GET['givewpReceiptId'], $_GET['givewpOriginId']) && $_GET['givewpDonationAction'] === 'show-donation-confirmation-receipt' && $_GET['givewpOriginId'] === $originId;
+        $hasParams = isset(
+            $_GET['givewp-event'],
+            $_GET['givewp-listener'],
+            $_GET['givewp-receipt-id'],
+            $_GET['givewp-embed-id']
+        );
+
+        if (!$hasParams) {
+            return false;
+        }
+
+        $event = $_GET['givewp-event'] === 'donation-completed';
+        $listener = $_GET['givewp-listener'] === 'show-donation-confirmation-receipt';
+        $args = $_GET['givewp-embed-id'] === $originId && strlen($_GET['givewp-receipt-id']) === 32;
+
+        return $event && $listener && $args;
     }
 }
