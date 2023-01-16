@@ -141,7 +141,7 @@
                         clip-path: circle();
                     }
 
-                    &[data-value='Complete'] {
+                    &[data-value='Complete'], &[data-value='Completed'] {
                         --status-color: #1fe433;
                     }
 

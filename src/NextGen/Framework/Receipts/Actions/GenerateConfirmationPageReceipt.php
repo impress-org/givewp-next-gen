@@ -67,7 +67,7 @@ class GenerateConfirmationPageReceipt
         $receipt->donationDetails->addDetails([
                 new ReceiptDetail(
                     __('Payment Status', 'give'),
-                    give_get_payment_statuses()[$receipt->donation->status->getValue()]
+                    $receipt->donation->status->label()
                 ),
                 new ReceiptDetail(
                     __('Payment Method', 'give'),
