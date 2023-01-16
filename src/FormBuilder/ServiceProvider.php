@@ -43,7 +43,7 @@ class ServiceProvider implements ServiceProviderInterface
         /** Integrates the "Add Next Gen Form" button with the Donation Forms table. */
         add_action('admin_enqueue_scripts', function() {
             wp_localize_script('give-admin-donation-forms', 'GiveNextGen', [
-                'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute(),
+                'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
             ]);
         });
     }
