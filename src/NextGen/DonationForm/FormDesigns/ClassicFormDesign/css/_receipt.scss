@@ -250,12 +250,12 @@
     }
 
     // Donor Details
-    .details:nth-child(1) .headline::before {
+    .details-donor-details .headline::before {
         content: '\f007';
     }
 
     // Donation Details
-    .details:nth-child(2) .headline::before {
+    .details-donation-details .headline::before {
         content: '\f004';
     }
 }
