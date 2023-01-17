@@ -19,6 +19,7 @@ class FormBuilderViewModel
         $donationForm = DonationForm::find($donationFormId);
 
         return [
+            'formPageURL' => add_query_arg(['p' => $donationFormId], site_url()),
             'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $donationFormId),
             'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($donationFormId),
             'nonce' => wp_create_nonce('wp_rest'),

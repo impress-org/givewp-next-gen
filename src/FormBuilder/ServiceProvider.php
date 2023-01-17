@@ -39,5 +39,11 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_print_scripts', DequeueAdminScriptsInFormBuilder::class);
 
         Hooks::addAction('admin_print_styles', DequeueAdminStylesInFormBuilder::class);
+
+        add_action('give_before_single_form', function() {
+            if( get_post(get_the_ID())->post_content ) {
+                echo render_block(parse_blocks('<!-- wp:givewp/next-gen-donation-form-block {"formId":"' . get_the_ID() . '"} /-->')[0]);
+            }
+        });
     }
 }

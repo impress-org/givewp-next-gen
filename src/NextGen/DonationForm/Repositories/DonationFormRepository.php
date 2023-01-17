@@ -95,6 +95,7 @@ class DonationFormRepository
                     'post_parent' => 0,
                     'post_title' => $donationForm->title,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
+                    'post_name' => $donationForm->settings->pageSlug,
                 ]);
 
             $donationFormId = DB::last_insert_id();
@@ -151,6 +152,14 @@ class DonationFormRepository
 
         DB::query('START TRANSACTION');
 
+        $donationForm->settings->pageSlug = wp_unique_post_slug(
+            $donationForm->settings->pageSlug,
+            $donationForm->id,
+            $donationForm->status->getValue(),
+            'give_forms',
+            0
+        );
+
         try {
             DB::table('posts')
                 ->where('ID', $donationForm->id)
@@ -160,6 +169,7 @@ class DonationFormRepository
                     'post_status' => $donationForm->status->getValue(),
                     'post_title' => $donationForm->title,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
+                    'post_name' => $donationForm->settings->pageSlug,
                 ]);
 
             DB::table('give_formmeta')

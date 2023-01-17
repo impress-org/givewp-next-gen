@@ -70,6 +70,11 @@ class FormSettings implements Arrayable, Jsonable {
     public $goalAchievedMessage;
 
     /**
+     * @var string
+     */
+    public $pageSlug;
+
+    /**
      * @unreleased
      */
     public static function fromArray(array $array): self
@@ -94,6 +99,7 @@ class FormSettings implements Arrayable, Jsonable {
         $self->registration = $array['registration'] ?? 'none';
         $self->customCss = $array['customCss'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? '';
+        $self->pageSlug = $array['pageSlug'] ?? '';
 
         return $self;
     }

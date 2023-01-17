@@ -33,6 +33,7 @@ const initialState = {
         ),
         primaryColor: '#69b86b',
         secondaryColor: '#f49420',
+        pageSlug: 'new-form',
         ...initialFormSettings,
     },
 };
