@@ -39,9 +39,9 @@ class DonateController
 
         $this->saveCustomFields($form, $donation, $formData->getCustomFields());
 
-        $this->filterSuccessPageUri($formData->getDonationConfirmationReceiptViewRouteUrl($donation));
+        $this->temporarilyReplaceLegacySuccessPageUri($formData, $donation);
 
-        $this->filterGatewayData($formData, $donation);
+        $this->addToGatewayData($formData, $donation);
 
         $registeredGateway->handleCreatePayment($donation);
     }
@@ -102,25 +102,37 @@ class DonateController
     }
 
     /**
-     * Use our new receipt url for the success page uri
+     * Use our new receipt url for the success page uri.
+     *
+     * The give_get_success_page_uri() function is used by the legacy gateway processing and is specific to how that form works.
+     *
+     * In Next Gen, our confirmation receipt page is stateless, and need to use the form request data to generate the url.
+     *
+     * This is a temporary solution until we can update the gateway api to support the new receipt urls.
      *
      * @unreleased
      *
      * @return void
      */
-    protected function filterSuccessPageUri(string $filteredUrl)
+    protected function temporarilyReplaceLegacySuccessPageUri(DonateControllerData $formData, Donation $donation)
     {
+        $filteredUrl = $formData->getDonationConfirmationReceiptViewRouteUrl($donation);
+
         add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl) {
             return $filteredUrl;
         });
     }
 
     /**
+     * This adds the `redirectReturnUrl` key to the gateway data.
+     *
+     * This is necessary so gateways can use this value in both legacy and next gen donation forms.
+     *
      * @unreleased
      *
      * @return void
      */
-    protected function filterGatewayData(DonateControllerData $formData, $donation)
+    protected function addToGatewayData(DonateControllerData $formData, $donation)
     {
         add_filter(
             "givewp_create_payment_gateway_data_{$donation->gatewayId}",
