@@ -24,37 +24,20 @@ class BlockRenderController
             return null;
         }
 
-
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
         if (!$blockAttributes->formId) {
             return null;
         }
 
-        /**
-         * Load embed givewp script to resize iframe
-         *
-         * @see https://github.com/davidjbradshaw/iframe-resizer
-         */
-        (new EnqueueScript(
-            'givewp-donation-form-embed',
-            'build/donationFormEmbed.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->loadInFooter()->enqueue();
+        $this->loadEmbedScript();
 
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($blockAttributes->formId);
 
-        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
-        $embedId = $blockAttributes->blockId;
+        $embedId = $blockAttributes->blockId ?? '';
 
-        if ($this->shouldDisplayDonationConfirmationReceipt($embedId)) {
-            $receiptId = give_clean($_GET['givewp-receipt-id']);
-
-            $viewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
-        }
+        $viewUrl = $this->getViewUrl($donationForm, $embedId);
 
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
@@ -64,6 +47,8 @@ class BlockRenderController
     }
 
     /**
+     * If the page loads with our receipt route listener args then we need to render the receipt.
+     *
      * @unreleased
      */
     protected function shouldDisplayDonationConfirmationReceipt(string $embedId): bool
@@ -80,5 +65,40 @@ class BlockRenderController
                     $request['givewp-receipt-id']
                 );
         });
+    }
+
+    /**
+     * Get the iframe URL.
+     * This could either be the donation form view or the donation confirmation receipt view.
+     *
+     * @unreleased
+     */
+    private function getViewUrl(DonationForm $donationForm, string $embedId): string
+    {
+        if ($this->shouldDisplayDonationConfirmationReceipt($embedId)) {
+            $receiptId = give_clean($_GET['givewp-receipt-id']);
+
+            return (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
+        }
+
+        return (new GenerateDonationFormViewRouteUrl())($donationForm->id);
+    }
+
+    /**
+     *
+     * Load embed givewp script to resize iframe
+     * @see https://github.com/davidjbradshaw/iframe-resizer
+     *
+     * @unreleased
+     */
+    private function loadEmbedScript()
+    {
+        (new EnqueueScript(
+            'givewp-donation-form-embed',
+            'build/donationFormEmbed.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        ))->loadInFooter()->enqueue();
     }
 }
