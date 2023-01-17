@@ -22,7 +22,7 @@ class DonationConfirmationReceiptViewRouteData
     {
         $self = new self();
 
-        $self->receiptId = isset($request['receipt-id']) && $self->isValidReceiptId(
+        $self->receiptId = isset($request['receipt-id']) && $self::isReceiptIdValid(
             $request['receipt-id']
         ) ? $request['receipt-id'] : null;
 
@@ -30,9 +30,11 @@ class DonationConfirmationReceiptViewRouteData
     }
 
     /**
+     * The receipt ID is a md5 hash which has a 32 character length.
+     *
      * @unreleased
      */
-    protected function isValidReceiptId(string $receiptId): bool
+    public static function isReceiptIdValid(string $receiptId): bool
     {
         return strlen($receiptId) === 32;
     }

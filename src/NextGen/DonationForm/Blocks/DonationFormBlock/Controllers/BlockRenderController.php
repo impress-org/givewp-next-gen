@@ -6,6 +6,7 @@ use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
+use Give\NextGen\DonationForm\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Routes\RouteListener;
 
@@ -74,8 +75,10 @@ class BlockRenderController
 
         return $routeListener->isValid($_GET, function ($request) use ($embedId) {
             $isset = isset($request['givewp-embed-id'], $request['givewp-receipt-id']);
-            
-            return $isset && $request['givewp-embed-id'] === $embedId && strlen($request['givewp-receipt-id']) === 32;
+
+            return $isset && $request['givewp-embed-id'] === $embedId && DonationConfirmationReceiptViewRouteData::isReceiptIdValid(
+                    $request['givewp-receipt-id']
+                );
         });
     }
 }

@@ -97,7 +97,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
         $donationDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
                 __('Payment Status', 'give'),
-                give_get_payment_statuses()[$donation->status->getValue()]
+                $donation->status->label()
             ),
             new ReceiptDetail(
                 __('Payment Method', 'give'),
