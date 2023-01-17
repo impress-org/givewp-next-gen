@@ -43,10 +43,12 @@ class DonationConfirmationReceiptViewModel
     public function getReceipt(): DonationReceipt
     {
         $receipt = new DonationReceipt($this->donation);
+        
         $receipt->settings->addSetting(
             'heading',
             __("Hey {$this->donation->firstName}, thanks for your donation!", 'give')
         );
+
         $receipt->settings->addSetting(
             'description',
             __(

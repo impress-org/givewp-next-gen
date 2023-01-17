@@ -56,6 +56,17 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
         ]);
 
+        $additionalDetails = new ReceiptDetailCollection();
+
+        if ($donation->company) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
+
         $this->assertSame(
             $receipt->toArray(),
             [
@@ -66,7 +77,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => [],
-                'additionalDetails' => [],
+                'additionalDetails' => $additionalDetails->toArray(),
             ]
         );
     }
@@ -143,6 +154,17 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
         ]);
 
+        $additionalDetails = new ReceiptDetailCollection();
+
+        if ($donation->company) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
+
         $this->assertSame(
             $receipt->toArray(),
             [
@@ -153,7 +175,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => $subscriptionDetails->toArray(),
-                'additionalDetails' => [],
+                'additionalDetails' => $additionalDetails->toArray(),
             ]
         );
     }
