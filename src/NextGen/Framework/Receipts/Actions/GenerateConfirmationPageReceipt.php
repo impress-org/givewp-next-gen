@@ -127,6 +127,15 @@ class GenerateConfirmationPageReceipt
      */
     private function fillAdditionalDetails(DonationReceipt $receipt)
     {
+        if ($receipt->donation->company) {
+            $receipt->additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
+
         if ($customFields = $this->getCustomFields($receipt->donation)) {
             $receipt->additionalDetails->addDetails($customFields);
         }

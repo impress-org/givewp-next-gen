@@ -55,6 +55,17 @@ class TestDonationReceiptBuilder extends TestCase
             ),
         ]);
 
+        $additionalDetails = new ReceiptDetailCollection();
+
+        if ($donation->company) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
+
         $this->assertSame(
             $receiptBuilder->toConfirmationPage()->toArray(),
             [
@@ -65,7 +76,7 @@ class TestDonationReceiptBuilder extends TestCase
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => [],
-                'additionalDetails' => [],
+                'additionalDetails' => $additionalDetails->toArray(),
             ]
         );
     }
