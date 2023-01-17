@@ -55,7 +55,7 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                     <PanelRow>
                         {formId && (
                             <ExternalLink
-                                href={`/wp-admin/edit.php?post_type=give_forms&page=form-builder-next-gen&donationFormID=n${formId}`}
+                                href={`/wp-admin/edit.php?post_type=give_forms&page=form-builder-next-gen&donationFormID=${formId}`}
                             >
                                 {__('Edit donation form', 'give')}
                             </ExternalLink>
