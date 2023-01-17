@@ -40,7 +40,7 @@ const PageSlugControl = () => {
                     help={'The last part of the URL.'}
                 />
                 <div>View Page</div>
-                <ExternalLink href={'/donations/' + window.storageData.formPageURL}>{'/donations/' + pageSlug}</ExternalLink>
+                <ExternalLink href={window.storageData.formPageURL}>{'/donations/' + pageSlug}</ExternalLink>
             </div>
         ) }
     />

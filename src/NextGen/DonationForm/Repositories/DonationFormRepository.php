@@ -81,6 +81,14 @@ class DonationFormRepository
         $dateCreated = Temporal::withoutMicroseconds($donationForm->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
+        $donationForm->settings->pageSlug = wp_unique_post_slug(
+            $donationForm->settings->pageSlug ?: sanitize_title($donationForm->title),
+            $donationForm->id,
+            $donationForm->status->getValue(),
+            'give_forms',
+            0
+        );
+
         DB::query('START TRANSACTION');
 
         try {
@@ -150,15 +158,15 @@ class DonationFormRepository
 
         $date = Temporal::getCurrentFormattedDateForDatabase();
 
-        DB::query('START TRANSACTION');
-
         $donationForm->settings->pageSlug = wp_unique_post_slug(
-            $donationForm->settings->pageSlug,
+            $donationForm->settings->pageSlug ?: sanitize_title($donationForm->title),
             $donationForm->id,
             $donationForm->status->getValue(),
             'give_forms',
             0
         );
+
+        DB::query('START TRANSACTION');
 
         try {
             DB::table('posts')
