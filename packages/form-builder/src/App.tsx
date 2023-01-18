@@ -33,6 +33,8 @@ const initialState = {
         ),
         primaryColor: '#69b86b',
         secondaryColor: '#f49420',
+        receiptHeading: __('Hey {donor.firstName}, thanks for your donation!', 'give'),
+        receiptDescription: __('{donor.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor.email}.', 'give'),
         ...initialFormSettings,
     },
 };
