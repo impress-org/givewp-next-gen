@@ -6,10 +6,12 @@ use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\Receipts\DonationReceipt;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
+use Give\NextGen\Framework\TemplateTags\DonationTemplateTags;
 
 class GenerateConfirmationPageReceipt
 {
@@ -60,18 +62,23 @@ class GenerateConfirmationPageReceipt
      */
     private function fillDonationDetails(DonationReceipt $receipt)
     {
+        /** @var PaymentGatewayRegister $paymentGatewayRegistrar */
+        $paymentGatewayRegistrar = give(PaymentGatewayRegister::class);
+
         $receipt->donationDetails->addDetails([
                 new ReceiptDetail(
                     __('Payment Status', 'give'),
-                    give_get_payment_statuses()[$receipt->donation->status->getValue()]
+                    $receipt->donation->status->label()
                 ),
                 new ReceiptDetail(
                     __('Payment Method', 'give'),
-                    $receipt->donation->gateway()->getPaymentMethodLabel()
+                    $paymentGatewayRegistrar->hasPaymentGateway(
+                        $receipt->donation->gatewayId
+                    ) ? $receipt->donation->gateway()->getPaymentMethodLabel() : $receipt->donation->gatewayId
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
-                    $receipt->donation->intendedAmount()->formatToDecimal()
+                    ['amount' => $receipt->donation->intendedAmount()->formatToDecimal()]
                 ),
             ]
         );
@@ -80,7 +87,7 @@ class GenerateConfirmationPageReceipt
             $receipt->donationDetails->addDetail(
                 new ReceiptDetail(
                     __('Processing Fee', 'give'),
-                    $receipt->donation->feeAmountRecovered->formatToDecimal()
+                    ['amount' => $receipt->donation->feeAmountRecovered->formatToDecimal()]
                 )
             );
         }
@@ -88,7 +95,7 @@ class GenerateConfirmationPageReceipt
         $receipt->donationDetails->addDetail(
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $receipt->donation->amount->formatToDecimal()
+                ['amount' => $receipt->donation->amount->formatToDecimal()]
             )
         );
     }
@@ -121,6 +128,15 @@ class GenerateConfirmationPageReceipt
      */
     private function fillAdditionalDetails(DonationReceipt $receipt)
     {
+        if ($receipt->donation->company) {
+            $receipt->additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
+
         if ($customFields = $this->getCustomFields($receipt->donation)) {
             $receipt->additionalDetails->addDetails($customFields);
         }
@@ -139,11 +155,14 @@ class GenerateConfirmationPageReceipt
             $receipt->subscriptionDetails->addDetails([
                 new ReceiptDetail(
                     __('Subscription', 'give'),
-                    sprintf(
-                        '%s / %s',
-                        $subscription->amount->formatToDecimal(),
-                        $subscription->period->getValue()
-                    )
+                    [
+                        'amount' =>
+                            sprintf(
+                                '%s / %s',
+                                $subscription->amount->formatToDecimal(),
+                                $subscription->period->getValue()
+                            )
+                    ]
                 ),
                 new ReceiptDetail(
                     __('Subscription Status', 'give'),
@@ -170,7 +189,65 @@ class GenerateConfirmationPageReceipt
      */
     private function fillSettings(DonationReceipt $receipt)
     {
+        $donationForm = $this->getDonationForm($receipt->donation->formId);
+
+        $receipt->settings->addSetting(
+            'heading',
+            $this->getHeading($receipt, $donationForm)
+        );
+
+        $receipt->settings->addSetting(
+            'description',
+            $this->getDescription($receipt, $donationForm)
+        );
+
         $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
         $receipt->settings->addSetting('donorDashboardUrl', get_permalink(give_get_option('donor_dashboard_page')));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $formId
+     * @return DonationForm|null
+     */
+    protected function getDonationForm(int $formId)
+    {
+        if (give(DonationFormRepository::class)->isLegacyForm($formId)) {
+            return null;
+        }
+
+        return DonationForm::find($formId);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    {
+        if (!$donationForm) {
+            $content = __("Hey {donation.firstName}, thanks for your donation!", 'give');
+        } else {
+            $content = $donationForm->settings->receiptHeading;
+        }
+
+        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    {
+        if (!$donationForm) {
+            $content = __(
+                "{donation.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donation.email}.",
+                'give'
+            );
+        } else {
+            $content = $donationForm->settings->receiptDescription;
+        }
+
+        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
     }
 }
