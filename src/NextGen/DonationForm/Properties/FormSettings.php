@@ -110,7 +110,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->registration = $array['registration'] ?? 'none';
         $self->customCss = $array['customCss'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? '';
-        $self->pageSlug = $array['pageSlug'] ?? 'new-form';
+        $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
             'Thank you to all our donors, we have met our fundraising goal.',
             'give'
