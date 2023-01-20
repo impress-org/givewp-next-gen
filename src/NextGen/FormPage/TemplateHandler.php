@@ -2,10 +2,12 @@
 
 namespace Give\NextGen\FormPage;
 
+use WP_Post as Post;
+
 class TemplateHandler
 {
     /**
-     * @var \WP_Post
+     * @var Post
      */
     private $post;
 
@@ -14,7 +16,7 @@ class TemplateHandler
      */
     private $formPageTemplatePath;
 
-    public function __construct( \WP_Post $post, string $formPageTemplatePath )
+    public function __construct( Post $post, string $formPageTemplatePath )
     {
         $this->post = $post;
         $this->formPageTemplatePath = $formPageTemplatePath;
