@@ -7,7 +7,7 @@ import {
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
-import PageSlugControl from "./page-slug";
+import {PageSlugControl, isFormPageEnabled} from "./page-slug";
 
 const FormSummarySettings = () => {
     const {
@@ -24,9 +24,11 @@ const FormSummarySettings = () => {
                     onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
                 />
             </PanelRow>
-            <PanelRow>
-                <PageSlugControl />
-            </PanelRow>
+            { !! isFormPageEnabled && (
+                <PanelRow>
+                    <PageSlugControl />
+                </PanelRow>
+            )}
         </PanelBody>
     );
 };
