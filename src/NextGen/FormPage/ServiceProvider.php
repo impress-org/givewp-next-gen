@@ -16,13 +16,19 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface
 {
-
     /*
      * @inheritdoc
      */
     public function register()
     {
-        //
+        give()->singleton(TemplateHandler::class, function () {
+            global $post;
+
+            return new TemplateHandler(
+                $post,
+                plugin_dir_path(__FILE__) . 'templates/next-gen-form-single.php'
+            );
+        });
     }
 
     /*
@@ -30,14 +36,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        add_filter( 'template_include', function($template) {
-            global $post;
-
-            if('give_forms' === $post->post_type && $post->post_content) {
-                return plugin_dir_path(__FILE__) . 'NextGenFormPageTemplate.php';
-            }
-
-            return $template;
-        }, 11);
+        Hooks::addFilter('template_include', TemplateHandler::class, 'handle', 11);
     }
 }
