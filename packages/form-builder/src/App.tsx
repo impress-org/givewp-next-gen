@@ -16,7 +16,6 @@ const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load(
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
     settings: {
-        pageSlug: 'new-form',
         ...initialFormSettings,
     },
 };
