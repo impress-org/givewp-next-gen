@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {useState} from 'react';
 import {BlockEditorProvider, BlockInspector} from '@wordpress/block-editor';
 import {Popover, SlotFillProvider} from '@wordpress/components';
