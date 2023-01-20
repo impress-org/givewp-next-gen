@@ -46,12 +46,5 @@ class ServiceProvider implements ServiceProviderInterface
                 'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
             ]);
         });
-        
-        /** Dynamically renders Next Gen Forms using the Next Gen Form block. */
-        add_action('give_before_single_form', function() {
-            if( get_post(get_the_ID())->post_content ) {
-                echo render_block(parse_blocks('<!-- wp:givewp/next-gen-donation-form-block {"formId":"' . get_the_ID() . '"} /-->')[0]);
-            }
-        });
     }
 }
