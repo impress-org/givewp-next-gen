@@ -177,21 +177,21 @@ svg {
 /**
  * Add block button
  */
-.block-editor-block-list__block {
-    position: relative;
-
-    .block-list-appender {
-        // position the button 1 below itself and then half inside the padding. (24px is the size of the button and 36px is the padding bottom)
-        //bottom: calc(-24px + calc((36px - 24px) / -2));
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-}
+//.block-editor-block-list__block {
+//    position: relative;
+//
+//    .block-list-appender {
+//        // position the button 1 below itself and then half inside the padding. (24px is the size of the button and 36px is the padding bottom)
+//        //bottom: calc(-24px + calc((36px - 24px) / -2));
+//        width: 100%;
+//        display: flex;
+//        justify-content: center;
+//        position: absolute;
+//        left: 0;
+//        right: 0;
+//        bottom: 0;
+//    }
+//}
 
 .block-editor-list-view-leaf.is-selected,
 .block-editor-list-view-leaf.is-selected td {
@@ -249,9 +249,9 @@ svg {
  * Adjust inserter alignment
  */
 
-.components-popover__content {
-    margin-top: -25px;
-}
+//.components-popover__content {
+//    margin-top: -25px;
+//}
 
 /** ------------------------------- */
 
@@ -409,4 +409,9 @@ This creates a consistent separator between the tabs and the rest of the sidebar
             height: 100%;
         }
     }
+}
+
+// select control label was not matching other label styles
+.components-input-control__label {
+    font-size: 16px !important;
 }
