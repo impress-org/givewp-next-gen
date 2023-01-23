@@ -146,9 +146,10 @@ svg {
 
     .components-base-control__label,
     .components-input-control__label {
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 1rem !important;
+        font-weight: 500 !important;
         color: var(--givewp-gray-100);
+        text-transform: none !important;
     }
 
     .give-is-required .components-base-control__label::after {
@@ -378,12 +379,6 @@ This creates a consistent separator between the tabs and the rest of the sidebar
         }
     }
 }
-
-// select control label was not matching other label styles
-.components-input-control__label {
-    font-size: 16px !important;
-}
-
 
 .components-editor-notices__snackbar {
     position: fixed;
