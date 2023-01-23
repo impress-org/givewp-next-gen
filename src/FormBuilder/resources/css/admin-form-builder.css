@@ -1,0 +1,3 @@
+.wp-toolbar:not(.interface-interface-skeleton__html-container){
+    display: none;
+}

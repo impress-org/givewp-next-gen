@@ -91,8 +91,6 @@ svg {
 
 .interface-interface-skeleton__body {
     width: 100%;
-    height: 100vh;
-    //margin: 0 250px;
     background-color: var(--givewp-gray-10);
 }
 
@@ -174,25 +172,6 @@ svg {
     line-height: 1.5;
 }
 
-/**
- * Add block button
- */
-//.block-editor-block-list__block {
-//    position: relative;
-//
-//    .block-list-appender {
-//        // position the button 1 below itself and then half inside the padding. (24px is the size of the button and 36px is the padding bottom)
-//        //bottom: calc(-24px + calc((36px - 24px) / -2));
-//        width: 100%;
-//        display: flex;
-//        justify-content: center;
-//        position: absolute;
-//        left: 0;
-//        right: 0;
-//        bottom: 0;
-//    }
-//}
-
 .block-editor-list-view-leaf.is-selected,
 .block-editor-list-view-leaf.is-selected td {
     background: #66bb6a;
@@ -242,18 +221,6 @@ svg {
 .components-popover__content {
     outline: 0 !important;
 }
-
-/** ------------------------------- */
-
-/**
- * Adjust inserter alignment
- */
-
-//.components-popover__content {
-//    margin-top: -25px;
-//}
-
-/** ------------------------------- */
 
 /**
  * Set spacing between field sub-components, ie label and input
