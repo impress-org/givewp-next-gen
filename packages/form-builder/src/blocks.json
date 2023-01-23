@@ -52,7 +52,7 @@
                     "lock": {
                         "remove": true
                     },
-                    "showHonorific": true,
+                    "showHonorific": false,
                     "honorifics": [
                         "Mr",
                         "Ms",
