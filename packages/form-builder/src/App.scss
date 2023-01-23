@@ -69,9 +69,13 @@ svg {
     max-height: 100%; // Had a wierd issue with excessively large icon SVGs.
 }
 
+// remove default browser outline when selecting elements
+:focus-visible {
+    outline: 0;
+}
+
 
 .interface-interface-skeleton__editor {
-    //height: 60px;
     background-color: white;
 }
 
@@ -154,11 +158,6 @@ svg {
     }
 }
 
-.is-root-container > .block-list-appender,
-.components-popover.block-editor-block-list__insertion-point-popover {
-    //display: none; /* CSS Hack to hide root level inserter @todo Move to a JS or config solution. */
-}
-
 [data-type="custom-block-editor/section"],
 [data-type="custom-block-editor/donor-info"],
 [data-type="custom-block-editor/donation-amount"],
@@ -175,12 +174,23 @@ svg {
     line-height: 1.5;
 }
 
-.block-editor-block-list__block .block-list-appender {
-    // position the button 1 below itself and then half inside the padding. (24px is the size of the button and 36px is the padding bottom)
-    bottom: calc(-24px + calc((36px - 24px) / -2));
-    width: 100%;
-    display: flex;
-    justify-content: center;
+/**
+ * Add block button
+ */
+.block-editor-block-list__block {
+    position: relative;
+
+    .block-list-appender {
+        // position the button 1 below itself and then half inside the padding. (24px is the size of the button and 36px is the padding bottom)
+        //bottom: calc(-24px + calc((36px - 24px) / -2));
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
 }
 
 .block-editor-list-view-leaf.is-selected,
@@ -200,7 +210,6 @@ svg {
  * Fixes an issue with inspector select controls covering selected option.
  */
 .components-select-control__input {
-    //padding: 8px;
     font-weight: normal;
 }
 
