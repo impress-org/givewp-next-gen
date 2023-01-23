@@ -387,3 +387,27 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     padding-left: 16px;
     padding-right: 16px;
 }
+
+.block-editor-block-list__block {
+    position: relative;
+
+    &:not(.is-selected) {
+        .block-list-appender {
+            display: none;
+        }
+    }
+
+    .block-list-appender {
+        position: absolute;
+        bottom: 5px;
+        width: 100%;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .components-base-control__field {
+        margin-bottom: 0;
+    }
+}
