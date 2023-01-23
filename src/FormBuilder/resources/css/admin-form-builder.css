@@ -1,3 +1,5 @@
-.wp-toolbar:not(.interface-interface-skeleton__html-container){
+.wp-toolbar:not(.interface-interface-skeleton__html-container),
+#adminmenumain,
+#wpadminbar {
     display: none;
 }
