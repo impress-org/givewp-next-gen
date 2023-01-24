@@ -85,6 +85,21 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $receiptDescription;
 
+//    /**
+//     * @var string
+//     */
+//    public $priceOption;
+//
+//    /**
+//     * @var string
+//     */
+//    public $setPrice;
+//
+//    /**
+//     * @var boolean
+//     */
+//    public $customAmount;
+
     /**
      * @unreleased
      */
@@ -109,7 +124,6 @@ class FormSettings implements Arrayable, Jsonable
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registration = $array['registration'] ?? 'none';
         $self->customCss = $array['customCss'] ?? '';
-        $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? '';
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
             'Thank you to all our donors, we have met our fundraising goal.',
@@ -123,6 +137,9 @@ class FormSettings implements Arrayable, Jsonable
             '{donor.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor.email}.',
             'give'
         );
+//        $self->priceOption = $array['priceOption'] ?? 'multi';
+//        $self->setPrice = $array['setPrice'] ?? '';
+//        $self->customAmount = $array['customAmount'] ?? true;
 
         return $self;
     }

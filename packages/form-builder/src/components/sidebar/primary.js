@@ -35,7 +35,7 @@ const tabs = [
                     description="These settings affect how your form functions and is presented, as well as the form page."
                 />
                 <FormSummarySettings />
-                <DonationOptionsSettings />
+                {/*<DonationOptionsSettings />*/}
                 <DonationGoalSettings />
                 <OfflineDonationsSettings />
                 <FormFields />

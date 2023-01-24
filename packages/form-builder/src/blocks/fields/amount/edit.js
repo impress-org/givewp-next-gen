@@ -7,11 +7,12 @@ import {Currency, CurrencyControl} from '../../../common/currency';
 import {useFormState} from "@givewp/form-builder/stores/form-state";
 
 const Edit = ({attributes, setAttributes}) => {
-    const {levels} = attributes;
-
     const {
-        settings: {priceOption, setPrice, customAmount},
-    } = useFormState();
+        levels = ["10","25","50","100","250","500"],
+        priceOption = "multi",
+        setPrice = "100",
+        customAmount = true,
+    } = attributes;
 
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';

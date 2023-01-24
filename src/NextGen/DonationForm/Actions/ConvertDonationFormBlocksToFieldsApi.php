@@ -78,7 +78,7 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->label(__('Donation Amount', 'give'))
                     ->levels(...array_map('absint', $block->attributes['levels']))
                     ->rules('required', 'numeric', 'min:1')
-                    ->allowCustomAmount()
+                    ->allowCustomAmount($block->attributes['customAmount'])
                     ->defaultValue(50);
 
             case "custom-block-editor/donor-name":

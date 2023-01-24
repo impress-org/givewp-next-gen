@@ -25,6 +25,7 @@ export default function Amount({
 
     return (
         <>
+            <AmountButtons name={name} currency={currency} levels={levels} />
             <div className="givewp-fields-amount__amount--container">
                 <label
                     className="givewp-fields-amount__input--label"
@@ -34,23 +35,22 @@ export default function Amount({
                 >
                     <Label />
                 </label>
-                <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
+                { !!allowCustomAmount && (<div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
                     <span className="givewp-fields-amount__input--currency-symbol">
                         {formatter.formatToParts().find(({type}) => type === 'currency').value}
                     </span>
                     <input
                         className="givewp-fields-amount__input"
-                        type={allowCustomAmount ? 'text' : 'hidden'}
+                        type="text"
                         aria-invalid={fieldError ? 'true' : 'false'}
                         id={name}
                         inputMode="numeric"
                         {...inputProps}
                     />
-                </div>
+                </div>)}
 
                 <ErrorMessage />
             </div>
-            <AmountButtons name={name} currency={currency} levels={levels} />
         </>
     );
 }
@@ -86,20 +86,6 @@ function AmountButtons({name, currency, levels}: {name: string; currency: string
                     </button>
                 );
             })}
-
-            <button
-                className={classNames('givewp-fields-amount__level', 'givewp-fields-amount__level--custom', {
-                    'givewp-fields-amount__level--selected': !levels.includes(Number(amount)),
-                })}
-                type="button"
-                onClick={() => {
-                    setValue(name, null);
-                    setFocus('amount', {shouldSelect: true});
-                }}
-                key="custom"
-            >
-                {__('Custom Amount', 'give')}
-            </button>
         </div>
     );
 }
