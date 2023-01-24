@@ -13,7 +13,7 @@ const Currency = ({amount}) => {
 
 const CurrencyControl = (props) => {
     return (
-        <BaseControl id={'test'} label={ props.label }>
+        <BaseControl label={ props.label }>
             <CurrencyInput
                 {...props}
                 className={"components-text-control__input"}
