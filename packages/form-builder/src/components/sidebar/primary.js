@@ -1,4 +1,4 @@
-import {createSlotFill} from '@wordpress/components';
+import {createSlotFill, PanelBody} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 
 import './styles.scss';
@@ -8,14 +8,17 @@ import TabPanel from './tab-panel';
 import {
     DonationGoalSettings,
     FormDesignSettings,
-    FormTitleSettings,
+    FormSummarySettings,
     OfflineDonationsSettings,
     CustomStyleSettings,
+    ReceiptSettings,
 } from '../../settings/index.ts';
 import FormFields from '../../settings/form-fields';
 import {PopoutSlot} from './popout';
 import {useEffect} from 'react';
 import useSelectedBlocks from '../../hooks/useSelectedBlocks';
+import BlockCard from "@wordpress/block-editor/build/components/block-card";
+import { settings } from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
@@ -26,7 +29,12 @@ const tabs = [
         className: 'tab-form',
         content: () => (
             <>
-                <FormTitleSettings />
+                <BlockCard
+                    icon={ settings }
+                    title="Form Settings"
+                    description="These settings affect how your form functions and is presented, as well as the form page."
+                />
+                <FormSummarySettings />
                 <DonationGoalSettings />
                 <OfflineDonationsSettings />
                 <FormFields />
@@ -51,6 +59,7 @@ const tabs = [
             <>
                 <FormDesignSettings />
                 <DonationGoalSettings />
+                <ReceiptSettings />
                 <CustomStyleSettings />
             </>
         )
@@ -82,7 +91,7 @@ function Sidebar({selectedTab, setSelectedTab}) {
                 tabs={tabs}
                 state={[selectedTab, setSelectedTab]}
             >
-                {(tab) => <tab.content />}
+                {(tab) => <div><div className="block-editor-block-inspector"><tab.content /></div></div>}
             </TabPanel>
         </div>
     );
