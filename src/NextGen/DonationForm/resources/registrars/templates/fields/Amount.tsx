@@ -35,7 +35,7 @@ export default function Amount({
                 >
                     <Label />
                 </label>
-                { !!allowCustomAmount && (<div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
+                <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
                     <span className="givewp-fields-amount__input--currency-symbol">
                         {formatter.formatToParts().find(({type}) => type === 'currency').value}
                     </span>
@@ -47,7 +47,7 @@ export default function Amount({
                         inputMode="numeric"
                         {...inputProps}
                     />
-                </div>)}
+                </div>
 
                 <ErrorMessage />
             </div>
