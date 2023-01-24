@@ -4,9 +4,8 @@ namespace Give\NextGen\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
-use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
 
