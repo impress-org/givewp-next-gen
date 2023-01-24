@@ -5,7 +5,6 @@ import OfflineDonationsSettings from './offline-donation';
 import FormDesignSettings from './design';
 import CustomStyleSettings from './styles';
 import ReceiptSettings from './receipt';
-import DonationOptionsSettings from './donation-options';
 
 export {
     DonationGoalSettings,
@@ -15,5 +14,4 @@ export {
     FormDesignSettings,
     CustomStyleSettings,
     ReceiptSettings,
-    DonationOptionsSettings,
 };

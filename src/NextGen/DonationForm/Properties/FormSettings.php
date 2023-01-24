@@ -85,21 +85,6 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $receiptDescription;
 
-//    /**
-//     * @var string
-//     */
-//    public $priceOption;
-//
-//    /**
-//     * @var string
-//     */
-//    public $setPrice;
-//
-//    /**
-//     * @var boolean
-//     */
-//    public $customAmount;
-
     /**
      * @unreleased
      */
@@ -137,9 +122,6 @@ class FormSettings implements Arrayable, Jsonable
             '{donor.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor.email}.',
             'give'
         );
-//        $self->priceOption = $array['priceOption'] ?? 'multi';
-//        $self->setPrice = $array['setPrice'] ?? '';
-//        $self->customAmount = $array['customAmount'] ?? true;
 
         return $self;
     }

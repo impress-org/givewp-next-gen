@@ -19,7 +19,4 @@ export type FormSettings = {
     pageSlug: string;
     receiptHeading: string;
     receiptDescription: string;
-    // priceOption: string;
-    // setPrice: number;
-    // customAmount: boolean;
 };
