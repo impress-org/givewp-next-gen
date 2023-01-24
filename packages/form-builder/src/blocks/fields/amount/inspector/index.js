@@ -4,14 +4,22 @@ import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
 import AddButton from "./add-button";
 import {CurrencyControl} from "../../../../common/currency";
+import {useFormState} from "@givewp/form-builder/stores/form-state";
+import {DonationOptionsSettings} from "@givewp/form-builder/settings";
 
 const Inspector = ({attributes, setAttributes}) => {
 
     const {levels} = attributes;
 
+    const {
+        settings: {priceOption},
+    } = useFormState();
+
     return (
         <InspectorControls>
-            <PanelBody title={__('Donation Levels', 'give')} initialOpen={true}>
+            <DonationOptionsSettings initialOpen={true} />
+            {priceOption === 'multi' && (
+                <PanelBody title={__('Donation Levels', 'give')} initialOpen={true}>
                 {levels.length > 0 && (
                     <ul style={{
                         listStyleType: 'none',
@@ -54,6 +62,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     setAttributes({levels: newLevels});
                 }} />
             </PanelBody>
+            )}
         </InspectorControls>
     );
 };

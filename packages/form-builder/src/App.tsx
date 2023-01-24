@@ -16,6 +16,8 @@ const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load(
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
     settings: {
+        priceOption: 'multi',
+        setPrice: '100',
         ...initialFormSettings,
     },
 };
