@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Log\Log;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\PaymentGateways\Stripe\ApplicationFee;
@@ -41,22 +42,33 @@ trait NextGenStripeRepository {
         string $connectAccountId,
         Donation $donation
     ): Customer {
+        /**
+         * TODO: update getting customer ID logic
+         */
         $donorCustomerId = give_stripe_get_customer_id($donation->email) ?? '';
 
         // make sure customerId still exists in  connect account
         if ($donorCustomerId) {
-            $customer = Customer::retrieve($donorCustomerId, ['stripe_account' => $connectAccountId]);
+            try {
+                $customer = Customer::retrieve($donorCustomerId, ['stripe_account' => $connectAccountId]);
+            } catch (ApiErrorException $e) {
+                Log::error('Stripe customer retrieve failed', ['error' => $e->getMessage()]);
+            }
         }
 
         // create a new customer if necessary
         if (!$donorCustomerId || !$customer) {
-            $customer = Customer::create(
-                [
-                    'name' => "$donation->firstName $donation->lastName",
-                    'email' => $donation->email,
-                ],
-                ['stripe_account' => $connectAccountId]
-            );
+            try {
+                $customer = Customer::create(
+                    [
+                        'name' => "$donation->firstName $donation->lastName",
+                        'email' => $donation->email,
+                    ],
+                    ['stripe_account' => $connectAccountId]
+                );
+            } catch (ApiErrorException $e) {
+                Log::error('Stripe customer create failed', ['error' => $e->getMessage()]);
+            }
         }
 
          DonationNote::create([
