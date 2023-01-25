@@ -1,13 +1,8 @@
-const state = {};
-
-const gateway = {
+const nextGenTestGatewayOffsite = {
     id: 'test-gateway-next-gen-offsite',
-    initialize() {
-        state.message = this.settings.message;
-    },
     Fields() {
-        return state.message;
+        return nextGenTestGatewayOffsite.settings.message;
     },
-};
+}
 
-window.givewp.gateways.register(gateway);
+window.givewp.gateways.register(nextGenTestGatewayOffsite);

@@ -46,7 +46,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getName(): string
     {
-        return __('Test Gateway Next Gen Offsite', 'give');
+        return __('Test Gateway Offsite (Next Gen)', 'give');
     }
 
     /**
@@ -54,7 +54,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway Next Gen Offsite', 'give');
+        return __('Test Gateway Offsite (Next Gen)', 'give');
     }
 
     /**
@@ -110,7 +110,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        return 'Legacy Stripe Fields Not Supported.';
+        return false;
     }
 
     /**
