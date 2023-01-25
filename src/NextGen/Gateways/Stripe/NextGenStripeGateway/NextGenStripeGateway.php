@@ -108,15 +108,12 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         /**
          * Get or create a Stripe customer
          */
-        $customer = $this->getOrCreateStripeCustomerFromDonation(
-            $stripeConnectedAccountKey,
-            $donation
-        );
+        $customerId = $this->legacyGetOrCreateStripeCustomer($donation);
 
         /**
          * Setup Stripe Payment Intent args
          */
-        $intentArgs = $this->getPaymentIntentArgsFromDonation($donation, $customer);
+        $intentArgs = $this->getPaymentIntentArgsFromDonation($donation, $customerId);
 
         /**
          * Update Payment Intent

@@ -6,9 +6,10 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Log\Log;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
+use Give\PaymentGateways\Gateways\Stripe\Actions\GetOrCreateStripeCustomer;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
+use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
@@ -35,40 +36,29 @@ trait NextGenStripeRepository {
      * Get or create Stripe Customer from Donation
      *
      * @unreleased
-     * @throws ApiErrorException
      * @throws Exception
+     * @throws ApiErrorException
      */
     public function getOrCreateStripeCustomerFromDonation(
         string $connectAccountId,
         Donation $donation
     ): Customer {
-        /**
-         * TODO: update getting customer ID logic
-         */
         $donorCustomerId = give_stripe_get_customer_id($donation->email) ?? '';
 
         // make sure customerId still exists in  connect account
         if ($donorCustomerId) {
-            try {
-                $customer = Customer::retrieve($donorCustomerId, ['stripe_account' => $connectAccountId]);
-            } catch (ApiErrorException $e) {
-                Log::error('Stripe customer retrieve failed', ['error' => $e->getMessage()]);
-            }
+            $customer = Customer::retrieve($donorCustomerId, ['stripe_account' => $connectAccountId]);
         }
 
         // create a new customer if necessary
         if (!$donorCustomerId || !$customer) {
-            try {
-                $customer = Customer::create(
-                    [
-                        'name' => "$donation->firstName $donation->lastName",
-                        'email' => $donation->email,
-                    ],
-                    ['stripe_account' => $connectAccountId]
-                );
-            } catch (ApiErrorException $e) {
-                Log::error('Stripe customer create failed', ['error' => $e->getMessage()]);
-            }
+            $customer = Customer::create(
+                [
+                    'name' => "$donation->firstName $donation->lastName",
+                    'email' => $donation->email,
+                ],
+                ['stripe_account' => $connectAccountId]
+            );
         }
 
          DonationNote::create([
@@ -102,12 +92,12 @@ trait NextGenStripeRepository {
      *
      * @throws InvalidPropertyName
      */
-    protected function getPaymentIntentArgsFromDonation(Donation $donation, Customer $customer): array
+    protected function getPaymentIntentArgsFromDonation(Donation $donation, string $customerId): array
     {
         // Collect intent args to be updated
         $intentArgs = [
             'amount' => $donation->amount->formatToMinorAmount(),
-            'customer' => $customer->id,
+            'customer' => $customerId,
             'description' => (new SaveDonationSummary)($donation)->getSummaryWithDonor(),
             'metadata' => give_stripe_prepare_metadata($donation->id),
         ];
@@ -180,5 +170,16 @@ trait NextGenStripeRepository {
     protected function setUpStripeAppInfo(int $formId)
     {
         give_stripe_set_app_info($formId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     * @throws StripeCustomerException
+     */
+    protected function legacyGetOrCreateStripeCustomer(Donation $donation): string
+    {
+        return (new GetOrCreateStripeCustomer())($donation)->get_id();
     }
 }
