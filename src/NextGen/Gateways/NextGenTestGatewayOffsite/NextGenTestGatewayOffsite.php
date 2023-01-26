@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -95,14 +96,14 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      * 
      * @throws Exception
      */
-    protected function securelyReturnFromOffsiteRedirect(array $queryParams)
+    protected function securelyReturnFromOffsiteRedirect(array $queryParams): RedirectResponse
     {
         /** @var Donation $donation */
         $donation = Donation::find($queryParams['givewp-donation-id']);
         $donation->status = DonationStatus::COMPLETE();
         $donation->save();
 
-        wp_redirect($queryParams['givewp-return-url']);
+        return new RedirectResponse($queryParams['givewp-return-url']);
     }
 
     /**
