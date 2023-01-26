@@ -185,6 +185,8 @@ trait NextGenStripeRepository {
     }
 
     /**
+     * @unreleased
+     *
      * @throws ApiErrorException
      */
     protected function createCustomer(Donation $donation, string $connectAccountId): Customer
@@ -199,7 +201,9 @@ trait NextGenStripeRepository {
     }
 
     /**
-     * @throws ApiErrorException
+     * @unreleased
+     *
+     * @throws ApiErrorException|InvalidRequestException
      */
     protected function retrieveCustomer(string $customerId, string $connectAccountId): Customer
     {
