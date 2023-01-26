@@ -19,8 +19,8 @@ const formTemplates = window.givewp.form.templates;
 const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
 
-async function handleRedirect(response: any | Response) {
-    const redirectUrl = new URL(response.url);
+async function handleRedirect(url: string) {
+    const redirectUrl = new URL(url);
     const redirectUrlParams = new URLSearchParams(redirectUrl.search);
     const shouldRedirectInline = isRouteInlineRedirect(redirectUrlParams, inlineRedirectRoutes);
 
@@ -57,7 +57,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             return window.frameElement.id;
         };
 
-        const {response, isRedirect} = await postData(donateUrl, {
+        const {response, isRedirectResponse} = await postData(donateUrl, {
             ...values,
             originUrl,
             isEmbed,
@@ -65,8 +65,12 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
 
-        if (isRedirect) {
-            await handleRedirect(response);
+        if (isRedirectResponse) {
+            await handleRedirect(response.url);
+        }
+
+        if (response.data?.redirectUrl) {
+            await handleRedirect(response.data?.redirectUrl);
         }
 
         if (response.data?.errors) {

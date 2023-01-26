@@ -11,8 +11,7 @@ export default async function postData(url: string, data: object = {}) {
         cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
-            // @ts-ignore
-            'Content-Type': ['application/json', 'application/x-www-form-urlencoded'],
+            'Content-Type': 'application/json'
         },
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer-when-downgrade', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
@@ -20,7 +19,7 @@ export default async function postData(url: string, data: object = {}) {
     });
 
     return {
-        isRedirect: response.redirected,
-        response: !response.redirected ? await response.json() : response,
+        isRedirectResponse: response.redirected,
+        response: !response.redirected ? await response.json() : response
     };
 }
