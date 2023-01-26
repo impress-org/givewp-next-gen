@@ -138,7 +138,7 @@ class DonateController
             "givewp_create_payment_gateway_data_{$donation->gatewayId}",
             static function ($data) use ($formData, $donation) {
                 return array_merge($data, [
-                    'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
+                    'redirectReturnUrl' => rawurlencode($formData->getRedirectReturnUrl($donation)),
                 ]);
             }
         );
@@ -147,7 +147,7 @@ class DonateController
             "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
             static function ($data) use ($formData, $donation) {
                 return array_merge($data, [
-                    'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
+                    'redirectReturnUrl' => rawurlencode($formData->getRedirectReturnUrl($donation)),
                 ]);
             }
         );
