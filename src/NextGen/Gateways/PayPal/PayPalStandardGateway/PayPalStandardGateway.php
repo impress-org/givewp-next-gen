@@ -27,7 +27,7 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
 
         return new EnqueueScript(
             self::id(),
-            $localPath,
+            $buildPath,
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
@@ -40,7 +40,14 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
     public function formSettings(int $formId): array
     {
         return [
-            'fields' => __('PayPal Standard Gateway', 'give'),
+            'fields' => [
+                'heading' => __('Make your donation quickly and securely with PayPal', 'give'),
+                'subheading' => __('How it works', 'give'),
+                'body' => __(
+                    'You will be redirected to PayPal to complete your donation with your debit card, credit card, or with your PayPal account. Once complete, you will be redirected back to this site to view your receipt.',
+                    'give'
+                ),
+            ]
         ];
     }
 
