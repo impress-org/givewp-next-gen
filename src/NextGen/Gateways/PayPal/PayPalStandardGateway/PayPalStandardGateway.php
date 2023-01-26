@@ -2,7 +2,10 @@
 
 namespace Give\NextGen\Gateways\PayPal\PayPalStandardGateway;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
+use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 
@@ -22,12 +25,9 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
      */
     public function enqueueScript(): EnqueueScript
     {
-        $buildPath = 'build/payPalStandardGateway.js';
-        $localPath = 'src/NextGen/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.js';
-
         return new EnqueueScript(
             self::id(),
-            $buildPath,
+            'build/payPalStandardGateway.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
@@ -51,11 +51,48 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
         ];
     }
 
-       /**
+    /**
      * @inheritDoc
      */
     public function getName(): string
     {
         return __('PayPal Standard (Next Gen)', 'give');
+    }
+
+    /**
+     * @inheritDoc
+     * @param  array{redirectReturnUrl: string}  $gatewayData
+     */
+    public function createPayment(Donation $donation, $gatewayData = []): RedirectOffsite
+    {
+        $args = [
+            'givewp-return-url' => $gatewayData['redirectReturnUrl'],
+            'donation-id' => $donation->id,
+        ];
+
+        add_filter('give_gateway_paypal_redirect_args', function ($paypalPaymentArguments) use ($donation, $args) {
+            $paypalPaymentArguments['return'] = $this->generateSecureGatewayRouteUrl(
+                'handleSuccessPaymentReturn',
+                $donation->id,
+                $args
+            );
+
+            return $paypalPaymentArguments;
+        });
+
+
+        return parent::createPayment($donation, $gatewayData);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function handleSuccessPaymentReturn(array $queryParams): RedirectResponse
+    {
+        if (!empty($queryParams['givewp-return-url'])) {
+            return new RedirectResponse($queryParams['givewp-return-url']);
+        }
+
+        return parent::handleSuccessPaymentReturn($queryParams);
     }
 }
