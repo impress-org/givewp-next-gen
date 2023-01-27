@@ -19,7 +19,6 @@ export default async function postData(url: string, data: object = {}) {
     });
 
     return {
-        isRedirectResponse: response.redirected,
-        response: !response.redirected ? await response.json() : response
-    };
+        response
+    }
 }
