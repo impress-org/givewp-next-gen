@@ -44,7 +44,7 @@ trait NextGenStripeRepository {
         Donation $donation
     ): Customer
     {
-        $donorCustomerId = give_stripe_get_customer_id($donation->email) ?? '';
+        $donorCustomerId = give_stripe_get_customer_id($donation->email);
 
         // create a new customer if the donor does not have a stripe id
         if (!$donorCustomerId) {
