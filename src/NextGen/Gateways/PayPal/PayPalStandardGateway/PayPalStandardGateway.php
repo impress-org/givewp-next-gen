@@ -11,6 +11,8 @@ use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\NextGen\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 
+use function add_query_arg;
+
 class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGatewayInterface
 {
     use HandleHttpResponses;
@@ -64,35 +66,32 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
 
     /**
      * @inheritDoc
-     * @param  array{redirectReturnUrl: string}  $gatewayData
+     * @param  array{successUrl: string, cancelUrl: string}  $gatewayData
      */
     public function createPayment(Donation $donation, $gatewayData = []): RedirectOffsite
     {
+        /**
+         * Add additional query args to PayPal redirect URLs
+         * this does not affect the core PayPal Standard gateway functionality
+         * later in these handle methods, there are conditionals to check for these query args
+         * and proceed accordingly if they exist or not
+         */
         add_filter(
             'give_gateway_paypal_redirect_args',
-            function ($paypalPaymentArguments) use ($donation, $gatewayData) {
-                $paypalPaymentArguments['return'] = $this->generateSecureGatewayRouteUrl(
-                    'handleSuccessPaymentReturn',
-                    $donation->id,
-                    [
-                        'givewp-return-url' => $gatewayData['successUrl'],
-                        'donation-id' => $donation->id,
-                    ]
+            static function ($paypalPaymentArguments) use ($gatewayData) {
+                $paypalPaymentArguments['return'] = add_query_arg(
+                    ['givewp-return-url' => $gatewayData['successUrl']],
+                    $paypalPaymentArguments['return']
                 );
 
-                $paypalPaymentArguments['cancel_return'] = $this->generateSecureGatewayRouteUrl(
-                    'handleFailedPaymentReturn',
-                    $donation->id,
-                    [
-                        'givewp-return-url' => $gatewayData['cancelUrl'],
-                        'donation-id' => $donation->id,
-                    ]
+                $paypalPaymentArguments['cancel_return'] = add_query_arg(
+                    ['givewp-return-url' => $gatewayData['cancelUrl']],
+                    $paypalPaymentArguments['cancel_return']
                 );
 
                 return $paypalPaymentArguments;
             }
         );
-
 
         return parent::createPayment($donation, $gatewayData);
     }
