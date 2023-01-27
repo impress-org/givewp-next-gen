@@ -1,19 +1,19 @@
-import {PanelBody, SelectControl, ToggleControl} from "@wordpress/components";
+import {PanelBody, SelectControl, ToggleControl, __experimentalNumberControl as NumberControl,} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
 import AddButton from "./add-button";
 import {CurrencyControl} from "../../../../common/currency";
-import {setFormSettings, useFormState} from "@givewp/form-builder/stores/form-state";
-import {DonationOptionsSettings} from "@givewp/form-builder/settings";
 
 const Inspector = ({attributes, setAttributes}) => {
 
     const {
-        levels = ["10","25","50","100","250","500"],
-        priceOption = "multi",
-        setPrice = "100",
-        customAmount = true,
+        levels,
+        priceOption,
+        setPrice,
+        customAmount,
+        customAmountMin,
+        customAmountMax,
     } = attributes;
 
     return (
@@ -35,14 +35,22 @@ const Inspector = ({attributes, setAttributes}) => {
                         onValueChange={(setPrice) => setAttributes({setPrice})}
                     />
                 )}
+            </PanelBody>
+            <PanelBody title={__('Custom Amount', 'give')} initialOpen={false}>
                 <ToggleControl
                     label={__('Custom Amount', 'give')}
                     checked={customAmount}
                     onChange={() => setAttributes({customAmount: !customAmount})}
                 />
+                { !!customAmount && (
+                    <>
+                        <CurrencyControl label={__('Minimum', 'give')} value={customAmountMin} onValueChange={(value) => setAttributes({customAmountMin: value})} />
+                        <CurrencyControl label={__('Maximum', 'give')} value={customAmountMax} onValueChange={(value) => setAttributes({customAmountMax: value})} />
+                    </>
+                )}
             </PanelBody>
             {priceOption === 'multi' && (
-                <PanelBody title={__('Donation Levels', 'give')} initialOpen={true}>
+                <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
                 {levels.length > 0 && (
                     <ul style={{
                         listStyleType: 'none',

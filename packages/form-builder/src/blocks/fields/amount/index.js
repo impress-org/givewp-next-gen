@@ -33,6 +33,14 @@ const amount = {
             customAmount: {
                 type: 'boolean',
                 default: true,
+            },
+            customAmountMin: {
+                type: 'string',
+                default: '1',
+            },
+            customAmountMax: {
+                type: 'number',
+                default: '1000',
             }
         },
         icon: () => <Icon icon={

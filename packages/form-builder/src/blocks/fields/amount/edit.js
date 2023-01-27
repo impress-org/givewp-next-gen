@@ -4,14 +4,15 @@ import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
 import Inspector from './inspector';
 import {Currency, CurrencyControl} from '../../../common/currency';
-import {useFormState} from "@givewp/form-builder/stores/form-state";
 
 const Edit = ({attributes, setAttributes}) => {
     const {
-        levels = ["10","25","50","100","250","500"],
-        priceOption = "multi",
-        setPrice = "100",
-        customAmount = true,
+        levels,
+        priceOption,
+        setPrice,
+        customAmount,
+        customAmountMin,
+        customAmountMax,
     } = attributes;
 
     const isMultiLevel = priceOption === 'multi';
