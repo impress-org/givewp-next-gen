@@ -84,7 +84,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
             $donation->id,
             [
                 'givewp-donation-id' => $donation->id,
-                'givewp-return-url' => $gatewayData['redirectReturnUrl']
+                'givewp-return-url' => $gatewayData['successUrl']
             ]
         );
 

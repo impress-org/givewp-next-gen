@@ -95,11 +95,33 @@ class DonateControllerData
     /**
      * @unreleased
      */
-    public function getRedirectReturnUrl(Donation $donation)
+    public function getSuccessUrl(Donation $donation): string
     {
         return $this->isEmbed ?
             $this->getDonationConfirmationReceiptUrl($donation) :
             $this->getDonationConfirmationReceiptViewRouteUrl($donation);
+    }
+
+    /**
+     * TODO: update failed url
+     *
+     * @unreleased
+     */
+    public function getFailedUrl(Donation $donation): string
+    {
+        return $this->isEmbed ?
+            $this->getDonationConfirmationReceiptUrl($donation) :
+            $this->getDonationConfirmationReceiptViewRouteUrl($donation);
+    }
+
+    /**
+     * TODO: update cancelled url
+     *
+     * @unreleased
+     */
+    public function getCancelledUrl(Donation $donation): string
+    {
+        return $this->originUrl;
     }
 
     /**

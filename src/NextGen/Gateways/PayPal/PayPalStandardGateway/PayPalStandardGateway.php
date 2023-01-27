@@ -3,6 +3,7 @@
 namespace Give\NextGen\Gateways\PayPal\PayPalStandardGateway;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
@@ -67,20 +68,30 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
      */
     public function createPayment(Donation $donation, $gatewayData = []): RedirectOffsite
     {
-        $args = [
-            'givewp-return-url' => $gatewayData['redirectReturnUrl'],
-            'donation-id' => $donation->id,
-        ];
+        add_filter(
+            'give_gateway_paypal_redirect_args',
+            function ($paypalPaymentArguments) use ($donation, $gatewayData) {
+                $paypalPaymentArguments['return'] = $this->generateSecureGatewayRouteUrl(
+                    'handleSuccessPaymentReturn',
+                    $donation->id,
+                    [
+                        'givewp-return-url' => $gatewayData['successUrl'],
+                        'donation-id' => $donation->id,
+                    ]
+                );
 
-        add_filter('give_gateway_paypal_redirect_args', function ($paypalPaymentArguments) use ($donation, $args) {
-            $paypalPaymentArguments['return'] = $this->generateSecureGatewayRouteUrl(
-                'handleSuccessPaymentReturn',
-                $donation->id,
-                $args
-            );
+                $paypalPaymentArguments['cancel_return'] = $this->generateSecureGatewayRouteUrl(
+                    'handleFailedPaymentReturn',
+                    $donation->id,
+                    [
+                        'givewp-return-url' => $gatewayData['failedUrl'],
+                        'donation-id' => $donation->id,
+                    ]
+                );
 
-            return $paypalPaymentArguments;
-        });
+                return $paypalPaymentArguments;
+            }
+        );
 
 
         return parent::createPayment($donation, $gatewayData);
@@ -92,9 +103,28 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
     protected function handleSuccessPaymentReturn(array $queryParams): RedirectResponse
     {
         if (!empty($queryParams['givewp-return-url'])) {
-            return new RedirectResponse($queryParams['givewp-return-url']);
+            return new RedirectResponse(esc_url_raw($queryParams['givewp-return-url']));
         }
 
         return parent::handleSuccessPaymentReturn($queryParams);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function handleFailedPaymentReturn(array $queryParams): RedirectResponse
+    {
+        if (!empty($queryParams['givewp-return-url'])) {
+            $donationId = (int)$queryParams['donation-id'];
+
+            /** @var Donation $donation */
+            $donation = Donation::find($donationId);
+            $donation->status = DonationStatus::CANCELLED();
+            $donation->save();
+
+            return new RedirectResponse(esc_url_raw($queryParams['givewp-return-url']));
+        }
+
+        return parent::handleFailedPaymentReturn($queryParams);
     }
 }

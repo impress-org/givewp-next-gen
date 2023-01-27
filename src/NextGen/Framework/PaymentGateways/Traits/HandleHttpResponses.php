@@ -5,13 +5,18 @@ namespace Give\NextGen\Framework\PaymentGateways\Traits;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 
+/**
+ * This is used to overwrite the same method for handling responses in GiveWP core within our Next Gen feature plugin.
+ *
+ * Eventually this will be removed and the core method will be used.
+ */
 trait HandleHttpResponses
 {
     /**
      * Handle Response
      *
      * @unreleased add support for json content-type
-     * 
+     *
      * @since 2.18.0
      *
      * @param  RedirectResponse|JsonResponse  $type

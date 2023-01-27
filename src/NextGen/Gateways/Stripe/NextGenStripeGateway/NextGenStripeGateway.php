@@ -103,7 +103,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $redirectReturnUrl = $gatewayData['redirectReturnUrl'];
+        $redirectReturnUrl = $gatewayData['successUrl'];
 
         /**
          * Get or create a Stripe customer
