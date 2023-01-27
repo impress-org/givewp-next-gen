@@ -84,7 +84,7 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
                     'handleFailedPaymentReturn',
                     $donation->id,
                     [
-                        'givewp-return-url' => $gatewayData['failedUrl'],
+                        'givewp-return-url' => $gatewayData['cancelUrl'],
                         'donation-id' => $donation->id,
                     ]
                 );
@@ -110,6 +110,10 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
     }
 
     /**
+     * This method is called when the user cancels the payment on PayPal.
+     *
+     * It should really be called handleCancelledPaymentReturn.
+     *
      * @inheritDoc
      */
     protected function handleFailedPaymentReturn(array $queryParams): RedirectResponse

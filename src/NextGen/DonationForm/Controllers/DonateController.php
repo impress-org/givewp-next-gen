@@ -136,8 +136,7 @@ class DonateController
     {
         $args = [
             'successUrl' => rawurlencode($formData->getSuccessUrl($donation)),
-            'failedUrl' => rawurlencode($formData->getFailedUrl($donation)),
-            'cancelledUrl' => rawurlencode($formData->getCancelledUrl($donation))
+            'cancelUrl' => rawurlencode($formData->getCancelUrl())
         ];
 
         add_filter(

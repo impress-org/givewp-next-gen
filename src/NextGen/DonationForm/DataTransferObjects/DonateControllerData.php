@@ -103,23 +103,11 @@ class DonateControllerData
     }
 
     /**
-     * TODO: update failed url
-     *
      * @unreleased
-     */
-    public function getFailedUrl(Donation $donation): string
-    {
-        return $this->isEmbed ?
-            $this->getDonationConfirmationReceiptUrl($donation) :
-            $this->getDonationConfirmationReceiptViewRouteUrl($donation);
-    }
-
-    /**
-     * TODO: update cancelled url
      *
-     * @unreleased
+     * TODO: add params to route for flash message
      */
-    public function getCancelledUrl(Donation $donation): string
+    public function getCancelUrl(): string
     {
         return $this->originUrl;
     }
