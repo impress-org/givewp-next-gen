@@ -7,10 +7,12 @@ use Give\Framework\EnqueueScript;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
+use Give\NextGen\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 
 class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGatewayInterface
 {
+    use HandleHttpResponses;
 
     /**
      * @inheritdoc

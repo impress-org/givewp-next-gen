@@ -10,14 +10,14 @@ use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\HasRequest;
+use Give\NextGen\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 /**
  * @unreleased
  */
 class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
-    use HasRequest;
+    use HandleHttpResponses;
 
     /**
      * @inheritDoc
@@ -84,7 +84,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
             $donation->id,
             [
                 'givewp-donation-id' => $donation->id,
-                'givewp-return-url' => rawurlencode($gatewayData['redirectReturnUrl'])
+                'givewp-return-url' => $gatewayData['redirectReturnUrl']
             ]
         );
 
