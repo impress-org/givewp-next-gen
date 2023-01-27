@@ -71,10 +71,10 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
     public function createPayment(Donation $donation, $gatewayData = []): RedirectOffsite
     {
         /**
-         * Add additional query args to PayPal redirect URLs
-         * this does not affect the core PayPal Standard gateway functionality
-         * later in these handle methods, there are conditionals to check for these query args
-         * and proceed accordingly if they exist or not
+         * Add additional query args to PayPal redirect URLs.
+         * This does not affect the core PayPal Standard gateway functionality.
+         * Later in our routeMethods, there are conditionals to check for these query args
+         * and proceed accordingly if they exist or not making this gateway backwards compatible with legacy forms.
          */
         add_filter(
             'give_gateway_paypal_redirect_args',
