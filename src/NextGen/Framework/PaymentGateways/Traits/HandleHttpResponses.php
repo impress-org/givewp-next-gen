@@ -26,6 +26,7 @@ trait HandleHttpResponses
         if ($type instanceof RedirectResponse) {
             if (isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], "application/json")) {
                 wp_send_json([
+                    'type' => 'redirect',
                     'data' => [
                         'redirectUrl' => $type->getTargetUrl()
                     ]
@@ -37,7 +38,10 @@ trait HandleHttpResponses
         }
 
         if ($type instanceof JsonResponse) {
-            wp_send_json(['data' => $type->getData()]);
+            wp_send_json([
+                'type' => 'success',
+                'data' => $type->getData()
+            ]);
         }
     }
 }

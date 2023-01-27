@@ -69,8 +69,8 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             await handleRedirect(response.url);
         }
 
-        if (response.data?.redirectUrl) {
-            await handleRedirect(response.data?.redirectUrl);
+        if (response?.type === 'redirect') {
+            await handleRedirect(response.data.redirectUrl);
         }
 
         if (response.data?.errors) {
