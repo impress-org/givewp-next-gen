@@ -53,19 +53,21 @@ trait NextGenStripeRepository {
             try {
                 // if the donor has a stripe ID, try retrieving the customer from Stripe.
                 $customer = $this->retrieveCustomer($donorCustomerId, $connectAccountId);
-
-                // if the customer is deleted, create a new customer
-                if ($customer->isDeleted()) {
-                    $customer = $this->createCustomer($donation, $connectAccountId);
-                }
-            } catch (InvalidRequestException $e) {
+            } catch (InvalidRequestException $exception) {
                 // If the donor has a stripe id but is not valid with this account,
                 // a resource_missing error will be thrown. In this case, we need to
                 // create a new customer.  The newer Stripe api has a search functionality
                 // that would make more sense here.
-                if ($e->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
+                if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
                     $customer = $this->createCustomer($donation, $connectAccountId);
+                } else {
+                    throw $exception;
                 }
+            }
+
+            // if the customer is deleted, create a new customer
+            if ($customer->isDeleted()) {
+                $customer = $this->createCustomer($donation, $connectAccountId);
             }
         }
 
