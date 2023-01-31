@@ -194,9 +194,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->rules(
                     function ($value, Closure $fail, string $key, array $values) {
                         $periods = array_values(SubscriptionPeriod::toArray());
-                        $isSubscription = $values['donationType'] === DonationType::SUBSCRIPTION()->getValue();
+                        $donationType = new DonationType($values['donationType']);
 
-                        if ($isSubscription && !in_array($value, $periods, true)) {
+                        if ($donationType->isSubscription() && !in_array($value, $periods, true)) {
                             $fail("{value} is not a valid period. Valid periods are: " . implode(', ', $periods));
                         }
                     }
@@ -208,9 +208,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->defaultValue(null)
                 ->rules(
                     function ($value, Closure $fail, string $key, array $values) {
-                        $isSubscription = $values['donationType'] === DonationType::SUBSCRIPTION()->getValue();
+                        $donationType = new DonationType($values['donationType']);
 
-                        return $isSubscription && is_numeric($value);
+                        return $donationType->isSubscription() && is_numeric($value);
                     }
                 );
 
@@ -221,9 +221,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->defaultValue(null)
                 ->rules(
                     function ($value, Closure $fail, string $key, array $values) {
-                        $isSubscription = $values['donationType'] === DonationType::SUBSCRIPTION()->getValue();
+                        $donationType = new DonationType($values['donationType']);
 
-                        return $isSubscription && is_numeric($value);
+                        return $donationType->isSubscription() && is_numeric($value);
                     }
                 );
         });
