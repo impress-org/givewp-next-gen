@@ -19,16 +19,16 @@ class Amount extends Field
     /**
      * @var string
      */
-    protected $type;
-    /**
-     * @var string
-     */
     protected $customAmountText;
 
     /**
      * @var bool
      */
     protected $allowCustomAmount = false;
+    /**
+     * @var bool
+     */
+    protected $allowLevels = false;
 
     /**
      * Set the preset donation levels. Provide levels in minor units.
@@ -70,13 +70,10 @@ class Amount extends Field
 
     /**
      * @unreleased
-     *
-     * @param  string  $type  - 'fixed' or 'multi'
-     * TODO: make type a value object
      */
-    public function type(string $type): Amount
+    public function allowLevels(bool $allowLevels = true): Amount
     {
-        $this->type = $type;
+        $this->allowLevels = $allowLevels;
 
         return $this;
     }

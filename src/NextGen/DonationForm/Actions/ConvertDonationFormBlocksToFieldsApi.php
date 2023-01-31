@@ -2,14 +2,18 @@
 
 namespace Give\NextGen\DonationForm\Actions;
 
+use Closure;
 use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\DonationAmount;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
+use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
@@ -74,12 +78,7 @@ class ConvertDonationFormBlocksToFieldsApi
     {
         switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
-                return Amount::make('amount')
-                    ->label(__('Donation Amount', 'give'))
-                    ->levels(...array_map('absint', $block->attributes['levels']))
-                    ->rules('required', 'numeric', 'min:1')
-                    ->allowCustomAmount()
-                    ->defaultValue(50);
+                return $this->createNodeFromAmountBlock($block);
 
             case "custom-block-editor/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
@@ -136,6 +135,52 @@ class ConvertDonationFormBlocksToFieldsApi
             } else {
                 $group->remove('honorific');
             }
+        });
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function createNodeFromAmountBlock(BlockModel $block): Node
+    {
+        return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
+            /** @var Amount $amount */
+            $amount = $group->getNodeByName('amount');
+            $amount
+                ->label(__('Donation Amount', 'give'))
+                ->levels(...array_map('absint', $block->attributes['levels']))
+                ->allowLevels()
+                ->allowCustomAmount()
+                ->defaultValue(50)
+                ->rules('required', 'numeric', 'min:1');
+
+            /** @var Hidden $period */
+            $period = $group->getNodeByName('period');
+            $period
+                ->required()
+                ->defaultValue('once')
+                ->rules(
+                    function ($value, Closure $fail, string $key, array $values) {
+                        $periods = ['once', 'week', 'quarter', 'month', 'year'];
+
+                        if (!in_array($value, $periods, true)) {
+                            $fail("{value} is not a valid period. Valid periods are: " . implode(', ', $periods));
+                        }
+                    }
+                );
+
+            /** @var Hidden $frequency */
+            $frequency = $group->getNodeByName('frequency');
+            $frequency
+                ->defaultValue('0')
+                ->rules('numeric');
+
+
+            /** @var Hidden $times */
+            $times = $group->getNodeByName('times');
+            $times
+                ->defaultValue('0')
+                ->rules('numeric');
         });
     }
 
