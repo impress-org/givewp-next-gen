@@ -35,7 +35,6 @@ export interface FormServerExports {
     inlineRedirectRoutes: string[];
 }
 
-
 export interface ReceiptDetail {
     label: string;
     value: any;
@@ -103,19 +102,29 @@ export interface Gateway {
     afterCreatePayment?(response: FormResponse): Promise<void> | Error;
 }
 
-export interface VisibilityCondition {
-    type: string;
+export interface BasicCondition {
+    type: 'basic';
+    boolean: 'and' | 'or';
     field: string;
-    value: any;
     operator: '==' | '!=' | '>' | '<' | '>=' | '<=';
-    boolean: 'AND' | 'OR';
+    value: any;
 }
+
+export interface NestedCondition {
+    type: 'nested';
+
+    boolean: 'and' | 'or';
+
+    conditions: VisibilityCondition[];
+}
+
+export type VisibilityCondition = BasicCondition | NestedCondition;
 
 export interface Node {
     name: string;
     type: string;
     nodeType: string;
-    VisibilityConditions: VisibilityCondition[];
+    visibilityConditions: VisibilityCondition[];
 }
 
 export interface Field extends Node {
@@ -205,6 +214,10 @@ export function isGroup(node: Node): node is Group {
     return node.nodeType === 'group';
 }
 
+export function isSection(node: Node): node is Section {
+    return node.nodeType === 'section';
+}
+
 export interface SelectOption {
     label: string;
     value: string;
@@ -213,27 +226,27 @@ export interface SelectOption {
 
 interface FormResponse {
     type: string;
-    data: any
+    data: any;
 }
 
 type FormResponseValidationError = {
-    [key: string]: string
-}
+    [key: string]: string;
+};
 
 interface FormResponseValidationErrors extends FormResponse {
     type: 'validation_error';
     data: {
         errors: {
-            errors: FormResponseValidationError[]
-        }
-    }
+            errors: FormResponseValidationError[];
+        };
+    };
 }
 
 interface FormResponseRedirect extends FormResponse {
     type: 'redirect';
     data: {
         redirectUrl: string;
-    }
+    };
 }
 
 export function isFormResponseRedirect(response: FormResponse): response is FormResponseRedirect {
@@ -241,7 +254,10 @@ export function isFormResponseRedirect(response: FormResponse): response is Form
 }
 
 export function isFormResponseValidationError(response: FormResponse): response is FormResponseValidationErrors {
-    return (response as FormResponseValidationErrors).type === 'validation_error' || (response as FormResponseValidationErrors).data?.errors != undefined;
+    return (
+        (response as FormResponseValidationErrors).type === 'validation_error' ||
+        (response as FormResponseValidationErrors).data?.errors != undefined
+    );
 }
 
 export function isResponseRedirected(response: Response): response is Response {

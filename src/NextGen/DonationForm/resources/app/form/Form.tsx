@@ -8,12 +8,13 @@ import {
     isFormResponseRedirect,
     isFormResponseValidationError,
     isResponseRedirected,
-    Section
+    Section,
 } from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {withTemplateWrapper} from '../templates';
 import {useCallback} from 'react';
 import SectionNode from '../fields/SectionNode';
+import FormSection from './Section';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import {ObjectSchema} from 'joi';
@@ -128,15 +129,9 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                 formError={formError}
             >
                 <>
-                    {sections.map((section) => {
-                        return (
-                            <FormSectionTemplate key={section.name} section={section}>
-                                {section.nodes.map((node) => (
-                                    <SectionNode key={node.name} node={node} />
-                                ))}
-                            </FormSectionTemplate>
-                        );
-                    })}
+                    {sections.map((section) => (
+                        <FormSection key={section.name} section={section} />
+                    ))}
                 </>
             </FormTemplate>
         </FormProvider>

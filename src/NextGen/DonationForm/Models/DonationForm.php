@@ -10,6 +10,7 @@ use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\Actions\ConvertQueryDataToDonationForm;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Properties\FormSettings;

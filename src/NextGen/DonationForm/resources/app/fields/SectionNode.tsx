@@ -4,6 +4,7 @@ import ElementNode from './ElementNode';
 import GroupNode from './GroupNode';
 import GatewayFieldNode from '@givewp/forms/app/fields/GatewayFieldNode';
 import {elementTemplateExists, fieldTemplateExists, groupTemplateExists} from '@givewp/forms/app/templates';
+import useVisibilityCondition from '@givewp/forms/app/hooks/useVisibilityCondition';
 
 const formTemplates = window.givewp.form.templates;
 
@@ -13,6 +14,12 @@ const formTemplates = window.givewp.form.templates;
  * @since 0.1.0
  */
 export default function SectionNode({node}: {node: Node}) {
+    const showNode = useVisibilityCondition(node.visibilityConditions);
+
+    if (!showNode) {
+        return null;
+    }
+
     if (isField(node) && fieldTemplateExists(node)) {
         if (node.type === 'gateways') {
             return <GatewayFieldNode node={node} />;

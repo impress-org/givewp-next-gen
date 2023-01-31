@@ -399,6 +399,8 @@ class DonationFormRepository
             );
         }
 
+        Hooks::doAction('givewp_donation_form_schema', $form, $formId);
+
         return $form;
     }
 
