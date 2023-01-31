@@ -35,7 +35,6 @@ const Edit = ({attributes, setAttributes}) => {
                 { !!customAmount && (
                     <div>
                         <CurrencyControl value={setPrice} />
-                        {/*<input style={{width: '100%'}} type="text" readOnly placeholder={setPrice} />*/}
                     </div>
                 )}
             </div>
