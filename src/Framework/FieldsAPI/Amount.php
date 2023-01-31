@@ -16,6 +16,14 @@ class Amount extends Field
      * @var int[]
      */
     protected $levels = [];
+    /**
+     * @var string
+     */
+    protected $type;
+    /**
+     * @var string
+     */
+    protected $customAmountText;
 
     /**
      * @var bool
@@ -58,5 +66,28 @@ class Amount extends Field
     public function customAmountAllowed(): bool
     {
         return $this->allowCustomAmount;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  string  $type  - 'fixed' or 'multi'
+     * TODO: make type a value object
+     */
+    public function type(string $type): Amount
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function customAmountText(string $customAmountText): Amount
+    {
+        $this->customAmountText = $customAmountText;
+
+        return $this;
     }
 }
