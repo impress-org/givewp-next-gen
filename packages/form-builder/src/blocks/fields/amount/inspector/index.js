@@ -68,7 +68,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                         gap: '16px',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
-                                    }}>
+                                    }} className={'givewp-donation-level-control'}>
                                         <CurrencyControl
                                             value={amount}
                                             onValueChange={(value) => {
