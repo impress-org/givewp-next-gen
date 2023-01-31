@@ -11,7 +11,11 @@ const requiredMessage = sprintf(
 export default function getJoiRulesForForm(form: Form): ObjectSchema {
     const joiRules = form.reduceNodes(
         (rules, field: Field) => {
-            rules[field.name] = getJoiRulesForField(field);
+            if (['donationType', 'period', 'frequency', 'times'].includes(field.name)) {
+                rules[field.name] = getJoiRulesForAmountField(field);
+            } else {
+                rules[field.name] = getJoiRulesForField(field);
+            }
 
             return rules;
         },
@@ -76,6 +80,48 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         joiRules = joiRules.required();
     } else {
         joiRules = joiRules.optional().allow('', null);
+    }
+
+    return joiRules;
+}
+
+
+/**
+ * This is a temporary solution to handle amount field validation.
+ *
+ * Eventually this will be dynamically handled by our validation system.
+ *
+ * @unreleased
+ */
+function getJoiRulesForAmountField(field: Field): AnySchema {
+    let joiRules: AnySchema;
+
+    if (field.name === 'donationType') {
+        joiRules = Joi.allow('single', 'subscription').only().required();
+    }
+
+    if (field.name === 'period') {
+        joiRules = Joi.when('donationType', {
+            is: 'subscription',
+            then: Joi.allow('day', 'week', 'quarter', 'month', 'year').only().required(),
+            otherwise: Joi.optional()
+        })
+    }
+
+    if (field.name === 'frequency') {
+        joiRules = Joi.when('donationType', {
+            is: 'subscription',
+            then: Joi.number().integer().required(),
+            otherwise: Joi.optional()
+        })
+    }
+
+    if (field.name === 'times') {
+        joiRules = Joi.when('donationType', {
+            is: 'subscription',
+            then: Joi.number().integer().required(),
+            otherwise: Joi.optional()
+        })
     }
 
     return joiRules;

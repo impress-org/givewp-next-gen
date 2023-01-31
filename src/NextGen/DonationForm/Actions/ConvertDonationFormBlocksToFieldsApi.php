@@ -190,12 +190,13 @@ class ConvertDonationFormBlocksToFieldsApi
             /** @var Hidden $period */
             $period = $group->getNodeByName('period');
             $period
-                ->defaultValue('month')
+                ->defaultValue(null)
                 ->rules(
                     function ($value, Closure $fail, string $key, array $values) {
                         $periods = array_values(SubscriptionPeriod::toArray());
+                        $isSubscription = $values['donationType'] === DonationType::SUBSCRIPTION()->getValue();
 
-                        if (!in_array($value, $periods, true)) {
+                        if ($isSubscription && !in_array($value, $periods, true)) {
                             $fail("{value} is not a valid period. Valid periods are: " . implode(', ', $periods));
                         }
                     }
@@ -204,15 +205,27 @@ class ConvertDonationFormBlocksToFieldsApi
             /** @var Hidden $frequency */
             $frequency = $group->getNodeByName('frequency');
             $frequency
-                ->defaultValue('0')
-                ->rules('numeric');
+                ->defaultValue(null)
+                ->rules(
+                    function ($value, Closure $fail, string $key, array $values) {
+                        $isSubscription = $values['donationType'] === DonationType::SUBSCRIPTION()->getValue();
+
+                        return $isSubscription && is_numeric($value);
+                    }
+                );
 
 
             /** @var Hidden $times */
             $times = $group->getNodeByName('times');
             $times
-                ->defaultValue('0')
-                ->rules('numeric');
+                ->defaultValue(null)
+                ->rules(
+                    function ($value, Closure $fail, string $key, array $values) {
+                        $isSubscription = $values['donationType'] === DonationType::SUBSCRIPTION()->getValue();
+
+                        return $isSubscription && is_numeric($value);
+                    }
+                );
         });
     }
 
