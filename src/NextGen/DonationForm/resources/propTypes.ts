@@ -45,6 +45,8 @@ export interface NameProps extends GroupProps {
 export interface DonationAmountProps extends GroupProps {
     fields: {
         amount: FC<AmountProps | {}>;
+        donationType: FC<FieldProps | {}>;
+        currency: FC<FieldProps | {}>;
         frequency: FC<FieldProps | {}>;
         period: FC<FieldProps | {}>;
         times: FC<FieldProps | {}>;

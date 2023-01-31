@@ -1,12 +1,23 @@
 import {DonationAmountProps} from "@givewp/forms/propTypes";
 
-export default function DonationAmount({fields: {amount: Amount, period: Period, times: Times, frequency: Frequency}}: DonationAmountProps) {
+export default function DonationAmount({
+                                           fields: {
+                                               amount: Amount,
+                                               donationType: DonationType,
+                                               currency: Currency,
+                                               period: Period,
+                                               times: Times,
+                                               frequency: Frequency
+                                           }
+                                       }: DonationAmountProps) {
     return (
         <>
-            <Amount />
-            <Period />
-            <Frequency />
-            <Times />
+            <Amount/>
+            <DonationType/>
+            <Currency/>
+            <Period/>
+            <Frequency/>
+            <Times/>
         </>
     );
 }
