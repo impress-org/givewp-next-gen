@@ -40,7 +40,6 @@ const amount = {
             },
             customAmountMax: {
                 type: 'number',
-                default: '1000',
             }
         },
         icon: () => <Icon icon={
