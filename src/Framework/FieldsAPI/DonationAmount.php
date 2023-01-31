@@ -20,6 +20,8 @@ class DonationAmount extends Group
         return parent::make($name)
             ->append(
                 Amount::make('amount'),
+                Hidden::make('currency'),
+                Hidden::make('donationType'),
                 Hidden::make('frequency'),
                 Hidden::make('period'),
                 Hidden::make('times')

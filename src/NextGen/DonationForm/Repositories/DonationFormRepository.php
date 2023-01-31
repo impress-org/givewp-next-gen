@@ -380,7 +380,7 @@ class DonationFormRepository
      */
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form
     {
-        $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks);
+        $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
         $formNodes = $form->all();
 
@@ -391,11 +391,7 @@ class DonationFormRepository
             $lastSection->append(
                 Hidden::make('formId')
                     ->defaultValue($formId)
-                    ->rules('required', 'integer'),
-
-                Hidden::make('currency')
-                    ->defaultValue(give_get_currency($formId))
-                    ->rules('required', 'currency')
+                    ->rules('required', 'integer')
             );
         }
 

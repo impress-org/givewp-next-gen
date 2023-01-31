@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\Actions;
 
 use Closure;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationAmount;
@@ -21,6 +22,7 @@ use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
  * @since 0.1.0
@@ -28,13 +30,19 @@ use Give\NextGen\Framework\Blocks\BlockModel;
 class ConvertDonationFormBlocksToFieldsApi
 {
     /**
+     * @var int
+     */
+    protected $formId;
+
+    /**
      * @since 0.1.0
      *
      * @throws TypeNotSupported|NameCollisionException
      */
-    public function __invoke(BlockCollection $blocks): Form
+    public function __invoke(BlockCollection $blocks, int $formId): Form
     {
         $form = new Form('donation-form');
+        $this->formId = $formId;
 
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
@@ -154,14 +162,38 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->defaultValue(50)
                 ->rules('required', 'numeric', 'min:1');
 
+            /** @var Hidden $currency */
+            $currency = $group->getNodeByName('currency');
+            $currency
+                ->defaultValue(give_get_currency($this->formId))
+                ->rules('required', 'currency');
+
+            /** @var Hidden $donationType */
+            $donationType = $group->getNodeByName('donationType');
+            $donationType
+                ->defaultValue(DonationType::SINGLE()->getValue())
+                ->rules(
+                    function ($value, Closure $fail, string $key, array $values) {
+                        $donationTypes = [DonationType::SINGLE()->getValue(), DonationType::SUBSCRIPTION()->getValue()];
+
+                        if (!in_array($value, $donationTypes, true)) {
+                            $fail(
+                                "{value} is not a valid donation types. Valid types are: " . implode(
+                                    ', ',
+                                    $donationTypes
+                                )
+                            );
+                        }
+                    }
+                );
+
             /** @var Hidden $period */
             $period = $group->getNodeByName('period');
             $period
-                ->required()
-                ->defaultValue('once')
+                ->defaultValue('month')
                 ->rules(
                     function ($value, Closure $fail, string $key, array $values) {
-                        $periods = ['once', 'week', 'quarter', 'month', 'year'];
+                        $periods = array_values(SubscriptionPeriod::toArray());
 
                         if (!in_array($value, $periods, true)) {
                             $fail("{value} is not a valid period. Valid periods are: " . implode(', ', $periods));
