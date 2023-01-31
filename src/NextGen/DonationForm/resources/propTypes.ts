@@ -53,7 +53,7 @@ export interface DonationAmountProps extends GroupProps {
 
 export interface AmountProps extends FieldProps {
     levels: Number[];
-    type: string;
+    allowLevels: boolean;
     allowCustomAmount: boolean;
 }
 
