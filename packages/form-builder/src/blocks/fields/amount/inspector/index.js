@@ -27,6 +27,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         {label: __('Multi-level Donation', 'give'), value: 'multi'},
                         {label: __('Fixed Donation', 'give'), value: 'set'},
                     ]}
+                    help={ 'multi' === priceOption ? __('Set multiple price donations for this form.', 'give') : __('The donation amount is fixed to the following amount:', 'give')}
                 />
                 {priceOption === 'set' && (
                     <CurrencyControl
