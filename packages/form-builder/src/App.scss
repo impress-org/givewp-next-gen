@@ -418,6 +418,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     position: fixed;
 }
 
-.givewp-donation-level-control .components-base-control {
+.givewp-donation-level-control .components-base-control,
+.givewp-donation-level-control .components-base-control__field {
     margin-bottom: 0;
 }
