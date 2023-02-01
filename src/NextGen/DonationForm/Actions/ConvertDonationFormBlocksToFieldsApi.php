@@ -2,7 +2,6 @@
 
 namespace Give\NextGen\DonationForm\Actions;
 
-use Closure;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
@@ -20,9 +19,12 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\NextGen\DonationForm\Rules\DonationTypeRule;
+use Give\NextGen\DonationForm\Rules\SubscriptionFrequencyRule;
+use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
+use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
  * @since 0.1.0
@@ -172,60 +174,26 @@ class ConvertDonationFormBlocksToFieldsApi
             $donationType = $group->getNodeByName('donationType');
             $donationType
                 ->defaultValue(DonationType::SINGLE()->getValue())
-                ->rules(
-                    function ($value, Closure $fail, string $key, array $values) {
-                        $donationTypes = [DonationType::SINGLE()->getValue(), DonationType::SUBSCRIPTION()->getValue()];
-
-                        if (!in_array($value, $donationTypes, true)) {
-                            $fail(
-                                "{value} is not a valid donation types. Valid types are: " . implode(
-                                    ', ',
-                                    $donationTypes
-                                )
-                            );
-                        }
-                    }
-                );
+                ->rules(new DonationTypeRule());
 
             /** @var Hidden $period */
             $period = $group->getNodeByName('period');
             $period
                 ->defaultValue(null)
-                ->rules(
-                    function ($value, Closure $fail, string $key, array $values) {
-                        $periods = array_values(SubscriptionPeriod::toArray());
-                        $donationType = new DonationType($values['donationType']);
-
-                        if ($donationType->isSubscription() && !in_array($value, $periods, true)) {
-                            $fail("{value} is not a valid period. Valid periods are: " . implode(', ', $periods));
-                        }
-                    }
-                );
+                ->rules(new SubscriptionPeriodRule());
 
             /** @var Hidden $frequency */
             $frequency = $group->getNodeByName('frequency');
             $frequency
                 ->defaultValue(null)
-                ->rules(
-                    function ($value, Closure $fail, string $key, array $values) {
-                        $donationType = new DonationType($values['donationType']);
-
-                        return $donationType->isSubscription() && is_numeric($value);
-                    }
-                );
+                ->rules(new SubscriptionFrequencyRule());
 
 
-            /** @var Hidden $times */
-            $times = $group->getNodeByName('installments');
-            $times
+            /** @var Hidden $installments */
+            $installments = $group->getNodeByName('installments');
+            $installments
                 ->defaultValue(0)
-                ->rules(
-                    function ($value, Closure $fail, string $key, array $values) {
-                        $donationType = new DonationType($values['donationType']);
-
-                        return $donationType->isSubscription() && is_numeric($value);
-                    }
-                );
+                ->rules(new SubscriptionInstallmentsRule());
         });
     }
 

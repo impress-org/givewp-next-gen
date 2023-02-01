@@ -11,11 +11,7 @@ const requiredMessage = sprintf(
 export default function getJoiRulesForForm(form: Form): ObjectSchema {
     const joiRules = form.reduceNodes(
         (rules, field: Field) => {
-            if (['donationType', 'period', 'frequency', 'times'].includes(field.name)) {
-                rules[field.name] = getJoiRulesForAmountField(field);
-            } else {
-                rules[field.name] = getJoiRulesForField(field);
-            }
+            rules[field.name] = getJoiRulesForField(field);
 
             return rules;
         },
@@ -82,25 +78,21 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         joiRules = joiRules.optional().allow('', null);
     }
 
+    joiRules = getJoiRulesForAmountField(rules, joiRules);
+
     return joiRules;
 }
 
 
 /**
- * This is a temporary solution to handle amount field validation.
- *
- * Eventually this will be dynamically handled by our validation system.
- *
  * @unreleased
  */
-function getJoiRulesForAmountField(field: Field): AnySchema {
-    let joiRules: AnySchema;
-
-    if (field.name === 'donationType') {
+function getJoiRulesForAmountField(rules, joiRules): AnySchema {
+    if (rules.hasOwnProperty('donationType')) {
         joiRules = Joi.allow('single', 'subscription').only().required();
     }
 
-    if (field.name === 'period') {
+    if (rules.hasOwnProperty('subscriptionPeriod')) {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
             then: Joi.allow('day', 'week', 'quarter', 'month', 'year').only().required(),
@@ -108,7 +100,7 @@ function getJoiRulesForAmountField(field: Field): AnySchema {
         })
     }
 
-    if (field.name === 'frequency') {
+    if (rules.hasOwnProperty('subscriptionFrequency')) {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
             then: Joi.number().integer().required(),
@@ -116,7 +108,7 @@ function getJoiRulesForAmountField(field: Field): AnySchema {
         })
     }
 
-    if (field.name === 'times') {
+    if (rules.hasOwnProperty('subscriptionInstallments')) {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
             then: Joi.number().integer().required(),
