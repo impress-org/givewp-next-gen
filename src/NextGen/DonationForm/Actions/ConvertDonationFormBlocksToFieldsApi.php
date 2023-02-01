@@ -216,9 +216,9 @@ class ConvertDonationFormBlocksToFieldsApi
 
 
             /** @var Hidden $times */
-            $times = $group->getNodeByName('times');
+            $times = $group->getNodeByName('installments');
             $times
-                ->defaultValue(null)
+                ->defaultValue(0)
                 ->rules(
                     function ($value, Closure $fail, string $key, array $values) {
                         $donationType = new DonationType($values['donationType']);

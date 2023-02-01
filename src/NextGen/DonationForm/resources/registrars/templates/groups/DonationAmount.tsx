@@ -6,7 +6,7 @@ export default function DonationAmount({
                                                donationType: DonationType,
                                                currency: Currency,
                                                period: Period,
-                                               times: Times,
+                                               installments: Installments,
                                                frequency: Frequency
                                            }
                                        }: DonationAmountProps) {
@@ -17,7 +17,7 @@ export default function DonationAmount({
             <Currency/>
             <Period/>
             <Frequency/>
-            <Times/>
+            <Installments/>
         </>
     );
 }
