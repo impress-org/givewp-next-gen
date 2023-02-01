@@ -40,7 +40,35 @@ const amount = {
             },
             customAmountMax: {
                 type: 'number',
-            }
+            },
+            recurringEnabled: {
+                type: 'boolean',
+                default: false,
+            },
+            recurringDonationChoice: {
+                type: 'string',
+                default: 'admin',
+            },
+            recurringPeriod: {
+                type: 'string',
+                default: 'preset',
+            },
+            recurringBillingInterval: {
+                type: 'number',
+                default: '1',
+            },
+            recurringBillingPeriod: {
+                type: 'string',
+                default: 'monthly',
+            },
+            recurringLengthOfTime: {
+                type: 'string',
+                default: 'ongoing',
+            },
+            recurringOptInDefault: {
+                type: 'boolean',
+                default: true,
+            },
         },
         icon: () => <Icon icon={
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

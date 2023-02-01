@@ -1,4 +1,9 @@
-import {PanelBody, SelectControl, ToggleControl, __experimentalNumberControl as NumberControl,} from "@wordpress/components";
+import {
+    PanelBody,
+    SelectControl,
+    ToggleControl,
+    PanelRow, CheckboxControl, BaseControl,
+} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
@@ -14,6 +19,13 @@ const Inspector = ({attributes, setAttributes}) => {
         customAmount,
         customAmountMin,
         customAmountMax,
+        recurringEnabled,
+        recurringDonationChoice,
+        recurringPeriod,
+        recurringBillingInterval,
+        recurringBillingPeriod,
+        recurringLengthOfTime,
+        recurringOptInDefault,
     } = attributes;
 
     return (
@@ -95,6 +107,115 @@ const Inspector = ({attributes, setAttributes}) => {
                 }} />
             </PanelBody>
             )}
+            <PanelBody title={__('Recurring donation', 'give')} initialOpen={false}>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Enable recurring donation', 'give')}
+                        checked={recurringEnabled}
+                        onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl
+                        label={__('Donation choice', 'give')}
+                        options={[
+                            {label: __('Admin', 'give'), value: 'admin'},
+                            {label: __('Donor', 'give'), value: 'donor'},
+                        ]}
+                        value={recurringDonationChoice}
+                        onChange={(recurringDonationChoice) => setAttributes({recurringDonationChoice})}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl
+                        label={__('Recurring period', 'give')}
+                        help={__('This option provides only the selected period for the donor’s subscription.', 'give')}
+                        options={[
+                            {label: __('Preset choice', 'give'), value: 'preset'},
+                        ]}
+                        value={'preset'}
+                        onChange={() => null}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl
+                        label={__('Billing interval', 'give')}
+                        options={[
+                            {label: __('Every', 'give'), value: 'every'},
+                        ]}
+                        value={'every'}
+                        onChange={() => null}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl
+                        label={__('Billing period', 'give')}
+                        options={[
+                            {label: __('Monthly', 'give'), value: 'monthly'},
+                            {label: __('Yearly', 'give'), value: 'yearly'},
+                        ]}
+                        value={'monthly'}
+                        onChange={() => null}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <BaseControl id={'foo'} label={__('Billing period', 'give')}>
+                        <div style={{
+                            width: '100%',
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                        }}>
+                        <CheckboxControl
+                            label={__('Days', 'give')}
+                            checked={false}
+                            onChange={() => null}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <CheckboxControl
+                            label={__('Weeks', 'give')}
+                            checked={false}
+                            onChange={() => null}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <CheckboxControl
+                            label={__('Months', 'give')}
+                            checked={false}
+                            onChange={() => null}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <CheckboxControl
+                            label={__('Quarters', 'give')}
+                            checked={false}
+                            onChange={() => null}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <CheckboxControl
+                            label={__('Years', 'give')}
+                            checked={false}
+                            onChange={() => null}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        </div>
+                    </BaseControl>
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl
+                        label={__('Length of time', 'give')}
+                        options={[
+                            {label: __('Ongoing', 'give'), value: 'ongoing'},
+                        ]}
+                        value={'ongoing'}
+                        onChange={() => null}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Recurring opt-in default', 'give')}
+                        checked={false}
+                        onChange={() => null}
+                    />
+                </PanelRow>
+            </PanelBody>
         </InspectorControls>
     );
 };
