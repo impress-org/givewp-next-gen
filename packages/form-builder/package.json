@@ -18,6 +18,7 @@
         "@wordpress/icons": "^9.16.0",
         "@wordpress/interface": "^5.2.0",
         "iframe-resizer-react": "^1.1.0",
+        "interweave": "^13.0.0",
         "react": "^18.2.0",
         "react-currency-input-field": "^3.6.9",
         "react-dom": "^18.2.0"

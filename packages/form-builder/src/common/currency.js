@@ -3,12 +3,15 @@ import {BaseControl} from "@wordpress/components";
 
 const {currency = 'USD'} = window?.storageData?.currency ?? {};
 
-const Currency = ({amount}) => {
+const formatCurrencyAmount = (amount) => {
     return formatValue({
         value: amount,
         intlConfig: {locale: window.navigator.language, currency},
     });
+}
 
+const Currency = ({amount}) => {
+    return formatCurrencyAmount(amount);
 };
 
 const CurrencyControl = (props) => {
@@ -28,6 +31,7 @@ const CurrencyControl = (props) => {
 
 export {
     currency,
+    formatCurrencyAmount,
     Currency,
     CurrencyControl,
 };

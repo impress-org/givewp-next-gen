@@ -1,9 +1,10 @@
 import {__} from '@wordpress/i18n';
+import { Markup } from 'interweave';
 
 import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
 import Inspector from './inspector';
-import {Currency, CurrencyControl} from '../../../common/currency';
+import {Currency, CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 
 const Edit = ({attributes, setAttributes}) => {
     const {
@@ -23,7 +24,10 @@ const Edit = ({attributes, setAttributes}) => {
             <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
                 { !!isFixedAmount && !customAmount && (
                     <div style={{backgroundColor: 'var(--givewp-gray-20)', padding: '12px 16px', borderRadius: '5px'}}>
-                        This donation is set to <strong><Currency amount={setPrice} /></strong> for this form.</div>
+                        <Markup
+                            content={sprintf(__('This donation is set to %s for this form.', 'give'), `<strong>${formatCurrencyAmount(setPrice)}</strong>` )}
+                        />
+                    </div>
                 )}
                 { !!isMultiLevel && levels.length > 0 && (
                     <LevelGrid>
