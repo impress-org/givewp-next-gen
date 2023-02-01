@@ -1,10 +1,10 @@
 import {__} from '@wordpress/i18n';
-import { Markup } from 'interweave';
 
 import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
 import Inspector from './inspector';
-import {Currency, CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
+import {Currency, CurrencyControl} from '../../../common/currency';
+import {createInterpolateElement} from "@wordpress/element";
 
 const Edit = ({attributes, setAttributes}) => {
     const {
@@ -19,14 +19,21 @@ const Edit = ({attributes, setAttributes}) => {
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
 
+    const FixedPriceMessage = () => {
+        return createInterpolateElement(
+            __('This donation is set to <amount/> for this form.', 'give'),
+            {
+                amount: <strong><Currency amount={setPrice} /></strong>,
+            }
+        )
+    }
+
     return (
         <>
             <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
                 { !!isFixedAmount && !customAmount && (
                     <div style={{backgroundColor: 'var(--givewp-gray-20)', padding: '12px 16px', borderRadius: '5px'}}>
-                        <Markup
-                            content={sprintf(__('This donation is set to %s for this form.', 'give'), `<strong>${formatCurrencyAmount(setPrice)}</strong>` )}
-                        />
+                        <FixedPriceMessage />
                     </div>
                 )}
                 { !!isMultiLevel && levels.length > 0 && (
