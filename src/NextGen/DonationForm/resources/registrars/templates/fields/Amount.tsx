@@ -1,6 +1,7 @@
 import {useMemo} from 'react';
 import classNames from 'classnames';
 import type {AmountProps} from '@givewp/forms/propTypes';
+import {__} from "@wordpress/i18n";
 
 export default function Amount({
                                    name,
@@ -9,13 +10,13 @@ export default function Amount({
                                    ErrorMessage,
                                    inputProps,
                                    fieldError,
-                                   allowLevels = true,
+                                   allowLevels,
                                    levels,
-                                   allowCustomAmount = true,
+                                   allowCustomAmount,
                                }: AmountProps) {
     const {useWatch, useFormContext} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
-    const {setValue} = useFormContext();
+    const {setValue, register} = useFormContext();
     const formatter = useMemo(
         () =>
             new Intl.NumberFormat(navigator.language, {
@@ -45,13 +46,15 @@ export default function Amount({
                     </span>
                     {allowCustomAmount && (
                         <input
+                            {...register("amount-custom")}
                             className="givewp-fields-amount__input givewp-fields-amount__input--custom"
                             type="text"
                             aria-invalid={fieldError ? 'true' : 'false'}
                             id="amount-custom"
                             name="amount-custom"
                             inputMode="numeric"
-                            defaultValue={defaultValue}
+                            placeholder={__('Enter custom amount', 'give')}
+                            //defaultValue={defaultValue}
                             onChange={(event) => setValue(name, event.target.value)}
                         />
                     )}
@@ -91,7 +94,10 @@ function AmountButtons({name, currency, levels}: {name: string; currency: string
                             'givewp-fields-amount__level--selected': selected,
                         })}
                         type="button"
-                        onClick={() => setValue(name, levelAmount)}
+                        onClick={() => {
+                            setValue('amount-custom', null);
+                            setValue(name, levelAmount);
+                        }}
                         key={index}
                     >
                         {label}

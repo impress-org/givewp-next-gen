@@ -65,11 +65,31 @@ class Amount extends Field
     }
 
     /**
+     * @unreleased
+     */
+    public function allowLevels($allow = true): self
+    {
+        $this->allowLevels = $allow;
+
+        return $this;
+    }
+
+    /**
      * @since 0.1.0
      */
     public function customAmountAllowed(): bool
     {
         return $this->allowCustomAmount;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function customAmountText(string $customAmountText): Amount
+    {
+        $this->customAmountText = $customAmountText;
+
+        return $this;
     }
 
     /**

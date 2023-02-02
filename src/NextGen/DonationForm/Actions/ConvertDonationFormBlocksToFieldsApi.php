@@ -170,6 +170,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->label(__('Donation Amount', 'give'))
                 ->attributes($block->attributes)
                 ->levels(...array_map('absint', $block->attributes['levels']))
+                ->allowLevels($block->attributes['priceOption'] === 'multi')
                 ->allowCustomAmount($block->attributes['customAmount'])
                 ->defaultValue(50)
                 ->rules(...$amountRules);
