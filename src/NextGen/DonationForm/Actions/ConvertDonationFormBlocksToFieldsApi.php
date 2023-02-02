@@ -74,11 +74,18 @@ class ConvertDonationFormBlocksToFieldsApi
     {
         switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
+                $rules = ['required', 'numeric'];
+                if ($block->hasAttribute('minimumAmount')) {
+                    $rules[] = "min:{$block->getAttribute('minimumAmount')}";
+                }
+                if ($block->hasAttribute('maximumAmount')) {
+                    $rules[] = "max:{$block->getAttribute('maximumAmount')}";
+                }
                 return Amount::make('amount')
                     ->label(__('Donation Amount', 'give'))
                     ->levels(...array_map('absint', $block->attributes['levels']))
-                    ->rules('required', 'numeric', 'min:1')
-                    ->allowCustomAmount()
+                    ->rules(...$rules)
+                    ->allowCustomAmount($block->attributes['customAmount'])
                     ->defaultValue(50);
 
             case "custom-block-editor/donor-name":
