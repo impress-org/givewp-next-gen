@@ -24,8 +24,7 @@ class DonationAmount extends Group
                 Hidden::make('donationType'),
                 Hidden::make('frequency'),
                 Hidden::make('period'),
-                Hidden::make('installments'),
-                Hidden::make('formId')
+                Hidden::make('installments')
             );
     }
 }
