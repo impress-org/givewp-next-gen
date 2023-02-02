@@ -29,6 +29,10 @@ class Amount extends Field
      * @var bool
      */
     protected $allowLevels = false;
+    /**
+     * @var array
+     */
+    protected $attributes;
 
     /**
      * Set the preset donation levels. Provide levels in minor units.
@@ -71,19 +75,9 @@ class Amount extends Field
     /**
      * @unreleased
      */
-    public function allowLevels(bool $allowLevels = true): Amount
+    public function attributes(array $array): Amount
     {
-        $this->allowLevels = $allowLevels;
-
-        return $this;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function customAmountText(string $customAmountText): Amount
-    {
-        $this->customAmountText = $customAmountText;
+        $this->attributes = $array;
 
         return $this;
     }

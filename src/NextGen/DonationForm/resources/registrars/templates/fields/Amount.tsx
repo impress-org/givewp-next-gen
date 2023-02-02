@@ -1,19 +1,21 @@
-import {__} from '@wordpress/i18n';
 import {useMemo} from 'react';
 import classNames from 'classnames';
 import type {AmountProps} from '@givewp/forms/propTypes';
 
 export default function Amount({
-    name,
-    Label,
-    ErrorMessage,
-    inputProps,
-    levels,
-    allowCustomAmount,
-    fieldError,
-}: AmountProps) {
-    const {useWatch} = window.givewp.form.hooks;
+                                   name,
+                                   defaultValue,
+                                   Label,
+                                   ErrorMessage,
+                                   inputProps,
+                                   fieldError,
+                                   allowLevels = true,
+                                   levels,
+                                   allowCustomAmount = true,
+                               }: AmountProps) {
+    const {useWatch, useFormContext} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
+    const {setValue} = useFormContext();
     const formatter = useMemo(
         () =>
             new Intl.NumberFormat(navigator.language, {
@@ -25,7 +27,9 @@ export default function Amount({
 
     return (
         <>
-            <AmountButtons name={name} currency={currency} levels={levels} />
+            {allowLevels && (
+                <AmountButtons name={name} currency={currency} levels={levels}/>
+            )}
             <div className="givewp-fields-amount__amount--container">
                 <label
                     className="givewp-fields-amount__input--label"
@@ -33,18 +37,26 @@ export default function Amount({
                     aria-labelledby={name}
                     style={{display: 'none'}}
                 >
-                    <Label />
+                    <Label/>
                 </label>
                 <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
                     <span className="givewp-fields-amount__input--currency-symbol">
                         {formatter.formatToParts().find(({type}) => type === 'currency').value}
                     </span>
+                    {allowCustomAmount && (
+                        <input
+                            className="givewp-fields-amount__input givewp-fields-amount__input--custom"
+                            type="text"
+                            aria-invalid={fieldError ? 'true' : 'false'}
+                            id="amount-custom"
+                            name="amount-custom"
+                            inputMode="numeric"
+                            defaultValue={defaultValue}
+                            onChange={(event) => setValue(name, event.target.value)}
+                        />
+                    )}
                     <input
-                        className="givewp-fields-amount__input"
-                        type="text"
-                        aria-invalid={fieldError ? 'true' : 'false'}
-                        id={name}
-                        inputMode="numeric"
+                        type="hidden"
                         {...inputProps}
                     />
                 </div>
