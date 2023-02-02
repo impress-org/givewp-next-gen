@@ -172,7 +172,12 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->levels(...array_map('absint', $block->attributes['levels']))
                 ->allowLevels($block->attributes['priceOption'] === 'multi')
                 ->allowCustomAmount($block->attributes['customAmount'])
-                ->defaultValue(50)
+                ->fixedAmountValue($block->hasAttribute('setPrice') ? $block->attributes['setPrice'] : null)
+                ->defaultValue(
+                    $block->attributes['priceOption'] === 'set' && $block->hasAttribute(
+                        'setPrice'
+                    ) ? $block->attributes['setPrice'] : 50
+                )
                 ->rules(...$amountRules);
 
             /** @var Hidden $currency */

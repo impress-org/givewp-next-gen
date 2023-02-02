@@ -57,6 +57,8 @@ export interface AmountProps extends FieldProps {
     levels: Number[];
     allowLevels: boolean;
     allowCustomAmount: boolean;
+
+    fixedAmountValue: number;
 }
 
 export interface ParagraphProps extends ElementProps {

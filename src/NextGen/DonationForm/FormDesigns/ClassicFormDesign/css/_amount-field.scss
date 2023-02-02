@@ -2,6 +2,32 @@
     display: grid;
     row-gap: clamp(1.5rem, 0.679487rem + 2.5641vw, 2rem);
 
+    &__directions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__fixed-message {
+        background-color: #DAF0E3;
+        padding: 0.5rem 1rem;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    &__currency {
+        &--container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            background-color: #E9E9E9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+        }
+    }
+
     &__input {
         position: relative;
         inline-size: 100%;

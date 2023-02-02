@@ -29,6 +29,11 @@ class Amount extends Field
      * @var bool
      */
     protected $allowLevels = false;
+
+    /**
+     * @var int
+     */
+    protected $fixedAmountValue;
     /**
      * @var array
      */
@@ -98,6 +103,16 @@ class Amount extends Field
     public function attributes(array $array): Amount
     {
         $this->attributes = $array;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function fixedAmountValue(int $amount): Amount
+    {
+        $this->fixedAmountValue = $amount;
 
         return $this;
     }
