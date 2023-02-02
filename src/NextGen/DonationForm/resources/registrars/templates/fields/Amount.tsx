@@ -21,36 +21,6 @@ const FixedAmountMessage = ({amount}: { amount: string }) => {
 /**
  * @unreleased
  */
-const AmountDirections = ({
-                              currency,
-                              formatter,
-                              allowLevels
-                          }: {
-    currency: string,
-    formatter: Intl.NumberFormat,
-    allowLevels: boolean
-}) => {
-    return (
-        <div className="givewp-fields-amount__directions">
-            <span>
-                {/* TODO: Add settings for these directions */}
-                {allowLevels ?
-                    __('Select an amount to donate:', 'give')
-                    : __('How much do you want to donate?', 'give')}
-            </span>
-
-            {/* TODO: Control currency input from here*/}
-            <span className="givewp-fields-amount__currency--container">
-                <span>{currency}</span>
-                <span>{formatter.formatToParts().find(({type}) => type === 'currency').value}</span>
-            </span>
-        </div>
-    );
-}
-
-/**
- * @unreleased
- */
 const CustomAmount = ({
                           defaultValue,
                           fieldError,
@@ -111,20 +81,21 @@ export default function Amount({
 
     return (
         <>
-            <label
-                className="givewp-fields-amount__input--label"
-                htmlFor={name}
-                aria-labelledby={name}
-                style={{display: 'none'}}
-            >
-                <Label/>
-            </label>
+            <div className="givewp-fields-amount__directions">
+                <label
+                    className="givewp-fields-amount__input--label"
+                    htmlFor={name}
+                    aria-labelledby={name}
+                >
+                    <Label/>
+                </label>
 
-            <AmountDirections
-                currency={currency}
-                formatter={formatter}
-                allowLevels={allowLevels && levels.length > 0}
-            />
+                {/* TODO: Control currency input from here*/}
+                <span className="givewp-fields-amount__currency--container">
+                    <span>{currency}</span>
+                    <span>{formatter.formatToParts().find(({type}) => type === 'currency').value}</span>
+                </span>
+            </div>
 
             {allowLevels && (
                 <AmountButtons name={name} currency={currency} levels={levels}/>
