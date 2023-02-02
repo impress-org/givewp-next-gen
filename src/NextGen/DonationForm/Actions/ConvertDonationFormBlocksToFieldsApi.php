@@ -154,15 +154,23 @@ class ConvertDonationFormBlocksToFieldsApi
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
         return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
+            $amountRules = ['required', 'numeric'];
+            if ($block->hasAttribute('minimumAmount')) {
+                $amountRules[] = "min:{$block->getAttribute('minimumAmount')}";
+            }
+            if ($block->hasAttribute('maximumAmount')) {
+                $amountRules[] = "max:{$block->getAttribute('maximumAmount')}";
+            }
+
             /** @var Amount $amount */
             $amount = $group->getNodeByName('amount');
             $amount
                 ->label(__('Donation Amount', 'give'))
                 ->levels(...array_map('absint', $block->attributes['levels']))
                 ->allowLevels()
-                ->allowCustomAmount()
+                ->allowCustomAmount($block->attributes['customAmount'])
                 ->defaultValue(50)
-                ->rules('required', 'numeric', 'min:1');
+                ->rules(...$amountRules);
 
             /** @var Hidden $currency */
             $currency = $group->getNodeByName('currency');
@@ -218,12 +226,12 @@ class ConvertDonationFormBlocksToFieldsApi
                 $node->required($block->attributes['isRequired']);
             }
 
-            if($block->hasAttribute('displayInAdmin') && $block->attributes['displayInAdmin']) {
+            if ($block->hasAttribute('displayInAdmin') && $block->attributes['displayInAdmin']) {
                 $node->displayInAdmin = $block->attributes['displayInAdmin'];
             }
 
             /** TODO: ask kyle about $node->showInReceipt() */
-            if($block->hasAttribute('displayInReceipt') && $block->attributes['displayInReceipt']) {
+            if ($block->hasAttribute('displayInReceipt') && $block->attributes['displayInReceipt']) {
                 $node->displayInReceipt = $block->attributes['displayInReceipt'];
             }
         }
