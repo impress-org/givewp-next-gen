@@ -33,6 +33,7 @@ const AmountDirections = ({
     return (
         <div className="givewp-fields-amount__directions">
             <span>
+                {/* TODO: Add settings for these directions */}
                 {allowLevels ?
                     __('Select an amount to donate:', 'give')
                     : __('How much do you want to donate?', 'give')}
