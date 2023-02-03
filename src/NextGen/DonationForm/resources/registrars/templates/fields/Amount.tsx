@@ -43,7 +43,13 @@ const CustomAmount = ({
                 inputMode="numeric"
                 placeholder={__('Custom amount', 'give')}
                 defaultValue={defaultValue}
-                onChange={(event) => setValue('amount', event.target.value)}
+                onChange={({target: {value}}) => {
+                    const amount = value.replace(/[^0-9.]/g, '');
+                    
+                    if (Number(amount) || !amount) {
+                        setValue('amount', amount);
+                    }
+                }}
             />
         </div>
     );
