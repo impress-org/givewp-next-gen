@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import {__} from "@wordpress/i18n";
 import {createInterpolateElement} from "@wordpress/element";
+import CurrencyInput from "react-currency-input-field";
 
 /**
  * @unreleased
@@ -33,22 +34,18 @@ const CustomAmount = ({
                 <span className="givewp-fields-amount__input--currency-symbol">
                     {currencySymbol}
                 </span>
-            <input
+            <CurrencyInput
                 {...register("amount-custom")}
+                intlConfig={{locale: navigator.language}}
                 className="givewp-fields-amount__input givewp-fields-amount__input--custom"
-                type="text"
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
                 name="amount-custom"
-                inputMode="numeric"
                 placeholder={__('Custom amount', 'give')}
                 defaultValue={defaultValue}
-                onChange={({target: {value}}) => {
-                    const amount = value.replace(/[^0-9.]/g, '');
-                    
-                    if (Number(amount) || !amount) {
-                        setValue('amount', amount);
-                    }
+                decimalsLimit={2}
+                onValueChange={(value, name) => {
+                    setValue('amount', value ?? null);
                 }}
             />
         </div>
