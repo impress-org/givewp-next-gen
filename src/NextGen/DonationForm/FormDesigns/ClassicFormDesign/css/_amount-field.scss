@@ -2,7 +2,7 @@ $borderColor: #9A9A9A;
 
 .givewp-fields-amount {
     display: grid;
-    row-gap: clamp(1.5rem, 0.679487rem + 2.5641vw, 2rem);
+    row-gap: 1.5rem;
 
     &__directions {
         display: flex;
@@ -32,8 +32,6 @@ $borderColor: #9A9A9A;
 
     &__input {
         position: relative;
-        inline-size: 100%;
-        padding-inline: 0.45em;
         background-color: rgb(255, 255, 255);
         font-family: inherit;
         font-size: 2rem;
@@ -45,12 +43,9 @@ $borderColor: #9A9A9A;
         width: 100%;
 
         &::placeholder {
+            opacity: 0.6;
             font-weight: 300;
-            letter-spacing: normal;
-            font-size: 1.5rem;
-            position: absolute;
-            top: 0.5rem;
-            color: #828282
+            color: #828282;
         }
 
         &--container {
@@ -61,6 +56,8 @@ $borderColor: #9A9A9A;
             border-style: solid;
             border-color: $borderColor;
             border-radius: 0.5rem;
+            gap: 1rem;
+            padding: 1rem 0;
 
             &.invalid {
                 border-color: red;
@@ -73,19 +70,18 @@ $borderColor: #9A9A9A;
 
         &--currency-symbol {
             display: block;
-            padding: 1rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
             color: rgb(85, 85, 85);
             font-size: 1.375rem;
             font-weight: 500;
             border-right: 1px solid #D9D9D9;
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
         }
     }
 
     &__levels--container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(clamp(6.625rem, 0.471154rem + 19.2308vw, 10.375rem), 1fr));
+        grid-template-columns: repeat(3, 1fr);
         grid-auto-rows: 1fr;
         gap: 1rem;
         inline-size: 100%;
