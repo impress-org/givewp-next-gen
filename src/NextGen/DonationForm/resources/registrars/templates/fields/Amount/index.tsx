@@ -1,56 +1,9 @@
 import {useMemo} from 'react';
 import classNames from 'classnames';
 import type {AmountProps} from '@givewp/forms/propTypes';
-import {__} from "@wordpress/i18n";
-import {createInterpolateElement} from "@wordpress/element";
-import CurrencyInput from "react-currency-input-field";
-
-/**
- * @unreleased
- */
-const FixedAmountMessage = ({amount}: { amount: string }) => {
-    return <div className="givewp-fields-amount__fixed-message">
-        {createInterpolateElement(
-            __('You are about to donate <amount/> to this campaign.', 'give'),
-            {
-                amount: <strong>{amount}</strong>
-            }
-        )}
-    </div>
-}
-
-/**
- * @unreleased
- */
-const CustomAmount = ({
-                          defaultValue,
-                          fieldError,
-                          currencySymbol,
-                      }: { fieldError?: string, currencySymbol: string, defaultValue?: number }) => {
-    const {useFormContext} = window.givewp.form.hooks;
-    const {setValue, register} = useFormContext();
-    return (
-        <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
-                <span className="givewp-fields-amount__input--currency-symbol">
-                    {currencySymbol}
-                </span>
-            <CurrencyInput
-                {...register("amount-custom")}
-                intlConfig={{locale: navigator.language}}
-                className="givewp-fields-amount__input givewp-fields-amount__input--custom"
-                aria-invalid={fieldError ? 'true' : 'false'}
-                id="amount-custom"
-                name="amount-custom"
-                placeholder={__('Custom amount', 'give')}
-                defaultValue={defaultValue}
-                decimalsLimit={2}
-                onValueChange={(value, name) => {
-                    setValue('amount', value ?? null);
-                }}
-            />
-        </div>
-    );
-}
+import FixedAmountMessage from './FixedAmountMessage';
+import CustomAmount from './CustomAmount';
+import AmountLevels from './AmountLevels';
 
 /**
  * @unreleased add support for allowing levels and fixed amount
@@ -68,7 +21,7 @@ export default function Amount({
                                    fixedAmountValue,
                                    allowCustomAmount,
                                }: AmountProps) {
-    const {useWatch, useFormContext} = window.givewp.form.hooks;
+    const {useWatch} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
     const formatter = useMemo(
         () =>
@@ -101,7 +54,7 @@ export default function Amount({
             </div>
 
             {allowLevels && (
-                <AmountButtons name={name} currency={currency} levels={levels}/>
+                <AmountLevels name={name} currency={currency} levels={levels}/>
             )}
 
             {allowCustomAmount && (
