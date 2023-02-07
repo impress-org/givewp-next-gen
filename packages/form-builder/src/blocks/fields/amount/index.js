@@ -59,11 +59,18 @@ const amount = {
             },
             recurringBillingPeriod: {
                 type: 'string',
-                default: 'monthly',
+                default: 'month',
+            },
+            recurringBillingPeriodOptions: {
+                type: 'array',
+                default: [
+                    'week',
+                    'month',
+                ],
             },
             recurringLengthOfTime: {
                 type: 'string',
-                default: 'ongoing',
+                default: '0', // ongoing
             },
             recurringOptInDefault: {
                 type: 'boolean',

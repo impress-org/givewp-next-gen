@@ -425,3 +425,38 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 .components-base-control.components-checkbox-control {
     margin: 5px 0;
 }
+
+.give-billing-period-control {
+
+    .components-flex {
+        display: flex;
+        gap: 4px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .components-radio-control__option {
+        flex: 1;
+        text-align: center;
+
+        input {
+            display: none;
+
+            & + label {
+                cursor: pointer;
+                display: block;
+                padding: 12px 8px;
+                border-radius: 2px;
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 16px;
+                background-color: var(--givewp-gray-20);
+            }
+
+            &:checked + label {
+                outline: 1px solid var(--givewp-gray-40);
+            }
+        }
+    }
+}
