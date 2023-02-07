@@ -1,24 +1,33 @@
 import classNames from 'classnames';
 import {__} from "@wordpress/i18n";
 import CurrencyInput from "react-currency-input-field";
+import {forwardRef} from "@wordpress/element";
 
 /**
  * @unreleased
  */
-export default function CustomAmount({
-                          defaultValue,
-                          fieldError,
-                          currencySymbol,
-                      }: { fieldError?: string, currencySymbol: string, defaultValue?: number }) {
-    const {useFormContext} = window.givewp.form.hooks;
-    const {setValue, register} = useFormContext();
+type CustomAmountProps = {
+    fieldError?: string;
+    currencySymbol: string;
+    defaultValue?: number;
+    onValueChange?: (value: string) => void;
+}
+
+/**
+ * @unreleased
+ */
+const CustomAmount = forwardRef(({
+                                     defaultValue,
+                                     fieldError,
+                                     currencySymbol,
+                                     onValueChange,
+                                 }: CustomAmountProps, inputRef) => {
     return (
         <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
                 <span className="givewp-fields-amount__input--currency-symbol">
                     {currencySymbol}
                 </span>
             <CurrencyInput
-                {...register("amount-custom")}
                 intlConfig={{locale: navigator.language}}
                 className="givewp-fields-amount__input givewp-fields-amount__input--custom"
                 aria-invalid={fieldError ? 'true' : 'false'}
@@ -28,9 +37,14 @@ export default function CustomAmount({
                 defaultValue={defaultValue}
                 decimalsLimit={2}
                 onValueChange={(value, name) => {
-                    setValue('amount', value ?? null);
+                    onValueChange(value);
                 }}
+                customInput={forwardRef((props, ref) => {
+                    return <input {...props} ref={inputRef}/>
+                })}
             />
         </div>
     );
-}
+});
+
+export default CustomAmount;

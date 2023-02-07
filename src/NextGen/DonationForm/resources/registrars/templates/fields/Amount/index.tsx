@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {useMemo, useRef} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import FixedAmountMessage from './FixedAmountMessage';
 import CustomAmount from './CustomAmount';
@@ -20,6 +20,7 @@ export default function Amount({
                                    fixedAmountValue,
                                    allowCustomAmount,
                                }: AmountProps) {
+    const customAmountInputRef = useRef<HTMLInputElement>(null);
     const {useWatch, useFormContext} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
@@ -35,6 +36,7 @@ export default function Amount({
 
     const isFixedAmount = !allowLevels;
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
+    const resetCustomAmountInput = () => customAmountInputRef.current.value = '';
 
     return (
         <>
@@ -60,7 +62,7 @@ export default function Amount({
                     currency={currency}
                     levels={levels}
                     onLevelClick={(levelAmount) => {
-                        setValue('amount-custom', null);
+                        resetCustomAmountInput();
                         setValue(name, levelAmount);
                     }}
                 />
@@ -68,9 +70,13 @@ export default function Amount({
 
             {allowCustomAmount && (
                 <CustomAmount
+                    ref={customAmountInputRef}
                     fieldError={fieldError}
                     defaultValue={isFixedAmount ? fixedAmountValue : null}
                     currencySymbol={currencySymbol}
+                    onValueChange={(value) => {
+                        setValue(name, value ?? null)
+                    }}
                 />
             )}
 
