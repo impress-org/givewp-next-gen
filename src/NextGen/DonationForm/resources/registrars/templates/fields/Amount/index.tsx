@@ -1,4 +1,4 @@
-import {useMemo, useRef} from '@wordpress/element';
+import {useRef} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import FixedAmountMessage from './FixedAmountMessage';
 import CustomAmount from './CustomAmount';
@@ -21,17 +21,10 @@ export default function Amount({
                                    allowCustomAmount,
                                }: AmountProps) {
     const customAmountInputRef = useRef<HTMLInputElement>(null);
-    const {useWatch, useFormContext} = window.givewp.form.hooks;
+    const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
-    const formatter = useMemo(
-        () =>
-            new Intl.NumberFormat(navigator.language, {
-                style: 'currency',
-                currency: currency,
-            }),
-        [currency, navigator.language]
-    );
+    const formatter = useCurrencyFormatter(currency);
     const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
 
     const isFixedAmount = !allowLevels;
