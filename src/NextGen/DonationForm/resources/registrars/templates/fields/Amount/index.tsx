@@ -1,5 +1,4 @@
 import {useMemo} from 'react';
-import classNames from 'classnames';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import FixedAmountMessage from './FixedAmountMessage';
 import CustomAmount from './CustomAmount';
@@ -21,7 +20,8 @@ export default function Amount({
                                    fixedAmountValue,
                                    allowCustomAmount,
                                }: AmountProps) {
-    const {useWatch} = window.givewp.form.hooks;
+    const {useWatch, useFormContext} = window.givewp.form.hooks;
+    const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
     const formatter = useMemo(
         () =>
@@ -31,6 +31,7 @@ export default function Amount({
             }),
         [currency, navigator.language]
     );
+    const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
 
     const isFixedAmount = !allowLevels;
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
@@ -49,19 +50,27 @@ export default function Amount({
                 {/* TODO: Control currency input from here*/}
                 <span className="givewp-fields-amount__currency--container">
                     <span>{currency}</span>
-                    <span>{formatter.formatToParts().find(({type}) => type === 'currency').value}</span>
+                    <span>{currencySymbol}</span>
                 </span>
             </div>
 
             {allowLevels && (
-                <AmountLevels name={name} currency={currency} levels={levels}/>
+                <AmountLevels
+                    name={name}
+                    currency={currency}
+                    levels={levels}
+                    onLevelClick={(levelAmount) => {
+                        setValue('amount-custom', null);
+                        setValue(name, levelAmount);
+                    }}
+                />
             )}
 
             {allowCustomAmount && (
                 <CustomAmount
                     fieldError={fieldError}
                     defaultValue={isFixedAmount ? fixedAmountValue : null}
-                    currencySymbol={formatter.formatToParts().find(({type}) => type === 'currency').value}
+                    currencySymbol={currencySymbol}
                 />
             )}
 
@@ -78,43 +87,5 @@ export default function Amount({
 
             <ErrorMessage/>
         </>
-    );
-}
-
-function AmountButtons({name, currency, levels}: { name: string; currency: string; levels: Number[] }) {
-    const {useFormContext, useWatch} = window.givewp.form.hooks;
-    const {setValue, setFocus} = useFormContext();
-    const amount = useWatch({name});
-    const formatter = useMemo(
-        () =>
-            new Intl.NumberFormat(navigator.language, {
-                style: 'currency',
-                currency: currency,
-            }),
-        [currency, navigator.language]
-    );
-
-    return (
-        <div className="givewp-fields-amount__levels--container">
-            {levels.map((levelAmount, index) => {
-                const label = formatter.format(Number(levelAmount));
-                const selected = levelAmount === Number(amount);
-                return (
-                    <button
-                        className={classNames('givewp-fields-amount__level', {
-                            'givewp-fields-amount__level--selected': selected,
-                        })}
-                        type="button"
-                        onClick={() => {
-                            setValue('amount-custom', null);
-                            setValue(name, levelAmount);
-                        }}
-                        key={index}
-                    >
-                        {label}
-                    </button>
-                );
-            })}
-        </div>
     );
 }

@@ -1,9 +1,13 @@
 import {useMemo} from 'react';
 import classNames from 'classnames';
 
-export default function AmountLevels({name, currency, levels}: { name: string; currency: string; levels: Number[] }) {
-    const {useFormContext, useWatch} = window.givewp.form.hooks;
-    const {setValue, setFocus} = useFormContext();
+export default function AmountLevels({
+                                         name,
+                                         currency,
+                                         levels,
+                                         onLevelClick
+                                     }: { name: string; currency: string; levels: Number[]; onLevelClick?: (amount: Number) => void }) {
+    const {useWatch} = window.givewp.form.hooks;
     const amount = useWatch({name});
     const formatter = useMemo(
         () =>
@@ -26,8 +30,7 @@ export default function AmountLevels({name, currency, levels}: { name: string; c
                         })}
                         type="button"
                         onClick={() => {
-                            setValue('amount-custom', null);
-                            setValue(name, levelAmount);
+                            onLevelClick(levelAmount);
                         }}
                         key={index}
                     >
