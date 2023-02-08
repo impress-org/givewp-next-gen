@@ -211,11 +211,11 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelRow>)}
                 { !! recurringEnabled && (<PanelRow>
                     <SelectControl
-                        label={__('Length of time', 'give')}
+                        label={__('Number of Payments', 'give')}
                         options={
                             [{label: __('Ongoing', 'give'), value: 0}].concat(
                                 [...Array(24+1).keys()].slice(2).map((value) => ({
-                                    label: sprintf(__('%d times', 'give'), value),
+                                    label: sprintf(__('%d payments', 'give'), value),
                                     value: value,
                                 }))
                             )

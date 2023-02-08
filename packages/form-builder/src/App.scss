@@ -456,7 +456,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
             }
 
             &:checked + label {
-                outline: 1px solid var(--givewp-gray-40);
+                // (Maybe) Differentiate the selected billing period.
             }
         }
     }

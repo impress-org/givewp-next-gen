@@ -110,20 +110,26 @@ const Edit = ({attributes, setAttributes}) => {
 
     const RecurringMessage = () => {
 
-        const periodPlaceholder = <strong>{'[' + __('period', 'give') + ']'}</strong>;
+        const interval = parseInt(recurringBillingInterval);
 
-        const periodsCount = parseInt(recurringLengthOfTime);
+        const periodPlaceholder = <strong>{'[' + _n('period', 'periods',  interval, 'give') + ']'}</strong>;
 
-        const translatableString = !periodsCount
-            ? __('This donation occurs every <periodForInterval />.', 'give')
-            : __('This donation occurs every <periodForInterval /> for <count /> <periodForCount />.', 'give')
-        ;
+        const periodElement = !isRecurringDonorChoice
+            ? <RecurringPeriod count={interval} />
+            : <RecurringPeriod count={interval} label={periodPlaceholder} />
+
+        const count = parseInt(recurringLengthOfTime)
+        const countElement = <strong>{count}</strong>;
+
+        const translatableString = !count
+            ? __('This donation occurs every <period />.', 'give')
+            : __('This donation occurs every <period /> for <count /> <strong>payments</strong>.', 'give')
 
         return <Notice>{
             createInterpolateElement(translatableString, {
-                periodForInterval: !isRecurringDonorChoice ? <RecurringPeriod count={parseInt(recurringBillingInterval)} /> : <RecurringPeriod count={parseInt(recurringBillingInterval)} label={periodPlaceholder} />,
-                periodForCount: !isRecurringDonorChoice ? <strong>{periodLookup[recurringBillingPeriod].plural}</strong> : periodPlaceholder,
-                count: <strong>{periodsCount}</strong>,
+                period: periodElement,
+                count: countElement,
+                strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
             })
         }</Notice>
     }
@@ -134,7 +140,7 @@ const Edit = ({attributes, setAttributes}) => {
                 __('This donation is <amount/> every <period/>. ', 'give'),
                 {
                     amount: <strong><Currency amount={setPrice} /></strong>,
-                    period: <RecurringPeriod />,
+                    period: <RecurringPeriod count={parseInt(recurringBillingInterval)} />,
                 }
             )
         }</Notice>
@@ -174,9 +180,12 @@ const Edit = ({attributes, setAttributes}) => {
 
             { isRecurringDonorChoice && <BillingPeriodControl options={recurringBillingPeriodOptions} /> }
             { isRecurringDonorPreset && <BillingPeriodControl options={[recurringBillingPeriod]} /> }
+
             { isMultiLevel && <DonationLevels /> }
             { customAmount && <CustomAmount /> }
+
             { isMultiLevel && recurringEnabled && <RecurringMessage /> }
+
             { isFixedAmount && isRecurringAdmin && <FixedRecurringMessage /> }
             { isFixedAmount && isRecurringDonorChoice && <FixedRecurringMessage />}
             { isFixedAmount && ! isRecurringAdmin && ! isRecurringDonorChoice && ! customAmount && <FixedPriceMessage />}
