@@ -29,7 +29,7 @@ export default function Amount({
 
     const isFixedAmount = !allowLevels;
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
-    const resetCustomAmountInput = () => customAmountInputRef.current.value = '';
+    const resetCustomAmountInput = () => customAmountInputRef.current.value = "";
 
     return (
         <>
@@ -66,6 +66,7 @@ export default function Amount({
                     ref={customAmountInputRef}
                     fieldError={fieldError}
                     defaultValue={isFixedAmount ? fixedAmountValue : null}
+                    currency={currency}
                     currencySymbol={currencySymbol}
                     onValueChange={(value) => {
                         setValue(name, value ?? null)

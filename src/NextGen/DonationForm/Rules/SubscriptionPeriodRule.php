@@ -47,6 +47,6 @@ class SubscriptionPeriodRule implements ValidationRule, ValidatesOnFrontEnd {
 
     public function serializeOption()
     {
-        return null;
+        // TODO: Implement serializeOption() method.
     }
 }

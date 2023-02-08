@@ -26,8 +26,6 @@ mountWindowData();
  */
 const defaultValues = getDefaultValuesFromSections(form.nodes);
 
-console.log(form.nodes)
-
 const schema = getJoiRulesForForm(form);
 
 const initialState = {
