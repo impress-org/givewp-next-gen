@@ -40,7 +40,6 @@ const Inspector = ({attributes, setAttributes}) => {
         });
     }
 
-
     return (
         <InspectorControls>
             <PanelBody title={__('Donation Options', 'give')} initialOpen={true}>

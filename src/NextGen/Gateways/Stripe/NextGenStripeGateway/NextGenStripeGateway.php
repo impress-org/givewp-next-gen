@@ -8,17 +8,19 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\HasRequest;
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\Support\ValueObjects\Money;
 use Stripe\Exception\ApiErrorException;
 
+use function rawurldecode;
+
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
-    use HasRequest;
     use NextGenStripeRepository;
+    use HandleHttpResponses;
 
     /**
      * @inheritDoc
@@ -41,7 +43,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getName(): string
     {
-        return __('Next Gen Stripe', 'give');
+        return __('Stripe (Next Gen)', 'give');
     }
 
     /**
@@ -49,11 +51,11 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Next Gen Stripe', 'give');
+        return __('Stripe (Next Gen)', 'give');
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function enqueueScript(): EnqueueScript
     {
@@ -67,7 +69,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @throws ApiErrorException
      */
     public function formSettings(int $formId): array
@@ -103,15 +105,13 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $redirectReturnUrl = $gatewayData['redirectReturnUrl'];
+        $redirectReturnUrl = rawurldecode($gatewayData['successUrl']);
 
         /**
          * Get or create a Stripe customer
          */
-        $customer = $this->getOrCreateStripeCustomerFromDonation(
-            $stripeConnectedAccountKey,
-            $donation
-        );
+        $customer = $this->getOrCreateStripeCustomerFromDonation($stripeConnectedAccountKey, $donation);
+
 
         /**
          * Setup Stripe Payment Intent args
@@ -145,7 +145,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        return 'Legacy Stripe Fields Not Supported.';
+        return false;
     }
 
     /**
@@ -154,5 +154,13 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supportsLegacyForm(): bool
+    {
+        return false;
     }
 }

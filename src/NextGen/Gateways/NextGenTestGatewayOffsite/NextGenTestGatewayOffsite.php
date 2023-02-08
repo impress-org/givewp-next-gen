@@ -6,17 +6,18 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\HasRequest;
+use Give\NextGen\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
-    use HasRequest;
+    use HandleHttpResponses;
 
     /**
      * @inheritDoc
@@ -46,7 +47,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getName(): string
     {
-        return __('Test Gateway Next Gen Offsite', 'give');
+        return __('Test Gateway Offsite (Next Gen)', 'give');
     }
 
     /**
@@ -54,11 +55,11 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway Next Gen Offsite', 'give');
+        return __('Test Gateway Offsite (Next Gen)', 'give');
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return EnqueueScript
      */
@@ -83,7 +84,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
             $donation->id,
             [
                 'givewp-donation-id' => $donation->id,
-                'givewp-return-url' => rawurlencode($gatewayData['redirectReturnUrl'])
+                'givewp-return-url' => $gatewayData['successUrl']
             ]
         );
 
@@ -91,18 +92,18 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     }
 
     /**
-     * @unreleased
-     * 
+     * @since 0.1.0
+     *
      * @throws Exception
      */
-    protected function securelyReturnFromOffsiteRedirect(array $queryParams)
+    protected function securelyReturnFromOffsiteRedirect(array $queryParams): RedirectResponse
     {
         /** @var Donation $donation */
         $donation = Donation::find($queryParams['givewp-donation-id']);
         $donation->status = DonationStatus::COMPLETE();
         $donation->save();
 
-        wp_redirect($queryParams['givewp-return-url']);
+        return new RedirectResponse($queryParams['givewp-return-url']);
     }
 
     /**
@@ -110,7 +111,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        return 'Legacy Stripe Fields Not Supported.';
+        return false;
     }
 
     /**
@@ -122,7 +123,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @inerhitDoc
      */
@@ -134,5 +135,13 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
                 'give'
             ),
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supportsLegacyForm(): bool
+    {
+        return false;
     }
 }

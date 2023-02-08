@@ -13,7 +13,7 @@ class StoreCustomFields
      * schema settings to the request.  Once a field has passed validation, we can determine
      * its storage location from the fields api.  This Action is designed to be triggered post-validation.
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -29,7 +29,7 @@ class StoreCustomFields
 
                 if ($field->shouldStoreAsDonorMeta()) {
                     // save as donor meta
-                    give()->donor_meta->add_meta($donation->donorId, $field->getName(), $value);
+                    give()->donor_meta->update_meta($donation->donorId, $field->getName(), $value);
                 } else {
                     // save as donation meta
                     give()->payment_meta->update_meta($donation->id, $field->getName(), $value);

@@ -16,7 +16,7 @@ use Give\NextGen\Framework\TemplateTags\DonationTemplateTags;
 class GenerateConfirmationPageReceipt
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __invoke(DonationReceipt $receipt): DonationReceipt
     {
@@ -30,7 +30,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getCustomFields(Donation $donation): array
     {
@@ -48,15 +48,21 @@ class GenerateConfirmationPageReceipt
 
         return array_map(static function (Field $field) use ($donation) {
             /** @var Field|HasLabel|HasName $field */
+            if ($field->shouldStoreAsDonorMeta()) {
+                $value = give()->donor_meta->get_meta($donation->donor->id, $field->getName(), true);
+            } else {
+                $value = give()->payment_meta->get_meta($donation->id, $field->getName(), true);
+            }
+
             return new ReceiptDetail(
                 $field->getLabel(),
-                give()->payment_meta->get_meta($donation->id, $field->getName(), true)
+                $value
             );
         }, $customFields);
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -101,7 +107,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -122,7 +128,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -143,7 +149,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -185,7 +191,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     private function fillSettings(DonationReceipt $receipt)
     {
@@ -206,7 +212,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  int  $formId
      * @return DonationForm|null
@@ -221,7 +227,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
     {
@@ -235,7 +241,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
     {
