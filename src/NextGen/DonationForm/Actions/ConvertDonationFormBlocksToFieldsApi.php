@@ -20,6 +20,7 @@ use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\DonationForm\Rules\DonationTypeRule;
+use Give\NextGen\DonationForm\Rules\Size;
 use Give\NextGen\DonationForm\Rules\SubscriptionFrequencyRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
@@ -165,7 +166,9 @@ class ConvertDonationFormBlocksToFieldsApi
 
             if (!$block->getAttribute('customAmount') &&
                 $block->getAttribute('priceOption') === 'set') {
-                $amountRules[] = 'size:' . (int)$block->getAttribute('setPrice');
+                $size = $block->getAttribute('setPrice');
+
+                $amountRules[] = new Size($size);
             }
 
             if ($block->getAttribute('customAmount')) {
