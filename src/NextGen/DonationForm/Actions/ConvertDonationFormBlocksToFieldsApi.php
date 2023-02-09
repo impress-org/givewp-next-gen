@@ -20,6 +20,9 @@ use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\DonationForm\Rules\DonationTypeRule;
+use Give\NextGen\DonationForm\Rules\Max;
+use Give\NextGen\DonationForm\Rules\Min;
+use Give\NextGen\DonationForm\Rules\Size;
 use Give\NextGen\DonationForm\Rules\SubscriptionFrequencyRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
@@ -161,22 +164,22 @@ class ConvertDonationFormBlocksToFieldsApi
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
         return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
-            $amountRules = ['required', 'integer'];
+            $amountRules = ['required', 'numeric'];
 
             if (!$block->getAttribute('customAmount') &&
                 $block->getAttribute('priceOption') === 'set') {
                 $size = $block->getAttribute('setPrice');
 
-                $amountRules[] = "size:{$size}";
+                $amountRules[] = new Size($size);
             }
 
             if ($block->getAttribute('customAmount')) {
                 if ($block->hasAttribute('customAmountMin')) {
-                    $amountRules[] = "min:{$block->getAttribute('customAmountMin')}";
+                    $amountRules[] = new Min($block->getAttribute('customAmountMin'));
                 }
 
                 if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
-                    $amountRules[] = "max:{$block->getAttribute('customAmountMax')}";
+                    $amountRules[] = new Max($block->getAttribute('customAmountMax'));
                 }
             }
 
