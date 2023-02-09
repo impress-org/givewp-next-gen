@@ -49,7 +49,7 @@ class ConvertDonationFormBlocksToFieldsApi
     {
         $this->formId = $formId;
         $this->currency = give_get_currency($formId);
-        
+
         $form = new Form('donation-form');
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
@@ -100,7 +100,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "custom-block-editor/paragraph":
                 return Paragraph::make(substr(md5(mt_rand()), 0, 7))
-                    ->content($block->attributes['content']);
+                    ->content($block->getAttribute('content'));
 
             case "custom-block-editor/email-field":
                 return Email::make('email')
@@ -119,7 +119,9 @@ class ConvertDonationFormBlocksToFieldsApi
 
             default:
                 return Text::make(
-                    $block->hasAttribute('fieldName') ? $block->getAttribute('fieldName') : $block->clientId
+                    $block->hasAttribute('fieldName') ?
+                        $block->getAttribute('fieldName') :
+                        $block->clientId
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
@@ -133,20 +135,20 @@ class ConvertDonationFormBlocksToFieldsApi
     {
         return Name::make('name')->tap(function ($group) use ($block) {
             $group->getNodeByName('firstName')
-                ->label($block->attributes['firstNameLabel'])
-                ->placeholder($block->attributes['firstNamePlaceholder'])
+                ->label($block->getAttribute('firstNameLabel'))
+                ->placeholder($block->getAttribute('firstNamePlaceholder'))
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('lastName')
-                ->label($block->attributes['lastNameLabel'])
-                ->placeholder($block->attributes['lastNamePlaceholder'])
-                ->required($block->attributes['requireLastName'])
+                ->label($block->getAttribute('lastNameLabel'))
+                ->placeholder($block->getAttribute('lastNamePlaceholder'))
+                ->required($block->getAttribute('requireLastName'))
                 ->rules('max:255');
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')
                     ->label('Title')
-                    ->options(...$block->attributes['honorifics']);
+                    ->options(...$block->getAttribute('honorifics'));
             } else {
                 $group->remove('honorific');
             }
@@ -161,7 +163,12 @@ class ConvertDonationFormBlocksToFieldsApi
         return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
             $amountRules = ['required', 'numeric'];
 
-            if ($block->hasAttribute('customAmount') && $block->getAttribute('customAmount') === true) {
+            if (!$block->getAttribute('customAmount') &&
+                $block->getAttribute('priceOption') === 'set') {
+                $amountRules[] = 'size:' . (int)$block->getAttribute('setPrice');
+            }
+
+            if ($block->getAttribute('customAmount')) {
                 if ($block->hasAttribute('customAmountMin')) {
                     $amountRules[] = "min:{$block->getAttribute('customAmountMin')}";
                 }
@@ -175,15 +182,14 @@ class ConvertDonationFormBlocksToFieldsApi
             $amount = $group->getNodeByName('amount');
             $amount
                 ->label(__('Donation Amount', 'give'))
-                ->attributes($block->attributes)
-                ->levels(...array_map('absint', $block->attributes['levels']))
-                ->allowLevels($block->attributes['priceOption'] === 'multi')
-                ->allowCustomAmount($block->attributes['customAmount'])
-                ->fixedAmountValue($block->hasAttribute('setPrice') ? $block->attributes['setPrice'] : null)
+                ->levels(...array_map('absint', $block->getAttribute('levels')))
+                ->allowLevels($block->getAttribute('priceOption') === 'multi')
+                ->allowCustomAmount($block->getAttribute('customAmount'))
+                ->fixedAmountValue($block->hasAttribute('setPrice') ? $block->getAttribute('setPrice') : null)
                 ->defaultValue(
-                    $block->attributes['priceOption'] === 'set' && $block->hasAttribute(
-                        'setPrice'
-                    ) ? $block->attributes['setPrice'] : 50
+                    $block->hasAttribute('setPrice') &&
+                    $block->getAttribute('priceOption') === 'set' ?
+                        $block->getAttribute('setPrice') : 50
                 )
                 ->rules(...$amountRules);
 
@@ -228,26 +234,26 @@ class ConvertDonationFormBlocksToFieldsApi
         if ('field' === $node->getNodeType()) {
             // Label
             if ($block->hasAttribute('label')) {
-                $node->label($block->attributes['label']);
+                $node->label($block->getAttribute('label'));
             }
 
             // Placeholder
             if ($block->hasAttribute('placeholder')) {
-                $node->placeholder($block->attributes['placeholder']);
+                $node->placeholder($block->getAttribute('placeholder'));
             }
 
             // Required
             if ($block->hasAttribute('isRequired')) {
-                $node->required($block->attributes['isRequired']);
+                $node->required($block->getAttribute('isRequired'));
             }
 
-            if ($block->hasAttribute('displayInAdmin') && $block->attributes['displayInAdmin']) {
-                $node->displayInAdmin = $block->attributes['displayInAdmin'];
+            if ($block->hasAttribute('displayInAdmin') && $block->getAttribute('displayInAdmin')) {
+                $node->displayInAdmin = $block->getAttribute('displayInAdmin');
             }
 
             /** TODO: ask kyle about $node->showInReceipt() */
-            if ($block->hasAttribute('displayInReceipt') && $block->attributes['displayInReceipt']) {
-                $node->displayInReceipt = $block->attributes['displayInReceipt'];
+            if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
+                $node->displayInReceipt = $block->getAttribute('displayInReceipt');
             }
         }
 
