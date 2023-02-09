@@ -35,6 +35,10 @@ class ConvertDonationFormBlocksToFieldsApi
      * @var int
      */
     protected $formId;
+    /**
+     * @var string
+     */
+    protected $currency;
 
     /**
      * @since 0.1.0
@@ -43,9 +47,10 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     public function __invoke(BlockCollection $blocks, int $formId): Form
     {
-        $form = new Form('donation-form');
         $this->formId = $formId;
-
+        $this->currency = give_get_currency($formId);
+        
+        $form = new Form('donation-form');
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
             $blockIndex++;
@@ -185,7 +190,7 @@ class ConvertDonationFormBlocksToFieldsApi
             /** @var Hidden $currency */
             $currency = $group->getNodeByName('currency');
             $currency
-                ->defaultValue(give_get_currency($this->formId))
+                ->defaultValue($this->currency)
                 ->rules('required', 'currency');
 
             /** @var Hidden $donationType */
