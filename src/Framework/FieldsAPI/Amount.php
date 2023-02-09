@@ -31,7 +31,7 @@ class Amount extends Field
     protected $allowLevels = false;
 
     /**
-     * @var int
+     * @var float|int
      */
     protected $fixedAmountValue;
 
@@ -95,8 +95,10 @@ class Amount extends Field
 
     /**
      * @unreleased
+     *
+     * @param  float|int  $amount
      */
-    public function fixedAmountValue(int $amount): Amount
+    public function fixedAmountValue($amount): Amount
     {
         $this->fixedAmountValue = $amount;
 

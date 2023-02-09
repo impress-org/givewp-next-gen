@@ -20,7 +20,6 @@ use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\DonationForm\Rules\DonationTypeRule;
-use Give\NextGen\DonationForm\Rules\Size;
 use Give\NextGen\DonationForm\Rules\SubscriptionFrequencyRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
@@ -162,13 +161,13 @@ class ConvertDonationFormBlocksToFieldsApi
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
         return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
-            $amountRules = ['required', 'numeric'];
+            $amountRules = ['required', 'integer'];
 
             if (!$block->getAttribute('customAmount') &&
                 $block->getAttribute('priceOption') === 'set') {
                 $size = $block->getAttribute('setPrice');
 
-                $amountRules[] = new Size($size);
+                $amountRules[] = "size:{$size}";
             }
 
             if ($block->getAttribute('customAmount')) {
@@ -188,9 +187,8 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->levels(...array_map('absint', $block->getAttribute('levels')))
                 ->allowLevels($block->getAttribute('priceOption') === 'multi')
                 ->allowCustomAmount($block->getAttribute('customAmount'))
-                ->fixedAmountValue($block->hasAttribute('setPrice') ? $block->getAttribute('setPrice') : null)
+                ->fixedAmountValue($block->getAttribute('setPrice'))
                 ->defaultValue(
-                    $block->hasAttribute('setPrice') &&
                     $block->getAttribute('priceOption') === 'set' ?
                         $block->getAttribute('setPrice') : 50
                 )
