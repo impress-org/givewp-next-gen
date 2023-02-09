@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import {__} from "@wordpress/i18n";
 import CurrencyInput from "react-currency-input-field";
 import {forwardRef} from "@wordpress/element";
-import {ForwardedRef} from "react";
+import {ForwardedRef, RefObject} from "react";
 
 /**
  * @unreleased
@@ -41,13 +41,17 @@ const CustomAmount = forwardRef(({
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
                 name="amount-custom"
-                placeholder={__('Enter custom amount', 'give')}
+                placeholder={__('Custom amount', 'give')}
                 defaultValue={defaultValue}
                 decimalsLimit={2}
-                onValueChange={(value, name) => {
-                    onValueChange(value);
-                }}
-                customInput={forwardRef((props, ref: ForwardedRef<HTMLInputElement>) => {
+                onValueChange={onValueChange}
+                customInput={forwardRef((props, ref: RefObject<HTMLInputElement>) => {
+                    // This is necessary to make sure the internal value of the controlled input gets cleared when the ref is updated.
+                    // Otherwise, the input will remember the previous value before the ref value was updated which is not ideal.
+                    if (ref?.current?.value === '') {
+                        props = {...props, value: ''};
+                    }
+
                     return <input {...props} ref={ref}/>
                 })}
             />

@@ -29,7 +29,10 @@ export default function Amount({
 
     const isFixedAmount = !allowLevels;
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
-    const resetCustomAmountInput = () => customAmountInputRef.current.value = "";
+    const resetCustomAmountInput = () => {
+        customAmountInputRef.current.value = '';
+        customAmountInputRef.current.attributes.getNamedItem("value").value = '';
+    }
 
     return (
         <>
