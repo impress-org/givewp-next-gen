@@ -79,7 +79,7 @@ class DonateControllerData
      */
     public $frequency;
     /**
-     * @var string
+     * @var string|null
      */
     public $period;
     /**
