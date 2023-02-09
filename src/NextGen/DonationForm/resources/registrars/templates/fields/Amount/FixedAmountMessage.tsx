@@ -7,7 +7,7 @@ import {createInterpolateElement} from "@wordpress/element";
 export default function FixedAmountMessage({amount}: { amount: string }) {
     return <div className="givewp-fields-amount__fixed-message">
         {createInterpolateElement(
-            __('You are about to donate <amount/> to this campaign.', 'give'),
+            __('This donation is <amount/>', 'give'),
             {
                 amount: <strong>{amount}</strong>
             }
