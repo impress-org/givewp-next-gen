@@ -9,7 +9,6 @@ const requiredMessage = sprintf(
 );
 
 export default function getJoiRulesForForm(form: Form): ObjectSchema {
-    console.log(form);
     const joiRules = form.reduceNodes(
         (rules, field: Field) => {
             rules[field.name] = getJoiRulesForField(field);
