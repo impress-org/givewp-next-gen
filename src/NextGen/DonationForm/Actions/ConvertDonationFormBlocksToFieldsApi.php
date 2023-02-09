@@ -156,12 +156,14 @@ class ConvertDonationFormBlocksToFieldsApi
         return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
             $amountRules = ['required', 'numeric'];
 
-            if ($block->hasAttribute('minimumAmount')) {
-                $amountRules[] = "min:{$block->getAttribute('minimumAmount')}";
-            }
+            if ($block->hasAttribute('customAmount') && $block->getAttribute('customAmount') === true) {
+                if ($block->hasAttribute('customAmountMin')) {
+                    $amountRules[] = "min:{$block->getAttribute('customAmountMin')}";
+                }
 
-            if ($block->hasAttribute('maximumAmount')) {
-                $amountRules[] = "max:{$block->getAttribute('maximumAmount')}";
+                if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
+                    $amountRules[] = "max:{$block->getAttribute('customAmountMax')}";
+                }
             }
 
             /** @var Amount $amount */
