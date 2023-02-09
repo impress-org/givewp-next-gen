@@ -34,10 +34,6 @@ class Amount extends Field
      * @var int
      */
     protected $fixedAmountValue;
-    /**
-     * @var array
-     */
-    protected $attributes;
 
     /**
      * Set the preset donation levels. Provide levels in minor units.
@@ -93,16 +89,6 @@ class Amount extends Field
     public function customAmountText(string $customAmountText): Amount
     {
         $this->customAmountText = $customAmountText;
-
-        return $this;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function attributes(array $array): Amount
-    {
-        $this->attributes = $array;
 
         return $this;
     }
