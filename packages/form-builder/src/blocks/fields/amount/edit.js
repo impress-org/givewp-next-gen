@@ -12,8 +12,6 @@ const Edit = ({attributes, setAttributes}) => {
         priceOption,
         setPrice,
         customAmount,
-        customAmountMin,
-        customAmountMax,
     } = attributes;
 
     const isMultiLevel = priceOption === 'multi';
@@ -45,7 +43,7 @@ const Edit = ({attributes, setAttributes}) => {
                 )}
                 { !!customAmount && (
                     <div>
-                        <CurrencyControl value={setPrice} />
+                        <CurrencyControl value={setPrice}/>
                     </div>
                 )}
             </div>

@@ -1,4 +1,4 @@
-import {PanelBody, SelectControl, ToggleControl, __experimentalNumberControl as NumberControl,} from "@wordpress/components";
+import {PanelBody, SelectControl, ToggleControl,} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
@@ -32,7 +32,7 @@ const Inspector = ({attributes, setAttributes}) => {
                 {priceOption === 'set' && (
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
-                        value={setPrice}
+                        defaultValue={setPrice}
                         onValueChange={(setPrice) => setAttributes({setPrice})}
                     />
                 )}
@@ -40,13 +40,15 @@ const Inspector = ({attributes, setAttributes}) => {
             <PanelBody title={__('Custom Amount', 'give')} initialOpen={false}>
                 <ToggleControl
                     label={__('Custom Amount', 'give')}
-                    checked={customAmount}
+                    checked={!!customAmount}
                     onChange={() => setAttributes({customAmount: !customAmount})}
                 />
                 { !!customAmount && (
                     <>
-                        <CurrencyControl label={__('Minimum', 'give')} value={customAmountMin} onValueChange={(value) => setAttributes({customAmountMin: value})} />
-                        <CurrencyControl label={__('Maximum', 'give')} value={customAmountMax} onValueChange={(value) => setAttributes({customAmountMax: value})} />
+                        <CurrencyControl label={__('Minimum', 'give')} defaultValue={customAmountMin}
+                                         onValueChange={(value) => setAttributes({customAmountMin: value})}/>
+                        <CurrencyControl label={__('Maximum', 'give')} defaultValue={customAmountMax}
+                                         onValueChange={(value) => setAttributes({customAmountMax: value})}/>
                     </>
                 )}
             </PanelBody>
@@ -70,7 +72,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                         alignItems: 'center',
                                     }} className={'givewp-donation-level-control'}>
                                         <CurrencyControl
-                                            value={amount}
+                                            defaultValue={amount}
                                             onValueChange={(value) => {
                                                 const newLevels = [...levels];
 
