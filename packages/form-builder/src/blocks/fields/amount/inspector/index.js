@@ -1,20 +1,12 @@
-import {PanelBody, SelectControl, ToggleControl,} from "@wordpress/components";
-import {__} from "@wordpress/i18n";
-import {InspectorControls} from "@wordpress/block-editor";
-import DeleteButton from "./delete-button";
-import AddButton from "./add-button";
-import {CurrencyControl} from "../../../../common/currency";
+import {PanelBody, SelectControl, ToggleControl} from '@wordpress/components';
+import {__} from '@wordpress/i18n';
+import {InspectorControls} from '@wordpress/block-editor';
+import DeleteButton from './delete-button';
+import AddButton from './add-button';
+import {CurrencyControl} from '@givewp/form-builder/common/currency';
 
 const Inspector = ({attributes, setAttributes}) => {
-
-    const {
-        levels,
-        priceOption,
-        setPrice,
-        customAmount,
-        customAmountMin,
-        customAmountMax,
-    } = attributes;
+    const {levels, priceOption, setPrice, customAmount, customAmountMin, customAmountMax} = attributes;
 
     return (
         <InspectorControls>
@@ -27,12 +19,16 @@ const Inspector = ({attributes, setAttributes}) => {
                         {label: __('Multi-level Donation', 'give'), value: 'multi'},
                         {label: __('Fixed Donation', 'give'), value: 'set'},
                     ]}
-                    help={ 'multi' === priceOption ? __('Set multiple price donations for this form.', 'give') : __('The donation amount is fixed to the following amount:', 'give')}
+                    help={
+                        'multi' === priceOption
+                            ? __('Set multiple price donations for this form.', 'give')
+                            : __('The donation amount is fixed to the following amount:', 'give')
+                    }
                 />
                 {priceOption === 'set' && (
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
-                        defaultValue={setPrice}
+                        value={setPrice}
                         onValueChange={(setPrice) => setAttributes({setPrice})}
                     />
                 )}
@@ -43,59 +39,75 @@ const Inspector = ({attributes, setAttributes}) => {
                     checked={!!customAmount}
                     onChange={() => setAttributes({customAmount: !customAmount})}
                 />
-                { !!customAmount && (
+                {!!customAmount && (
                     <>
-                        <CurrencyControl label={__('Minimum', 'give')} defaultValue={customAmountMin}
-                                         onValueChange={(value) => setAttributes({customAmountMin: value})}/>
-                        <CurrencyControl label={__('Maximum', 'give')} defaultValue={customAmountMax}
-                                         onValueChange={(value) => setAttributes({customAmountMax: value})}/>
+                        <CurrencyControl
+                            label={__('Minimum', 'give')}
+                            value={customAmountMin}
+                            onValueChange={(value) => setAttributes({customAmountMin: value})}
+                        />
+                        <CurrencyControl
+                            label={__('Maximum', 'give')}
+                            value={customAmountMax}
+                            onValueChange={(value) => setAttributes({customAmountMax: value})}
+                        />
                     </>
                 )}
             </PanelBody>
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                {levels.length > 0 && (
-                    <ul style={{
-                        listStyleType: 'none',
-                        padding: 0,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '16px',
-                    }}>
-                        {
-                            levels.map((amount, index) => {
+                    {levels.length > 0 && (
+                        <ul
+                            style={{
+                                listStyleType: 'none',
+                                padding: 0,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '16px',
+                            }}
+                        >
+                            {levels.map((amount, index) => {
                                 return (
-                                    <li key={'level-option-inspector-' + index} style={{
-                                        display: 'flex',
-                                        gap: '16px',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                    }} className={'givewp-donation-level-control'}>
+                                    <li
+                                        key={'level-option-inspector-' + index}
+                                        style={{
+                                            display: 'flex',
+                                            gap: '16px',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                        }}
+                                        className={'givewp-donation-level-control'}
+                                    >
                                         <CurrencyControl
-                                            defaultValue={amount}
+                                            value={amount}
                                             onValueChange={(value) => {
                                                 const newLevels = [...levels];
 
                                                 newLevels[index] = value;
                                                 setAttributes({levels: newLevels});
                                             }}
+                                            label={__('amount level', 'give')}
+                                            hideLabelFromVision
                                         />
-                                        <DeleteButton onClick={() => {
-                                            levels.splice(index, 1);
-                                            setAttributes({levels: levels.slice()});
-                                        }} />
+                                        <DeleteButton
+                                            onClick={() => {
+                                                levels.splice(index, 1);
+                                                setAttributes({levels: levels.slice()});
+                                            }}
+                                        />
                                     </li>
                                 );
-                            })
-                        }
-                    </ul>
-                )}
-                <AddButton onClick={() => {
-                    const newLevels = [...levels];
-                    newLevels.push('');
-                    setAttributes({levels: newLevels});
-                }} />
-            </PanelBody>
+                            })}
+                        </ul>
+                    )}
+                    <AddButton
+                        onClick={() => {
+                            const newLevels = [...levels];
+                            newLevels.push('');
+                            setAttributes({levels: newLevels});
+                        }}
+                    />
+                </PanelBody>
             )}
         </InspectorControls>
     );
