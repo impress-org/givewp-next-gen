@@ -1,13 +1,25 @@
 import {useSelect} from '@wordpress/data';
 import {store as blockEditorStore} from '@wordpress/block-editor/build/store';
 import {__} from '@wordpress/i18n';
-import {SearchControl} from '@wordpress/block-editor';
-import {useState} from 'react';
+// @ts-ignore
+import {SearchControl} from '@wordpress/components';
+import {Fragment, useState} from 'react';
 import {BlockInstance} from '@wordpress/blocks';
 import fieldBlocks from '@givewp/form-builder/blocks/fields';
 import elementBlocks from '@givewp/form-builder/blocks/elements';
-import BlockTypesList from '@givewp/form-builder/components/forks/block-types-list';
 import {FieldBlock} from '@givewp/form-builder/types';
+import BlockTypesList from '@givewp/form-builder/components/forks/BlockTypesList';
+
+type SearchBlock = {
+    id: string;
+    name: string;
+    category: 'input' | 'content' | 'custom';
+    title: string;
+    icon: {
+        src: string;
+    };
+    isDisabled: boolean;
+};
 
 const FieldTypesList = () => {
     const [searchValue, setSearchValue] = useState<string>('');
@@ -34,7 +46,7 @@ const FieldTypesList = () => {
             },
             isDisabled: !(blockData.settings.supports.multiple ?? true) && blocksInUse.includes(blockData.name),
             // "frecency": ?, // Note: This is not FreQuency, but rather FreCency with combines Frequency with Recency for search ranking.
-        };
+        } as SearchBlock;
     });
 
     const blocksFiltered = blocks.filter((block) => block.name.includes(searchValue.toLowerCase().replace(' ', '-')));
@@ -46,33 +58,39 @@ const FieldTypesList = () => {
         },
         {
             // @todo: Figure out how to handle third-party (or add-on) field categories.
-            content: {name: 'content', label: __('Content & Media', 'give'), blocks: []},
-            input: {name: 'input', label: __('Input Fields', 'give'), blocks: []},
-            custom: {name: 'custom', label: __('Custom Fields', 'give'), blocks: []},
+            content: {
+                name: 'content',
+                label: __('Content & Media', 'give'),
+                blocks: [] as SearchBlock[],
+            },
+            input: {
+                name: 'input',
+                label: __('Input Fields', 'give'),
+                blocks: [] as SearchBlock[],
+            },
+            custom: {
+                name: 'custom',
+                label: __('Custom Fields', 'give'),
+                blocks: [] as SearchBlock[],
+            },
         }
     );
+
+    const sidebarBlocks = Object.values(blocksBySection)
+        .filter((section) => section.blocks.length)
+        .map(({name, label, blocks}, index) => {
+            return (
+                <Fragment key={index}>
+                    <h3 className="givewp-next-gen-sidebar__heading">{label}</h3>
+                    <BlockTypesList items={blocks} />
+                </Fragment>
+            );
+        });
 
     return (
         <div className="givewp-next-gen-sidebar__inner">
             <SearchControl value={searchValue} onChange={setSearchValue} />
-            <div className="givewp-next-gen-sidebar__inner--blocks">
-                {Object.values(blocksBySection)
-                    .filter((section) => section.blocks.length)
-                    .map(({name, label, blocks}) => {
-                        return (
-                            <>
-                                <h3 className="givewp-next-gen-sidebar__heading">{label}</h3>
-                                <BlockTypesList
-                                    key={name}
-                                    items={blocks}
-                                    onSelect={undefined}
-                                    children={undefined}
-                                    label={undefined}
-                                />
-                            </>
-                        );
-                    })}
-            </div>
+            <div className="givewp-next-gen-sidebar__inner--blocks">{sidebarBlocks}</div>
         </div>
     );
 };

@@ -1,12 +1,9 @@
-import {Fill, Slot} from "@wordpress/components";
+import {Fill, Slot} from '@wordpress/components';
 
 export default function Popout({children}) {
-
     return (
         <Fill name="InspectorPopout">
-            <div className="givewp-next-gen-inspector-popout">
-                {children}
-            </div>
+            <div className="givewp-next-gen-inspector-popout">{children}</div>
         </Fill>
     );
 }

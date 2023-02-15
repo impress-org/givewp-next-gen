@@ -14,18 +14,18 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {partial, noop, find} from 'lodash';
+import {find, noop, partial} from 'lodash';
 
 /**
  * WordPress dependencies
  */
-import {/* useState, */ useEffect} from '@wordpress/element';
+import {useEffect} from '@wordpress/element';
 import {useInstanceId} from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
-import {NavigableMenu, Button} from '@wordpress/components';
+import {Button, NavigableMenu} from '@wordpress/components';
 
 const TabButton = ({tabId, onClick, children, selected, ...rest}) => (
     <Button
@@ -77,19 +77,15 @@ export default function TabPanel({
         <div className={className}>
             <NavigableMenu
                 role="tablist"
-                orientation={orientation}
+                orientation={orientation as 'vertical'}
                 onNavigate={onNavigate}
                 className="components-tab-panel__tabs"
             >
                 {tabs.map((tab) => (
                     <TabButton
-                        className={classnames(
-                            'components-tab-panel__tabs-item',
-                            tab.className,
-                            {
-                                [activeClass]: tab.name === selected,
-                            },
-                        )}
+                        className={classnames('components-tab-panel__tabs-item', tab.className, {
+                            [activeClass]: tab.name === selected,
+                        })}
                         tabId={`${instanceId}-${tab.name}`}
                         aria-controls={`${instanceId}-${tab.name}-view`}
                         selected={tab.name === selected}

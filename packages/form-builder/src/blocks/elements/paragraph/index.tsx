@@ -7,7 +7,7 @@ const paragraph: ElementBlock = {
     name: 'custom-block-editor/paragraph',
     settings: {
         title: __('Paragraph', 'custom-block-editor'),
-        category: 'text',
+        category: 'content',
         supports: {
             html: false,
             multiple: true,

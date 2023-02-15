@@ -26,36 +26,25 @@ function chunk(array, size) {
 
 function BlockTypesList({
                             items = [],
-                            onSelect,
-                            onHover = () => {
-                            },
-                            children,
-                            label,
                             isDraggable = true,
                         }) {
     return (
-        <InserterListboxGroup
-            className="block-editor-block-types-list"
-            aria-label={label}
-        >
+        <InserterListboxGroup className="block-editor-block-types-list" aria-label={'Block list'}>
             {chunk(items, 3).map((row, i) => (
                 <InserterListboxRow key={i}>
                     {row.map((item, j) => (
                         <InserterListItem
                             key={item.id}
                             item={item}
-                            className={getBlockMenuDefaultClassName(
-                                item.id
-                            )}
-                            onSelect={onSelect}
-                            onHover={onHover}
+                            className={getBlockMenuDefaultClassName(item.id)}
                             isDraggable={isDraggable && !item.isDisabled}
                             isFirst={i === 0 && j === 0}
+                            onSelect={() => {}}
+                            onHover={() => {}}
                         />
                     ))}
                 </InserterListboxRow>
             ))}
-            {children}
         </InserterListboxGroup>
     );
 }

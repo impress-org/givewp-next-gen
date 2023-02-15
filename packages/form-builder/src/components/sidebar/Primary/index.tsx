@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 
 import './styles.scss';
 
-import TabPanel from './tab-panel';
+import TabPanel from '../TabPanel';
 
 import {
     CustomStyleSettings,
@@ -11,11 +11,11 @@ import {
     FormDesignSettings,
     FormSummarySettings,
     ReceiptSettings,
-} from '../../settings/index.ts';
-import {PopoutSlot} from './popout';
+} from '../../../settings';
+import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
-import useSelectedBlocks from '../../hooks/useSelectedBlocks';
-import BlockCard from "@wordpress/block-editor/build/components/block-card";
+import useSelectedBlocks from '../../../hooks/useSelectedBlocks';
+import BlockCard from '@wordpress/block-editor/build/components/block-card';
 import {settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
@@ -32,9 +32,9 @@ const tabs = [
                     title="Form Settings"
                     description="These settings affect how your form functions and is presented, as well as the form page."
                 />
-                <FormSummarySettings/>
-                <DonationGoalSettings/>
-                <ReceiptSettings/>
+                <FormSummarySettings />
+                <DonationGoalSettings />
+                <ReceiptSettings />
                 {/*The settings below have not been implemented yet.*/}
                 {/*<OfflineDonationsSettings/>*/}
                 {/*<FormFields />*/}
@@ -61,19 +61,18 @@ const tabs = [
                 <DonationGoalSettings />
                 <CustomStyleSettings />
             </>
-        )
+        ),
     },
 ];
 
 function Sidebar({selectedTab, setSelectedTab}) {
-
     const selectedBlocks = useSelectedBlocks();
 
     useEffect(
         () => {
             if (selectedBlocks.length) setSelectedTab('block');
-        }
-        , [selectedBlocks, setSelectedTab], // only run effect when selectedBlocks changes
+        },
+        [selectedBlocks, setSelectedTab] // only run effect when selectedBlocks changes
     );
 
     return (
@@ -81,7 +80,7 @@ function Sidebar({selectedTab, setSelectedTab}) {
             className="givewp-next-gen-sidebar givewp-next-gen-sidebar-primary"
             role="region"
             aria-label={__('Standalone Block Editor advanced settings.')}
-            tabIndex="-1"
+            tabIndex={-1}
         >
             <PopoutSlot />
             <TabPanel
@@ -89,8 +88,15 @@ function Sidebar({selectedTab, setSelectedTab}) {
                 activeClass="active-tab"
                 tabs={tabs}
                 state={[selectedTab, setSelectedTab]}
+                initialTabName="Sidebar Panel"
             >
-                {(tab) => <div><div className="block-editor-block-inspector"><tab.content /></div></div>}
+                {(tab) => (
+                    <div>
+                        <div className="block-editor-block-inspector">
+                            <tab.content />
+                        </div>
+                    </div>
+                )}
             </TabPanel>
         </div>
     );

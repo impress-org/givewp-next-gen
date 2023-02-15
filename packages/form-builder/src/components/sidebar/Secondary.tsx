@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import FieldTypesList from './panels/FieldTypesList';
-import BlockListTree from './panels/block-list-tree';
+import BlockListTree from './panels/BlockListTree';
 
 type PropTypes = {
     selected: string;
@@ -9,8 +9,8 @@ type PropTypes = {
 const Sidebar = ({selected}: PropTypes) => {
 
     const panels = {
-        add: () => <FieldTypesList />,
-        list: () => <BlockListTree />,
+        add: FieldTypesList,
+        list: BlockListTree,
     };
 
     const PanelContent = panels[selected];

@@ -10,7 +10,7 @@ const field: FieldBlock = {
     settings: {
         ...defaultSettings,
         title: __('Text', 'custom-block-editor'),
-        category: 'text',
+        category: 'custom',
         attributes: {
             ...defaultSettings.attributes,
             storeAsDonorMeta: {
