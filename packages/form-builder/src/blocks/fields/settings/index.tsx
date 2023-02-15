@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import DefaultFieldSettings from './DefaultFieldSettings';
-import {BlockConfiguration} from '@wordpress/blocks';
+import {BlockAttributes, BlockConfiguration} from '@wordpress/blocks';
 
 const defaultSettings: BlockConfiguration = {
     title: __('Field', 'custom-block-editor'),
@@ -8,6 +8,7 @@ const defaultSettings: BlockConfiguration = {
     supports: {
         html: false, // Removes support for an HTML mode.
         multiple: true,
+        customClassName: false,
     },
     attributes: {
         fieldName: {
@@ -42,3 +43,7 @@ const defaultSettings: BlockConfiguration = {
 };
 
 export default defaultSettings;
+
+const {fieldName, label, placeholder, isRequired, options} = defaultSettings.attributes as BlockAttributes;
+
+export {fieldName, label, placeholder, isRequired, options};
