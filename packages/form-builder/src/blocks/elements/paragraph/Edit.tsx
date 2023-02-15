@@ -1,5 +1,5 @@
 import {BlockEditProps} from '@wordpress/blocks';
-import {RichText} from '@wordpress/block-editor/build/components';
+import {RichText} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 
 export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {

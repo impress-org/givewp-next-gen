@@ -39,7 +39,6 @@ function BlockTypesList({
                             className={getBlockMenuDefaultClassName(item.id)}
                             isDraggable={isDraggable && !item.isDisabled}
                             isFirst={i === 0 && j === 0}
-                            onSelect={() => {}}
                             onHover={() => {}}
                         />
                     ))}
