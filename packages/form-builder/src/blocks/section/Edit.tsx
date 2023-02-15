@@ -5,15 +5,17 @@ import {InnerBlocks, InspectorControls, RichText} from '@wordpress/block-editor'
 import {PanelBody, PanelRow, TextareaControl, TextControl} from '@wordpress/components';
 
 import {useSelect} from '@wordpress/data';
+import {BlockEditProps} from '@wordpress/blocks';
 
-export default function Edit(props) {
+export default function Edit(props: BlockEditProps<any>) {
     const {
         attributes: {title, description},
         setAttributes,
     } = props;
 
-    const isParentOfSelectedBlock = useSelect((select) =>
-        select('core/block-editor').hasSelectedInnerBlock(props.clientId, true)
+    const isParentOfSelectedBlock = useSelect<any>(
+        (select) => select('core/block-editor').hasSelectedInnerBlock(props.clientId, true),
+        []
     );
     const isSelectedOrIsInnerBlockSelected = props.isSelected || isParentOfSelectedBlock;
     const borderColor = isSelectedOrIsInnerBlockSelected ? '#66bb6a' : 'lightgray';

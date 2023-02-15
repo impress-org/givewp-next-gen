@@ -1,12 +1,13 @@
 import {__} from '@wordpress/i18n';
-import {RichText} from '@wordpress/block-editor';
 import {Icon} from '@wordpress/icons';
+import Edit from './Edit';
+import {ElementBlock} from '@givewp/form-builder/types/block';
 
-const paragraph = {
+const paragraph: ElementBlock = {
     name: 'custom-block-editor/paragraph',
-    category: 'content',
     settings: {
         title: __('Paragraph', 'custom-block-editor'),
+        category: 'text',
         supports: {
             html: false,
             multiple: true,
@@ -35,22 +36,7 @@ const paragraph = {
                 }
             />
         ),
-        edit: ({attributes, setAttributes}) => {
-            const {content} = attributes;
-            return (
-                <>
-                    <div>
-                        <RichText
-                            tagName="p"
-                            value={content}
-                            allowedFormats={['core/bold', 'core/italic', 'core/link']}
-                            onChange={(value) => setAttributes({content: value})}
-                            placeholder={__('Enter some text', 'custom-block-editor')}
-                        />
-                    </div>
-                </>
-            );
-        },
+        edit: Edit,
         save: function () {
             return null;
         },

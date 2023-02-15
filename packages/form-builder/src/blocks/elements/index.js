@@ -1,4 +1,4 @@
-import paragraph from './paragraph.tsx';
+import paragraph from './paragraph';
 
 const ElementBlocks = [paragraph];
 

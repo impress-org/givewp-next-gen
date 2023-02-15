@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
 import Inspector from './inspector';
-import {Currency, CurrencyControl} from '../../../common/currency';
+import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 import {createInterpolateElement} from '@wordpress/element';
 
 const Edit = ({attributes, setAttributes}) => {
@@ -13,12 +13,10 @@ const Edit = ({attributes, setAttributes}) => {
     const isFixedAmount = priceOption === 'set';
 
     const FixedPriceMessage = () => {
+        const amount = formatCurrencyAmount(setPrice);
+
         return createInterpolateElement(__('This donation is set to <amount/> for this form.', 'give'), {
-            amount: (
-                <strong>
-                    <Currency amount={setPrice} />
-                </strong>
-            ),
+            amount: <strong>{amount}</strong>,
         });
     };
 
@@ -32,11 +30,11 @@ const Edit = ({attributes, setAttributes}) => {
                 )}
                 {!!isMultiLevel && levels.length > 0 && (
                     <LevelGrid>
-                        {levels.map((level, index) => (
-                            <LevelButton key={index}>
-                                <Currency amount={level} />
-                            </LevelButton>
-                        ))}
+                        {levels.map((level, index) => {
+                            const levelAmount = formatCurrencyAmount(level);
+
+                            return <LevelButton key={index}>{levelAmount}</LevelButton>;
+                        })}
                     </LevelGrid>
                 )}
                 {!!customAmount && (

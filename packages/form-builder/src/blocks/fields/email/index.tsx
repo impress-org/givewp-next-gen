@@ -1,10 +1,10 @@
 import {Icon} from '@wordpress/icons';
 import {__} from '@wordpress/i18n';
-import settings from './settings';
+import settings from '../settings';
+import {FieldBlock} from '@givewp/form-builder/types/block';
 
-const email = {
+const email: FieldBlock = {
     name: 'custom-block-editor/email-field',
-    category: 'input',
     settings: {
         ...settings,
         title: __('Email', 'custom-block-editor'),

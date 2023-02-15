@@ -17,6 +17,8 @@ export default function DefaultFieldSettings({attributes, setAttributes, onLabel
                         required={isRequired}
                         className={requiredClass}
                         readOnly
+                        onChange={null}
+                        value={placeholder}
                     />
                 ) : (
                     <select>

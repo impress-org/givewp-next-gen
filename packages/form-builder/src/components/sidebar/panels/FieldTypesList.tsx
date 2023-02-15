@@ -1,31 +1,33 @@
 import {useSelect} from '@wordpress/data';
 import {store as blockEditorStore} from '@wordpress/block-editor/build/store';
-import fieldBlocks from '../../../blocks/fields';
-import elementBlocks from '../../../blocks/elements';
 import {__} from '@wordpress/i18n';
-import BlockTypesList from '../../forks/block-types-list';
-import {SearchControl} from '@wordpress/components';
+import {SearchControl} from '@wordpress/block-editor';
 import {useState} from 'react';
+import {BlockInstance} from '@wordpress/blocks';
+import fieldBlocks from '@givewp/form-builder/blocks/fields';
+import elementBlocks from '@givewp/form-builder/blocks/elements';
+import BlockTypesList from '@givewp/form-builder/components/forks/block-types-list';
+import {FieldBlock} from '@givewp/form-builder/types';
 
 const FieldTypesList = () => {
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState<string>('');
 
-    const store = useSelect((select) => {
+    const store = useSelect<any>((select) => {
         return select(blockEditorStore);
-    });
+    }, []);
 
     const blocksInUse = store
         .getBlocks()
-        .map((block) => {
+        .map((block: BlockInstance) => {
             return block.innerBlocks.map((innerBlock) => innerBlock.name).flat();
         })
         .flat();
 
-    const blocks = [...fieldBlocks, ...elementBlocks].map((blockData) => {
+    const blocks = [...fieldBlocks, ...elementBlocks].map((blockData: FieldBlock) => {
         return {
             id: blockData.name,
             name: blockData.name,
-            category: blockData.category,
+            category: blockData.settings.category,
             title: blockData.settings.title,
             icon: {
                 src: blockData.settings.icon ?? 'block-default',
@@ -52,17 +54,21 @@ const FieldTypesList = () => {
 
     return (
         <div className="givewp-next-gen-sidebar__inner">
-            <SearchControl value={searchValue} onChange={setSearchValue}/>
+            <SearchControl value={searchValue} onChange={setSearchValue} />
             <div className="givewp-next-gen-sidebar__inner--blocks">
                 {Object.values(blocksBySection)
                     .filter((section) => section.blocks.length)
                     .map(({name, label, blocks}) => {
                         return (
                             <>
-                                <h3 className="givewp-next-gen-sidebar__heading">
-                                    {label}
-                                </h3>
-                                <BlockTypesList key={name} items={blocks}/>
+                                <h3 className="givewp-next-gen-sidebar__heading">{label}</h3>
+                                <BlockTypesList
+                                    key={name}
+                                    items={blocks}
+                                    onSelect={undefined}
+                                    children={undefined}
+                                    label={undefined}
+                                />
                             </>
                         );
                     })}

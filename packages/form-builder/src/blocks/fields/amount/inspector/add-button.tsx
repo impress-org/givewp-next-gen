@@ -1,7 +1,9 @@
-import {Button} from "@wordpress/components";
-import {__} from "@wordpress/i18n";
+import {Button} from '@wordpress/components';
+import {__} from '@wordpress/i18n';
+import {SVGProps} from 'react';
+import ButtonProps = Button.ButtonProps;
 
-const AddButton = (props) => {
+const AddButton = (props: ButtonProps) => {
     return (
         <Button {...props} variant={'secondary'} style={{width: '100%', justifyContent: 'center'}} icon={PlusIcon}>
             {__('Add another level', 'give')}
@@ -9,7 +11,7 @@ const AddButton = (props) => {
     );
 };
 
-const PlusIcon = (props) => {
+const PlusIcon = (props: SVGProps<any>) => {
     return (
         <svg {...props} width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.560547 6H12.8532" stroke="#5BA65E" strokeWidth="1.5" />
