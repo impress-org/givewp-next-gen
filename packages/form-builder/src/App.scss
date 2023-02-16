@@ -1,11 +1,5 @@
 #root {
     // Gutenberg color mappings
-    --wp-admin-theme-color: var(--givewp-primary-500);
-    --wp-admin-theme-color--rgb: var(--givewp-primary-500--rgb);
-    --wp-admin-theme-color-darker-10: var(--givewp-primary-700);
-    --wp-admin-theme-color-darker-10--rgb: var(--givewp-primary-700--rgb);
-    --wp-admin-theme-color-darker-20: var(--givewp-primary-800);
-    --wp-admin-theme-color-darker-20--rgb: var(--givewp-primary-800--rgb);
     --wp-admin-border-width-focus: 2px;
 
     // Layout
@@ -177,7 +171,7 @@ svg {
 
 .block-editor-list-view-leaf.is-selected,
 .block-editor-list-view-leaf.is-selected td {
-    background: #66bb6a;
+    background: var(--wp-admin-theme-color);
 }
 
 .components-toolbar__control.components-button {
@@ -185,7 +179,7 @@ svg {
 }
 
 .components-form-toggle.is-checked .components-form-toggle__track {
-    background-color: #68BF6B;
+    background-color: var(--wp-admin-theme-color);
 }
 
 /**

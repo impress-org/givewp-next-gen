@@ -9,10 +9,9 @@ import {SecondarySidebar, Sidebar} from '../components';
 import '@wordpress/components/build-style/style.css';
 import '@wordpress/block-editor/build-style/style.css';
 
-import '../App.scss';
 import {DesignPreview, FormBlocks} from '../components/canvas';
-import {useDispatch} from "@wordpress/data";
-import {__} from "@wordpress/i18n";
+import {useDispatch} from '@wordpress/data';
+import {__} from '@wordpress/i18n';
 
 export default function BlockEditorInterfaceSkeletonContainer() {
     const {createSuccessNotice} = useDispatch('core/notices');
@@ -32,21 +31,15 @@ export default function BlockEditorInterfaceSkeletonContainer() {
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
                     onSaveNotice={() => {
-                        createSuccessNotice(
-                            __('Form updated.', 'give'),
-                            {
-                                type: 'snackbar',
-                            }
-                        );
-                    }
-                    }
+                        createSuccessNotice(__('Form updated.', 'give'), {
+                            type: 'snackbar',
+                        });
+                    }}
                 />
             }
-            content={'design' === selectedTab ? <DesignPreview/> : <FormBlocks/>}
-            sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>}
-            secondarySidebar={
-                !!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar}/>
-            }
+            content={'design' === selectedTab ? <DesignPreview /> : <FormBlocks />}
+            sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
+            secondarySidebar={!!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar} />}
         />
     );
 }

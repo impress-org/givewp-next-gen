@@ -18,7 +18,7 @@ export default function Edit(props: BlockEditProps<any>) {
         []
     );
     const isSelectedOrIsInnerBlockSelected = props.isSelected || isParentOfSelectedBlock;
-    const borderColor = isSelectedOrIsInnerBlockSelected ? '#66bb6a' : 'lightgray';
+    const borderColor = isSelectedOrIsInnerBlockSelected ? 'var(--wp-admin-theme-color)' : 'lightgray';
 
     return (
         <>
