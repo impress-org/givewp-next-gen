@@ -21,7 +21,7 @@ export default function Header({contentLeft, contentMiddle, contentRight}: Props
             <section
                 style={{
                     display: 'flex',
-                    gap: '1rem',
+                    gap: '0.5rem',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     flexBasis: '20%',

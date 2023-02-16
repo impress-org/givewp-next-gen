@@ -59,7 +59,7 @@ const HeaderContainer = ({
                 <>
                     <Logo />
                     <Button
-                        style={{width: '32px', height: '32px'}}
+                        style={{width: '32px', height: '32px', minWidth: '32px'}}
                         className="rotate-icon"
                         onClick={() => toggleSelectedSecondarySidebar('add')}
                         isPressed={'add' === selectedSecondarySidebar}
