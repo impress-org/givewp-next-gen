@@ -201,14 +201,11 @@ svg {
         }
         
         &.is-pressed {
-            background-color: var(--givewp-neutral-100);
 
-            &:hover {
-                background-color: var(--givewp-neutral-110);
-            }
-
-            .components-icon--add {
-                transform: rotate(45deg);
+            &.rotate-icon {
+                svg {
+                    transform: rotate(45deg);
+                }
             }
         }
     }

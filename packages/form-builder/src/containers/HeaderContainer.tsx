@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {AddIcon, GiveIcon, ListIcon} from '../components/icons';
-import {cog} from '@wordpress/icons';
+import {GiveIcon} from '../components/icons';
+import {cog, listView, plus} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
 import {Button} from '@wordpress/components';
@@ -9,6 +9,24 @@ import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
+
+const Logo = () => (
+    <div
+        style={{
+            height: '60px',
+            width: '50px',
+            backgroundColor: '#FFF',
+            display: 'flex',
+            alignItems: 'center',
+        }}
+    >
+        <div>
+            <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
+                <GiveIcon />
+            </a>
+        </div>
+    </div>
+);
 
 const HeaderContainer = ({
     selectedSecondarySidebar,
@@ -39,31 +57,20 @@ const HeaderContainer = ({
         <Header
             contentLeft={
                 <>
-                    <div
-                        style={{
-                            height: '60px',
-                            width: '60px',
-                            backgroundColor: '#FFF',
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <div>
-                            <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
-                                <GiveIcon />
-                            </a>
-                        </div>
-                    </div>
+                    <Logo />
                     <Button
+                        style={{width: '32px', height: '32px'}}
+                        className="rotate-icon"
                         onClick={() => toggleSelectedSecondarySidebar('add')}
                         isPressed={'add' === selectedSecondarySidebar}
-                        icon={<AddIcon />}
-                        variant={'primary'}
+                        icon={plus}
+                        variant="primary"
                     />
                     <Button
+                        style={{width: '32px', height: '32px'}}
                         onClick={() => toggleSelectedSecondarySidebar('list')}
                         isPressed={'list' === selectedSecondarySidebar}
-                        icon={<ListIcon />}
+                        icon={listView}
                     />
                 </>
             }

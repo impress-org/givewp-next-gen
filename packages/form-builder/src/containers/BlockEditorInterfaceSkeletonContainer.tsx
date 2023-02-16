@@ -4,11 +4,13 @@ import useToggleState from '../hooks/useToggleState';
 
 import HeaderContainer from './HeaderContainer';
 
-import {SecondarySidebar, Sidebar} from '../components';
+import {SecondarySidebar} from '../components';
 
 import {DesignPreview, FormBlocks} from '../components/canvas';
 import {useDispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
+import NoticesContainer from '@givewp/form-builder/containers/NoticesContainer';
+import {Sidebar} from '@givewp/form-builder/components';
 
 export default function BlockEditorInterfaceSkeletonContainer() {
     const {createSuccessNotice} = useDispatch('core/notices');
@@ -37,6 +39,7 @@ export default function BlockEditorInterfaceSkeletonContainer() {
             content={'design' === selectedTab ? <DesignPreview /> : <FormBlocks />}
             sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
             secondarySidebar={!!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar} />}
+            notices={<NoticesContainer />}
         />
     );
 }

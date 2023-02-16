@@ -4,7 +4,6 @@ import {Popover, SlotFillProvider} from '@wordpress/components';
 import {Sidebar} from '../components';
 
 import {setFormBlocks, useFormState, useFormStateDispatch} from '../stores/form-state';
-import NoticesContainer from "@givewp/form-builder/containers/NoticesContainer";
 import BlockEditorInterfaceSkeletonContainer
     from "@givewp/form-builder/containers/BlockEditorInterfaceSkeletonContainer";
 
@@ -25,7 +24,6 @@ export default function BlockEditorContainer() {
                     <BlockInspector/>
                 </Sidebar.InspectorFill>
                 <BlockEditorInterfaceSkeletonContainer/>
-                <NoticesContainer/>
                 <Popover.Slot/>
             </SlotFillProvider>
         </BlockEditorProvider>
