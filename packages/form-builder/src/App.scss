@@ -419,3 +419,79 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 .givewp-donation-level-control .components-base-control__field {
     margin-bottom: 0;
 }
+
+.givewp-next-gen-sidebar {
+    max-width: 100%;
+    width: var(--givewp-sidebar-width);
+    background: white;
+    border: 1px solid lightgray;
+    bottom: 0;
+    //color: slategray;
+    height: calc(100vh - 60px); // Account for header height above sidebar
+    //overflow: hidden; // The Inspector Popout needs to be visible.
+    position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
+    top: 60px; // Account for header @todo move this to layout, not in the component.
+    overflow-y: scroll;
+
+    &.givewp-next-gen-sidebar-primary {
+        right: 0;
+    }
+
+    &.givewp-next-gen-sidebar-secondary {
+        left: 0;
+    }
+
+    &__inner {
+        padding: 1rem;
+    }
+
+    &__heading {
+        color: var(--givewp-gray-50);
+        padding: 1rem 0;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: .8em;
+        font-weight: 500;
+    }
+
+    .components-panel__row {
+        margin-right: 10px; // Account for scrollbar
+    }
+
+    > .components-panel {
+        border-left: 0;
+        border-right: 0;
+        margin-bottom: -1px;
+        margin-top: -1px;
+
+        > .components-panel__header {
+            background: white;
+        }
+    }
+
+    .block-editor-block-inspector__card {
+        margin: 0;
+    }
+}
+
+.givewp-next-gen-inspector-popout {
+    box-sizing: border-box;
+    padding: 20px;
+
+    position: absolute;
+    right: calc(100% + 25px); // Position beside the sidebar.
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+
+}
+
+.givewp-next-gen-inspector-popout--container {
+    color: black;
+    outline: 1px solid lightgray;
+    background-color: white;
+}

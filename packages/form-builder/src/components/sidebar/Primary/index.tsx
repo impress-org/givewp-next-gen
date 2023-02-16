@@ -1,8 +1,6 @@
 import {createSlotFill} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 
-import './styles.scss';
-
 import TabPanel from '../TabPanel';
 
 import {
@@ -85,7 +83,6 @@ function Sidebar({selectedTab, setSelectedTab}) {
             <PopoutSlot />
             <TabPanel
                 className="sidebar-panel"
-                activeClass="active-tab"
                 tabs={tabs}
                 state={[selectedTab, setSelectedTab]}
                 initialTabName="Sidebar Panel"
