@@ -327,10 +327,8 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     border-bottom: 1px solid #e0e0e0;
 }
 
-.sidebar-panel {
-    .block-editor-block-inspector .components-panel__body {
-        border-top: 0;
-    }
+.block-editor-block-inspector .components-panel__body:first-child {
+    border-top: 0;
 }
 
 /** ------------------------------- */

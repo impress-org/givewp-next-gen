@@ -14,7 +14,7 @@ import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
 import useSelectedBlocks from '../../../hooks/useSelectedBlocks';
 import BlockCard from '@wordpress/block-editor/build/components/block-card';
-import {settings} from '@wordpress/icons';
+import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
@@ -28,7 +28,10 @@ const tabs = [
                 <BlockCard
                     icon={settings}
                     title="Form Settings"
-                    description="These settings affect how your form functions and is presented, as well as the form page."
+                    description={__(
+                        'These settings affect how your form functions and is presented, as well as the form page.',
+                        'give'
+                    )}
                 />
                 <FormSummarySettings />
                 <DonationGoalSettings />
@@ -55,6 +58,11 @@ const tabs = [
         className: 'tab-block',
         content: () => (
             <>
+                <BlockCard
+                    icon={brush}
+                    title="Form Design"
+                    description={__('These settings affect the appearance of your form.', 'give')}
+                />
                 <FormDesignSettings />
                 <DonationGoalSettings />
                 <CustomStyleSettings />
