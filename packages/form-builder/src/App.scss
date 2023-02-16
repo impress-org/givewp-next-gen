@@ -1,3 +1,6 @@
+@import '~@wordpress/components/build-style/style.css';
+@import '~@wordpress/block-editor/build-style/style.css';
+
 #root {
     // Gutenberg color mappings
     --wp-admin-border-width-focus: 2px;

@@ -3,9 +3,6 @@ import {Popover, SlotFillProvider} from '@wordpress/components';
 
 import {Sidebar} from '../components';
 
-import '@wordpress/components/build-style/style.css';
-import '@wordpress/block-editor/build-style/style.css';
-
 import {setFormBlocks, useFormState, useFormStateDispatch} from '../stores/form-state';
 import NoticesContainer from "@givewp/form-builder/containers/NoticesContainer";
 import BlockEditorInterfaceSkeletonContainer

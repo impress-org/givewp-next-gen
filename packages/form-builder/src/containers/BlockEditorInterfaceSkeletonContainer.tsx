@@ -6,9 +6,6 @@ import HeaderContainer from './HeaderContainer';
 
 import {SecondarySidebar, Sidebar} from '../components';
 
-import '@wordpress/components/build-style/style.css';
-import '@wordpress/block-editor/build-style/style.css';
-
 import {DesignPreview, FormBlocks} from '../components/canvas';
 import {useDispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
