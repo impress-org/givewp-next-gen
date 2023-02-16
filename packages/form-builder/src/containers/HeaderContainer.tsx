@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {AddIcon, GiveIcon, ListIcon, SettingsIcon} from '../components/icons';
+import {AddIcon, GiveIcon, ListIcon} from '../components/icons';
+import {cog} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
 import {Button} from '@wordpress/components';
@@ -84,7 +85,7 @@ const HeaderContainer = ({
                     >
                         {isSaving ? __('Updating...', 'give') : __('Update', 'give')}
                     </Button>
-                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon />} />
+                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={cog} />
                 </>
             }
         />
