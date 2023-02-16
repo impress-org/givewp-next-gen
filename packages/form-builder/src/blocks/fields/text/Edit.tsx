@@ -3,7 +3,7 @@ import FieldSettings from '../settings/Edit';
 import {useFieldNameValidator} from '../../../hooks';
 import {InspectorAdvancedControls, InspectorControls} from '@wordpress/block-editor';
 import {ExternalLink, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
-import slugify from '../../../common/slugify';
+import {slugify} from '@givewp/form-builder/common';
 import {useCallback} from '@wordpress/element';
 import {BlockEditProps} from '@wordpress/blocks';
 
