@@ -1,6 +1,6 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
-import {registerBlockType} from '@wordpress/blocks';
+import {BlockSupports, registerBlockType} from '@wordpress/blocks';
 
 import App from './App';
 
@@ -9,12 +9,18 @@ import fieldBlocks from './blocks/fields';
 import elementBlocks from './blocks/elements';
 import {FieldBlock} from '@givewp/form-builder/types';
 
+const supportOverrides: BlockSupports = {
+    customClassName: false,
+    html: false,
+    inserter: false,
+};
+
 sectionBlocks.map(({name, settings}: FieldBlock) =>
     registerBlockType(name, {
         ...settings,
         supports: {
             ...settings.supports,
-            customClassName: false,
+            ...supportOverrides,
         },
     })
 );
@@ -25,7 +31,7 @@ sectionBlocks.map(({name, settings}: FieldBlock) =>
         parent: sectionBlockNames,
         supports: {
             ...settings.supports,
-            customClassName: false,
+            ...supportOverrides,
         },
     })
 );
