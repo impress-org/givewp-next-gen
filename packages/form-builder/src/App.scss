@@ -63,15 +63,10 @@ code {
     monospace;
 }
 
-svg {
-    max-height: 100%; // Had a wierd issue with excessively large icon SVGs.
-}
-
 // remove default browser outline when selecting elements
 :focus-visible {
     outline: 0;
 }
-
 
 .interface-interface-skeleton__editor {
     background-color: white;
