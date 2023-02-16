@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import DefaultFieldSettings from '../settings/DefaultFieldSettings';
+import FieldSettings from '../settings/Edit';
 import {useFieldNameValidator} from '../../../hooks';
 import {InspectorAdvancedControls, InspectorControls} from '@wordpress/block-editor';
 import {ExternalLink, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
@@ -35,7 +35,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
 
     return (
         <>
-            <DefaultFieldSettings
+            <FieldSettings
                 attributes={attributes}
                 setAttributes={setAttributes}
                 onLabelTextControlBlur={(event) => {

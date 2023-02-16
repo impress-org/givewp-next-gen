@@ -9,10 +9,25 @@ import fieldBlocks from './blocks/fields';
 import elementBlocks from './blocks/elements';
 import {FieldBlock} from '@givewp/form-builder/types';
 
-sectionBlocks.map(({name, settings}: FieldBlock) => registerBlockType(name, settings));
+sectionBlocks.map(({name, settings}: FieldBlock) =>
+    registerBlockType(name, {
+        ...settings,
+        supports: {
+            ...settings.supports,
+            customClassName: false,
+        },
+    })
+);
 
 [...fieldBlocks, ...elementBlocks].map(({name, settings}: FieldBlock) =>
-    registerBlockType(name, {...settings, parent: sectionBlockNames})
+    registerBlockType(name, {
+        ...settings,
+        parent: sectionBlockNames,
+        supports: {
+            ...settings.supports,
+            customClassName: false,
+        },
+    })
 );
 
 const container = document.getElementById('root');

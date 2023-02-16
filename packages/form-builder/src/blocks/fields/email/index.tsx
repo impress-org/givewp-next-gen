@@ -2,6 +2,7 @@ import {Icon} from '@wordpress/icons';
 import {__} from '@wordpress/i18n';
 import settings from '../settings';
 import {FieldBlock} from '@givewp/form-builder/types/block';
+import FieldSettings from '@givewp/form-builder/blocks/fields/settings/Edit';
 
 const email: FieldBlock = {
     name: 'custom-block-editor/email-field',
@@ -30,6 +31,8 @@ const email: FieldBlock = {
                 }
             />
         ),
+
+        edit: (props) => <FieldSettings showRequired={false} {...props} />,
     },
 };
 
