@@ -322,8 +322,6 @@ svg {
     }
 }
 
-/** ------------------------------- */
-
 /*
 Add border bottom to tabs, while removing body top border.
 This creates a consistent separator between the tabs and the rest of the sidebar.
@@ -332,8 +330,10 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     border-bottom: 1px solid #e0e0e0;
 }
 
-.components-panel__body {
-    border-top: none;
+.sidebar-panel {
+    .block-editor-block-inspector .components-panel__body {
+        border-top: 0;
+    }
 }
 
 /** ------------------------------- */
@@ -342,7 +342,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     border: 1px solid var(--givewp-gray-40);
 }
 
-.components-popover.components-dropdown__content{
+.components-popover.components-dropdown__content {
     z-index: 99999999;
 }
 
