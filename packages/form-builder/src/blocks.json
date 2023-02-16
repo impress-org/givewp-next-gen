@@ -5,7 +5,7 @@
         "isValid": true,
         "attributes": {
             "title": "How much would you like to donate today?",
-            "description": "All donations directly impact our organization and help us further our mission.",
+            "description": "All donations directly impact our organization and help us further our mission."
         },
         "innerBlocks": [
             {
@@ -82,7 +82,7 @@
         "isValid": true,
         "attributes": {
             "title": "Payment Details",
-            "description": "How would you like to pay for your donation?",
+            "description": "How would you like to pay for your donation?"
         },
         "innerBlocks": [
             {
@@ -104,7 +104,7 @@
         "isValid": true,
         "attributes": {
             "title": "Donation Summary",
-            "description": "Please review your donation details below.",
+            "description": "Please review your donation details below."
         },
         "innerBlocks": [
             {
