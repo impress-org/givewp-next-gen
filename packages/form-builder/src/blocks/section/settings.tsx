@@ -4,8 +4,9 @@ import {SectionBlock} from '@givewp/form-builder/types/block';
 import Edit from './Edit';
 
 const settings: SectionBlock['settings'] = {
-    title: __('Section', 'custom-block-editor'),
+    title: __('Section', 'give'),
     category: 'layout',
+    description: __('A section groups form fields and content together.', 'give'),
     icon: () => (
         <Icon
             icon={
