@@ -41,7 +41,7 @@ const settings: SectionBlock['settings'] = {
             default: true,
         },
         innerBlocksTemplate: {
-            default: [['custom-block-editor/field', {}]],
+            default: [],
         },
     },
     edit: Edit,

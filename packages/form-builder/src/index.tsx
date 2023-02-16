@@ -12,7 +12,6 @@ import {FieldBlock} from '@givewp/form-builder/types';
 const supportOverrides: BlockSupports = {
     customClassName: false,
     html: false,
-    inserter: false,
 };
 
 sectionBlocks.map(({name, settings}: FieldBlock) =>
