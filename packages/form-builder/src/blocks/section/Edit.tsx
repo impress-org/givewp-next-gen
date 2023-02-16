@@ -35,18 +35,22 @@ export default function Edit(props: BlockEditProps<any>) {
                 }}
             >
                 <header style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                    <RichText
-                        tagName="h2"
-                        value={title}
-                        onChange={(val) => setAttributes({title: val})}
-                        style={{margin: '0', fontSize: '22px', fontWeight: 700}}
-                    />
-                    <RichText
-                        tagName="p"
-                        value={description}
-                        onChange={(val) => setAttributes({description: val})}
-                        style={{fontSize: '16px', fontWeight: 500}}
-                    />
+                    {title.length > 0 && (
+                        <RichText
+                            tagName="h2"
+                            value={title}
+                            onChange={(val) => setAttributes({title: val})}
+                            style={{margin: '0', fontSize: '22px', fontWeight: 700}}
+                        />
+                    )}
+                    {description.length > 0 && (
+                        <RichText
+                            tagName="p"
+                            value={description}
+                            onChange={(val) => setAttributes({description: val})}
+                            style={{fontSize: '16px', fontWeight: 500}}
+                        />
+                    )}
                 </header>
 
                 <InnerBlocks
