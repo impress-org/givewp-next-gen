@@ -54,7 +54,7 @@ export default function Edit(props: BlockEditProps<any>) {
                         [] /* This prevents nested sections. Empty array is overwritten by child blocks specifying a parent. */
                     }
                     template={props.attributes.innerBlocksTemplate}
-                    renderAppender={InnerBlocks.ButtonBlockAppender}
+                    renderAppender={InnerBlocks.DefaultBlockAppender}
                 />
             </div>
 
