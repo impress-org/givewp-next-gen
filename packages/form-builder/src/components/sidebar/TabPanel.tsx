@@ -41,15 +41,15 @@ const TabButton = ({tabId, onClick, children, selected, ...rest}) => (
 );
 
 export default function TabPanel({
-                                     className,
-                                     children,
-                                     tabs,
-                                     initialTabName,
-                                     orientation = 'horizontal',
-                                     activeClass = 'is-active',
-                                     onSelect = noop,
-                                     state: [selected, setSelected], /** @note Injecting state for external control of the selected tab. */
-                                 }) {
+    className,
+    children,
+    tabs,
+    initialTabName,
+    orientation = 'horizontal' as 'horizontal' | 'vertical' | 'both',
+    activeClass = 'is-active',
+    onSelect = noop,
+    state: [selected, setSelected] /** @note Injecting state for external control of the selected tab. */,
+}) {
     const instanceId = useInstanceId(TabPanel, 'tab-panel');
     // const [selected, setSelected] = useState(null); /** @note Replaced with injected state. */
 
@@ -67,9 +67,7 @@ export default function TabPanel({
     useEffect(() => {
         const newSelectedTab = find(tabs, {name: selected});
         if (!newSelectedTab) {
-            setSelected(
-                initialTabName || (tabs.length > 0 ? tabs[0].name : null),
-            );
+            setSelected(initialTabName || (tabs.length > 0 ? tabs[0].name : null));
         }
     }, [tabs]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -77,7 +75,7 @@ export default function TabPanel({
         <div className={className}>
             <NavigableMenu
                 role="tablist"
-                orientation={orientation as 'vertical'}
+                orientation={orientation}
                 onNavigate={onNavigate}
                 className="components-tab-panel__tabs"
             >
