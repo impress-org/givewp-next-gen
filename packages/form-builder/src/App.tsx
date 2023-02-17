@@ -5,6 +5,7 @@ import {Storage} from './common';
 import defaultBlocks from './blocks.json';
 import Feedback from '@givewp/form-builder/feedback';
 import {BlockInstance} from '@wordpress/blocks';
+import IsolatedBlockEditor, {DocumentSection, EditorLoaded, ToolbarSlot} from '@automattic/isolated-block-editor';
 
 import './App.scss';
 
@@ -23,6 +24,22 @@ if (initialBlocks instanceof Error) {
 }
 
 function App() {
+    return (
+        <IsolatedBlockEditor
+            settings={{}}
+            onSaveContent={(html) => console.log(html)}
+            onLoad={(parse) => console.log(parse)}
+            onError={() => document.location.reload()}
+        >
+            <EditorLoaded onLoaded={() => {}} onLoading={() => {}} />
+            <DocumentSection>Extra Information</DocumentSection>
+
+            <ToolbarSlot>
+                <button>Beep!</button>
+            </ToolbarSlot>
+        </IsolatedBlockEditor>
+    );
+
     return (
         <FormStateProvider initialState={initialState}>
             <ShortcutProvider>

@@ -14,7 +14,7 @@ export default function NoticesContainer() {
         <SnackbarList
             notices={snackbarNotices}
             className="components-editor-notices__snackbar"
-            onRemove={removeNotice}
+            onRemove={() => removeNotice}
         />
     );
 }

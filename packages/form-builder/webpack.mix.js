@@ -9,3 +9,5 @@ mix.alias({
 mix.setPublicPath('build')
     .ts('src/index.tsx', 'build/givewp-form-builder.js')
     .react()
+
+mix.sourceMaps();
