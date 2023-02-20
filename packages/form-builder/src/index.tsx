@@ -1,6 +1,4 @@
-import React from 'react';
-import {createRoot} from 'react-dom/client';
-import {BlockSupports, registerBlockType} from '@wordpress/blocks';
+import {render} from '@wordpress/element';
 
 import App from './App';
 
@@ -8,6 +6,10 @@ import sectionBlocks, {sectionBlockNames} from './blocks/section';
 import fieldBlocks from './blocks/fields';
 import elementBlocks from './blocks/elements';
 import {FieldBlock} from '@givewp/form-builder/types';
+import {BlockInstance, BlockSupports, registerBlockType} from '@wordpress/blocks';
+import {FormStateProvider} from '@givewp/form-builder/stores/form-state';
+import {Storage} from './common';
+import defaultBlocks from './blocks.json';
 
 const supportOverrides: BlockSupports = {
     customClassName: false,
@@ -35,11 +37,26 @@ sectionBlocks.map(({name, settings}: FieldBlock) =>
     })
 );
 
-const container = document.getElementById('root');
-const root = createRoot(container!);
+const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
-root.render(
-    <React.StrictMode>
-        <App/>
-    </React.StrictMode>
+const initialState = {
+    blocks: initialBlocks || (defaultBlocks as BlockInstance[]),
+    settings: {
+        ...initialFormSettings,
+    },
+};
+
+if (initialBlocks instanceof Error) {
+    alert('Unable to load initial blocks.');
+    console.error(initialBlocks);
+}
+
+const container = document.getElementById('root');
+//const root = createRoot(container!);
+
+render(
+    <FormStateProvider initialState={initialState}>
+        <App />
+    </FormStateProvider>,
+    container
 );

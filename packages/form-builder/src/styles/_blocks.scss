@@ -1,0 +1,114 @@
+.interface-interface-skeleton__body {
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--givewp-gray-10);
+}
+
+.interface-interface-skeleton__content {
+    //width: 720px;
+    //margin: auto;
+    //padding: 120px 0; /* Leave room for toolbar above first block. */
+    //
+    //box-sizing: border-box;
+    //
+    //*, *:before, *:after {
+    //    box-sizing: inherit;
+    //}
+
+    input,
+    select,
+    .components-text-control__input,
+    .components-select-control__input {
+        inline-size: 100%;
+        padding: 16px;
+
+        border: 1px solid var(--givewp-neutral-110) !important;
+        border-radius: 5px;
+
+        background-color: #fff;
+        color: var(--givewp-gray-60) !important;
+        font-size: 16px !important;
+        font-weight: normal;
+        line-height: 20px;
+    }
+
+    .components-select-control__input {
+        height: 52px !important;
+
+        & ~ .components-input-control__suffix {
+
+            & > div {
+                padding: 0 10px;
+            }
+
+            svg {
+                height: 24px;
+                width: 24px;
+                fill: var(--givewp-gray-60);
+            }
+        }
+    }
+
+    .components-input-control__backdrop {
+        display: none !important;
+    }
+
+    .components-base-control__label,
+    .components-input-control__label {
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        color: var(--givewp-gray-100);
+        text-transform: none !important;
+    }
+
+    .give-is-required .components-base-control__label::after {
+        content: ' *';
+        color: var(--givewp-alert-100);
+    }
+}
+
+
+/**
+ * Add space to avoid overlap with elements fixed to the bottom right of the editor.
+ */
+
+.block-editor-block-list__block {
+    position: relative;
+
+    &:not(.is-selected) {
+        .block-list-appender {
+            display: none;
+        }
+    }
+
+    .block-list-appender {
+        position: absolute;
+        bottom: 5px;
+        width: 100%;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .components-base-control__field {
+        margin-bottom: 0;
+    }
+}
+
+
+//[data-type="custom-block-editor/section"],
+//[data-type="custom-block-editor/donor-info"],
+//[data-type="custom-block-editor/donation-amount"],
+//[data-type="custom-block-editor/payment-details"] {
+//    & > div > .block-editor-inner-blocks > .block-editor-block-list__layout {
+//        display: flex;
+//        gap: 24px;
+//        flex-direction: column;
+//    }
+//}
+//
+//[data-type="custom-block-editor/paragraph"] .rich-text {
+//    font-size: 1.1rem;
+//    line-height: 1.5;
+//}

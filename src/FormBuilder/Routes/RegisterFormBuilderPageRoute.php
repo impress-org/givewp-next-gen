@@ -80,6 +80,11 @@ class RegisterFormBuilderPageRoute
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
+        wp_enqueue_style(
+            'givewp-form-builder-styles',
+            GIVE_NEXT_GEN_URL . 'packages/form-builder/build/givewp-form-builder.css'
+        );
+
         (new EnqueueScript(
             '@givewp/form-builder/script',
             $formBuilderViewModel->jsPathFromRoot(),

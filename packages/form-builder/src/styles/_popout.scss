@@ -1,0 +1,50 @@
+.popover-slot {
+    position: fixed;
+}
+
+.givewp-next-gen-inspector-popout--container {
+    color: black;
+    outline: 1px solid lightgray;
+    background-color: white;
+}
+
+.givewp-next-gen-inspector-popout {
+    box-sizing: border-box;
+    padding: 20px;
+
+    position: absolute;
+    right: calc(100% + 25px); // Position beside the sidebar.
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.components-color-palette__custom-color-dropdown-content .components-popover__content {
+
+    // Move popover color picker to not cover popover color panel.
+    margin-left: -115%;
+
+    // Prevent scrollbar in popover color picker.
+    .components-color-picker .components-h-stack { width: auto; }
+}
+
+.block-editor-panel-color-gradient-settings__dropdown-content .components-popover__content {
+
+    // Move popover color panel out from underneath custom sidebar.
+    margin-right: var(--givewp-sidebar-width) !important;
+
+    // Remove fieldset border.
+    .block-editor-color-gradient-control__fieldset { border: 0; }
+}
+
+// Add border around template color setting popovers.
+.block-editor-panel-color-gradient-settings__dropdown-content,
+.components-color-palette__custom-color-dropdown-content {
+    .components-popover__content,
+    .components-color-picker {
+        border: 1px solid var(--givewp-gray-40);
+    }
+}

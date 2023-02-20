@@ -18,6 +18,25 @@ import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
+const FormTab = () => (
+    <>
+        <BlockCard
+            icon={settings}
+            title="Form Settings"
+            description={__(
+                'These settings affect how your form functions and is presented, as well as the form page.',
+                'give'
+            )}
+        />
+        <FormSummarySettings />
+        <DonationGoalSettings />
+        <ReceiptSettings />
+        {/*The settings below have not been implemented yet.*/}
+        {/*<OfflineDonationsSettings/>*/}
+        {/*<FormFields />*/}
+    </>
+);
+
 const tabs = [
     {
         name: 'form',
@@ -110,3 +129,5 @@ function Sidebar({selectedTab, setSelectedTab}) {
 Sidebar.InspectorFill = InspectorFill;
 
 export default Sidebar;
+export {FormTab};
+
