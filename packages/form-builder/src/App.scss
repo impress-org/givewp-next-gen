@@ -1,24 +1,21 @@
+@import '~@wordpress/components/build-style/style.css';
+@import '~@wordpress/block-editor/build-style/style.css';
+
 #root {
     // Gutenberg color mappings
-    --wp-admin-theme-color: var(--givewp-primary-500);
-    --wp-admin-theme-color--rgb: var(--givewp-primary-500--rgb);
-    --wp-admin-theme-color-darker-10: var(--givewp-primary-700);
-    --wp-admin-theme-color-darker-10--rgb: var(--givewp-primary-700--rgb);
-    --wp-admin-theme-color-darker-20: var(--givewp-primary-800);
-    --wp-admin-theme-color-darker-20--rgb: var(--givewp-primary-800--rgb);
     --wp-admin-border-width-focus: 2px;
 
     // Layout
     --givewp-sidebar-width: 284px;
 
     // Primary
-    --givewp-primary-200: #E6FFE6;
-    --givewp-primary-300: #C2F2C3;
-    --givewp-primary-400: #AAF2AC;
-    --givewp-primary-500: #68BF6B;
-    --givewp-primary-600: #15AE56;
-    --givewp-primary-700: #5BA65E;
-    --givewp-primary-800: #3F7341;
+    --givewp-primary-200: #e6ffe6;
+    --givewp-primary-300: #c2f2c3;
+    --givewp-primary-400: #aaf2ac;
+    --givewp-primary-500: #68bf6b;
+    --givewp-primary-600: #15ae56;
+    --givewp-primary-700: #5ba65e;
+    --givewp-primary-800: #3f7341;
 
     // Primary RGB
     --givewp-primary-500--rgb: 104, 191, 107;
@@ -26,55 +23,48 @@
     --givewp-primary-800--rgb: 653, 115, 65;
 
     // Gray
-    --givewp-gray-10: #F2F2F2;
-    --givewp-gray-20: #E6E6E6;
-    --givewp-gray-30: #D9D9D9;
-    --givewp-gray-40: #BFBFBF;
-    --givewp-gray-60: #8C8C8C;
+    --givewp-gray-10: #f2f2f2;
+    --givewp-gray-20: #e6e6e6;
+    --givewp-gray-30: #d9d9d9;
+    --givewp-gray-40: #bfbfbf;
+    --givewp-gray-60: #8c8c8c;
     --givewp-gray-80: #595959;
-    --givewp-gray-100: #1E1E1E;
+    --givewp-gray-100: #1e1e1e;
 
     // Neutral
-    --givewp-neutral-70: #B8C6CC;
-    --givewp-neutral-80: #8FA8B3;
-    --givewp-neutral-90: #6B8B99;
-    --givewp-neutral-100: #3D5A66;
+    --givewp-neutral-70: #b8c6cc;
+    --givewp-neutral-80: #8fa8b3;
+    --givewp-neutral-90: #6b8b99;
+    --givewp-neutral-100: #3d5a66;
     --givewp-neutral-110: #233740;
-    --givewp-neutral-120: #0D161A;
+    --givewp-neutral-120: #0d161a;
 
     // Alert
-    --givewp-alert-10: #DC1E1E;
-    --givewp-alert-20: #FFE6E6;
-    --givewp-alert-40: #F5BEBE;
-    --givewp-alert-60: #E99090;
-    --givewp-alert-80: #DB5454;
-    --givewp-alert-100: #DC1E1E;
+    --givewp-alert-10: #dc1e1e;
+    --givewp-alert-20: #ffe6e6;
+    --givewp-alert-40: #f5bebe;
+    --givewp-alert-60: #e99090;
+    --givewp-alert-80: #db5454;
+    --givewp-alert-100: #dc1e1e;
 }
 
 body {
     font-size: 16px;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+        'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-svg {
-    max-height: 100%; // Had a wierd issue with excessively large icon SVGs.
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 // remove default browser outline when selecting elements
 :focus-visible {
     outline: 0;
 }
-
 
 .interface-interface-skeleton__editor {
     background-color: white;
@@ -103,7 +93,9 @@ svg {
 
     box-sizing: border-box;
 
-    *, *:before, *:after {
+    *,
+    *:before,
+    *:after {
         box-sizing: inherit;
     }
 
@@ -128,7 +120,6 @@ svg {
         height: 52px !important;
 
         & ~ .components-input-control__suffix {
-
             & > div {
                 padding: 0 10px;
             }
@@ -159,10 +150,10 @@ svg {
     }
 }
 
-[data-type="custom-block-editor/section"],
-[data-type="custom-block-editor/donor-info"],
-[data-type="custom-block-editor/donation-amount"],
-[data-type="custom-block-editor/payment-details"] {
+[data-type='custom-block-editor/section'],
+[data-type='custom-block-editor/donor-info'],
+[data-type='custom-block-editor/donation-amount'],
+[data-type='custom-block-editor/payment-details'] {
     & > div > .block-editor-inner-blocks > .block-editor-block-list__layout {
         display: flex;
         gap: 24px;
@@ -170,14 +161,14 @@ svg {
     }
 }
 
-[data-type="custom-block-editor/paragraph"] .rich-text {
+[data-type='custom-block-editor/paragraph'] .rich-text {
     font-size: 1.1rem;
     line-height: 1.5;
 }
 
 .block-editor-list-view-leaf.is-selected,
 .block-editor-list-view-leaf.is-selected td {
-    background: #66bb6a;
+    background: var(--wp-admin-theme-color);
 }
 
 .components-toolbar__control.components-button {
@@ -185,7 +176,7 @@ svg {
 }
 
 .components-form-toggle.is-checked .components-form-toggle__track {
-    background-color: #68BF6B;
+    background-color: var(--wp-admin-theme-color);
 }
 
 /**
@@ -200,18 +191,14 @@ svg {
         padding: 0 6px;
 
         svg {
-            transition: transform .2s cubic-bezier(.165, .84, .44, 1);
+            transition: transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         &.is-pressed {
-            background-color: var(--givewp-neutral-100);
-
-            &:hover {
-                background-color: var(--givewp-neutral-110);
-            }
-
-            .components-icon--add {
-                transform: rotate(45deg);
+            &.rotate-icon {
+                svg {
+                    transform: rotate(45deg);
+                }
             }
         }
     }
@@ -249,7 +236,6 @@ svg {
  */
 
 .givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary {
-
     input,
     textarea,
     .components-form-token-field__input-container {
@@ -287,22 +273,23 @@ svg {
 }
 
 .block-editor-panel-color-gradient-settings__dropdown-content .components-popover__content {
-
     // Move popover color panel out from underneath custom sidebar.
     margin-right: var(--givewp-sidebar-width) !important;
 
     // Remove fieldset border.
-    .block-editor-color-gradient-control__fieldset { border: 0; }
+    .block-editor-color-gradient-control__fieldset {
+        border: 0;
+    }
 }
 
-
 .components-color-palette__custom-color-dropdown-content .components-popover__content {
-
     // Move popover color picker to not cover popover color panel.
     margin-left: -115%;
 
     // Prevent scrollbar in popover color picker.
-    .components-color-picker .components-h-stack { width: auto; }
+    .components-color-picker .components-h-stack {
+        width: auto;
+    }
 }
 
 /** ------------------------------- */
@@ -325,8 +312,6 @@ svg {
     }
 }
 
-/** ------------------------------- */
-
 /*
 Add border bottom to tabs, while removing body top border.
 This creates a consistent separator between the tabs and the rest of the sidebar.
@@ -335,17 +320,13 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     border-bottom: 1px solid #e0e0e0;
 }
 
-.components-panel__body {
-    border-top: none;
-}
-
 /** ------------------------------- */
 
 .givewp-sidebar-dropdown-content .components-popover__content {
     border: 1px solid var(--givewp-gray-40);
 }
 
-.components-popover.components-dropdown__content{
+.components-popover.components-dropdown__content {
     z-index: 99999999;
 }
 
@@ -357,7 +338,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     input {
         background-color: var(--givewp-gray-10);
 
-        &[aria-expanded="true"] {
+        &[aria-expanded='true'] {
             background-color: var(--givewp-primary-200);
         }
     }
@@ -428,7 +409,6 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 }
 
 .give-billing-period-control {
-
     .components-flex {
         display: flex;
         gap: 4px;
@@ -460,4 +440,78 @@ This creates a consistent separator between the tabs and the rest of the sidebar
             }
         }
     }
+}
+
+.givewp-next-gen-sidebar {
+    max-width: 100%;
+    width: var(--givewp-sidebar-width);
+    background: white;
+    border: 1px solid lightgray;
+    bottom: 0;
+    //color: slategray;
+    height: calc(100vh - 60px); // Account for header height above sidebar
+    //overflow: hidden; // The Inspector Popout needs to be visible.
+    position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
+    top: 60px; // Account for header @todo move this to layout, not in the component.
+    overflow-y: scroll;
+
+    &.givewp-next-gen-sidebar-primary {
+        right: 0;
+    }
+
+    &.givewp-next-gen-sidebar-secondary {
+        left: 0;
+    }
+
+    &__inner {
+        padding: 1rem;
+    }
+
+    &__heading {
+        color: var(--givewp-gray-50);
+        padding: 1rem 0;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        font-weight: 500;
+    }
+
+    .components-panel__row {
+        margin-right: 10px; // Account for scrollbar
+    }
+
+    > .components-panel {
+        border-left: 0;
+        border-right: 0;
+        margin-bottom: -1px;
+        margin-top: -1px;
+
+        > .components-panel__header {
+            background: white;
+        }
+    }
+
+    .block-editor-block-inspector__card {
+        margin: 0;
+    }
+}
+
+.givewp-next-gen-inspector-popout {
+    box-sizing: border-box;
+    padding: 20px;
+
+    position: absolute;
+    right: calc(100% + 25px); // Position beside the sidebar.
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.givewp-next-gen-inspector-popout--container {
+    color: black;
+    outline: 1px solid lightgray;
+    background-color: white;
 }
