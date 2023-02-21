@@ -1,0 +1,28 @@
+:root,
+  [data-theme=light],
+  [data-theme=dark] {
+    --font-size: 16px;
+
+    --primary: var(--givewp-primary-color);
+    --primary-hover: var(--givewp-primary-color);
+    --primary-focus: var(--givewp-primary-color);
+
+    --secondary: var(--givewp-secondary-color);
+    --secondary-hover: var(--givewp-secondary-color);
+    --secondary-focus: var(--givewp-secondary-color);
+  }
+
+  input[aria-invalid="false"] {
+    background-image: none;
+  }
+
+  .givewp-donation-form {
+    @extend .container;
+  }
+
+  .givewp-layouts-section {
+    legend {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }

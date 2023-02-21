@@ -5,7 +5,7 @@
 $enable-semantic-container: true;
 
 // Enable .classes
-$enable-classes: false;
+$enable-classes: true;
 
 // Config
 @import "@picocss/pico/scss/variables";
@@ -34,7 +34,7 @@ $enable-classes: false;
 
 // Components
 @import "@picocss/pico/scss/components/accordion"; // details, summary
-@import "@picocss/pico/scss/components/card"; // article
+//@import "@picocss/pico/scss/components/card"; // article
 @import "@picocss/pico/scss/components/modal"; // dialog
 @import "@picocss/pico/scss/components/nav"; // nav
 @import "@picocss/pico/scss/components/progress"; // progress

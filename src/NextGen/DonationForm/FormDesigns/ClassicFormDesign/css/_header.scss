@@ -32,6 +32,7 @@
         font-weight: 600;
         line-height: 1.2;
         text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+        color: currentColor;
 
         &::after {
             position: absolute;
@@ -52,6 +53,7 @@
         line-height: 1.45;
         margin: 0 auto;
         max-inline-size: 42ch;
+        color: currentColor;
     }
 }
 

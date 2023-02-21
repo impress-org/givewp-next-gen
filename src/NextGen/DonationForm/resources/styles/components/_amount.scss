@@ -42,9 +42,10 @@ $borderColor: #9A9A9A;
         border: 0;
         width: 100%;
         text-align: center;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: 0;
         margin-bottom: 0;
+        background-image: none;
+        box-shadow: none;
 
         &::placeholder {
             opacity: 0.6;
