@@ -1,0 +1,8 @@
+@layer base {
+  @import "pico";
+}
+
+@layer base-components {
+  @import "gateways";
+  @import "amount";
+}
