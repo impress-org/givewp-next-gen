@@ -45,3 +45,7 @@ $enable-classes: true;
 @import "@picocss/pico/scss/utilities/tooltip"; // data-tooltip
 @import "@picocss/pico/scss/utilities/accessibility"; // -ms-touch-action, aria-*
 @import "@picocss/pico/scss/utilities/reduce-motion"; // prefers-reduced-motion
+
+label {
+  color: var(--color);
+}
