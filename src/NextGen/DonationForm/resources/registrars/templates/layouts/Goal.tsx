@@ -14,10 +14,11 @@ export default function Goal({
 }: GoalProps) {
     return (
         <div className="givewp-form-goal-progress">
-            <div className="givewp-form-goal-progress-description">
-                <span>{__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel} goal`, 'give')}</span>
-            </div>
+            <label htmlFor="goal-progress" className="givewp-form-goal-progress-description">
+                {__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel} goal`, 'give')}
+            </label>
             <progress
+                id="goal-progress"
                 className="givewp-form-goal-progress-meter"
                 value={progressPercentage}
                 max={100}
