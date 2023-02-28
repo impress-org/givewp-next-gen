@@ -4,7 +4,7 @@ import {Icon} from '@wordpress/icons';
 import defaultSettings from '../settings';
 import Edit from './Edit';
 
-import getDefaultBlockAttributes from '@givewp/form-builder/common/getBlockAttributes';
+import getDefaultBlockAttributes from '@givewp/form-builder/common/getDefaultBlockAttributes';
 
 const {
     recurringDonationChoice,
