@@ -4,7 +4,6 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Support\ValueObjects\Money;
@@ -79,18 +78,6 @@ class DonateControllerData
      */
     public $donationType;
     /**
-     * @var int|null
-     */
-    public $frequency;
-    /**
-     * @var string|null
-     */
-    public $period;
-    /**
-     * @var int|null
-     */
-    public $installments;
-    /**
      * @var SubscriptionPeriod|null
      */
     public $subscriptionPeriod;
@@ -113,7 +100,7 @@ class DonateControllerData
         return new Donation([
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
-            'amount' => Money::fromDecimal($this->amount, $this->currency),
+            'amount' => $this->amount(),
             'donorId' => $donorId,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
@@ -209,15 +196,23 @@ class DonateControllerData
      */
     public function toSubscription(int $donorId): Subscription
     {
-         return new Subscription([
-            'amount' => $this->amount,
+        return new Subscription([
+            'amount' => $this->amount(),
             'period' => $this->subscriptionPeriod,
-            'frequency' => $this->subscriptionFrequency,
+            'frequency' => (int)$this->subscriptionFrequency,
             'donorId' => $donorId,
-            'installments' => $this->subscriptionInstallments,
+            'installments' => (int)$this->subscriptionInstallments,
             'status' => SubscriptionStatus::PENDING(),
             'mode' => give_is_test_mode() ? SubscriptionMode::TEST() : SubscriptionMode::LIVE(),
             'donationFormId' => $this->formId,
         ]);
+    }
+
+    /**
+     * @return Money
+     */
+    public function amount(): Money
+    {
+        return Money::fromDecimal($this->amount, $this->currency);
     }
 }
