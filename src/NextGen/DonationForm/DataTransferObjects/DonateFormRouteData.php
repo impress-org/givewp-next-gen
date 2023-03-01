@@ -90,7 +90,7 @@ class DonateFormRouteData
                     $validData->{$fieldId} = new DonationType($value);
                     break;
                 case 'subscriptionPeriod':
-                    $validData->{$fieldId} = new SubscriptionPeriod($value);
+                    $validData->{$fieldId} = $value ? new SubscriptionPeriod($value) : null;
                     break;
                 default:
                     $validData->{$fieldId} = $value;

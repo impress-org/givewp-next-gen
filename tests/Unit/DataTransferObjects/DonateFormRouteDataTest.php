@@ -62,9 +62,9 @@ class DonateFormRouteDataTest extends TestCase
         $data->honorific = null;
         $data->text_block_meta = 'text block meta value';
         $data->donationType = DonationType::SINGLE()->getValue();
-        $data->frequency = null;
-        $data->period = null;
-        $data->installments = null;
+        $data->subscriptionFrequency = null;
+        $data->subscriptionPeriod = null;
+        $data->subscriptionInstallments = null;
 
         $request = array_merge(get_object_vars($data), [
             'text_block_meta' => 'text block meta value'

@@ -182,6 +182,9 @@ class DonateControllerData
                         'isEmbed',
                         'embedId',
                         'donationType',
+                        'subscriptionPeriod',
+                        'subscriptionFrequency',
+                        'subscriptionInstallments'
                     ]
                 ),
                 true
