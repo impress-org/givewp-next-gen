@@ -3,12 +3,10 @@
 namespace Give\NextGen\DonationForm\Controllers;
 
 use Exception;
-use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\NextGen\DonationForm\Actions\StoreCustomFields;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
  * @since 0.1.0
@@ -18,6 +16,7 @@ class DonateController
     /**
      * First we create a donation, then move on to the gateway processing
      *
+     * @unreleased add support for subscriptions
      * @since 0.1.0
      *
      * @return void
@@ -33,17 +32,27 @@ class DonateController
         );
 
         $donation = $formData->toDonation($donor->id);
-        $donation->save();
 
-        $form = $formData->getDonationForm();
+        if ($formData->donationType->isSingle()) {
+            $donation->save();
 
-        $this->saveCustomFields($form, $donation, $formData->getCustomFields());
+            do_action('givewp_before_handle_create_payment', $formData, $donation);
+            $registeredGateway->handleCreatePayment($donation);
+        }
 
-        $this->temporarilyReplaceLegacySuccessPageUri($formData, $donation);
+        if ($formData->donationType->isSubscription()) {
+            $subscription = $formData->toSubscription($donor->id);
+            $subscription->save();
 
-        $this->addToGatewayData($formData, $donation);
+            $donation->type = DonationType::SUBSCRIPTION();
+            $donation->subscriptionId = $subscription->id;
+            $donation->save();
 
-        $registeredGateway->handleCreatePayment($donation);
+            give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
+
+            do_action('givewp_before_handle_create_subscription', $formData, $donation, $subscription);
+            $registeredGateway->handleCreateSubscription($donation, $subscription);
+        }
     }
 
     /**
@@ -89,68 +98,5 @@ class DonateController
         }
 
         return $donor;
-    }
-
-    /**
-     * @since 0.1.0
-     *
-     * @return void
-     */
-    private function saveCustomFields(DonationForm $form, Donation $donation, array $customFields)
-    {
-        (new StoreCustomFields())($form, $donation, $customFields);
-    }
-
-    /**
-     * Use our new receipt url for the success page uri.
-     *
-     * The give_get_success_page_uri() function is used by the legacy gateway processing and is specific to how that form works.
-     *
-     * In Next Gen, our confirmation receipt page is stateless, and need to use the form request data to generate the url.
-     *
-     * This is a temporary solution until we can update the gateway api to support the new receipt urls.
-     *
-     * @since 0.1.0
-     *
-     * @return void
-     */
-    protected function temporarilyReplaceLegacySuccessPageUri(DonateControllerData $formData, Donation $donation)
-    {
-        $filteredUrl = $formData->getDonationConfirmationReceiptViewRouteUrl($donation);
-
-        add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl) {
-            return $filteredUrl;
-        });
-    }
-
-    /**
-     * This adds additional args to gatewayData..
-     *
-     * This is necessary so gateways can use this value in both legacy and next gen donation forms.
-     *
-     * @since 0.1.0
-     *
-     * @return void
-     */
-    protected function addToGatewayData(DonateControllerData $formData, $donation)
-    {
-        $args = [
-            'successUrl' => rawurlencode($formData->getSuccessUrl($donation)),
-            'cancelUrl' => rawurlencode($formData->getCancelUrl())
-        ];
-
-        add_filter(
-            "givewp_create_payment_gateway_data_{$donation->gatewayId}",
-            static function ($data) use ($args) {
-                return array_merge($data, $args);
-            }
-        );
-
-        add_filter(
-            "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
-            static function ($data) use ($args) {
-                return array_merge($data, $args);
-            }
-        );
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Support\ValueObjects\Money;
@@ -10,6 +12,9 @@ use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 class DonateControllerData
 {
@@ -65,13 +70,12 @@ class DonateControllerData
      * @var string|null
      */
     public $embedId;
-
     /**
      * @var bool
      */
     public $isEmbed;
     /**
-     * @var string
+     * @var DonationType
      */
     public $donationType;
     /**
@@ -86,6 +90,18 @@ class DonateControllerData
      * @var int|null
      */
     public $installments;
+    /**
+     * @var SubscriptionPeriod|null
+     */
+    public $subscriptionPeriod;
+    /**
+     * @var int|null
+     */
+    public $subscriptionFrequency;
+    /**
+     * @var int|null
+     */
+    public $subscriptionInstallments;
 
     /**
      * @since 0.1.0
@@ -184,5 +200,24 @@ class DonateControllerData
                 true
             );
         }, ARRAY_FILTER_USE_KEY);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function toSubscription(int $donorId): Subscription
+    {
+         return new Subscription([
+            'amount' => $this->amount,
+            'period' => $this->subscriptionPeriod,
+            'frequency' => $this->subscriptionFrequency,
+            'donorId' => $donorId,
+            'installments' => $this->subscriptionInstallments,
+            'status' => SubscriptionStatus::PENDING(),
+            'mode' => give_is_test_mode() ? SubscriptionMode::TEST() : SubscriptionMode::LIVE(),
+            'donationFormId' => $this->formId,
+        ]);
     }
 }

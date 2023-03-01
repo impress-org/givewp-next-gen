@@ -2,9 +2,12 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use WP_Error;
 
 /**
@@ -83,7 +86,17 @@ class DonateFormRouteData
         }
 
         foreach ($validator->validated() as $fieldId => $value) {
-            $validData->{$fieldId} = $value;
+            switch ($fieldId) {
+                case 'donationType':
+                    $validData->{$fieldId} = new DonationType($value);
+                    break;
+                case 'subscriptionPeriod':
+                    $validData->{$fieldId} = new SubscriptionPeriod($value);
+                    break;
+                default:
+                    $validData->{$fieldId} = $value;
+            }
+
         }
 
         $validData->formTitle = $form->title;

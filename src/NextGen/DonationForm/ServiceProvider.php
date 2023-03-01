@@ -2,11 +2,16 @@
 
 namespace Give\NextGen\DonationForm;
 
+use Give\Donations\Models\Donation;
 use Give\Helpers\Hooks;
+use Give\NextGen\DonationForm\Actions\AddRedirectUrlsToGatewayData;
 use Give\NextGen\DonationForm\Actions\StoreBackwardsCompatibleFormMeta;
+use Give\NextGen\DonationForm\Actions\StoreCustomFields;
+use Give\NextGen\DonationForm\Actions\TemporarilyReplaceLegacySuccessPageUri;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\NextGen\DonationForm\Controllers\DonationConfirmationReceiptViewController;
 use Give\NextGen\DonationForm\Controllers\DonationFormViewController;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
@@ -38,6 +43,24 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
+        
+        add_action(
+            'givewp_before_handle_create_payment',
+            function (DonateControllerData $formData, Donation $donation) {
+                $this->dispatchBeforeGatewayActions($formData, $donation);
+            },
+            10,
+            2
+        );
+
+        add_action(
+            'givewp_before_handle_create_subscription',
+            function (DonateControllerData $formData, Donation $donation) {
+                $this->dispatchBeforeGatewayActions($formData, $donation);
+            },
+            10,
+            2
+        );
     }
 
     /**
@@ -77,5 +100,15 @@ class ServiceProvider implements ServiceProviderInterface
 
             return give(DonationFormViewController::class)->preview($routeData);
         });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function dispatchBeforeGatewayActions(DonateControllerData $formData, Donation $donation)
+    {
+        (new StoreCustomFields())($formData->getDonationForm(), $donation, $formData->getCustomFields());
+        (new TemporarilyReplaceLegacySuccessPageUri())($formData, $donation);
+        (new AddRedirectUrlsToGatewayData())($formData, $donation);
     }
 }
