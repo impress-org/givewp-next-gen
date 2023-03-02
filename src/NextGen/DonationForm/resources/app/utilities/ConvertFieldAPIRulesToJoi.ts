@@ -107,7 +107,7 @@ function getJoiRulesForAmountField(rules, joiRules): AnySchema {
     if (rules.hasOwnProperty('subscriptionPeriod')) {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
-            then: Joi.allow('one-time', 'day', 'week', 'quarter', 'month', 'year').only().required(),
+            then: Joi.allow('day', 'week', 'quarter', 'month', 'year').only().required(),
             otherwise: Joi.optional(),
         });
     }
