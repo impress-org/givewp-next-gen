@@ -3,23 +3,39 @@ import type {AmountProps} from '@givewp/forms/propTypes';
 import FixedAmountMessage from './FixedAmountMessage';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
+import DonationPeriod from './DonationPeriod';
+
+const periods = [
+    {
+        value: 'once',
+        label: 'One Time',
+    },
+    {
+        value: 'month',
+        label: 'Monthly',
+    },
+    {
+        value: 'year',
+        label: 'Yearly',
+    },
+];
 
 /**
  * @unreleased add display options for multi levels, fixed amount, and custom amount
  * @since 0.1.0
  */
 export default function Amount({
-                                   name,
-                                   defaultValue,
-                                   Label,
-                                   ErrorMessage,
-                                   inputProps,
-                                   fieldError,
-                                   allowLevels,
-                                   levels,
-                                   fixedAmountValue,
-                                   allowCustomAmount,
-                               }: AmountProps) {
+    name,
+    defaultValue,
+    Label,
+    ErrorMessage,
+    inputProps,
+    fieldError,
+    allowLevels,
+    levels,
+    fixedAmountValue,
+    allowCustomAmount,
+}: AmountProps) {
     const customAmountInputRef = useRef<HTMLInputElement>(null);
     const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
@@ -31,18 +47,16 @@ export default function Amount({
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
     const resetCustomAmountInput = () => {
         customAmountInputRef.current.value = '';
-        customAmountInputRef.current.attributes.getNamedItem("value").value = '';
-    }
+        customAmountInputRef.current.attributes.getNamedItem('value').value = '';
+    };
 
     return (
         <>
+            <DonationPeriod periods={periods} />
+
             <div className="givewp-fields-amount__directions">
-                <label
-                    className="givewp-fields-amount__input--label"
-                    htmlFor={name}
-                    aria-labelledby={name}
-                >
-                    <Label/>
+                <label className="givewp-fields-amount__input--label" htmlFor={name} aria-labelledby={name}>
+                    <Label />
                 </label>
 
                 {/* TODO: Control currency input from here*/}
@@ -72,23 +86,16 @@ export default function Amount({
                     currency={currency}
                     currencySymbol={currencySymbol}
                     onValueChange={(value) => {
-                        setValue(name, value ?? null)
+                        setValue(name, value ?? null);
                     }}
                 />
             )}
 
-            {displayFixedAmountMessage && (
-                <FixedAmountMessage
-                    amount={formatter.format(Number(fixedAmountValue))}
-                />
-            )}
+            {displayFixedAmountMessage && <FixedAmountMessage amount={formatter.format(Number(fixedAmountValue))} />}
 
-            <input
-                type="hidden"
-                {...inputProps}
-            />
+            <input type="hidden" {...inputProps} />
 
-            <ErrorMessage/>
+            <ErrorMessage />
         </>
     );
 }
