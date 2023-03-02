@@ -1,9 +1,8 @@
-import {useRef} from '@wordpress/element';
+import {useEffect, useRef} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import FixedAmountMessage from './FixedAmountMessage';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
-import DonationPeriod from './DonationPeriod';
 
 const periods = [
     {
@@ -40,6 +39,7 @@ export default function Amount({
     const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
+    const donationPeriod = useWatch({name: 'period'});
     const formatter = useCurrencyFormatter(currency);
     const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
 
@@ -50,10 +50,18 @@ export default function Amount({
         customAmountInputRef.current.attributes.getNamedItem('value').value = '';
     };
 
+    useEffect(() => {
+        if (donationPeriod === 'once') {
+            setValue('donationType', 'donation');
+            setValue('frequency', null);
+        } else {
+            setValue('donationType', 'subscription');
+            setValue('frequency', 1);
+        }
+    }, [donationPeriod]);
+
     return (
         <>
-            <DonationPeriod periods={periods} />
-
             <div className="givewp-fields-amount__directions">
                 <label className="givewp-fields-amount__input--label" htmlFor={name} aria-labelledby={name}>
                     <Label />

@@ -1,9 +1,14 @@
 @use '../variables';
 $borderColor: #9A9A9A;
 
+.givewp-groups-donationAmount {
+    display: grid;
+    gap: 2rem;
+}
+
 .givewp-fields-amount {
     display: grid;
-    row-gap: 1.5rem;
+    row-gap: 1rem;
 
     &__directions {
         display: flex;
@@ -125,9 +130,14 @@ $borderColor: #9A9A9A;
             color: #fff;
         }
     }
+}
 
-    &__periods {
-        list-style-type: none;
+.givewp-fields-radio-period {
+    legend {
+        margin-bottom: 1rem;
+    }
+
+    .givewp-fields-radio__options {
         padding: 4px;
         display: flex;
         gap: 4px;
@@ -140,12 +150,11 @@ $borderColor: #9A9A9A;
         border: 1px solid var(--givewp-primary-color);
         border-radius: 5px;
 
-        li {
+        .givewp-fields-radio__option--container {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            list-style-type: none;
             width: 100%;
             height: 100%;
             margin: 0;

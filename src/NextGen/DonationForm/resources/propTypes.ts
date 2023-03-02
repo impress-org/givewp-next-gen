@@ -1,4 +1,13 @@
-import {Element, Field, Gateway, Group, ReceiptDetail, Section as SectionType, SelectOption} from '@givewp/forms/types';
+import {
+    Element,
+    Field,
+    Gateway,
+    Group,
+    RadioOption,
+    ReceiptDetail,
+    Section as SectionType,
+    SelectOption,
+} from '@givewp/forms/types';
 import {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
 import {FC, FormHTMLAttributes, ReactNode} from 'react';
 
@@ -20,6 +29,10 @@ export type GatewayOptionProps = {
 
 export interface SelectFieldProps extends FieldProps {
     options: Array<SelectOption>;
+}
+
+export interface RadioFieldProps extends FieldProps {
+    options: Array<RadioOption>;
 }
 
 export interface ElementProps extends Element {}

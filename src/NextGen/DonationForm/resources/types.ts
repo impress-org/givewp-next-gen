@@ -211,14 +211,19 @@ export interface SelectOption {
     disabled?: boolean;
 }
 
+export interface RadioOption {
+    label: string;
+    value: string;
+}
+
 interface FormResponse {
     type: string;
-    data: any
+    data: any;
 }
 
 type FormResponseValidationError = {
-    [key: string]: string
-}
+    [key: string]: string;
+};
 
 interface FormResponseValidationErrors extends FormResponse {
     type: 'validation_error';
