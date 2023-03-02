@@ -28,7 +28,6 @@ use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
  * @since 0.1.0
@@ -207,26 +206,26 @@ class ConvertDonationFormBlocksToFieldsApi
             /** @var Hidden $donationType */
             $donationType = $group->getNodeByName('donationType');
             $donationType
-                ->defaultValue(DonationType::SUBSCRIPTION()->getValue())
+                ->defaultValue(DonationType::SINGLE()->getValue())
                 ->rules(new DonationTypeRule());
 
             /** @var Hidden $period */
             $period = $group->getNodeByName('subscriptionPeriod');
             $period
-                ->defaultValue(SubscriptionPeriod::MONTH()->getValue())
+                ->defaultValue(null)
                 ->rules(new SubscriptionPeriodRule());
 
             /** @var Hidden $frequency */
             $frequency = $group->getNodeByName('subscriptionFrequency');
             $frequency
-                ->defaultValue(1)
+                ->defaultValue(null)
                 ->rules(new SubscriptionFrequencyRule());
 
 
             /** @var Hidden $installments */
             $installments = $group->getNodeByName('subscriptionInstallments');
             $installments
-                ->defaultValue(0)
+                ->defaultValue(null)
                 ->rules(new SubscriptionInstallmentsRule());
         });
     }
