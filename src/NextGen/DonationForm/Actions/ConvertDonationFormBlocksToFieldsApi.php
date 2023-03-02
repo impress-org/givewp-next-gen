@@ -219,14 +219,14 @@ class ConvertDonationFormBlocksToFieldsApi
         $adminChoice = false;
         $subscriptionPeriod = $adminChoice ?
             Hidden::make('period')
-                ->defaultValue('once')
+                ->defaultValue('one-time')
                 ->rules(new SubscriptionPeriodRule())
             : Radio::make('period')
-                ->defaultValue('once')
+                ->defaultValue('one-time')
                 ->label(__('Choose your donation frequency', 'give'))
                 ->options(
                     [
-                        'value' => 'once',
+                        'value' => 'one-time',
                         'label' => __('One Time', 'give')
                     ],
                     [
