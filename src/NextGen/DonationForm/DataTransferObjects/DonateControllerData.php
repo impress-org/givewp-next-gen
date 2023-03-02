@@ -113,6 +113,29 @@ class DonateControllerData
     }
 
     /**
+     * @unreleased
+     */
+    public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
+    {
+        $form = $this->getDonationForm();
+
+        return new Donation([
+            'status' => DonationStatus::PENDING(),
+            'gatewayId' => $this->gatewayId,
+            'amount' => $this->amount(),
+            'donorId' => $donorId,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'formId' => $this->formId,
+            'formTitle' => $form->title,
+            'company' => $this->company,
+            'type' => DonationType::SUBSCRIPTION(),
+            'subscriptionId' => $subscriptionId,
+        ]);
+    }
+
+    /**
      * @since 0.1.0
      */
     public function getSuccessUrl(Donation $donation): string

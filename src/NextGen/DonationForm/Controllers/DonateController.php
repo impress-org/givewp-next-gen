@@ -3,7 +3,6 @@
 namespace Give\NextGen\DonationForm\Controllers;
 
 use Exception;
-use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
@@ -14,7 +13,7 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 class DonateController
 {
     /**
-     * First we create a donation, then move on to the gateway processing
+     * First we create a donation and/or subscription, then move on to the gateway processing
      *
      * @unreleased add support for subscriptions
      * @since 0.1.0
@@ -31,12 +30,12 @@ class DonateController
             $formData->lastName
         );
 
-        $donation = $formData->toDonation($donor->id);
-
         if ($formData->donationType->isSingle()) {
+            $donation = $formData->toDonation($donor->id);
             $donation->save();
 
-            do_action('givewp_before_handle_create_payment', $formData, $donation);
+            do_action('givewp_donate_controller_donation_created', $formData, $donation);
+
             $registeredGateway->handleCreatePayment($donation);
         }
 
@@ -44,13 +43,13 @@ class DonateController
             $subscription = $formData->toSubscription($donor->id);
             $subscription->save();
 
-            $donation->type = DonationType::SUBSCRIPTION();
-            $donation->subscriptionId = $subscription->id;
+            $donation = $formData->toInitialSubscriptionDonation($donor->id, $subscription->id);
             $donation->save();
 
-            give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
+            do_action('givewp_donate_controller_donation_created', $formData, $donation);
+            
+            do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
-            do_action('givewp_before_handle_create_subscription', $formData, $donation, $subscription);
             $registeredGateway->handleCreateSubscription($donation, $subscription);
         }
     }

@@ -1,11 +1,12 @@
 <?php
 
-namespace Give\NextGen\DonationForm\Actions;
+namespace Give\NextGen\DonationForm\Listeners;
 
 use Give\Donations\Models\Donation;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 
-class AddRedirectUrlsToGatewayData {
+class AddRedirectUrlsToGatewayData
+{
     /**
      * This adds additional redirect urls to $gatewayData.
      *

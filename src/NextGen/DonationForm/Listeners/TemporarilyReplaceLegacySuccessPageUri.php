@@ -1,10 +1,11 @@
 <?php
-namespace Give\NextGen\DonationForm\Actions;
+namespace Give\NextGen\DonationForm\Listeners;
 
 use Give\Donations\Models\Donation;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 
-class TemporarilyReplaceLegacySuccessPageUri {
+class TemporarilyReplaceLegacySuccessPageUri
+{
     /**
      * Use our new receipt url for the success page uri.
      *
