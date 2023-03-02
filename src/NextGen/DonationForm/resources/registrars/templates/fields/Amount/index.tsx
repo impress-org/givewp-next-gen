@@ -4,21 +4,6 @@ import FixedAmountMessage from './FixedAmountMessage';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
 
-const periods = [
-    {
-        value: 'once',
-        label: 'One Time',
-    },
-    {
-        value: 'month',
-        label: 'Monthly',
-    },
-    {
-        value: 'year',
-        label: 'Yearly',
-    },
-];
-
 /**
  * @unreleased add display options for multi levels, fixed amount, and custom amount
  * @since 0.1.0
