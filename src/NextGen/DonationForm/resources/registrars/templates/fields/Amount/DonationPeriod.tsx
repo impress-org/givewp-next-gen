@@ -25,7 +25,9 @@ export default function DonationPeriod({periods}: DonationPeriodProps) {
 
     useEffect(() => {
         if (selectedPeriod === 'once'){
-            setValue('donationType', 'donation')
+            setValue('donationType', 'donation');
+            setValue('period', 'once');
+            setValue('frequency', null);
         } else {
             setValue('donationType', 'subscription');
             setValue('period', selectedPeriod);
