@@ -17,6 +17,7 @@ use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
+use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\NextGen\DonationForm\Rules\DonationTypeRule;
@@ -28,6 +29,7 @@ use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
 use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
  * @since 0.1.0
@@ -209,10 +211,25 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->defaultValue(DonationType::SINGLE()->getValue())
                 ->rules(new DonationTypeRule());
 
-            /** @var Hidden $period */
+            /** @var Radio $period */
             $period = $group->getNodeByName('period');
             $period
-                ->defaultValue(null)
+                ->defaultValue('once')
+                ->label(__('Choose your donation frequency', 'give'))
+                ->options(
+                    [
+                        'value' => 'once',
+                        'label' => __('One Time', 'give')
+                    ],
+                    [
+                        'value' => SubscriptionPeriod::MONTH()->getValue(),
+                        'label' => SubscriptionPeriod::MONTH()->label(0)
+                    ],
+                    [
+                        'value' => SubscriptionPeriod::YEAR()->getValue(),
+                        'label' => SubscriptionPeriod::YEAR()->label(0)
+                    ],
+                )
                 ->rules(new SubscriptionPeriodRule());
 
             /** @var Hidden $frequency */

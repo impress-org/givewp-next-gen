@@ -23,7 +23,8 @@ class DonationAmount extends Group
                 Hidden::make('currency'),
                 Hidden::make('donationType'),
                 Hidden::make('frequency'),
-                Hidden::make('period'),
+                Radio::make('period'),
+                //Hidden::make('period'),
                 Hidden::make('installments')
             );
     }
