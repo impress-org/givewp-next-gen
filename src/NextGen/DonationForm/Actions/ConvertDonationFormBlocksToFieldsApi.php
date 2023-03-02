@@ -162,10 +162,12 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @unreleased
+     * @throws NameCollisionException
+     * @throws EmptyNameException
      */
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
-        return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
+        $amountField = DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
             $amountRules = ['required', 'numeric'];
 
             if (!$block->getAttribute('customAmount') &&
@@ -204,16 +206,22 @@ class ConvertDonationFormBlocksToFieldsApi
             $currency
                 ->defaultValue($this->currency)
                 ->rules('required', 'currency');
+        });
 
-            /** @var Hidden $donationType */
-            $donationType = $group->getNodeByName('donationType');
-            $donationType
-                ->defaultValue(DonationType::SINGLE()->getValue())
-                ->rules(new DonationTypeRule());
+        $donationType = Hidden::make('donationType')
+            ->defaultValue(DonationType::SINGLE()->getValue())
+            ->rules(new DonationTypeRule());
 
-            /** @var Radio $period */
-            $period = $group->getNodeByName('period');
-            $period
+        $subscriptionFrequency = Hidden::make('frequency')
+            ->defaultValue(null)
+            ->rules(new SubscriptionFrequencyRule());
+
+        $adminChoice = false;
+        $subscriptionPeriod = $adminChoice ?
+            Hidden::make('period')
+                ->defaultValue('once')
+                ->rules(new SubscriptionPeriodRule())
+            : Radio::make('period')
                 ->defaultValue('once')
                 ->label(__('Choose your donation frequency', 'give'))
                 ->options(
@@ -228,23 +236,22 @@ class ConvertDonationFormBlocksToFieldsApi
                     [
                         'value' => SubscriptionPeriod::YEAR()->getValue(),
                         'label' => SubscriptionPeriod::YEAR()->label(0)
-                    ],
+                    ]
                 )
                 ->rules(new SubscriptionPeriodRule());
 
-            /** @var Hidden $frequency */
-            $frequency = $group->getNodeByName('frequency');
-            $frequency
-                ->defaultValue(null)
-                ->rules(new SubscriptionFrequencyRule());
+        $subscriptionInstallments = Hidden::make('installments')
+            ->defaultValue(0)
+            ->rules(new SubscriptionInstallmentsRule());
 
+        $amountField->append(
+            $donationType,
+            $subscriptionFrequency,
+            $subscriptionPeriod,
+            $subscriptionInstallments
+        );
 
-            /** @var Hidden $installments */
-            $installments = $group->getNodeByName('installments');
-            $installments
-                ->defaultValue(0)
-                ->rules(new SubscriptionInstallmentsRule());
-        });
+        return $amountField;
     }
 
     /**
