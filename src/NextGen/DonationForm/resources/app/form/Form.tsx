@@ -8,7 +8,7 @@ import {
     isFormResponseRedirect,
     isFormResponseValidationError,
     isResponseRedirected,
-    Section
+    Section,
 } from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {withTemplateWrapper} from '../templates';
@@ -107,6 +107,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
     const methods = useForm<FormInputs>({
         defaultValues,
         resolver: joiResolver(validationSchema),
+        reValidateMode: 'onBlur',
     });
 
     const {handleSubmit, setError, control} = methods;
