@@ -10,14 +10,17 @@ export default function DonationSummary() {
     const amount = useWatch({name: 'amount'});
     const donationType = useWatch({name: 'donationType'});
     const period = useWatch({name: 'period'});
-    const givingFrequency = donationType !== 'subscription' ? __('One time', 'give') : `${period}ly`;
+    const humanReadablePeriod = `${period === 'day' ? 'dai' : period}ly`
+        .toLowerCase()
+        .replace(/\w/, (firstLetter) => firstLetter.toUpperCase());
+    const givingFrequency = donationType !== 'subscription' ? __('One time', 'give') : humanReadablePeriod;
     const formatter = useCurrencyFormatter(currency, {});
 
     return (
         <ul className="givewp-elements-donationSummary__list">
-            <LineItem label={__('Payment Amount', 'give')} value={formatter.format(Number(amount))}/>
-            <LineItem label={__('Giving Frequency', 'give')} value={givingFrequency}/>
-            <LineItem label={__('Donation Total', 'give')} value={formatter.format(Number(amount))}/>
+            <LineItem label={__('Payment Amount', 'give')} value={formatter.format(Number(amount))} />
+            <LineItem label={__('Giving Frequency', 'give')} value={givingFrequency} />
+            <LineItem label={__('Donation Total', 'give')} value={formatter.format(Number(amount))} />
         </ul>
     );
 }

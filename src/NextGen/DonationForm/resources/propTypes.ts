@@ -60,9 +60,9 @@ export interface DonationAmountProps extends GroupProps {
         amount: FC<AmountProps | {}>;
         donationType: FC<FieldProps | {}>;
         currency: FC<FieldProps | {}>;
-        frequency: FC<FieldProps | {}>;
-        period: FC<FieldProps | {}>;
-        installments: FC<FieldProps | {}>;
+        frequency?: FC<FieldProps | {}>;
+        period?: FC<FieldProps | {}>;
+        installments?: FC<FieldProps | {}>;
     };
 }
 

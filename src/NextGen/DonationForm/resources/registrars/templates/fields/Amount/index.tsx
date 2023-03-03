@@ -36,12 +36,14 @@ export default function Amount({
     };
 
     useEffect(() => {
-        if (donationPeriod === 'one-time') {
-            setValue('donationType', 'single');
-            setValue('frequency', null);
-        } else {
-            setValue('donationType', 'subscription');
-            setValue('frequency', 1);
+        if (donationPeriod) {
+            if (donationPeriod === 'one-time') {
+                setValue('donationType', 'single');
+                setValue('frequency', null);
+            } else {
+                setValue('donationType', 'subscription');
+                setValue('frequency', 1);
+            }
         }
     }, [donationPeriod]);
 

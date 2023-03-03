@@ -2,34 +2,20 @@
 
 namespace Give\NextGen\DonationForm\Actions;
 
-use Give\Donations\ValueObjects\DonationType;
-use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
-use Give\Framework\FieldsAPI\DonationAmount;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\FieldsAPI\Group;
-use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
-use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
-use Give\NextGen\DonationForm\Rules\DonationTypeRule;
-use Give\NextGen\DonationForm\Rules\Max;
-use Give\NextGen\DonationForm\Rules\Min;
-use Give\NextGen\DonationForm\Rules\Size;
-use Give\NextGen\DonationForm\Rules\SubscriptionFrequencyRule;
-use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
-use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
  * @since 0.1.0
@@ -167,91 +153,7 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
-        $amountField = DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
-            $amountRules = ['required', 'numeric'];
-
-            if (!$block->getAttribute('customAmount') &&
-                $block->getAttribute('priceOption') === 'set') {
-                $size = $block->getAttribute('setPrice');
-
-                $amountRules[] = new Size($size);
-            }
-
-            if ($block->getAttribute('customAmount')) {
-                if ($block->hasAttribute('customAmountMin')) {
-                    $amountRules[] = new Min($block->getAttribute('customAmountMin'));
-                }
-
-                if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
-                    $amountRules[] = new Max($block->getAttribute('customAmountMax'));
-                }
-            }
-
-            /** @var Amount $amount */
-            $amount = $group->getNodeByName('amount');
-            $amount
-                ->label(__('Donation Amount', 'give'))
-                ->levels(...array_map('absint', $block->getAttribute('levels')))
-                ->allowLevels($block->getAttribute('priceOption') === 'multi')
-                ->allowCustomAmount($block->getAttribute('customAmount'))
-                ->fixedAmountValue($block->getAttribute('setPrice'))
-                ->defaultValue(
-                    $block->getAttribute('priceOption') === 'set' ?
-                        $block->getAttribute('setPrice') : 50
-                )
-                ->rules(...$amountRules);
-
-            /** @var Hidden $currency */
-            $currency = $group->getNodeByName('currency');
-            $currency
-                ->defaultValue($this->currency)
-                ->rules('required', 'currency');
-        });
-
-        $donationType = Hidden::make('donationType')
-            ->defaultValue(DonationType::SINGLE()->getValue())
-            ->rules(new DonationTypeRule());
-
-        $subscriptionFrequency = Hidden::make('frequency')
-            ->defaultValue(null)
-            ->rules(new SubscriptionFrequencyRule());
-
-        $adminChoice = false;
-        $subscriptionPeriod = $adminChoice ?
-            Hidden::make('period')
-                ->defaultValue('one-time')
-                ->rules(new SubscriptionPeriodRule())
-            : Radio::make('period')
-                ->defaultValue('one-time')
-                ->label(__('Choose your donation frequency', 'give'))
-                ->options(
-                    [
-                        'value' => 'one-time',
-                        'label' => __('One Time', 'give')
-                    ],
-                    [
-                        'value' => SubscriptionPeriod::MONTH()->getValue(),
-                        'label' => SubscriptionPeriod::MONTH()->label(0)
-                    ],
-                    [
-                        'value' => SubscriptionPeriod::YEAR()->getValue(),
-                        'label' => SubscriptionPeriod::YEAR()->label(0)
-                    ]
-                )
-                ->rules(new SubscriptionPeriodRule());
-
-        $subscriptionInstallments = Hidden::make('installments')
-            ->defaultValue(0)
-            ->rules(new SubscriptionInstallmentsRule());
-
-        $amountField->append(
-            $donationType,
-            $subscriptionFrequency,
-            $subscriptionPeriod,
-            $subscriptionInstallments
-        );
-
-        return $amountField;
+        return (new ConvertDonationAmountBlockToFieldsApi())($block, $this->currency);
     }
 
     /**
@@ -287,4 +189,6 @@ class ConvertDonationFormBlocksToFieldsApi
 
         return $node;
     }
+
+
 }

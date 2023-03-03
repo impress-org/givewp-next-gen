@@ -12,12 +12,12 @@ export default function DonationAmount({
 }: DonationAmountProps) {
     return (
         <>
-            <Period />
+            {Period && <Period />}
             <Amount />
             <DonationType />
             <Currency />
-            <Frequency />
-            <Installments />
+            {Frequency && <Frequency />}
+            {Installments && <Installments />}
         </>
     );
 }
