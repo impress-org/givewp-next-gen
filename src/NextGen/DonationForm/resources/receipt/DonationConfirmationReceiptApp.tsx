@@ -16,7 +16,7 @@ const {receipt} = window.givewpDonationConfirmationReceiptExports;
  *
  * @unreleased
  */
-const getAmount = (value) => {
+const getAmountFormatted = (value) => {
     const amount = parseFloat(value);
     const amountFormatted = amountFormatter(receipt.settings.currency, {}).format(amount);
     const additionalDetails = value.replace(amount.toFixed(2), '').trim();
@@ -39,7 +39,7 @@ const getDetailValue = (value) => {
     }
 
     if (value?.amount) {
-        return getAmount(value.amount);
+        return getAmountFormatted(value.amount);
     }
 
     return JSON.stringify(value);
