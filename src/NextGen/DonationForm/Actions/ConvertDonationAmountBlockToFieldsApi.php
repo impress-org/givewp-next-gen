@@ -128,8 +128,6 @@ class ConvertDonationAmountBlockToFieldsApi
     protected function getRecurringAmountPeriodField(array $blockAttributes): Field
     {
         $donationChoice = $blockAttributes['recurringDonationChoice'];
-        $recurringPeriod = $blockAttributes['recurringPeriod'];
-        $recurringPeriodIsPreset = $recurringPeriod === 'preset';
         $recurringBillingPeriodOptions = $blockAttributes['recurringBillingPeriodOptions'];
         $recurringBillingPeriod = new SubscriptionPeriod($blockAttributes['recurringBillingPeriod']);
         $recurringOptInDefault = $blockAttributes['recurringOptInDefault'];
@@ -141,26 +139,20 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules(new SubscriptionPeriodRule());
         }
 
-        if ($recurringPeriodIsPreset) {
-            $options = $this->mergePeriodOptionsWithOneTime([
-                [
-                    'value' => $recurringBillingPeriod->getValue(),
-                    'label' => $recurringBillingPeriod->label(0),
-                ],
-            ]);
-        } else {
-            $options = $this->mergePeriodOptionsWithOneTime(
-                array_map(static function ($option) {
-                    $subscriptionPeriod = new SubscriptionPeriod($option);
-                    return [
-                        'value' => $subscriptionPeriod->getValue(),
-                        'label' => $subscriptionPeriod->label(0),
-                    ];
-                }, $recurringBillingPeriodOptions)
-            );
-        }
+        $options = $this->mergePeriodOptionsWithOneTime(
+            array_map(static function ($option) {
+                $subscriptionPeriod = new SubscriptionPeriod($option);
+                return [
+                    'value' => $subscriptionPeriod->getValue(),
+                    'label' => $subscriptionPeriod->label(0),
+                ];
+            }, $recurringBillingPeriodOptions)
+        );
 
-        if ($recurringPeriodIsPreset && $recurringOptInDefault) {
+        if ($recurringOptInDefault) {
+            /**
+             * TODO: get default opt-in period from settings
+             * */
             $defaultValue = $recurringBillingPeriod->getValue();
         } else {
             $defaultValue = 'one-time';
@@ -196,15 +188,14 @@ class ConvertDonationAmountBlockToFieldsApi
 //                "day",
 //                "week",
                 "month",
-                "year"
+//                "year"
             ],
             "recurringBillingPeriod" => "month",
             "recurringBillingInterval" => 1,
-            "recurringPeriod" => "preset",
             "recurringDonationChoice" => "donor",
             "recurringEnabled" => true,
             "recurringLengthOfTime" => 0,
-            "recurringOptInDefault" => true
+            "recurringOptInDefault" => false
         ];
     }
 }

@@ -34,10 +34,8 @@ export default function Amount({
 
     const isFixedAmount = !allowLevels;
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
-    /**
-     * TODO: replace with real props / if recurring is admin or donor preset
-     */
-    const displayFixedAmountRecurringMessage = donationPeriod !== 'one-time';
+    const displayFixedAmountRecurringMessage =
+        donationPeriod !== 'one-time' && (subscriptionFrequency > 1 || subscriptionInstallments > 0);
     const resetCustomAmountInput = () => {
         customAmountInputRef.current.value = '';
         customAmountInputRef.current.attributes.getNamedItem('value').value = '';
@@ -99,7 +97,7 @@ export default function Amount({
             {displayFixedAmountRecurringMessage && (
                 <FixedAmountRecurringMessage
                     isFixed={isFixedAmount && !allowCustomAmount}
-                    amount={formatter.format(Number(fixedAmountValue))}
+                    fixedAmount={formatter.format(Number(fixedAmountValue))}
                     period={donationPeriod}
                     frequency={subscriptionFrequency}
                     installments={subscriptionInstallments}
