@@ -200,10 +200,10 @@ class ConvertDonationAmountBlockToFieldsApi
             ],
             "recurringBillingPeriod" => "month",
             "recurringBillingInterval" => 1,
-            "recurringPeriod" => "donor",
+            "recurringPeriod" => "preset",
             "recurringDonationChoice" => "donor",
             "recurringEnabled" => true,
-            "recurringLengthOfTime" => "2",
+            "recurringLengthOfTime" => 0,
             "recurringOptInDefault" => true
         ];
     }

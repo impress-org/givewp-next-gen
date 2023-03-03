@@ -3,6 +3,7 @@ import type {AmountProps} from '@givewp/forms/propTypes';
 import FixedAmountMessage from './FixedAmountMessage';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
+import FixedAmountRecurringMessage from './FixedAmountRecurringMessage';
 
 /**
  * @unreleased add display options for multi levels, fixed amount, and custom amount
@@ -23,13 +24,20 @@ export default function Amount({
     const customAmountInputRef = useRef<HTMLInputElement>(null);
     const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
+    //const amount = useWatch({name: 'amount'});
     const currency = useWatch({name: 'currency'});
     const donationPeriod = useWatch({name: 'period'});
+    const subscriptionFrequency = useWatch({name: 'frequency'});
+    const subscriptionInstallments = useWatch({name: 'installments'});
     const formatter = useCurrencyFormatter(currency);
     const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
 
     const isFixedAmount = !allowLevels;
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
+    /**
+     * TODO: replace with real props / if recurring is admin or donor preset
+     */
+    const displayFixedAmountRecurringMessage = donationPeriod !== 'one-time';
     const resetCustomAmountInput = () => {
         customAmountInputRef.current.value = '';
         customAmountInputRef.current.attributes.getNamedItem('value').value = '';
@@ -39,10 +47,8 @@ export default function Amount({
         if (donationPeriod) {
             if (donationPeriod === 'one-time') {
                 setValue('donationType', 'single');
-                setValue('frequency', null);
             } else {
                 setValue('donationType', 'subscription');
-                setValue('frequency', 1);
             }
         }
     }, [donationPeriod]);
@@ -86,7 +92,19 @@ export default function Amount({
                 />
             )}
 
-            {displayFixedAmountMessage && <FixedAmountMessage amount={formatter.format(Number(fixedAmountValue))} />}
+            {displayFixedAmountMessage && !displayFixedAmountRecurringMessage && (
+                <FixedAmountMessage amount={formatter.format(Number(fixedAmountValue))} />
+            )}
+
+            {displayFixedAmountRecurringMessage && (
+                <FixedAmountRecurringMessage
+                    isFixed={isFixedAmount && !allowCustomAmount}
+                    amount={formatter.format(Number(fixedAmountValue))}
+                    period={donationPeriod}
+                    frequency={subscriptionFrequency}
+                    installments={subscriptionInstallments}
+                />
+            )}
 
             <input type="hidden" {...inputProps} />
 
