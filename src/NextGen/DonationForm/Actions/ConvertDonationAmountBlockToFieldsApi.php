@@ -139,8 +139,10 @@ class ConvertDonationAmountBlockToFieldsApi
     {
         $donationChoice = $blockAttributes['recurringDonationChoice'];
         $recurringPeriod = $blockAttributes['recurringPeriod'];
+        $recurringPeriodIsPreset = $recurringPeriod === 'preset';
         $recurringBillingPeriodOptions = $blockAttributes['recurringBillingPeriodOptions'];
         $recurringBillingPeriod = new SubscriptionPeriod($blockAttributes['recurringBillingPeriod']);
+        $recurringOptInDefault = $blockAttributes['recurringOptInDefault'];
 
         // if admin fields are all hidden
         if ($donationChoice === 'admin') {
@@ -149,33 +151,50 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules(new SubscriptionPeriodRule());
         }
 
-        if ($recurringPeriod === 'preset') {
-            return Hidden::make('period')
-                ->defaultValue($recurringBillingPeriod->getValue())
-                ->rules(new SubscriptionPeriodRule());
+        if ($recurringPeriodIsPreset) {
+            $options = $this->mergePeriodOptionsWithOneTime([
+                [
+                    'value' => $recurringBillingPeriod->getValue(),
+                    'label' => $recurringBillingPeriod->label(0),
+                ],
+            ]);
+        } else {
+            $options = $this->mergePeriodOptionsWithOneTime(
+                array_map(static function ($option) {
+                    $subscriptionPeriod = new SubscriptionPeriod($option);
+                    return [
+                        'value' => $subscriptionPeriod->getValue(),
+                        'label' => $subscriptionPeriod->label(0),
+                    ];
+                }, $recurringBillingPeriodOptions)
+            );
         }
 
-        $options = array_merge([
+        if ($recurringPeriodIsPreset && $recurringOptInDefault) {
+            $defaultValue = $recurringBillingPeriod->getValue();
+        } else {
+            $defaultValue = 'one-time';
+        }
+
+
+        return Radio::make('period')
+            ->defaultValue($defaultValue)
+            ->label(__('Choose your donation frequency', 'give'))
+            ->options(...$options)
+            ->rules(new SubscriptionPeriodRule());
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function mergePeriodOptionsWithOneTime(array $options): array
+    {
+        return array_merge([
             [
                 'value' => 'one-time',
                 'label' => __('One Time', 'give'),
             ],
-        ],
-            array_map(static function ($option) {
-                $subscriptionPeriod = new SubscriptionPeriod($option);
-                return [
-                    'value' => $subscriptionPeriod->getValue(),
-                    'label' => $subscriptionPeriod->label(0),
-                ];
-            }, $recurringBillingPeriodOptions)
-        );
-
-
-        return Radio::make('period')
-            ->defaultValue('one-time')
-            ->label(__('Choose your donation frequency', 'give'))
-            ->options(...$options)
-            ->rules(new SubscriptionPeriodRule());
+        ], $options);
     }
 
     /**
@@ -192,7 +211,7 @@ class ConvertDonationAmountBlockToFieldsApi
             ],
             "recurringBillingPeriod" => "month",
             "recurringBillingInterval" => 1,
-            "recurringPeriod" => "donor",
+            "recurringPeriod" => "preset",
             "recurringDonationChoice" => "donor",
             "recurringEnabled" => true,
             "recurringLengthOfTime" => "0",
