@@ -88,36 +88,26 @@ class ConvertDonationAmountBlockToFieldsApi
                 $donationType
             );
         } else {
-            $donationTypeDefault = $blockAttributes['recurringOptInDefault'] ?
-                DonationType::SUBSCRIPTION()->getValue() :
-                DonationType::SINGLE()->getValue();
+            $subscriptionPeriod = $this->getRecurringAmountPeriodField($blockAttributes);
+
+            //$blockAttributes['recurringOptInDefault']
+            $donationTypeDefault = $subscriptionPeriod->getDefaultValue() === 'one-time' ? DonationType::SINGLE(
+            )->getValue() : DonationType::SUBSCRIPTION()->getValue();
 
             $donationType = Hidden::make('donationType')
                 ->defaultValue($donationTypeDefault)
                 ->rules(new DonationTypeRule());
 
-            $subscriptionPeriod = $this->getRecurringAmountPeriodField($blockAttributes);
+            $billingInterval = (int)$blockAttributes['recurringBillingInterval'];
+            $lengthOfTime = (int)$blockAttributes['recurringLengthOfTime'];
 
-            if ($blockAttributes['recurringDonationChoice'] === 'admin') {
-                $billingInterval = (int)$blockAttributes['recurringBillingInterval'];
-                $lengthOfTime = (int)$blockAttributes['recurringLengthOfTime'];
+            $subscriptionFrequency = Hidden::make('frequency')
+                ->defaultValue($billingInterval)
+                ->rules(new SubscriptionFrequencyRule());
 
-                $subscriptionFrequency = Hidden::make('frequency')
-                    ->defaultValue($billingInterval)
-                    ->rules(new SubscriptionFrequencyRule());
-
-                $subscriptionInstallments = Hidden::make('installments')
-                    ->defaultValue($lengthOfTime)
-                    ->rules(new SubscriptionInstallmentsRule());
-            } else {
-                $subscriptionFrequency = Hidden::make('frequency')
-                    ->defaultValue(null)
-                    ->rules(new SubscriptionFrequencyRule());
-
-                $subscriptionInstallments = Hidden::make('installments')
-                    ->defaultValue(null)
-                    ->rules(new SubscriptionInstallmentsRule());
-            }
+            $subscriptionInstallments = Hidden::make('installments')
+                ->defaultValue($lengthOfTime)
+                ->rules(new SubscriptionInstallmentsRule());
 
             $amountField->append(
                 $donationType,
@@ -144,7 +134,7 @@ class ConvertDonationAmountBlockToFieldsApi
         $recurringBillingPeriod = new SubscriptionPeriod($blockAttributes['recurringBillingPeriod']);
         $recurringOptInDefault = $blockAttributes['recurringOptInDefault'];
 
-        // if admin fields are all hidden
+        // if admin - fields are all hidden
         if ($donationChoice === 'admin') {
             return Hidden::make('period')
                 ->defaultValue($recurringBillingPeriod->getValue())
@@ -176,7 +166,6 @@ class ConvertDonationAmountBlockToFieldsApi
             $defaultValue = 'one-time';
         }
 
-
         return Radio::make('period')
             ->defaultValue($defaultValue)
             ->label(__('Choose your donation frequency', 'give'))
@@ -204,17 +193,17 @@ class ConvertDonationAmountBlockToFieldsApi
     {
         return [
             "recurringBillingPeriodOptions" => [
-                "day",
-                "week",
+//                "day",
+//                "week",
                 "month",
                 "year"
             ],
             "recurringBillingPeriod" => "month",
             "recurringBillingInterval" => 1,
-            "recurringPeriod" => "preset",
+            "recurringPeriod" => "donor",
             "recurringDonationChoice" => "donor",
             "recurringEnabled" => true,
-            "recurringLengthOfTime" => "0",
+            "recurringLengthOfTime" => "2",
             "recurringOptInDefault" => true
         ];
     }
