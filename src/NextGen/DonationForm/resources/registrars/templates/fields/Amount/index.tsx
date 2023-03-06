@@ -6,7 +6,8 @@ import AmountLevels from './AmountLevels';
 import FixedAmountRecurringMessage from './FixedAmountRecurringMessage';
 
 /**
- * @unreleased add display options for multi levels, fixed amount, and custom amount
+ * @unreleased add support for subscriptions
+ * @since 0.2.0 add display options for multi levels, fixed amount, and custom amount
  * @since 0.1.0
  */
 export default function Amount({
@@ -24,22 +25,29 @@ export default function Amount({
     const customAmountInputRef = useRef<HTMLInputElement>(null);
     const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
-    //const amount = useWatch({name: 'amount'});
+
     const currency = useWatch({name: 'currency'});
     const donationPeriod = useWatch({name: 'period'});
+    const donationType = useWatch({name: 'donationType'});
     const subscriptionFrequency = useWatch({name: 'frequency'});
     const subscriptionInstallments = useWatch({name: 'installments'});
+
     const formatter = useCurrencyFormatter(currency);
     const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
 
     const isFixedAmount = !allowLevels;
     const displayFixedAmountMessage = !allowCustomAmount && isFixedAmount;
-    const displayFixedAmountRecurringMessage =
-        donationPeriod !== 'one-time' && (subscriptionFrequency > 1 || subscriptionInstallments > 0);
+    const fixedAmountFormatted = formatter.format(Number(fixedAmountValue));
     const resetCustomAmountInput = () => {
         customAmountInputRef.current.value = '';
         customAmountInputRef.current.attributes.getNamedItem('value').value = '';
     };
+
+    const isFixedAmountRecurring = isFixedAmount && !allowCustomAmount;
+    const subscriptionHasMoreDetails = subscriptionFrequency > 1 || subscriptionInstallments > 0;
+    const subscriptionIsFixed = false;
+    const displayFixedAmountRecurringMessage =
+        donationType === 'subscription' && (subscriptionHasMoreDetails || subscriptionIsFixed);
 
     useEffect(() => {
         if (donationPeriod) {
@@ -91,13 +99,13 @@ export default function Amount({
             )}
 
             {displayFixedAmountMessage && !displayFixedAmountRecurringMessage && (
-                <FixedAmountMessage amount={formatter.format(Number(fixedAmountValue))} />
+                <FixedAmountMessage amount={fixedAmountFormatted} />
             )}
 
             {displayFixedAmountRecurringMessage && (
                 <FixedAmountRecurringMessage
-                    isFixed={isFixedAmount && !allowCustomAmount}
-                    fixedAmount={formatter.format(Number(fixedAmountValue))}
+                    isFixedAmount={isFixedAmountRecurring}
+                    fixedAmount={fixedAmountFormatted}
                     period={donationPeriod}
                     frequency={subscriptionFrequency}
                     installments={subscriptionInstallments}
