@@ -162,8 +162,6 @@ const Edit = ({attributes, setAttributes}) => {
                     };
                 })}
                 onChange={(value) => setOption(value)}
-                //@ts-ignore
-                disabled={true}
             />
         );
     };
