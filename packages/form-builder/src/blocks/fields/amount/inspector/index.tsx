@@ -156,23 +156,6 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {!!recurringEnabled && 'donor' === recurringDonationChoice && (
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Recurring period', 'give')}
-                            help={__(
-                                'This option provides only the selected period for the donor’s subscription.',
-                                'give'
-                            )}
-                            options={[
-                                {label: __('Preset choice', 'give'), value: 'preset'},
-                                {label: __('Donor choice', 'give'), value: 'donor'},
-                            ]}
-                            value={recurringPeriod}
-                            onChange={(recurringPeriod) => setAttributes({recurringPeriod})}
-                        />
-                    </PanelRow>
-                )}
                 {!!recurringEnabled && (
                     <PanelRow>
                         <SelectControl

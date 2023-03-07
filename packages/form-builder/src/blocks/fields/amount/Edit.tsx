@@ -47,7 +47,6 @@ const Edit = ({attributes, setAttributes}) => {
         customAmountMax,
         recurringEnabled,
         recurringDonationChoice,
-        recurringPeriod,
         recurringBillingInterval,
         recurringBillingPeriod,
         recurringBillingPeriodOptions,
@@ -58,10 +57,7 @@ const Edit = ({attributes, setAttributes}) => {
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
     const isRecurringAdmin = recurringEnabled && 'admin' === recurringDonationChoice;
-    const isRecurringDonorPreset =
-        recurringEnabled && 'donor' === recurringDonationChoice && 'preset' === recurringPeriod;
-    const isRecurringDonorChoice =
-        recurringEnabled && 'donor' === recurringDonationChoice && 'donor' === recurringPeriod;
+    const isRecurringDonor = recurringEnabled && 'donor' === recurringDonationChoice;
     const amountFormatted = formatCurrencyAmount(setPrice);
 
     const DonationLevels = () => (
@@ -89,11 +85,11 @@ const Edit = ({attributes, setAttributes}) => {
     const RecurringPeriod = ({count, label}) => {
         const interval = count ?? recurringBillingInterval;
 
-        const singular = !isRecurringDonorChoice
+        const singular = !isRecurringDonor
             ? periodLookup[recurringBillingPeriod].singular
             : periodLookup[recurringBillingPeriodOptions[0]].singular;
 
-        const plural = !isRecurringDonorChoice
+        const plural = !isRecurringDonor
             ? periodLookup[recurringBillingPeriod].plural
             : periodLookup[recurringBillingPeriodOptions[0]].plural;
 
@@ -114,12 +110,6 @@ const Edit = ({attributes, setAttributes}) => {
 
         const periodPlaceholder = <strong>{'[' + _n('period', 'periods', interval, 'give') + ']'}</strong>;
 
-        const periodElement = !isRecurringDonorChoice ? (
-            <RecurringPeriod count={interval} label={periodPlaceholder} />
-        ) : (
-            <RecurringPeriod count={interval} label={periodPlaceholder} />
-        );
-
         const count = parseInt(recurringLengthOfTime);
         const countElement = <strong>{count}</strong>;
 
@@ -130,7 +120,7 @@ const Edit = ({attributes, setAttributes}) => {
         return (
             <Notice>
                 {createInterpolateElement(translatableString, {
-                    period: periodElement,
+                    period: <RecurringPeriod count={interval} label={periodPlaceholder} />,
                     count: countElement,
                     strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
                 })}
@@ -168,17 +158,15 @@ const Edit = ({attributes, setAttributes}) => {
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
-            {isRecurringDonorChoice && <BillingPeriodControl options={recurringBillingPeriodOptions} />}
-            {isRecurringDonorPreset && <BillingPeriodControl options={[recurringBillingPeriod]} />}
+            {isRecurringDonor && <BillingPeriodControl options={recurringBillingPeriodOptions} />}
 
             {isMultiLevel && <DonationLevels />}
             {customAmount && <CustomAmount />}
 
             {isMultiLevel && recurringEnabled && <RecurringMessage />}
 
-            {isFixedAmount && isRecurringAdmin && <FixedRecurringMessage />}
-            {isFixedAmount && isRecurringDonorChoice && <FixedRecurringMessage />}
-            {isFixedAmount && !isRecurringAdmin && !isRecurringDonorChoice && !customAmount && <FixedPriceMessage />}
+            {isFixedAmount && recurringEnabled && <FixedRecurringMessage />}
+            {isFixedAmount && !recurringEnabled && !customAmount && <FixedPriceMessage />}
 
             <Inspector attributes={attributes} setAttributes={setAttributes} />
         </div>
