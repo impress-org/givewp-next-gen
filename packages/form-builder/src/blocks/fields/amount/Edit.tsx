@@ -168,18 +168,6 @@ const Edit = ({attributes, setAttributes}) => {
         );
     };
 
-    //console.clear();
-    console.log({
-        isMultiLevel,
-        isFixedAmount,
-        customAmount,
-        isRecurringAdmin,
-        isRecurringDonorPreset,
-        isRecurringDonorChoice,
-        recurringBillingInterval,
-        recurringBillingPeriodOptions,
-    });
-
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
             {isRecurringDonorChoice && <BillingPeriodControl options={recurringBillingPeriodOptions} />}
