@@ -26,10 +26,7 @@
                     "customAmount": "true",
                     "customAmountMin": 1,
                     "recurringBillingPeriodOptions": [
-                        "day",
-                        "week",
-                        "month",
-                        "year"
+                        "month"
                     ],
                     "recurringBillingPeriod": "month",
                     "recurringBillingInterval": 1,
