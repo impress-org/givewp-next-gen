@@ -15,7 +15,6 @@ const Inspector = ({attributes, setAttributes}) => {
         customAmountMax,
         recurringEnabled,
         recurringDonationChoice,
-        recurringPeriod,
         recurringBillingInterval,
         recurringBillingPeriod,
         recurringBillingPeriodOptions,
@@ -177,8 +176,7 @@ const Inspector = ({attributes, setAttributes}) => {
                 )}
                 {!!recurringEnabled && (
                     <PanelRow>
-                        {('admin' === recurringDonationChoice ||
-                            ('donor' === recurringDonationChoice && 'preset' === recurringPeriod)) && (
+                        {'admin' === recurringDonationChoice && (
                             <SelectControl
                                 label={__('Billing period', 'give')}
                                 options={[
@@ -194,8 +192,8 @@ const Inspector = ({attributes, setAttributes}) => {
                                 }
                             />
                         )}
-                        {'donor' === recurringDonationChoice && 'donor' === recurringPeriod && (
-                            <BaseControl id={'foo'} label={__('Billing period', 'give')}>
+                        {'donor' === recurringDonationChoice && (
+                            <BaseControl id={'recurringBillingPeriodOptions'} label={__('Billing period', 'give')}>
                                 <div
                                     style={{
                                         width: '100%',
