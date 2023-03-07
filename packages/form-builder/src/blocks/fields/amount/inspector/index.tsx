@@ -178,18 +178,12 @@ const Inspector = ({attributes, setAttributes}) => {
                         <SelectControl
                             label={__('Billing interval', 'give')}
                             options={[
-                                //@ts-ignore
-                                {label: __('Every', 'give'), value: 1},
-                                //@ts-ignore
-                                {label: __('Every 2nd', 'give'), value: 2},
-                                //@ts-ignore
-                                {label: __('Every 3rd', 'give'), value: 3},
-                                //@ts-ignore
-                                {label: __('Every 4th', 'give'), value: 4},
-                                //@ts-ignore
-                                {label: __('Every 5th', 'give'), value: 5},
-                                //@ts-ignore
-                                {label: __('Every 6th', 'give'), value: 6},
+                                {label: __('Every', 'give'), value: "1"},
+                                {label: __('Every 2nd', 'give'), value: "2"},
+                                {label: __('Every 3rd', 'give'), value: "3"},
+                                {label: __('Every 4th', 'give'), value: "4"},
+                                {label: __('Every 5th', 'give'), value: "5"},
+                                {label: __('Every 6th', 'give'), value: "6"},
                             ]}
                             value={recurringBillingInterval}
                             onChange={(recurringBillingInterval) => setAttributes({recurringBillingInterval})}
