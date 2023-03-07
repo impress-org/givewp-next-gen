@@ -82,7 +82,7 @@ const Edit = ({attributes, setAttributes}) => {
         </Notice>
     );
 
-    const RecurringPeriod = ({count, label}) => {
+    const RecurringPeriod = ({count}) => {
         const interval = count ?? recurringBillingInterval;
 
         const singular = !isRecurringDonor
@@ -95,10 +95,10 @@ const Edit = ({attributes, setAttributes}) => {
 
         return (
             <strong>
-                {1 === interval && <>{label ?? singular}</>}
+                {1 === interval && <>{singular}</>}
                 {1 !== interval && (
                     <>
-                        {interval} {label ?? plural}
+                        {interval} {plural}
                     </>
                 )}
             </strong>
@@ -120,7 +120,7 @@ const Edit = ({attributes, setAttributes}) => {
         return (
             <Notice>
                 {createInterpolateElement(translatableString, {
-                    period: <RecurringPeriod count={interval} label={periodPlaceholder} />,
+                    period: <RecurringPeriod count={interval} />,
                     count: countElement,
                     strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
                 })}
@@ -132,7 +132,7 @@ const Edit = ({attributes, setAttributes}) => {
         <Notice>
             {createInterpolateElement(__('This donation is <amount/> every <period/>. ', 'give'), {
                 amount: <strong>{amountFormatted}</strong>,
-                period: <RecurringPeriod count={parseInt(recurringBillingInterval)} label={undefined} />,
+                period: <RecurringPeriod count={parseInt(recurringBillingInterval)} />,
             })}
         </Notice>
     );
