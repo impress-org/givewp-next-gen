@@ -81,7 +81,7 @@ class DonationFormViewModel
     public function enqueueGlobalStyles()
     {
         wp_enqueue_global_styles();
-        
+
         wp_register_style(
             'givewp-global-form-styles',
             GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/styles/global.css'
@@ -91,7 +91,7 @@ class DonationFormViewModel
             'givewp-global-form-styles',
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
-            --givewp-secondary-color:{$this->secondaryColor()}; 
+            --givewp-secondary-color:{$this->secondaryColor()};
             }"
         );
 
