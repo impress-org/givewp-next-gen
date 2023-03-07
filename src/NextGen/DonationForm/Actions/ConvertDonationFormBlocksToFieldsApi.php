@@ -210,22 +210,22 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->rules(new DonationTypeRule());
 
             /** @var Hidden $period */
-            $period = $group->getNodeByName('period');
+            $period = $group->getNodeByName('subscriptionPeriod');
             $period
                 ->defaultValue(null)
                 ->rules(new SubscriptionPeriodRule());
 
             /** @var Hidden $frequency */
-            $frequency = $group->getNodeByName('frequency');
+            $frequency = $group->getNodeByName('subscriptionFrequency');
             $frequency
                 ->defaultValue(null)
                 ->rules(new SubscriptionFrequencyRule());
 
 
             /** @var Hidden $installments */
-            $installments = $group->getNodeByName('installments');
+            $installments = $group->getNodeByName('subscriptionInstallments');
             $installments
-                ->defaultValue(0)
+                ->defaultValue(null)
                 ->rules(new SubscriptionInstallmentsRule());
         });
     }

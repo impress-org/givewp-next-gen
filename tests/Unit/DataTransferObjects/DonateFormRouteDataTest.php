@@ -9,6 +9,7 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 
 /**
@@ -62,9 +63,9 @@ class DonateFormRouteDataTest extends TestCase
         $data->honorific = null;
         $data->text_block_meta = 'text block meta value';
         $data->donationType = DonationType::SINGLE()->getValue();
-        $data->frequency = null;
-        $data->period = null;
-        $data->installments = null;
+        $data->subscriptionFrequency = 1;
+        $data->subscriptionPeriod = SubscriptionPeriod::MONTH();
+        $data->subscriptionInstallments = null;
 
         $request = array_merge(get_object_vars($data), [
             'text_block_meta' => 'text block meta value'
