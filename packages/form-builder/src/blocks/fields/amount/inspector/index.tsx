@@ -29,9 +29,11 @@ const Inspector = ({attributes, setAttributes}) => {
         });
     };
     const removeBillingPeriodOption = (value) => {
-        setAttributes({
-            recurringBillingPeriodOptions: recurringBillingPeriodOptions.filter((option) => option !== value),
-        });
+        if(recurringBillingPeriodOptions.length > 1) {
+            setAttributes({
+                recurringBillingPeriodOptions: recurringBillingPeriodOptions.filter((option) => option !== value),
+            });
+        }
     };
 
     return (
@@ -216,6 +218,10 @@ const Inspector = ({attributes, setAttributes}) => {
                                                 checked
                                                     ? addBillingPeriodOption(option.value)
                                                     : removeBillingPeriodOption(option.value)
+                                            }
+                                            disabled={
+                                                recurringBillingPeriodOptions.length === 1
+                                                && recurringBillingPeriodOptions.includes(option.value) // This is the last checked option.
                                             }
                                             //@ts-ignore
                                             __nextHasNoMarginBottom={true}
