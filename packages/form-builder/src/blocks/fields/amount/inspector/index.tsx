@@ -4,6 +4,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 import DeleteButton from './delete-button';
 import AddButton from './add-button';
 import {CurrencyControl} from '@givewp/form-builder/common/currency';
+import periodLookup from '../period-lookup';
 
 const Inspector = ({attributes, setAttributes}) => {
     const {
@@ -19,7 +20,7 @@ const Inspector = ({attributes, setAttributes}) => {
         recurringBillingPeriod,
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
-        recurringOptInDefault,
+        recurringOptInDefaultBillingPeriod,
     } = attributes;
 
     const addBillingPeriodOption = (value) => {
@@ -230,6 +231,19 @@ const Inspector = ({attributes, setAttributes}) => {
                         )}
                     </PanelRow>
                 )}
+                {!!recurringEnabled && 'donor' === recurringDonationChoice && (
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Default billing period', 'give')}
+                            value={recurringOptInDefaultBillingPeriod ?? 'month'}
+                            options={['one-time'].concat(recurringBillingPeriodOptions).map((value) => ({
+                                label: periodLookup[value].singular,
+                                value: value,
+                            }))}
+                            onChange={(recurringOptInDefaultBillingPeriod) => setAttributes({recurringOptInDefaultBillingPeriod})}
+                        />
+                    </PanelRow>
+                )}
                 {!!recurringEnabled && (
                     <PanelRow>
                         <SelectControl
@@ -243,15 +257,6 @@ const Inspector = ({attributes, setAttributes}) => {
                             )}
                             value={recurringLengthOfTime}
                             onChange={(recurringLengthOfTime) => setAttributes({recurringLengthOfTime})}
-                        />
-                    </PanelRow>
-                )}
-                {!!recurringEnabled && 'donor' === recurringDonationChoice && (
-                    <PanelRow>
-                        <ToggleControl
-                            label={__('Recurring opt-in default', 'give')}
-                            checked={recurringOptInDefault}
-                            onChange={() => setAttributes({recurringOptInDefault: !recurringOptInDefault})}
                         />
                     </PanelRow>
                 )}

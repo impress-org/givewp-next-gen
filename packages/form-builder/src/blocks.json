@@ -34,7 +34,7 @@
                     "recurringDonationChoice": "admin",
                     "recurringEnabled": false,
                     "recurringLengthOfTime": "0",
-                    "recurringOptInDefault": true,
+                    "recurringOptInDefaultBillingPeriod": "month",
                     "lock": {
                         "remove": true
                     }

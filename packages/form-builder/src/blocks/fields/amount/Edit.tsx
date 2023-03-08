@@ -3,39 +3,14 @@ import {__, _n} from '@wordpress/i18n';
 import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
 import Inspector from './inspector';
+import periodLookup from './period-lookup';
 import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 import {createInterpolateElement} from '@wordpress/element';
 import {RadioControl} from '@wordpress/components';
 import Notice from './notice';
 import {useState} from 'react';
 
-const periodLookup = {
-    day: {
-        singular: __('day', 'give'),
-        plural: __('days', 'give'),
-        adjective: __('Daily', 'give'),
-    },
-    week: {
-        singular: __('week', 'give'),
-        plural: __('weeks', 'give'),
-        adjective: __('Weekly', 'give'),
-    },
-    month: {
-        singular: __('month', 'give'),
-        plural: __('months', 'give'),
-        adjective: __('Monthly', 'give'),
-    },
-    quarter: {
-        singular: __('quarter', 'give'),
-        plural: __('quarters', 'give'),
-        adjective: __('Quarterly', 'give'),
-    },
-    year: {
-        singular: __('year', 'give'),
-        plural: __('years', 'give'),
-        adjective: __('Yearly', 'give'),
-    },
-};
+
 
 const Edit = ({attributes, setAttributes}) => {
     const {
@@ -51,7 +26,7 @@ const Edit = ({attributes, setAttributes}) => {
         recurringBillingPeriod,
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
-        recurringOptInDefault,
+        recurringOptInDefaultBillingPeriod,
     } = attributes;
 
     const isMultiLevel = priceOption === 'multi';
@@ -87,11 +62,11 @@ const Edit = ({attributes, setAttributes}) => {
 
         const singular = !isRecurringDonor
             ? periodLookup[recurringBillingPeriod].singular
-            : periodLookup[recurringBillingPeriodOptions[0]].singular;
+            : periodLookup[recurringOptInDefaultBillingPeriod ?? 'month'].singular;
 
         const plural = !isRecurringDonor
             ? periodLookup[recurringBillingPeriod].plural
-            : periodLookup[recurringBillingPeriodOptions[0]].plural;
+            : periodLookup[recurringOptInDefaultBillingPeriod ?? 'month'].plural;
 
         return (
             <strong>
@@ -106,6 +81,7 @@ const Edit = ({attributes, setAttributes}) => {
     };
 
     const RecurringMessage = () => {
+
         const interval = parseInt(recurringBillingInterval);
 
         const periodPlaceholder = <strong>{'[' + _n('period', 'periods', interval, 'give') + ']'}</strong>;
@@ -119,11 +95,14 @@ const Edit = ({attributes, setAttributes}) => {
 
         return (
             <Notice>
-                {createInterpolateElement(translatableString, {
-                    period: <RecurringPeriod count={interval} />,
-                    count: countElement,
-                    strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
-                })}
+                { 'one-time' === recurringOptInDefaultBillingPeriod
+                    ? __('You have chosen to make this donation one-time.', 'give')
+                    : createInterpolateElement(translatableString, {
+                        period: <RecurringPeriod count={interval} />,
+                        count: countElement,
+                        strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
+                    })
+                }
             </Notice>
         );
     };
