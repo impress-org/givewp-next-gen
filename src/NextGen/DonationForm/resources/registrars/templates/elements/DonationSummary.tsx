@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import useCurrencyFormatter from "@givewp/forms/app/hooks/useCurrencyFormatter";
+import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
 /**
  * @since 0.1.0
@@ -9,7 +9,7 @@ export default function DonationSummary() {
     const currency = useWatch({name: 'currency'});
     const amount = useWatch({name: 'amount'});
     const donationType = useWatch({name: 'donationType'});
-    const period = useWatch({name: 'period'});
+    const period = useWatch({name: 'subscriptionPeriod'});
     const humanReadablePeriod = `${period === 'day' ? 'dai' : period}ly`
         .toLowerCase()
         .replace(/\w/, (firstLetter) => firstLetter.toUpperCase());
@@ -28,7 +28,7 @@ export default function DonationSummary() {
 /**
  * @since 0.1.0
  */
-const LineItem = ({label, value}: { label: string; value: string }) => {
+const LineItem = ({label, value}: {label: string; value: string}) => {
     return (
         <li className="givewp-elements-donationSummary__list-item">
             <div>{label}</div>

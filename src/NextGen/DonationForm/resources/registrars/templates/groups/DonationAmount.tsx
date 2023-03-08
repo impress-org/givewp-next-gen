@@ -5,19 +5,19 @@ export default function DonationAmount({
         amount: Amount,
         donationType: DonationType,
         currency: Currency,
-        period: Period,
-        installments: Installments,
-        frequency: Frequency,
+        subscriptionPeriod: SubscriptionPeriod,
+        subscriptionInstallments: SubscriptionInstallments,
+        subscriptionFrequency: SubscriptionFrequency,
     },
 }: DonationAmountProps) {
     return (
         <>
-            {Period && <Period />}
+            {SubscriptionPeriod && <SubscriptionPeriod />}
             <Amount />
             <DonationType />
             <Currency />
-            {Frequency && <Frequency />}
-            {Installments && <Installments />}
+            {SubscriptionFrequency && <SubscriptionFrequency />}
+            {SubscriptionInstallments && <SubscriptionInstallments />}
         </>
     );
 }

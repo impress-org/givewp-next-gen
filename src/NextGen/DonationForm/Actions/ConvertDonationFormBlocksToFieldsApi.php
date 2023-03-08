@@ -189,6 +189,4 @@ class ConvertDonationFormBlocksToFieldsApi
 
         return $node;
     }
-
-
 }

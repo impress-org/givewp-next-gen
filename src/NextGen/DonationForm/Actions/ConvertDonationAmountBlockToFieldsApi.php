@@ -101,11 +101,11 @@ class ConvertDonationAmountBlockToFieldsApi
             $billingInterval = (int)$blockAttributes['recurringBillingInterval'];
             $lengthOfTime = (int)$blockAttributes['recurringLengthOfTime'];
 
-            $subscriptionFrequency = Hidden::make('frequency')
+            $subscriptionFrequency = Hidden::make('subscriptionFrequency')
                 ->defaultValue($billingInterval)
                 ->rules(new SubscriptionFrequencyRule());
 
-            $subscriptionInstallments = Hidden::make('installments')
+            $subscriptionInstallments = Hidden::make('subscriptionInstallments')
                 ->defaultValue($lengthOfTime)
                 ->rules(new SubscriptionInstallmentsRule());
 
@@ -134,7 +134,7 @@ class ConvertDonationAmountBlockToFieldsApi
 
         // if admin - fields are all hidden
         if ($donationChoice === 'admin') {
-            return Hidden::make('period')
+            return Hidden::make('subscriptionPeriod')
                 ->defaultValue($recurringBillingPeriod->getValue())
                 ->rules(new SubscriptionPeriodRule());
         }
@@ -158,7 +158,7 @@ class ConvertDonationAmountBlockToFieldsApi
             $defaultValue = 'one-time';
         }
 
-        return Radio::make('period')
+        return Radio::make('subscriptionPeriod')
             ->defaultValue($defaultValue)
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)

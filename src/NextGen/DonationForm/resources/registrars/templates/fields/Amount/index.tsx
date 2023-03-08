@@ -27,10 +27,10 @@ export default function Amount({
     const {setValue} = useFormContext();
 
     const currency = useWatch({name: 'currency'});
-    const donationPeriod = useWatch({name: 'period'});
     const donationType = useWatch({name: 'donationType'});
-    const subscriptionFrequency = useWatch({name: 'frequency'});
-    const subscriptionInstallments = useWatch({name: 'installments'});
+    const subscriptionPeriod = useWatch({name: 'subscriptionPeriod'});
+    const subscriptionFrequency = useWatch({name: 'subscriptionFrequency'});
+    const subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
 
     const formatter = useCurrencyFormatter(currency);
     const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
@@ -50,14 +50,14 @@ export default function Amount({
         donationType === 'subscription' && (subscriptionHasMoreDetails || subscriptionIsFixed);
 
     useEffect(() => {
-        if (donationPeriod) {
-            if (donationPeriod === 'one-time') {
+        if (subscriptionPeriod) {
+            if (subscriptionPeriod === 'one-time') {
                 setValue('donationType', 'single');
             } else {
                 setValue('donationType', 'subscription');
             }
         }
-    }, [donationPeriod]);
+    }, [subscriptionPeriod]);
 
     return (
         <>
@@ -106,7 +106,7 @@ export default function Amount({
                 <FixedAmountRecurringMessage
                     isFixedAmount={isFixedAmountRecurring}
                     fixedAmount={fixedAmountFormatted}
-                    period={donationPeriod}
+                    period={subscriptionPeriod}
                     frequency={subscriptionFrequency}
                     installments={subscriptionInstallments}
                 />
