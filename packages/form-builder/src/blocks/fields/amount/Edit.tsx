@@ -140,7 +140,8 @@ const Edit = ({attributes, setAttributes}) => {
 
             {isMultiLevel && recurringEnabled && <RecurringMessage />}
 
-            {isFixedAmount && recurringEnabled && <FixedRecurringMessage />}
+            {isFixedAmount && recurringEnabled && 'one-time' !== recurringOptInDefaultBillingPeriod && <FixedRecurringMessage />}
+            {isFixedAmount && recurringEnabled && 'one-time' === recurringOptInDefaultBillingPeriod && <FixedPriceMessage />}
             {isFixedAmount && !recurringEnabled && !customAmount && <FixedPriceMessage />}
 
             <Inspector attributes={attributes} setAttributes={setAttributes} />
