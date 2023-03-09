@@ -114,20 +114,19 @@ const Edit = ({attributes, setAttributes}) => {
     );
 
     const BillingPeriodControl = ({options}) => {
-        const [option, setOption] = useState(options[0]);
         return (
             <RadioControl
                 className={'give-billing-period-control'}
                 label={__('Billing Period', 'give')}
                 hideLabelFromVision={true}
-                selected={option}
+                selected={recurringOptInDefaultBillingPeriod ?? options[0]}
                 options={['one-time'].concat(options).map((option) => {
                     return {
                         label: 'one-time' === option ? __('One Time', 'give') : periodLookup[option].adjective,
                         value: option,
                     };
                 })}
-                onChange={(value) => setOption(value)}
+                onChange={(value) => null}
             />
         );
     };
