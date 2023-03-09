@@ -88,7 +88,6 @@ class ConvertDonationAmountBlockToFieldsApi
         } else {
             $subscriptionPeriod = $this->getRecurringAmountPeriodField($blockAttributes);
 
-            //$blockAttributes['recurringOptInDefault']
             $donationTypeDefault = $subscriptionPeriod->getDefaultValue() === 'one-time' ? DonationType::SINGLE(
             )->getValue() : DonationType::SUBSCRIPTION()->getValue();
 
@@ -129,7 +128,7 @@ class ConvertDonationAmountBlockToFieldsApi
         $donationChoice = $blockAttributes['recurringDonationChoice'];
         $recurringBillingPeriodOptions = $blockAttributes['recurringBillingPeriodOptions'];
         $recurringBillingPeriod = new SubscriptionPeriod($blockAttributes['recurringBillingPeriod']);
-        $recurringOptInDefault = $blockAttributes['recurringOptInDefault'];
+        $recurringOptInDefault = $blockAttributes['recurringOptInDefaultPeriod'];
 
         // if admin - fields are all hidden
         if ($donationChoice === 'admin') {
@@ -148,11 +147,9 @@ class ConvertDonationAmountBlockToFieldsApi
             }, $recurringBillingPeriodOptions)
         );
 
-        if ($recurringOptInDefault) {
-            /**
-             * TODO: get default opt-in period from settings
-             * */
-            $defaultValue = $recurringBillingPeriod->getValue();
+        if ($recurringOptInDefault && $recurringOptInDefault !== 'one-time') {
+            $subscriptionPeriod = new SubscriptionPeriod($blockAttributes['recurringOptInDefaultPeriod']);
+            $defaultValue = $subscriptionPeriod->getValue();
         } else {
             $defaultValue = 'one-time';
         }
@@ -194,7 +191,8 @@ class ConvertDonationAmountBlockToFieldsApi
             "recurringDonationChoice" => "donor",
             "recurringEnabled" => true,
             "recurringLengthOfTime" => 0,
-            "recurringOptInDefault" => false
+            "recurringOptInDefault" => false,
+            "recurringOptInDefaultPeriod" => "month",
         ];
     }
 }
