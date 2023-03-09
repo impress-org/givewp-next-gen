@@ -237,7 +237,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             label={__('Default billing period', 'give')}
                             value={recurringOptInDefaultBillingPeriod ?? 'month'}
                             options={['one-time'].concat(recurringBillingPeriodOptions).map((value) => ({
-                                label: periodLookup[value].singular,
+                                label: periodLookup[value].singular.toUpperCase(),
                                 value: value,
                             }))}
                             onChange={(recurringOptInDefaultBillingPeriod) => setAttributes({recurringOptInDefaultBillingPeriod})}
