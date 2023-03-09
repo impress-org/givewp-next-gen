@@ -188,9 +188,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                     {label: __('Year', 'give'), value: 'year'},
                                 ]}
                                 value={recurringBillingPeriod}
-                                onChange={(recurringBillingPeriod) =>
-                                    setAttributes({recurringBillingPeriod: [recurringBillingPeriod]})
-                                }
+                                onChange={(recurringBillingPeriod) => setAttributes({recurringBillingPeriod})}
                             />
                         )}
                         {'donor' === recurringDonationChoice && (

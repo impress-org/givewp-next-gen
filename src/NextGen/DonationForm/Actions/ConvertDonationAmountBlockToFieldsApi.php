@@ -142,8 +142,9 @@ class ConvertDonationAmountBlockToFieldsApi
             }, $recurringBillingPeriodOptions)
         );
 
-        if ($recurringOptInDefault && $recurringOptInDefault !== 'one-time') {
-            $subscriptionPeriod = new SubscriptionPeriod($block->getAttribute('recurringOptInDefaultPeriod'));
+        if (!empty($recurringOptInDefault) && $recurringOptInDefault !== 'one-time') {
+            $subscriptionPeriod = new SubscriptionPeriod($recurringOptInDefault);
+            
             $defaultValue = $subscriptionPeriod->getValue();
         } else {
             $defaultValue = 'one-time';
@@ -167,23 +168,5 @@ class ConvertDonationAmountBlockToFieldsApi
                 'label' => __('One Time', 'give'),
             ],
         ], $options);
-    }
-
-    /**
-     * Temporary until the form builder settings are implemented
-     */
-    protected function mockBlockAttributes(): array
-    {
-        return [
-            "recurringBillingPeriodOptions" => [
-                "month"
-            ],
-            "recurringBillingPeriod" => "month",
-            "recurringBillingInterval" => 1,
-            "recurringDonationChoice" => "admin",
-            "recurringEnabled" => false,
-            "recurringLengthOfTime" => "0",
-            "recurringOptInDefaultBillingPeriod" => "month",
-        ];
     }
 }
