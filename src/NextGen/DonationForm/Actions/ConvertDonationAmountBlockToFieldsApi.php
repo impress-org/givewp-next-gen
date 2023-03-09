@@ -74,19 +74,14 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules('required', 'currency');
         });
 
-        /**
-         * TODO replace with real block attributes
-         */
-        $blockAttributes = $this->mockBlockAttributes();
-
-        if (!$blockAttributes['recurringEnabled']) {
+        if (!$block->getAttribute('recurringEnabled')) {
             $donationType = Hidden::make('donationType')
                 ->defaultValue(DonationType::SINGLE()->getValue())
                 ->rules(new DonationTypeRule());
 
             $amountField->donationType($donationType);
         } else {
-            $subscriptionPeriod = $this->getRecurringAmountPeriodField($blockAttributes);
+            $subscriptionPeriod = $this->getRecurringAmountPeriodField($block);
 
             $donationTypeDefault = $subscriptionPeriod->getDefaultValue() === 'one-time' ? DonationType::SINGLE(
             )->getValue() : DonationType::SUBSCRIPTION()->getValue();
@@ -95,8 +90,8 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->defaultValue($donationTypeDefault)
                 ->rules(new DonationTypeRule());
 
-            $billingInterval = (int)$blockAttributes['recurringBillingInterval'];
-            $lengthOfTime = (int)$blockAttributes['recurringLengthOfTime'];
+            $billingInterval = (int)$block->getAttribute('recurringBillingInterval');
+            $lengthOfTime = (int)$block->getAttribute('recurringLengthOfTime');
 
             $subscriptionFrequency = Hidden::make('subscriptionFrequency')
                 ->defaultValue($billingInterval)
@@ -108,7 +103,7 @@ class ConvertDonationAmountBlockToFieldsApi
 
             $amountField
                 ->enableSubscriptions()
-                ->subscriptionDetailsAreFixed($blockAttributes['recurringDonationChoice'] === 'admin')
+                ->subscriptionDetailsAreFixed($block->getAttribute('recurringDonationChoice') === 'admin')
                 ->donationType($donationType)
                 ->subscriptionPeriod($subscriptionPeriod)
                 ->subscriptionFrequency($subscriptionFrequency)
@@ -123,12 +118,12 @@ class ConvertDonationAmountBlockToFieldsApi
      *
      * @throws EmptyNameException
      */
-    protected function getRecurringAmountPeriodField(array $blockAttributes): Field
+    protected function getRecurringAmountPeriodField(BlockModel $block): Field
     {
-        $donationChoice = $blockAttributes['recurringDonationChoice'];
-        $recurringBillingPeriodOptions = $blockAttributes['recurringBillingPeriodOptions'];
-        $recurringBillingPeriod = new SubscriptionPeriod($blockAttributes['recurringBillingPeriod']);
-        $recurringOptInDefault = $blockAttributes['recurringOptInDefaultPeriod'];
+        $donationChoice = $block->getAttribute('recurringDonationChoice');
+        $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
+        $recurringBillingPeriod = new SubscriptionPeriod($block->getAttribute('recurringBillingPeriod'));
+        $recurringOptInDefault = $block->getAttribute('recurringOptInDefaultBillingPeriod');
 
         // if admin - fields are all hidden
         if ($donationChoice === 'admin') {
@@ -148,7 +143,7 @@ class ConvertDonationAmountBlockToFieldsApi
         );
 
         if ($recurringOptInDefault && $recurringOptInDefault !== 'one-time') {
-            $subscriptionPeriod = new SubscriptionPeriod($blockAttributes['recurringOptInDefaultPeriod']);
+            $subscriptionPeriod = new SubscriptionPeriod($block->getAttribute('recurringOptInDefaultPeriod'));
             $defaultValue = $subscriptionPeriod->getValue();
         } else {
             $defaultValue = 'one-time';
@@ -181,18 +176,14 @@ class ConvertDonationAmountBlockToFieldsApi
     {
         return [
             "recurringBillingPeriodOptions" => [
-//                "day",
-//                "week",
-                "month",
-//                "year"
+                "month"
             ],
             "recurringBillingPeriod" => "month",
             "recurringBillingInterval" => 1,
-            "recurringDonationChoice" => "donor",
-            "recurringEnabled" => true,
-            "recurringLengthOfTime" => 0,
-            "recurringOptInDefault" => false,
-            "recurringOptInDefaultPeriod" => "month",
+            "recurringDonationChoice" => "admin",
+            "recurringEnabled" => false,
+            "recurringLengthOfTime" => "0",
+            "recurringOptInDefaultBillingPeriod" => "month",
         ];
     }
 }
