@@ -93,16 +93,13 @@ const Edit = ({attributes, setAttributes}) => {
             ? __('This donation occurs every <period />.', 'give')
             : __('This donation occurs every <period /> for <count /> <strong>payments</strong>.', 'give');
 
-        return (
+        return 'one-time' === recurringOptInDefaultBillingPeriod ? <></> : (
             <Notice>
-                { 'one-time' === recurringOptInDefaultBillingPeriod
-                    ? __('You have chosen to make this donation one-time.', 'give')
-                    : createInterpolateElement(translatableString, {
-                        period: <RecurringPeriod count={interval} />,
-                        count: countElement,
-                        strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
-                    })
-                }
+                {createInterpolateElement(translatableString, {
+                    period: <RecurringPeriod count={interval} />,
+                    count: countElement,
+                    strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
+                })}
             </Notice>
         );
     };
