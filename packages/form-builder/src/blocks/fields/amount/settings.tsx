@@ -8,7 +8,6 @@ import getDefaultBlockAttributes from '@givewp/form-builder/common/getDefaultBlo
 
 const {
     recurringDonationChoice,
-    recurringPeriod,
     recurringBillingInterval,
     recurringBillingPeriod,
     recurringBillingPeriodOptions,
@@ -61,10 +60,6 @@ const settings: FieldBlock['settings'] = {
         recurringDonationChoice: {
             type: 'string',
             default: recurringDonationChoice,
-        },
-        recurringPeriod: {
-            type: 'string',
-            default: recurringPeriod,
         },
         recurringBillingInterval: {
             type: 'number',
