@@ -5,6 +5,8 @@ import DeleteButton from './delete-button';
 import AddButton from './add-button';
 import {CurrencyControl} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
+import RecurringDonationsPromo from "@givewp/form-builder/promos/recurring-donations";
+import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 
 const Inspector = ({attributes, setAttributes}) => {
     const {
@@ -35,6 +37,9 @@ const Inspector = ({attributes, setAttributes}) => {
             });
         }
     };
+
+    const {gateways} = getFormBuilderData();
+    const isRecurringSupported = gateways.some((gateway) => gateway.supportsSubscriptions);
 
     return (
         <InspectorControls>
@@ -138,14 +143,17 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelBody>
             )}
             <PanelBody title={__('Recurring donation', 'give')} initialOpen={false}>
-                <PanelRow>
+
+                {!isRecurringSupported && <RecurringDonationsPromo />}
+
+                {isRecurringSupported && (<PanelRow>
                     <ToggleControl
                         label={__('Enable recurring donation', 'give')}
                         checked={recurringEnabled}
                         onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
                     />
-                </PanelRow>
-                {!!recurringEnabled && (
+                </PanelRow>)}
+                {!!recurringEnabled && isRecurringSupported && (
                     <PanelRow>
                         <SelectControl
                             label={__('Donation choice', 'give')}
@@ -158,7 +166,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {!!recurringEnabled && (
+                {!!recurringEnabled && isRecurringSupported && (
                     <PanelRow>
                         <SelectControl
                             label={__('Billing interval', 'give')}
@@ -175,7 +183,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {!!recurringEnabled && (
+                {!!recurringEnabled && isRecurringSupported && (
                     <PanelRow>
                         {'admin' === recurringDonationChoice && (
                             <SelectControl
@@ -231,7 +239,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         )}
                     </PanelRow>
                 )}
-                {!!recurringEnabled && 'donor' === recurringDonationChoice && (
+                {!!recurringEnabled && isRecurringSupported && 'donor' === recurringDonationChoice && (
                     <PanelRow>
                         <SelectControl
                             label={__('Default billing period', 'give')}
@@ -244,7 +252,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {!!recurringEnabled && (
+                {!!recurringEnabled && isRecurringSupported && (
                     <PanelRow>
                         <SelectControl
                             label={__('Number of Payments', 'give')}

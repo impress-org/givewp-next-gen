@@ -9,6 +9,7 @@ import {createInterpolateElement} from '@wordpress/element';
 import {RadioControl} from '@wordpress/components';
 import Notice from './notice';
 import {useState} from 'react';
+import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 
 
 
@@ -29,10 +30,14 @@ const Edit = ({attributes, setAttributes}) => {
         recurringOptInDefaultBillingPeriod,
     } = attributes;
 
+    const {gateways} = getFormBuilderData();
+    const isRecurringSupported = gateways.some((gateway) => gateway.supportsSubscriptions);
+    const isRecurring = isRecurringSupported && recurringEnabled;
+
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
-    const isRecurringAdmin = recurringEnabled && 'admin' === recurringDonationChoice;
-    const isRecurringDonor = recurringEnabled && 'donor' === recurringDonationChoice;
+    const isRecurringAdmin = isRecurring && 'admin' === recurringDonationChoice;
+    const isRecurringDonor = isRecurring && 'donor' === recurringDonationChoice;
     const amountFormatted = formatCurrencyAmount(setPrice);
 
     const DonationLevels = () => (
@@ -142,10 +147,10 @@ const Edit = ({attributes, setAttributes}) => {
             {isMultiLevel && <DonationLevels />}
             {customAmount && <CustomAmount />}
 
-            {isMultiLevel && recurringEnabled && <RecurringMessage />}
+            {isMultiLevel && isRecurring && <RecurringMessage />}
 
-            {isFixedAmount && recurringEnabled && <FixedRecurringMessage />}
-            {isFixedAmount && !recurringEnabled && !customAmount && <FixedPriceMessage />}
+            {isFixedAmount && isRecurring && <FixedRecurringMessage />}
+            {isFixedAmount && !isRecurring && !customAmount && <FixedPriceMessage />}
 
             <Inspector attributes={attributes} setAttributes={setAttributes} />
         </div>

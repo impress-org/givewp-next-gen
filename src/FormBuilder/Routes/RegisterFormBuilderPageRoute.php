@@ -6,6 +6,8 @@ use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 
+use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
+
 use function wp_enqueue_style;
 
 /**
@@ -80,13 +82,25 @@ class RegisterFormBuilderPageRoute
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
+        $builderPaymentGatewayData = array_map(function ($gateway) {
+            return [
+                'id' => $gateway::id(),
+                'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
+                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
+            ];
+        }, give(DonationFormRepository::class)->getEnabledPaymentGateways($donationFormId));
+
         (new EnqueueScript(
             '@givewp/form-builder/script',
             $formBuilderViewModel->jsPathFromRoot(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        ))->loadInFooter()->enqueue();
+        ))->loadInFooter()
+            ->registerLocalizeData('formBuilderData', [
+                'gateways' => array_values($builderPaymentGatewayData),
+            ])
+            ->enqueue();
 
         View::render('FormBuilder.admin-form-builder');
     }
