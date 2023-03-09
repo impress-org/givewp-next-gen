@@ -1,4 +1,4 @@
-import {__, _n} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 
 import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
@@ -8,9 +8,6 @@ import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 import {createInterpolateElement} from '@wordpress/element';
 import {RadioControl} from '@wordpress/components';
 import Notice from './notice';
-import {useState} from 'react';
-
-
 
 const Edit = ({attributes, setAttributes}) => {
     const {
@@ -80,38 +77,30 @@ const Edit = ({attributes, setAttributes}) => {
         );
     };
 
-    const RecurringMessage = () => {
+    const FixedRecurringMessage = () => {
+        const installments = parseInt(recurringLengthOfTime);
+        const frequency = parseInt(recurringBillingInterval);
 
-        const interval = parseInt(recurringBillingInterval);
+        const translatableString = !installments
+            ? __('This donation <amount /> every <period />.', 'give')
+            : __('This donation <amount /> every <period /> for <count /> <payments />.', 'give');
 
-        const periodPlaceholder = <strong>{'[' + _n('period', 'periods', interval, 'give') + ']'}</strong>;
+        const message = createInterpolateElement(translatableString, {
+            amount:
+                isFixedAmount && !customAmount ? (
+                    <span>
+                        is <strong>{amountFormatted}</strong>
+                    </span>
+                ) : (
+                    <span>occurs</span>
+                ),
+            period: <RecurringPeriod count={frequency} />,
+            count: <strong>{installments}</strong>,
+            payments: <strong>payments</strong>,
+        });
 
-        const count = parseInt(recurringLengthOfTime);
-        const countElement = <strong>{count}</strong>;
-
-        const translatableString = !count
-            ? __('This donation occurs every <period />.', 'give')
-            : __('This donation occurs every <period /> for <count /> <strong>payments</strong>.', 'give');
-
-        return 'one-time' === recurringOptInDefaultBillingPeriod ? <></> : (
-            <Notice>
-                {createInterpolateElement(translatableString, {
-                    period: <RecurringPeriod count={interval} />,
-                    count: countElement,
-                    strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
-                })}
-            </Notice>
-        );
+        return <Notice>{message}</Notice>;
     };
-
-    const FixedRecurringMessage = () => (
-        <Notice>
-            {createInterpolateElement(__('This donation is <amount/> every <period/>. ', 'give'), {
-                amount: <strong>{amountFormatted}</strong>,
-                period: <RecurringPeriod count={parseInt(recurringBillingInterval)} />,
-            })}
-        </Notice>
-    );
 
     const BillingPeriodControl = ({options}) => {
         return (
@@ -131,18 +120,25 @@ const Edit = ({attributes, setAttributes}) => {
         );
     };
 
+    const displayFixedMessage = isFixedAmount && !customAmount;
+
+    const displayFixedRecurringMessage =
+        recurringEnabled &&
+        (displayFixedMessage || isRecurringAdmin || recurringLengthOfTime > 0 || recurringBillingInterval > 1);
+
+    const displayFixedPriceMessage = displayFixedMessage && !displayFixedRecurringMessage;
+
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
             {isRecurringDonor && <BillingPeriodControl options={recurringBillingPeriodOptions} />}
 
             {isMultiLevel && <DonationLevels />}
+
             {customAmount && <CustomAmount />}
 
-            {isMultiLevel && recurringEnabled && <RecurringMessage />}
+            {displayFixedRecurringMessage && <FixedRecurringMessage />}
 
-            {isFixedAmount && recurringEnabled && 'one-time' !== recurringOptInDefaultBillingPeriod && <FixedRecurringMessage />}
-            {isFixedAmount && recurringEnabled && 'one-time' === recurringOptInDefaultBillingPeriod && <FixedPriceMessage />}
-            {isFixedAmount && !recurringEnabled && !customAmount && <FixedPriceMessage />}
+            {displayFixedPriceMessage && <FixedPriceMessage />}
 
             <Inspector attributes={attributes} setAttributes={setAttributes} />
         </div>
