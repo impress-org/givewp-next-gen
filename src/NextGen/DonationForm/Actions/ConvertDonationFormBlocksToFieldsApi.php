@@ -166,8 +166,10 @@ class ConvertDonationFormBlocksToFieldsApi
         return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
             $amountRules = ['required', 'numeric'];
 
-            if (!$block->getAttribute('customAmount') &&
-                $block->getAttribute('priceOption') === 'set') {
+            if (
+                !$block->getAttribute('customAmount') &&
+                $block->getAttribute('priceOption') === 'set'
+            ) {
                 $size = $block->getAttribute('setPrice');
 
                 $amountRules[] = new Size($size);
