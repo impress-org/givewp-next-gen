@@ -41,6 +41,10 @@ export interface GroupProps extends Group {
     fields: {
         [key: string]: FC<FieldProps>;
     };
+
+    fieldProps: {
+        [key: string]: FieldProps;
+    };
 }
 
 export interface HtmlProps extends ElementProps {
@@ -64,6 +68,16 @@ export interface DonationAmountProps extends GroupProps {
         subscriptionPeriod: FC<FieldProps | {}>;
         subscriptionInstallments: FC<FieldProps | {}>;
     };
+    fieldProps: {
+        amount: AmountProps;
+        donationType: FieldProps;
+        currency: FieldProps;
+        subscriptionFrequency: FieldProps;
+        subscriptionPeriod: FieldProps;
+        subscriptionInstallments: FieldProps;
+    };
+    subscriptionsEnabled: boolean;
+    subscriptionDetailsAreFixed: boolean;
 }
 
 export interface AmountProps extends FieldProps {

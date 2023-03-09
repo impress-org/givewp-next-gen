@@ -84,9 +84,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->defaultValue(DonationType::SINGLE()->getValue())
                 ->rules(new DonationTypeRule());
 
-            $amountField->append(
-                $donationType
-            );
+            $amountField->donationType($donationType);
         } else {
             $subscriptionPeriod = $this->getRecurringAmountPeriodField($blockAttributes);
 
@@ -109,12 +107,13 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->defaultValue($lengthOfTime)
                 ->rules(new SubscriptionInstallmentsRule());
 
-            $amountField->append(
-                $donationType,
-                $subscriptionPeriod,
-                $subscriptionFrequency,
-                $subscriptionInstallments
-            );
+            $amountField
+                ->enableSubscriptions()
+                ->subscriptionDetailsAreFixed($blockAttributes['recurringDonationChoice'] === 'admin')
+                ->donationType($donationType)
+                ->subscriptionPeriod($subscriptionPeriod)
+                ->subscriptionFrequency($subscriptionFrequency)
+                ->subscriptionInstallments($subscriptionInstallments);
         }
 
         return $amountField;
