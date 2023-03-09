@@ -12,7 +12,6 @@ const {
     recurringBillingPeriod,
     recurringBillingPeriodOptions,
     recurringLengthOfTime,
-    recurringOptInDefault,
     recurringEnabled,
     customAmountMin,
     customAmount,
@@ -76,10 +75,6 @@ const settings: FieldBlock['settings'] = {
         recurringLengthOfTime: {
             type: 'string',
             default: recurringLengthOfTime, // ongoing
-        },
-        recurringOptInDefault: {
-            type: 'boolean',
-            default: recurringOptInDefault,
         },
     },
     icon: () => (
