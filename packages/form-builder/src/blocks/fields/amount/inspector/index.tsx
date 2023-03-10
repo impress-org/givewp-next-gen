@@ -257,7 +257,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {isRecurring && isRecurringSupported && (
+                {isRecurring && (
                     <PanelRow>
                         <SelectControl
                             label={__('Number of Payments', 'give')}
