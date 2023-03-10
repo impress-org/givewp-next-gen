@@ -31,7 +31,7 @@ const Inspector = ({attributes, setAttributes}) => {
         });
     };
     const removeBillingPeriodOption = (value) => {
-        if(recurringBillingPeriodOptions.length > 1) {
+        if (recurringBillingPeriodOptions.length > 1) {
             setAttributes({
                 recurringBillingPeriodOptions: recurringBillingPeriodOptions.filter((option) => option !== value),
             });
@@ -171,12 +171,12 @@ const Inspector = ({attributes, setAttributes}) => {
                         <SelectControl
                             label={__('Billing interval', 'give')}
                             options={[
-                                {label: __('Every', 'give'), value: "1"},
-                                {label: __('Every 2nd', 'give'), value: "2"},
-                                {label: __('Every 3rd', 'give'), value: "3"},
-                                {label: __('Every 4th', 'give'), value: "4"},
-                                {label: __('Every 5th', 'give'), value: "5"},
-                                {label: __('Every 6th', 'give'), value: "6"},
+                                {label: __('Every', 'give'), value: '1'},
+                                {label: __('Every 2nd', 'give'), value: '2'},
+                                {label: __('Every 3rd', 'give'), value: '3'},
+                                {label: __('Every 4th', 'give'), value: '4'},
+                                {label: __('Every 5th', 'give'), value: '5'},
+                                {label: __('Every 6th', 'give'), value: '6'},
                             ]}
                             value={recurringBillingInterval}
                             onChange={(recurringBillingInterval) => setAttributes({recurringBillingInterval})}
@@ -227,8 +227,8 @@ const Inspector = ({attributes, setAttributes}) => {
                                                     : removeBillingPeriodOption(option.value)
                                             }
                                             disabled={
-                                                recurringBillingPeriodOptions.length === 1
-                                                && recurringBillingPeriodOptions.includes(option.value) // This is the last checked option.
+                                                recurringBillingPeriodOptions.length === 1 &&
+                                                recurringBillingPeriodOptions.includes(option.value) // This is the last checked option.
                                             }
                                             //@ts-ignore
                                             __nextHasNoMarginBottom={true}
@@ -245,10 +245,14 @@ const Inspector = ({attributes, setAttributes}) => {
                             label={__('Default billing period', 'give')}
                             value={recurringOptInDefaultBillingPeriod ?? 'month'}
                             options={['one-time'].concat(recurringBillingPeriodOptions).map((value) => ({
-                                label: periodLookup[value].singular,
+                                label: periodLookup[value].singular
+                                    .toLowerCase()
+                                    .replace(/\w/, (firstLetter) => firstLetter.toUpperCase()),
                                 value: value,
                             }))}
-                            onChange={(recurringOptInDefaultBillingPeriod) => setAttributes({recurringOptInDefaultBillingPeriod})}
+                            onChange={(recurringOptInDefaultBillingPeriod) =>
+                                setAttributes({recurringOptInDefaultBillingPeriod})
+                            }
                         />
                     </PanelRow>
                 )}

@@ -8,9 +8,8 @@ import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 import {createInterpolateElement} from '@wordpress/element';
 import {RadioControl} from '@wordpress/components';
 import Notice from './notice';
-import {useState} from 'react';
-import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 
+import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 
 
 const Edit = ({attributes, setAttributes}) => {
@@ -38,6 +37,7 @@ const Edit = ({attributes, setAttributes}) => {
     const isFixedAmount = priceOption === 'set';
     const isRecurringAdmin = isRecurring && 'admin' === recurringDonationChoice;
     const isRecurringDonor = isRecurring && 'donor' === recurringDonationChoice;
+
     const amountFormatted = formatCurrencyAmount(setPrice);
 
     const DonationLevels = () => (
@@ -85,72 +85,68 @@ const Edit = ({attributes, setAttributes}) => {
         );
     };
 
-    const RecurringMessage = () => {
+    const FixedRecurringMessage = () => {
+        const installments = parseInt(recurringLengthOfTime);
+        const frequency = parseInt(recurringBillingInterval);
 
-        const interval = parseInt(recurringBillingInterval);
+        const translatableString = !installments
+            ? __('This donation <amount /> every <period />.', 'give')
+            : __('This donation <amount /> every <period /> for <count /> <payments />.', 'give');
 
-        const periodPlaceholder = <strong>{'[' + _n('period', 'periods', interval, 'give') + ']'}</strong>;
+        const message = createInterpolateElement(translatableString, {
+            amount:
+                isFixedAmount && !customAmount ? (
+                    <span>
+                        is <strong>{amountFormatted}</strong>
+                    </span>
+                ) : (
+                    <span>occurs</span>
+                ),
+            period: <RecurringPeriod count={frequency} />,
+            count: <strong>{installments}</strong>,
+            payments: <strong>payments</strong>,
+        });
 
-        const count = parseInt(recurringLengthOfTime);
-        const countElement = <strong>{count}</strong>;
-
-        const translatableString = !count
-            ? __('This donation occurs every <period />.', 'give')
-            : __('This donation occurs every <period /> for <count /> <strong>payments</strong>.', 'give');
-
-        return (
-            <Notice>
-                { 'one-time' === recurringOptInDefaultBillingPeriod
-                    ? __('You have chosen to make this donation one-time.', 'give')
-                    : createInterpolateElement(translatableString, {
-                        period: <RecurringPeriod count={interval} />,
-                        count: countElement,
-                        strong: <strong />, // Required to interpolate the strong tag around the "payments" text.
-                    })
-                }
-            </Notice>
-        );
+        return <Notice>{message}</Notice>;
     };
 
-    const FixedRecurringMessage = () => (
-        <Notice>
-            {createInterpolateElement(__('This donation is <amount/> every <period/>. ', 'give'), {
-                amount: <strong>{amountFormatted}</strong>,
-                period: <RecurringPeriod count={parseInt(recurringBillingInterval)} />,
-            })}
-        </Notice>
-    );
-
     const BillingPeriodControl = ({options}) => {
-        const [option, setOption] = useState(options[0]);
         return (
             <RadioControl
                 className={'give-billing-period-control'}
                 label={__('Billing Period', 'give')}
                 hideLabelFromVision={true}
-                selected={option}
+                selected={recurringOptInDefaultBillingPeriod ?? options[0]}
                 options={['one-time'].concat(options).map((option) => {
                     return {
                         label: 'one-time' === option ? __('One Time', 'give') : periodLookup[option].adjective,
                         value: option,
                     };
                 })}
-                onChange={(value) => setOption(value)}
+                onChange={(value) => null}
             />
         );
     };
+
+    const displayFixedMessage = isFixedAmount && !customAmount;
+
+    const displayFixedRecurringMessage =
+        isRecurring &&
+        (displayFixedMessage || isRecurringAdmin || recurringLengthOfTime > 0 || recurringBillingInterval > 1);
+
+    const displayFixedPriceMessage = displayFixedMessage && !displayFixedRecurringMessage;
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
             {isRecurringDonor && <BillingPeriodControl options={recurringBillingPeriodOptions} />}
 
             {isMultiLevel && <DonationLevels />}
+
             {customAmount && <CustomAmount />}
 
-            {isMultiLevel && isRecurring && <RecurringMessage />}
+            {displayFixedRecurringMessage && <FixedRecurringMessage />}
 
-            {isFixedAmount && isRecurring && <FixedRecurringMessage />}
-            {isFixedAmount && !isRecurring && !customAmount && <FixedPriceMessage />}
+            {displayFixedPriceMessage && <FixedPriceMessage />}
 
             <Inspector attributes={attributes} setAttributes={setAttributes} />
         </div>
