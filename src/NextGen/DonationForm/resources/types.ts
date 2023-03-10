@@ -225,20 +225,33 @@ type FormResponseValidationError = {
     [key: string]: string;
 };
 
+type FormResponseGatewayError = {
+    gateway_error: string;
+};
+
 interface FormResponseValidationErrors extends FormResponse {
     type: 'validation_error';
     data: {
         errors: {
-            errors: FormResponseValidationError[]
-        }
-    }
+            errors: FormResponseValidationError[];
+        };
+    };
+}
+
+interface FormResponseGatewayErrors extends FormResponse {
+    type: 'gateway_error';
+    data: {
+        errors: {
+            errors: FormResponseGatewayError[];
+        };
+    };
 }
 
 interface FormResponseRedirect extends FormResponse {
     type: 'redirect';
     data: {
         redirectUrl: string;
-    }
+    };
 }
 
 export function isFormResponseRedirect(response: FormResponse): response is FormResponseRedirect {
@@ -246,7 +259,14 @@ export function isFormResponseRedirect(response: FormResponse): response is Form
 }
 
 export function isFormResponseValidationError(response: FormResponse): response is FormResponseValidationErrors {
-    return (response as FormResponseValidationErrors).type === 'validation_error' || (response as FormResponseValidationErrors).data?.errors != undefined;
+    return (
+        (response as FormResponseValidationErrors).type === 'validation_error' ||
+        (response as FormResponseValidationErrors).data?.errors != undefined
+    );
+}
+
+export function isFormResponseGatewayError(response: FormResponse): response is FormResponseGatewayErrors {
+    return (response as FormResponseGatewayErrors).type === 'gateway_error';
 }
 
 export function isResponseRedirected(response: Response): response is Response {
