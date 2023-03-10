@@ -40,6 +40,7 @@ const Inspector = ({attributes, setAttributes}) => {
 
     const {gateways} = getFormBuilderData();
     const isRecurringSupported = gateways.some((gateway) => gateway.supportsSubscriptions);
+    const isRecurring = isRecurringSupported && recurringEnabled;
 
     return (
         <InspectorControls>
@@ -153,7 +154,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
                     />
                 </PanelRow>)}
-                {!!recurringEnabled && isRecurringSupported && (
+                {!!isRecurring && (
                     <PanelRow>
                         <SelectControl
                             label={__('Donation choice', 'give')}
@@ -166,7 +167,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {!!recurringEnabled && isRecurringSupported && (
+                {!!isRecurring && (
                     <PanelRow>
                         <SelectControl
                             label={__('Billing interval', 'give')}
@@ -183,7 +184,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {!!recurringEnabled && isRecurringSupported && (
+                {!!isRecurring && (
                     <PanelRow>
                         {'admin' === recurringDonationChoice && (
                             <SelectControl
@@ -239,7 +240,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         )}
                     </PanelRow>
                 )}
-                {!!recurringEnabled && isRecurringSupported && 'donor' === recurringDonationChoice && (
+                {isRecurring && 'donor' === recurringDonationChoice && (
                     <PanelRow>
                         <SelectControl
                             label={__('Default billing period', 'give')}
@@ -256,7 +257,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                     </PanelRow>
                 )}
-                {!!recurringEnabled && isRecurringSupported && (
+                {isRecurring && isRecurringSupported && (
                     <PanelRow>
                         <SelectControl
                             label={__('Number of Payments', 'give')}
