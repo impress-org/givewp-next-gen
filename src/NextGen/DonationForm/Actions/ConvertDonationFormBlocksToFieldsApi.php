@@ -79,6 +79,7 @@ class ConvertDonationFormBlocksToFieldsApi
      * @since 0.1.0
      *
      * @throws EmptyNameException
+     * @throws NameCollisionException
      */
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block): Node
     {
