@@ -111,9 +111,12 @@ class DonateController
             $gatewayName = $gateway->getName();
             
             throw new PaymentGatewayException(
-                __(
-                    "[$gatewayName] This payment gateway does not support recurring payments, please try selecting another payment gateway.",
-                    'give'
+                sprintf(
+                    __(
+                        "[%s] This payment gateway does not support recurring payments, please try selecting another payment gateway.",
+                        'give'
+                    ),
+                    $gatewayName
                 )
             );
         }
