@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\Controllers;
 
 use Exception;
 use Give\Donors\Models\Donor;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 
@@ -19,7 +20,7 @@ class DonateController
      * @since 0.1.0
      *
      * @return void
-     * @throws Exception
+     * @throws Exception|PaymentGatewayException
      */
     public function donate(DonateControllerData $formData, PaymentGateway $registeredGateway)
     {
@@ -40,6 +41,8 @@ class DonateController
         }
 
         if ($formData->donationType->isSubscription()) {
+            $this->validateGatewaySupportsSubscriptions($registeredGateway);
+
             $subscription = $formData->toSubscription($donor->id);
             $subscription->save();
 
@@ -47,7 +50,7 @@ class DonateController
             $donation->save();
 
             do_action('givewp_donate_controller_donation_created', $formData, $donation);
-            
+
             do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
             $registeredGateway->handleCreateSubscription($donation, $subscription);
@@ -97,5 +100,25 @@ class DonateController
         }
 
         return $donor;
+    }
+
+    /**
+     * @throws PaymentGatewayException
+     */
+    private function validateGatewaySupportsSubscriptions(PaymentGateway $gateway)
+    {
+        if (!$gateway->supportsSubscriptions()) {
+            $gatewayName = $gateway->getName();
+            
+            throw new PaymentGatewayException(
+                sprintf(
+                    __(
+                        "[%s] This payment gateway does not support recurring payments, please try selecting another payment gateway.",
+                        'give'
+                    ),
+                    $gatewayName
+                )
+            );
+        }
     }
 }

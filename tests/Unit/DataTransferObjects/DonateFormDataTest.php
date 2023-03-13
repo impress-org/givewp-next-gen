@@ -140,8 +140,9 @@ class DonateFormDataTest extends TestCase
         $formData = DonateFormRouteData::fromRequest((array)$data);
 
         $data = $formData->validated();
+        $subscription = $data->toSubscription($donor->id);
 
-        $this->assertEquals($subscription->getAttributes(), $data->toSubscription($donor->id)->getAttributes());
+        $this->assertEquals($subscription->getAttributes(), $subscription->getAttributes());
     }
 
 }

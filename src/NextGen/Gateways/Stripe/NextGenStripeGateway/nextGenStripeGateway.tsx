@@ -31,7 +31,7 @@ interface StripeGateway extends Gateway {
 
 const stripeGateway: StripeGateway = {
     id: 'next-gen-stripe',
-    supportsRecurring: true,
+    supportsRecurring: false,
     supportsCurrency(currency: string): boolean {
         return true;
     },
@@ -64,7 +64,7 @@ const stripeGateway: StripeGateway = {
         data: {
             intentStatus: string;
             returnUrl: string;
-        }
+        };
     }): Promise<void> {
         if (response.data.intentStatus === 'requires_payment_method') {
             const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
