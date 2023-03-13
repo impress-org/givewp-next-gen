@@ -10,6 +10,7 @@ use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Option;
 use Give\Framework\FieldsAPI\Radio;
 use Give\NextGen\DonationForm\Rules\DonationTypeRule;
 use Give\NextGen\DonationForm\Rules\Max;
@@ -121,30 +122,31 @@ class ConvertDonationAmountBlockToFieldsApi
     protected function getRecurringAmountPeriodField(BlockModel $block): Field
     {
         $donationChoice = $block->getAttribute('recurringDonationChoice');
-        $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
-        $recurringBillingPeriod = new SubscriptionPeriod($block->getAttribute('recurringBillingPeriod'));
-        $recurringOptInDefault = $block->getAttribute('recurringOptInDefaultBillingPeriod');
 
         // if admin - fields are all hidden
         if ($donationChoice === 'admin') {
+            $recurringBillingPeriod = new SubscriptionPeriod($block->getAttribute('recurringBillingPeriod'));
+
             return Hidden::make('subscriptionPeriod')
                 ->defaultValue($recurringBillingPeriod->getValue())
                 ->rules(new SubscriptionPeriodRule());
         }
 
+        $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
+
         $options = $this->mergePeriodOptionsWithOneTime(
             array_map(static function ($option) {
                 $subscriptionPeriod = new SubscriptionPeriod($option);
-                return [
-                    'value' => $subscriptionPeriod->getValue(),
-                    'label' => $subscriptionPeriod->label(0),
-                ];
+                
+                return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
             }, $recurringBillingPeriodOptions)
         );
 
+        $recurringOptInDefault = $block->getAttribute('recurringOptInDefaultBillingPeriod');
+
         if (!empty($recurringOptInDefault) && $recurringOptInDefault !== 'one-time') {
             $subscriptionPeriod = new SubscriptionPeriod($recurringOptInDefault);
-            
+
             $defaultValue = $subscriptionPeriod->getValue();
         } else {
             $defaultValue = 'one-time';
@@ -163,10 +165,7 @@ class ConvertDonationAmountBlockToFieldsApi
     protected function mergePeriodOptionsWithOneTime(array $options): array
     {
         return array_merge([
-            [
-                'value' => 'one-time',
-                'label' => __('One Time', 'give'),
-            ],
+            new Option('one-time', __('One Time', 'give'))
         ], $options);
     }
 }
