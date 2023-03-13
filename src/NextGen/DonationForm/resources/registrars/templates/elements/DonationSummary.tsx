@@ -10,7 +10,6 @@ export default function DonationSummary() {
     const {useWatch} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
     const amount = useWatch({name: 'amount'});
-    const donationType = useWatch({name: 'donationType'});
     const period = useWatch({name: 'subscriptionPeriod'});
     const formatter = useCurrencyFormatter(currency, {});
 
@@ -20,7 +19,7 @@ export default function DonationSummary() {
         }
 
         return __('One time', 'give');
-    }, [period, donationType]);
+    }, [period]);
 
     return (
         <ul className="givewp-elements-donationSummary__list">
