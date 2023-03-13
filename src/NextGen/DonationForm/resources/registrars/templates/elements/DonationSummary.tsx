@@ -15,7 +15,7 @@ export default function DonationSummary() {
 
     const givingFrequency = useCallback(() => {
         if (isSubscriptionPeriod(period)) {
-            return new SubscriptionPeriod(period).label().adjective();
+            return new SubscriptionPeriod(period).label().capitalize().adjective();
         }
 
         return __('One time', 'give');

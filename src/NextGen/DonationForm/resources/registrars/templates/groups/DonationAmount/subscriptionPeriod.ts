@@ -12,31 +12,38 @@ type periodLabel = {
 /**
  * @unreleased
  */
+const capitalize = (text: string): string => {
+    return text.toLowerCase().replace(/\w/, (firstLetter) => firstLetter.toUpperCase());
+};
+
+/**
+ * @unreleased
+ */
 const subscriptionPeriodLabelLookup = {
     day: {
         singular: __('day', 'give'),
         plural: __('days', 'give'),
-        adjective: __('Daily', 'give'),
+        adjective: __('daily', 'give'),
     } as periodLabel,
     week: {
         singular: __('week', 'give'),
         plural: __('weeks', 'give'),
-        adjective: __('Weekly', 'give'),
+        adjective: __('weekly', 'give'),
     } as periodLabel,
     month: {
         singular: __('month', 'give'),
         plural: __('months', 'give'),
-        adjective: __('Monthly', 'give'),
+        adjective: __('monthly', 'give'),
     } as periodLabel,
     quarter: {
         singular: __('quarter', 'give'),
         plural: __('quarters', 'give'),
-        adjective: __('Quarterly', 'give'),
+        adjective: __('quarterly', 'give'),
     } as periodLabel,
     year: {
         singular: __('year', 'give'),
         plural: __('years', 'give'),
-        adjective: __('Yearly', 'give'),
+        adjective: __('yearly', 'give'),
     } as periodLabel,
 };
 
@@ -71,25 +78,36 @@ class SubscriptionPeriod {
  */
 class SubscriptionPeriodLabel {
     protected periodLabel: periodLabel;
+    protected shouldCapitalize: boolean = false;
 
     constructor(periodLabel: periodLabel) {
-        this.periodLabel = periodLabel
+        this.periodLabel = periodLabel;
+    }
+
+    capitalize(): this {
+        this.shouldCapitalize = true;
+
+        return this;
     }
 
     singular(): string {
-        return this.periodLabel.singular;
+        return this.format(this.periodLabel.singular);
     }
 
     plural(): string {
-        return this.periodLabel.plural;
+        return this.format(this.periodLabel.plural);
     }
 
     adjective(): string {
-        return this.periodLabel.adjective;
+        return this.format(this.periodLabel.adjective);
     }
 
     get(frequency?: number): string {
-        return frequency > 1 ? `${frequency} ${this.periodLabel.plural}` : this.periodLabel.singular;
+        return frequency > 1 ? `${frequency} ${this.format(this.periodLabel.plural)}` : this.format(this.periodLabel.singular);
+    }
+
+    private format(label) {
+        return this.shouldCapitalize ? capitalize(label) : label;
     }
 }
 
