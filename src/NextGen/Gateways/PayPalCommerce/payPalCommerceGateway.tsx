@@ -1,6 +1,7 @@
 import {
-    PayPalScriptProvider,
     PayPalButtons,
+    PayPalScriptProvider,
+    PayPalHostedFieldsProvider, PayPalHostedField,
 } from "@paypal/react-paypal-js";
 import type {Gateway} from '@givewp/forms/types';
 
@@ -36,6 +37,27 @@ const payPalCommerceGateway: Gateway = {
         const firstName = useWatch({name: 'firstName'});
         const lastName = useWatch({name: 'lastName'});
         const email = useWatch({name: 'email'});
+
+        console.log(payPalDonationsSettings.sdkOptions)
+
+        const CUSTOM_FIELD_STYLE = { // @todo How do we ensure that this matches the form design?
+            height: '50px', // @todo Magic number, but it works
+            borderWidth: ".078rem",
+            borderStyle: "solid",
+            borderColor: "#666",
+            borderRadius: ".25rem",
+            padding: "1.1875rem",
+            width: "100%",
+            marginBottom: ".5rem",
+            boxSizing: "inherit",
+            inlineSize: "100%",
+            backgroundColor: "#fff",
+            color: "#4d4d4d",
+            fontSize: "1rem",
+            fontFamily: "inherit",
+            fontWeight: "500",
+            lineHeight: "1.2"
+        };
 
         return (
             <fieldset className="no-fields">
@@ -74,6 +96,44 @@ const payPalCommerceGateway: Gateway = {
                             });
                         }}
                     />
+
+                    {'---- Or pay with card ----'}
+
+                    <PayPalHostedFieldsProvider
+                        createOrder={()=> {console.log('Hosted Fields Create Order'); return 'test';}}
+                        >
+                        <PayPalHostedField
+                            id="card-number"
+                            className="givewp-fields"
+                            style={CUSTOM_FIELD_STYLE}
+                            hostedFieldType="number"
+                            options={{
+                                selector: "#card-number",
+                                placeholder: "4111 1111 1111 1111",
+                            }}
+                        />
+                        <PayPalHostedField
+                            id="cvv"
+                            className="givewp-fields"
+                            style={CUSTOM_FIELD_STYLE}
+                            hostedFieldType="cvv"
+                            options={{
+                                selector: "#cvv",
+                                placeholder: "123",
+                                maskInput: true,
+                            }}
+                        />
+                        <PayPalHostedField
+                            id="expiration-date"
+                            className="givewp-fields"
+                            style={CUSTOM_FIELD_STYLE}
+                            hostedFieldType="expirationDate"
+                            options={{
+                                selector: "#expiration-date",
+                                placeholder: "MM/YYYY",
+                            }}
+                        />
+                    </PayPalHostedFieldsProvider>
                 </PayPalScriptProvider>
             </fieldset>
         );
