@@ -38,6 +38,10 @@ const stripeGateway: StripeGateway = {
     initialize() {
         const {stripeKey, stripeConnectAccountId, stripeClientSecret} = this.settings;
 
+        if (!stripeKey || !stripeConnectAccountId || !stripeClientSecret) {
+            throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
+        }
+
         /**
          * Create the Stripe object and pass our api keys
          */
@@ -93,6 +97,10 @@ const stripeGateway: StripeGateway = {
         }
     },
     Fields() {
+        if (!stripePromise) {
+            throw new Error('Stripe library was not able to load.  Check your Stripe settings.');
+        }
+
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
                 <StripeFields gateway={stripeGateway} />
