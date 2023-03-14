@@ -11,7 +11,7 @@ class DonationTypeRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
 {
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public static function id(): string
     {
@@ -19,7 +19,7 @@ class DonationTypeRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -27,7 +27,7 @@ class DonationTypeRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {

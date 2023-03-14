@@ -148,7 +148,8 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
+     *
      * @throws NameCollisionException
      * @throws EmptyNameException
      */
