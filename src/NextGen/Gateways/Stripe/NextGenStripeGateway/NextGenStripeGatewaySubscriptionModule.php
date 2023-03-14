@@ -3,8 +3,10 @@
 namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
@@ -17,7 +19,6 @@ use Give\Subscriptions\Models\Subscription;
 use GiveRecurring\Infrastructure\Exceptions\PaymentGateways\Stripe\UnableToCreateStripePlan;
 use GiveRecurring\PaymentGateways\DataTransferObjects\SubscriptionDto;
 use GiveRecurring\PaymentGateways\Stripe\Actions\RetrieveOrCreatePlan;
-use GiveRecurring\PaymentGateways\Stripe\Actions\SubscribeStripeCustomerToPlanWithCard;
 use GiveRecurring\PaymentGateways\Stripe\Traits\CanCancelStripeSubscription;
 use GiveRecurring\PaymentGateways\Stripe\Traits\CanHandleSecureCardAuthenticationRedirect;
 use GiveRecurring\PaymentGateways\Stripe\Traits\CanLinkStripeSubscriptionGatewayId;
@@ -53,18 +54,21 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         Donation $donation,
         Subscription $subscription,
         $gatewayData
-    ): RespondToBrowser {
+    ): GatewayCommand {
+        $this->setUpStripeAppInfo($donation->formId);
+
         /**
          * Get data from client request
          */
-        $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
-        $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $redirectReturnUrl = rawurldecode($gatewayData['successUrl']);
+        $stripeGatewayData = StripeGatewayData::fromRequest($gatewayData);
 
         /**
          * Get or create a Stripe customer
          */
-        $customer = $this->getOrCreateStripeCustomerFromDonation($stripeConnectedAccountKey, $donation);
+        $customer = $this->getOrCreateStripeCustomerFromDonation(
+            $stripeGatewayData->stripeConnectedAccountId,
+            $donation
+        );
 
 
         /**
@@ -76,7 +80,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
          * Update Payment Intent
          */
         $intent = $this->updateStripePaymentIntent(
-            $stripePaymentIntentId,
+            $stripeGatewayData->stripePaymentIntentId,
             $intentArgs
         );
 
@@ -108,7 +112,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
          */
         return new RespondToBrowser([
             'intentStatus' => $intent->status,
-            'returnUrl' => $redirectReturnUrl,
+            'returnUrl' => $stripeGatewayData->successUrl,
         ]);
     }
 
@@ -166,17 +170,38 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         Donation $donation,
         \Stripe\PaymentIntent $paymentIntent,
         Plan $plan
-    ): SubscriptionComplete {
-         $subscribeStripeCustomerToPlan = (new SubscribeStripeCustomerToPlanWithCard)(
-            $customer,
-            $donation,
-            $paymentIntent->payment_method,
-            $plan->id
+    ): SubscriptionComplete
+    {
+        // Get metadata.
+        $metadata = give_stripe_prepare_metadata($donation->id);
+
+        $stripeSubscription = \Stripe\Subscription::create(
+            [
+                'customer' => $customer->id,
+                'items' => [
+                    [
+                        'plan' => $plan->id,
+                    ]
+                ],
+                'metadata' => $metadata,
+                'payment_behavior' => 'default_incomplete',
+                'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
+                'expand' => ['latest_invoice.payment_intent'],
+            ]
         );
 
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(
+            /* translators: 1. Stripe payment intent id */
+                esc_html__('Stripe Payment Invoice ID: %1$s', 'give-recurring'),
+                $paymentIntent->id
+            )
+        ]);
+
         return new SubscriptionComplete(
-            $subscribeStripeCustomerToPlan->getGatewayTransactionId(),
-            $subscribeStripeCustomerToPlan->getGatewaySubscriptionId()
+            $stripeSubscription->latest_invoice->id,
+            $stripeSubscription->id
         );
     }
 }

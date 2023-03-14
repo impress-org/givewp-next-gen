@@ -12,8 +12,6 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\Support\ValueObjects\Money;
 use Stripe\Exception\ApiErrorException;
 
-use function rawurldecode;
-
 /**
  * @since 0.1.0
  */
@@ -89,7 +87,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         return [
             'stripeKey' => $stripePublishableKey,
             'stripeClientSecret' => $stripePaymentIntent->client_secret,
-            'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
+            'stripeConnectedAccountId' => $stripeConnectedAccountKey,
             'stripePaymentIntentId' => $stripePaymentIntent->id,
         ];
     }
@@ -100,17 +98,20 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
+        $this->setUpStripeAppInfo($donation->formId);
+
         /**
          * Get data from client request
          */
-        $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
-        $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $redirectReturnUrl = rawurldecode($gatewayData['successUrl']);
+        $stripeGatewayData = StripeGatewayData::fromRequest($gatewayData);
 
         /**
          * Get or create a Stripe customer
          */
-        $customer = $this->getOrCreateStripeCustomerFromDonation($stripeConnectedAccountKey, $donation);
+        $customer = $this->getOrCreateStripeCustomerFromDonation(
+            $stripeGatewayData->stripeConnectedAccountId,
+            $donation
+        );
 
 
         /**
@@ -122,7 +123,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          * Update Payment Intent
          */
         $intent = $this->updateStripePaymentIntent(
-            $stripePaymentIntentId,
+            $stripeGatewayData->stripePaymentIntentId,
             $intentArgs
         );
 
@@ -136,7 +137,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         return new RespondToBrowser([
             'intentStatus' => $intent->status,
-            'returnUrl' => $redirectReturnUrl,
+            'returnUrl' => $stripeGatewayData->successUrl,
         ]);
     }
 

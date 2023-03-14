@@ -36,9 +36,9 @@ const stripeGateway: StripeGateway = {
         return true;
     },
     initialize() {
-        const {stripeKey, stripeConnectAccountId, stripeClientSecret} = this.settings;
+        const {stripeKey, stripeConnectedAccountId, stripeClientSecret} = this.settings;
 
-        if (!stripeKey || !stripeConnectAccountId || !stripeClientSecret) {
+        if (!stripeKey || !stripeConnectedAccountId || !stripeClientSecret) {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
 
@@ -46,7 +46,7 @@ const stripeGateway: StripeGateway = {
          * Create the Stripe object and pass our api keys
          */
         stripePromise = loadStripe(stripeKey, {
-            stripeAccount: stripeConnectAccountId,
+            stripeAccount: stripeConnectedAccountId,
         });
 
         stripeElementOptions = {
@@ -70,6 +70,7 @@ const stripeGateway: StripeGateway = {
             returnUrl: string;
         };
     }): Promise<void> {
+        console.log(response);
         if (response.data.intentStatus === 'requires_payment_method') {
             const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
 
