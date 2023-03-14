@@ -55,7 +55,11 @@ class SubscriptionPeriodRule implements ValidationRule, ValidatesOnFrontEnd, San
      */
     public function sanitize($value)
     {
-        return $value ? new SubscriptionPeriod($value) : null;
+        if (SubscriptionPeriod::search($value)) {
+            return new SubscriptionPeriod($value);
+        }
+        
+        return null;
     }
 
     /**

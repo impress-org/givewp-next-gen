@@ -12,6 +12,7 @@ use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -40,6 +41,10 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(NextGenTestGatewayOffsite::class);
             $registrar->unregisterGateway(PayPalStandard::id());
             $registrar->registerGateway(PayPalStandardGateway::class);
+        });
+
+        add_filter(sprintf("givewp_gateway_%s_subscription_module", NextGenStripeGateway::id()), static function () {
+            return NextGenStripeGatewaySubscriptionModule::class;
         });
 
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {

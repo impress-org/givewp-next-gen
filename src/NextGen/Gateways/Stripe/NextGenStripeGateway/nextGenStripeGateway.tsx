@@ -31,7 +31,7 @@ interface StripeGateway extends Gateway {
 
 const stripeGateway: StripeGateway = {
     id: 'next-gen-stripe',
-    supportsRecurring: false,
+    supportsRecurring: true,
     supportsCurrency(currency: string): boolean {
         return true;
     },
