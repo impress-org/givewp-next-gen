@@ -70,7 +70,6 @@ const stripeGateway: StripeGateway = {
             returnUrl: string;
         };
     }): Promise<void> {
-        console.log(response);
         if (response.data.intentStatus === 'requires_payment_method') {
             const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
 
