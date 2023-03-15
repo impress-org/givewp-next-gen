@@ -60,7 +60,7 @@ class NextGenStripeGatewayTest extends TestCase
         $this->assertSame($settings, [
             'stripeKey' => $stripePublishableKey,
             'stripeClientSecret' => $stripePaymentIntent->client_secret,
-            'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
+            'stripeConnectedAccountId' => $stripeConnectedAccountKey,
             'stripePaymentIntentId' => $stripePaymentIntent->id,
         ]);
     }
@@ -134,7 +134,7 @@ class NextGenStripeGatewayTest extends TestCase
 
         $gatewayData = [
             'stripePaymentIntentId' => $stripePaymentIntent->id,
-            'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
+            'stripeConnectedAccountId' => $stripeConnectedAccountKey,
             'successUrl' => $redirectReturnUrl,
         ];
 
