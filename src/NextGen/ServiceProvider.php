@@ -22,7 +22,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @inheritDoc
+     * @since 0.1.0
      */
     public function register()
     {
@@ -30,7 +30,8 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * @since 0.1.0
+     *
      * @throws Exception
      */
     public function boot()
@@ -43,9 +44,17 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(PayPalStandardGateway::class);
         });
 
-        add_filter(sprintf("givewp_gateway_%s_subscription_module", NextGenStripeGateway::id()), static function () {
-            return NextGenStripeGatewaySubscriptionModule::class;
-        });
+        /**
+         * This module will eventually live in give-recurring
+         */
+        if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
+            add_filter(
+                sprintf("givewp_gateway_%s_subscription_module", NextGenStripeGateway::id()),
+                static function () {
+                    return NextGenStripeGatewaySubscriptionModule::class;
+                }
+            );
+        }
 
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {
             $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
