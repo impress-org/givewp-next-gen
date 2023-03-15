@@ -98,9 +98,8 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
          * Create Stripe Subscription
          */
         $subscriptionCompleted = $this->createStripeSubscription(
-            $customer,
             $donation,
-            $intent,
+            $customer,
             $plan
         );
 
@@ -162,29 +161,27 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
+     * @unreleased
+     *
      * @throws Exception
-     * @throws ApiErrorException
      */
     protected function createStripeSubscription(
-        \Stripe\Customer $customer,
         Donation $donation,
-        \Stripe\PaymentIntent $paymentIntent,
+        \Stripe\Customer $customer,
         Plan $plan
-    ): SubscriptionComplete
-    {
+    ): SubscriptionComplete {
         // Get metadata.
         $metadata = give_stripe_prepare_metadata($donation->id);
 
-        $stripeSubscription = \Stripe\Subscription::create(
+        /** @var \Stripe\Subscription $stripeSubscription */
+        $stripeSubscription = $customer->subscriptions->create(
             [
-                'customer' => $customer->id,
                 'items' => [
                     [
                         'plan' => $plan->id,
                     ]
                 ],
                 'metadata' => $metadata,
-                'payment_behavior' => 'default_incomplete',
                 'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
                 'expand' => ['latest_invoice.payment_intent'],
             ]
@@ -194,13 +191,13 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             'donationId' => $donation->id,
             'content' => sprintf(
             /* translators: 1. Stripe payment intent id */
-                esc_html__('Stripe Payment Invoice ID: %1$s', 'give-recurring'),
-                $paymentIntent->id
+                esc_html__('Stripe Payment Invoice ID: %1$s', 'give'),
+                $stripeSubscription->latest_invoice->id
             )
         ]);
 
         return new SubscriptionComplete(
-            $stripeSubscription->latest_invoice->id,
+            $stripeSubscription->latest_invoice->charge,
             $stripeSubscription->id
         );
     }
