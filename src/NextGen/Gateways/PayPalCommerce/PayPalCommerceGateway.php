@@ -37,13 +37,15 @@ class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGate
             'sdkOptions' => [
                 'client-id' => $merchantDetailModel->clientId,
                 'merchant-id' => $merchantDetailModel->merchantIdInPayPal,
-                'components' => 'hosted-fields,buttons',
+                'components' => "buttons,hosted-fields",
                 'locale' => get_locale(),
                 'disable-funding' => 'credit',
                 'enable-funding' => 'venmo',
-                'vault' => 'true',
+                'intent' => 'capture',
+                'vault' => 'false',
                 'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
                 'data-client-token' => $merchantDetailRepository->getClientToken(),
+                'currency' => 'USD',
             ],
         ];
     }
