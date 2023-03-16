@@ -45,6 +45,16 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         /**
+         * Transaction ID link in donation details
+         */
+        add_filter(
+            sprintf('give_payment_details_transaction_id-%s', NextGenStripeGateway::id()),
+            'give_stripe_link_transaction_id',
+            10,
+            2
+        );
+
+        /**
          * This module will eventually live in give-recurring
          */
         if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
