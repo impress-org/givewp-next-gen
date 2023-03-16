@@ -147,7 +147,7 @@
 
 <div id="givewpNextGenWelcomeBanner" class="welcome-banner--theme welcome-banner--container">
 
-    <a href="#" style="position: absolute;top:24px;right:48px;">
+    <a id="givewpNextGenWelcomeBannerDismiss" href="#" style="position: absolute;top:24px;right:48px;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M18.707 6.707a1 1 0 0 0-1.414-1.414L12 10.586 6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293z" fill="#0E0E0E"/>
         </svg>
@@ -277,7 +277,7 @@
             </section>
 
             <!-- What's New -->
-            <section style="flex:1;">
+            <section style="flex:2;">
                 <h2 style="
                     font-size: 18px;
                     color: var(--blue-500);
@@ -285,12 +285,13 @@
 
                 <div style="
                     display: flex;
-                    /*flex-wrap: wrap;*/
+                    flex-wrap: wrap;
                     gap: 22px;
                 "
                 >
                     <!-- Design Mode -->
                     <div style="
+                        flex: 1;
                         width: 318px;
                         padding: 12px 12px 16px;
                         border-radius: 4px;
@@ -304,6 +305,7 @@
 
                     <!-- Custom field support -->
                     <div style="
+                        flex: 1;
                         width: 318px;
                         padding: 12px 12px 16px;
                         border-radius: 4px;
@@ -321,7 +323,7 @@
 </div>
 
 <script>
-    jQuery('#givewpNextGenWelcomeBanner').click(function() {
+    jQuery('#givewpNextGenWelcomeBannerDismiss').click(function() {
         jQuery.post(ajaxurl, {
             'action': '<?php echo $action; ?>',
             'nonce': '<?php echo $nonce; ?>',
