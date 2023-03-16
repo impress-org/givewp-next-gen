@@ -24,9 +24,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         add_action('admin_notices', function() {
-            echo View::load('NextGen/WelcomeBanner.welcome-banner', [
-                'header' => View::load('NextGen/WelcomeBanner.header'),
-            ]);
+            echo View::load('NextGen/WelcomeBanner.welcome-banner');
         });
     }
 }
