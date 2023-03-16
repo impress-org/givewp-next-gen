@@ -1,4 +1,4 @@
-import {FormDesign, FormPageSettings} from '@givewp/form-builder/types';
+import {FormDesign, FormPageSettings, Gateway} from '@givewp/form-builder/types';
 
 declare global {
     interface Window {
@@ -8,7 +8,7 @@ declare global {
             currency: string;
         },
         formBuilderData?: {
-            gateways: Array<any>;
+            gateways: Gateway[];
         },
     }
 }
