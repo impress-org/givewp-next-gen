@@ -193,6 +193,7 @@
             <!-- Next Steps -->
             <section style="flex:1;">
                 <h2 style="
+                    margin: 0;
                     font-size: 18px;
                     color: var(--blue-500);
                 "><?php _e('Next Steps', 'give'); ?></h2>
@@ -201,10 +202,11 @@
 
                     <!-- Join the Journey -->
                     <div>
-                        <h3 style="font-size: 16px;"><?php _e('Join the journey', 'give'); ?></h3>
+                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Join the journey', 'give'); ?></h3>
                         <p style="font-size: 12px;"><?php _e('Stay informed about Give 3.0 and Next Gen updates', 'give'); ?></p>
-                        <form action="#" style="display: flex;flex-wrap:wrap;gap:8px;">
+                        <form id="givewpNextGenNewsletter" style="display: flex;flex-wrap:wrap;gap:8px;">
                             <input
+                                id="givewpNextGenNewsletterEmail"
                                 style="
                             flex:3;
                             padding: 12px 24px 12px 16px;
@@ -213,6 +215,7 @@
                             background-color: var(--shades-white);
                         "
                                 type="email"
+                                value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>"
                                 placeholder="<?php esc_attr_e('Enter your email', 'give'); ?>"
                             />
                             <button type="submit" style="
@@ -225,11 +228,24 @@
                         background-color: var(--green-500);
                     "><?php _e('Submit', 'give'); ?></button>
                         </form>
+                        <div id="givewpNextGenNewsletterSuccess" style="
+                        display: none;
+                        text-align: center;
+                    margin: 12px 0 4px 0;
+                    padding: 8px 8px 8px 32px;
+                    border-radius: 4px;
+                    background-color: var(--green-25);
+                    color: var(--green-600);
+                ">
+                            <div style="flex:1;">
+                                <?php _e('Subscribed', 'give'); ?>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Create your new donation form -->
                     <div>
-                        <h3><?php _e('Create your new donation form', 'give'); ?></h3>
+                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Create your new donation form', 'give'); ?></h3>
                         <p><?php _e('The Visual donation form building experience is one click away', 'give'); ?></p>
                         <a
                             href="<?php echo admin_url('edit.php?post_type=give_forms&page=form-builder-next-gen'); ?>"
@@ -279,11 +295,13 @@
             <!-- What's New -->
             <section style="flex:2;">
                 <h2 style="
+                    margin: 0;
                     font-size: 18px;
                     color: var(--blue-500);
                 "><?php _e('What\'s New', 'give'); ?></h2>
 
                 <div style="
+                    margin-top: 8px;
                     display: flex;
                     flex-wrap: wrap;
                     gap: 22px;
@@ -323,12 +341,32 @@
 </div>
 
 <script>
-    jQuery('#givewpNextGenWelcomeBannerDismiss').click(function() {
-        jQuery.post(ajaxurl, {
-            'action': '<?php echo $action; ?>',
-            'nonce': '<?php echo $nonce; ?>',
-        }, function(response) {
-            jQuery('#givewpNextGenWelcomeBanner').slideUp("slow");
+    jQuery(document).ready(function($) {
+        $('#givewpNextGenWelcomeBannerDismiss').click(function() {
+            $.post(ajaxurl, {
+                'action': '<?php echo $action; ?>',
+                'nonce': '<?php echo $nonce; ?>',
+            }, function(response) {
+                $('#givewpNextGenWelcomeBanner').slideUp("slow");
+            });
         });
+        $('#givewpNextGenNewsletter').submit(function(e) {
+
+            e.preventDefault();
+
+            $('#givewpNextGenNewsletter').slideUp();
+            $('#givewpNextGenNewsletterSuccess').show();
+
+            //$.post('https://connect.givewp.com/activecampaign/subscribe', {
+            //    action: 'subscribe',
+            //    email: $('#givewpNextGenNewsletterEmail').val(),
+            //    first_name: '<?php //echo wp_get_current_user()->user_firstname; ?>//',
+            //    last_name: '<?php //echo wp_get_current_user()->user_lastname; ?>//',
+            //    website_url: '<?php //echo get_bloginfo('url'); ?>//',
+            //    website_name: '<?php //echo get_bloginfo('sitename'); ?>//',
+            //}, function(response) {
+            // });
+        })
+        console.log( 'ready' );
     });
 </script>
