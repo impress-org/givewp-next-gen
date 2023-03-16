@@ -1,5 +1,5 @@
 import {__} from "@wordpress/i18n";
-import {Button, ExternalLink} from "@wordpress/components";
+import {Button} from "@wordpress/components";
 
 const RecurringDonationsPromo = () => {
     return <div
@@ -19,8 +19,8 @@ const RecurringDonationsPromo = () => {
             {__('Provide donors the option of making flexible recurring donations.', 'give')}
         </div>
         <div style={{display: 'flex', justifyContent: 'space-around'}}>
-            <Button href='#' variant={'primary'} style={{backgroundColor:'var(--givewp-primary-500)', padding: '4px 8px', height: 'auto'}}>Upgrade your plan</Button>
-            <Button href='#' variant={'link'} style={{color: 'var(--givewp-gray-100)'}}>Read more</Button>
+            <Button href='https://givewp.com/addons/recurring-donations' target="_blank" rel="noopener noreferrer" variant={'primary'} style={{backgroundColor:'var(--givewp-primary-500)', padding: '4px 8px', height: 'auto'}}>Upgrade your plan</Button>
+            <Button href='https://givewp.com/addons/recurring-donations' target="_blank" rel="noopener noreferrer" variant={'link'} style={{color: 'var(--givewp-gray-100)'}}>Read more</Button>
         </div>
     </div>
 }
