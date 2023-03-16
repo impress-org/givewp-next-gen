@@ -154,8 +154,6 @@
     </a>
 
     <div style="
-        max-width: 1234px;
-        margin: auto;
         display: flex;
         flex-direction: column;
         gap: 44px;
