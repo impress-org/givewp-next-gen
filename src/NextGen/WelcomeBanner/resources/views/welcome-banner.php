@@ -326,7 +326,7 @@
             'action': '<?php echo $action; ?>',
             'nonce': '<?php echo $nonce; ?>',
         }, function(response) {
-            jQuery('#givewpNextGenWelcomeBanner').remove();
+            jQuery('#givewpNextGenWelcomeBanner').slideUp("slow");
         });
     });
 </script>
