@@ -2,9 +2,8 @@
 
 namespace Give\NextGen\WelcomeBanner;
 
-use Give\Addon\View;
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
-
 
 /**
  * @since 0.1.0
@@ -16,6 +15,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
+        //
     }
 
     /**
@@ -23,8 +23,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        add_action('admin_notices', function() {
-            echo View::load('NextGen/WelcomeBanner.welcome-banner');
-        });
+        if(!get_option('givewp_next_gen_welcome_banner_dismissed')) {
+            Hooks::addAction('admin_notices', Actions\DisplayWelcomeBanner::class);
+            Hooks::addAction('wp_ajax_givewp_next_gen_welcome_banner_dismiss', Actions\DismissWelcomeBanner::class);
+        }
     }
 }

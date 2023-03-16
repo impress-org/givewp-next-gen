@@ -145,7 +145,7 @@
     }
 </style>
 
-<div class="welcome-banner--theme welcome-banner--container">
+<div id="givewpNextGenWelcomeBanner" class="welcome-banner--theme welcome-banner--container">
 
     <a href="#" style="position: absolute;top:24px;right:48px;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -319,3 +319,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    jQuery('#givewpNextGenWelcomeBanner').click(function() {
+        jQuery.post(ajaxurl, {
+            'action': '<?php echo $action; ?>',
+            'nonce': '<?php echo $nonce; ?>',
+        }, function(response) {
+            jQuery('#givewpNextGenWelcomeBanner').remove();
+        });
+    });
+</script>
