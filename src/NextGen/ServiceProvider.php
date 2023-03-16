@@ -3,6 +3,7 @@
 namespace Give\NextGen;
 
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\NextGen\DonationForm\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
@@ -11,6 +12,7 @@ use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
+use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
@@ -36,6 +38,18 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        $this->registerGateways();
+        $this->registerFormDesigns();
+    }
+
+    /**
+     * @since 0.1.0
+     *
+     * @throws Exception
+     * @throws OverflowException
+     */
+    private function registerGateways()
+    {
         add_action('givewp_register_payment_gateway', static function (PaymentGatewayRegister $registrar) {
             $registrar->registerGateway(NextGenTestGateway::class);
             $registrar->registerGateway(NextGenStripeGateway::class);
@@ -43,16 +57,6 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->unregisterGateway(PayPalStandard::id());
             $registrar->registerGateway(PayPalStandardGateway::class);
         });
-
-        /**
-         * Transaction ID link in donation details
-         */
-        add_filter(
-            sprintf('give_payment_details_transaction_id-%s', NextGenStripeGateway::id()),
-            'give_stripe_link_transaction_id',
-            10,
-            2
-        );
 
         /**
          * This module will eventually live in give-recurring
@@ -66,6 +70,18 @@ class ServiceProvider implements ServiceProviderInterface
             );
         }
 
+        /**
+         * @unreleased
+         */
+        give(LegacyStripeAdapter::class)->addDonationDetails();
+    }
+
+    /**
+     * @since 0.1.0
+     * @throws Framework\FormDesigns\Exceptions\OverflowException
+     */
+    private function registerFormDesigns()
+    {
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {
             $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
             $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
