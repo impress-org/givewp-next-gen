@@ -4,6 +4,7 @@ namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
@@ -129,6 +130,7 @@ trait NextGenStripeRepository
    protected function updateDonationMetaFromPaymentIntent(Donation $donation, PaymentIntent $intent)
    {
        $donation->gatewayTransactionId = $intent->id;
+       $donation->status = DonationStatus::PROCESSING();
        $donation->save();
 
        DonationNote::create([
