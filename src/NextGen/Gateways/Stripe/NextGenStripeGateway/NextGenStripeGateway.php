@@ -87,6 +87,9 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
+        /**
+         * Initialize the Stripe SDK using Stripe::setAppInfo()
+         */
         $this->setUpStripeAppInfo($donation->formId);
 
         /**

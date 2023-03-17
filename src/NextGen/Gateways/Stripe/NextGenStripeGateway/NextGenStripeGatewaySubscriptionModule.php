@@ -13,7 +13,6 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMet
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
-use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\Subscriptions\Models\Subscription;
 use GiveRecurring\Infrastructure\Exceptions\PaymentGateways\Stripe\UnableToCreateStripePlan;
 use GiveRecurring\PaymentGateways\DataTransferObjects\SubscriptionDto;
@@ -23,6 +22,7 @@ use GiveRecurring\PaymentGateways\Stripe\Traits\CanHandleSecureCardAuthenticatio
 use GiveRecurring\PaymentGateways\Stripe\Traits\CanLinkStripeSubscriptionGatewayId;
 use GiveRecurring\PaymentGateways\Stripe\Traits\CanUpdateStripeSubscriptionAmount;
 use GiveRecurring\PaymentGateways\Stripe\Traits\CanUpdateStripeSubscriptionPaymentMethod;
+use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Plan;
 
@@ -54,6 +54,9 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         Subscription $subscription,
         $gatewayData
     ): GatewayCommand {
+        /**
+         * Initialize the Stripe SDK using Stripe::setAppInfo()
+         */
         $this->setUpStripeAppInfo($donation->formId);
 
         /**
@@ -69,12 +72,6 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             $donation
         );
 
-
-        /**
-         * Setup Stripe Payment Intent args
-         */
-        $intentArgs = $this->getPaymentIntentArgsFromDonation($donation, $customer);
-
         /**
          * Setup Stripe Plan
          */
@@ -89,7 +86,6 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             $customer,
             $plan
         );
-
 
         /**
          * Return response to client
@@ -141,14 +137,14 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     protected function createStripeSubscription(
         Donation $donation,
         Subscription $subscription,
-        \Stripe\Customer $customer,
+        Customer $customer,
         Plan $plan
     ): \Stripe\Subscription {
-        // Get metadata.
-        $metadata = give_stripe_prepare_metadata($donation->id);
-
         /**
          * @see https://stripe.com/docs/api/subscriptions/create
+         *
+         * Note: we do not add the application_fee_percent for subscriptions in favor of using our premium add-on give-recurring.
+         * @see https://givewp.com/documentation/core/payment-gateways/stripe-free/
          */
         $subscriptionArgs = [
             'items' => [
@@ -156,22 +152,15 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
                     'plan' => $plan->id,
                 ]
             ],
-            'metadata' => $metadata,
+            'metadata' => give_stripe_prepare_metadata($donation->id),
             'payment_behavior' => 'default_incomplete',
             'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
             'expand' => ['latest_invoice.payment_intent'],
         ];
 
         /**
-         * Add application fee, if the Stripe premium add-on is not active.
-         *
-         * TODO: Not sure about adding this - cannot find us using this for other stripe gateway subscriptions.
+         * @var \Stripe\Subscription $stripeSubscription
          */
-        if (ApplicationFee::canAddfee()) {
-            $subscriptionArgs['application_fee_percent'] = give_stripe_get_application_fee_percentage();
-        }
-
-        /** @var \Stripe\Subscription $stripeSubscription */
         $stripeSubscription = $customer->subscriptions->create($subscriptionArgs);
 
         DonationNote::create([
