@@ -10,10 +10,6 @@ class StripeGatewayData {
     /**
      * @var string
      */
-    public $stripePaymentIntentId;
-    /**
-     * @var string
-     */
     public $successUrl;
 
     /**
@@ -24,7 +20,6 @@ class StripeGatewayData {
     {
         $self = new self();
         $self->stripeConnectedAccountId = $request['stripeConnectedAccountId'];
-        $self->stripePaymentIntentId = $request['stripePaymentIntentId'];
         $self->successUrl = rawurldecode($request['successUrl']);
 
         return $self;

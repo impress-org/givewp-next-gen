@@ -2,6 +2,15 @@ import {loadStripe, Stripe, StripeElements} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
+/**
+ * Takes in an amount value in dollar units and returns the calculated cents amount
+ *
+ * @unreleased
+ */
+const dollarsToCents = (amount) => {
+    return Math.round(amount * 100);
+};
+
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -13,7 +22,6 @@ const StripeFields = ({gateway}) => {
 };
 
 let stripePromise = null;
-let stripeElementOptions = null;
 
 interface StripeSettings extends GatewaySettings {
     stripeKey: string;
@@ -32,9 +40,9 @@ interface StripeGateway extends Gateway {
 const stripeGateway: StripeGateway = {
     id: 'next-gen-stripe',
     initialize() {
-        const {stripeKey, stripeConnectedAccountId, stripeClientSecret} = this.settings;
+        const {stripeKey, stripeConnectedAccountId} = this.settings;
 
-        if (!stripeKey || !stripeConnectedAccountId || !stripeClientSecret) {
+        if (!stripeKey || !stripeConnectedAccountId) {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
 
@@ -42,12 +50,12 @@ const stripeGateway: StripeGateway = {
          * Create the Stripe object and pass our api keys
          */
         stripePromise = loadStripe(stripeKey, {
+            /**
+             * @see https://stripe.com/docs/payments/accept-a-payment-deferred
+             */
+            betas: ['elements_enable_deferred_intent_beta_1'],
             stripeAccount: stripeConnectedAccountId,
         });
-
-        stripeElementOptions = {
-            clientSecret: stripeClientSecret,
-        };
     },
     beforeCreatePayment: async function (values): Promise<object> {
         if (!this.stripe || !this.elements) {
@@ -62,25 +70,19 @@ const stripeGateway: StripeGateway = {
     },
     afterCreatePayment: async function (response: {
         data: {
-            intentStatus: string;
+            clientSecret: string;
             returnUrl: string;
         };
     }): Promise<void> {
-        if (response.data.intentStatus === 'requires_payment_method') {
-            const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
-
-            if (fetchUpdatesError) {
-                throw new Error(fetchUpdatesError.message);
-            }
-        }
-
         const {error} = await this.stripe.confirmPayment({
             elements: this.elements,
+            clientSecret: response.data.clientSecret,
             confirmParams: {
                 return_url: response.data.returnUrl,
             },
         });
 
+        console.error(error);
         // This point will only be reached if there is an immediate error when
         // confirming the payment. Otherwise, your customer will be redirected to
         // your `return_url`. For some payment methods like iDEAL, your customer will
@@ -97,7 +99,19 @@ const stripeGateway: StripeGateway = {
             throw new Error('Stripe library was not able to load.  Check your Stripe settings.');
         }
 
+        const {useWatch} = window.givewp.form.hooks;
+        const donationType = useWatch({name: 'donationType'});
+        const donationCurrency = useWatch({name: 'currency'});
+        const donationAmount = useWatch({name: 'amount'});
+
+        const stripeElementOptions = {
+            mode: donationType === 'subscription' ? 'subscription' : 'payment',
+            amount: dollarsToCents(donationAmount),
+            currency: donationCurrency.toLowerCase(),
+        };
+
         return (
+            // @ts-ignore - we are using a beta version of elements so ignore typescript temporarily
             <Elements stripe={stripePromise} options={stripeElementOptions}>
                 <StripeFields gateway={stripeGateway} />
             </Elements>

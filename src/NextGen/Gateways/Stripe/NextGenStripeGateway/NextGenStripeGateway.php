@@ -9,7 +9,6 @@ use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
-use Give\Framework\Support\ValueObjects\Money;
 use Stripe\Exception\ApiErrorException;
 
 /**
@@ -68,7 +67,6 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
 
     /**
      * @since 0.1.0
-     * @throws ApiErrorException
      */
     public function formSettings(int $formId): array
     {
@@ -76,19 +74,10 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
 
         $stripePublishableKey = $this->getStripePublishableKey($formId);
         $stripeConnectedAccountKey = $this->getStripeConnectedAccountKey($formId);
-        $currency = give_get_currency($formId);
-        $formDefaultAmount = give_get_default_form_amount($formId);
-        $defaultAmount = Money::fromDecimal(!empty($formDefaultAmount) ? $formDefaultAmount : '50', $currency);
-        $stripePaymentIntent = $this->generateStripePaymentIntent(
-            $stripeConnectedAccountKey,
-            $defaultAmount
-        );
 
         return [
             'stripeKey' => $stripePublishableKey,
-            'stripeClientSecret' => $stripePaymentIntent->client_secret,
             'stripeConnectedAccountId' => $stripeConnectedAccountKey,
-            'stripePaymentIntentId' => $stripePaymentIntent->id,
         ];
     }
 
@@ -122,8 +111,8 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         /**
          * Update Payment Intent
          */
-        $intent = $this->updateStripePaymentIntent(
-            $stripeGatewayData->stripePaymentIntentId,
+        $intent = $this->generateStripePaymentIntent(
+            $stripeGatewayData->stripeConnectedAccountId,
             $intentArgs
         );
 
@@ -136,7 +125,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          * Return response to client
          */
         return new RespondToBrowser([
-            'intentStatus' => $intent->status,
+            'clientSecret' => $intent->client_secret,
             'returnUrl' => $stripeGatewayData->successUrl,
         ]);
     }

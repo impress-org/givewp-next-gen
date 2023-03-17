@@ -5,29 +5,27 @@ namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\PaymentGateways\Stripe\ApplicationFee;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Customer;
 use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;
 use Stripe\PaymentIntent;
 
-trait NextGenStripeRepository {
+trait NextGenStripeRepository
+{
     /**
      * @since 0.1.0
      * @throws ApiErrorException
      */
-    protected function generateStripePaymentIntent($accountId, Money $amount): PaymentIntent
+    protected function generateStripePaymentIntent(string $accountId, array $args): PaymentIntent
     {
         return PaymentIntent::create(
-            [
-                'amount' => $amount->formatToMinorAmount(),
-                'currency' => $amount->getCurrency()->getCode(),
-                'automatic_payment_methods' => ['enabled' => true],
-            ],
+            $args,
             ['stripe_account' => $accountId]
         );
     }
@@ -91,18 +89,6 @@ trait NextGenStripeRepository {
 
     /**
      * @since 0.1.0
-     * @throws ApiErrorException
-     */
-    protected function updateStripePaymentIntent(string $id, array $data): PaymentIntent
-    {
-        return PaymentIntent::update(
-            $id,
-            $data
-        );
-    }
-
-    /**
-     * @since 0.1.0
      *
      * @throws InvalidPropertyName
      */
@@ -111,9 +97,11 @@ trait NextGenStripeRepository {
         // Collect intent args to be updated
         $intentArgs = [
             'amount' => $donation->amount->formatToMinorAmount(),
+            'currency' => $donation->amount->getCurrency()->getCode(),
             'customer' => $customer->id,
             'description' => (new SaveDonationSummary)($donation)->getSummaryWithDonor(),
             'metadata' => give_stripe_prepare_metadata($donation->id),
+            'automatic_payment_methods' => ['enabled' => true],
         ];
 
         // Add application fee, if the Stripe premium add-on is not active.
@@ -159,6 +147,24 @@ trait NextGenStripeRepository {
            $intent->client_secret
        );
    }
+
+    /**
+     * @unreleased
+     * @throws \Exception
+     */
+    protected function updateSubscriptionMetaFromStripeSubscription(
+        Subscription $subscription,
+        \Stripe\Subscription $stripeSubscription
+    ) {
+        if ($stripeTransactionId = $stripeSubscription->latest_invoice->charge) {
+            $subscription->transactionId = $stripeTransactionId;
+        }
+
+        $subscription->gatewaySubscriptionId = $stripeSubscription->id;
+
+        $subscription->status = SubscriptionStatus::ACTIVE();
+        $subscription->save();
+    }
 
     /**
      * @since 0.1.0
