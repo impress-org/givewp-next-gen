@@ -1,5 +1,6 @@
-<style>
-    .welcome-banner--container {
+<div
+    id="givewpNextGenWelcomeBanner"
+    style="
         clear: both;
         position: relative;
         display: flex;
@@ -13,10 +14,8 @@
         background-color: var(--givewp-shades-white);
         line-height: 1.4;
         color: var(--givewp-grey-900);
-    }
-</style>
-
-<div id="givewpNextGenWelcomeBanner" class="welcome-banner--container">
+    "
+>
 
     <a id="givewpNextGenWelcomeBannerDismiss" href="#" style="position: absolute;top:24px;right:48px;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
