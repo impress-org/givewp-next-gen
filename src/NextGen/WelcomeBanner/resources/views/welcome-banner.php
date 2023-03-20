@@ -1,3 +1,10 @@
+<style>
+    give_forms_page_give-forms #givewpNextGenWelcomeBanner,
+    .post-type-give_forms #givewpNextGenWelcomeBanner {
+        margin-left: 20px;
+    }
+</style>
+
 <div
     id="givewpNextGenWelcomeBanner"
     style="
@@ -6,7 +13,9 @@
         display: flex;
         flex-direction: column;
         gap: 44px;
-        margin: 36px 16px 24px 0;
+        margin-top: 36px;
+        margin-right: 20px;
+        margin-bottom: 24px;
         padding: 24px 48px 36px;
         border-radius: 8px;
         box-shadow: 0 1px 2px 0 rgba(14, 14, 14, 0.15);
