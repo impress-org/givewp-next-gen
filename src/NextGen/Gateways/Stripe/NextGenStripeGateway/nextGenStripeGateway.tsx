@@ -1,6 +1,10 @@
-import {loadStripe, Stripe, StripeElements} from '@stripe/stripe-js';
+import {loadStripe, Stripe, StripeElements, StripePaymentElementChangeEvent} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
+
+let stripePromise = null;
+let stripePaymentMethod = null;
+let stripePaymentMethodIsCreditCard = false;
 
 /**
  * Takes in an amount value in dollar units and returns the calculated cents amount
@@ -17,11 +21,15 @@ const StripeFields = ({gateway}) => {
 
     gateway.stripe = stripe;
     gateway.elements = elements;
+    const handleOnChange = (event: StripePaymentElementChangeEvent) => {
+        if (event.complete) {
+            stripePaymentMethod = event.value.type;
+            stripePaymentMethodIsCreditCard = event.value.type === 'card';
+        }
+    };
 
-    return <PaymentElement />;
+    return <PaymentElement onChange={handleOnChange} />;
 };
-
-let stripePromise = null;
 
 interface StripeSettings extends GatewaySettings {
     stripeKey: string;
@@ -65,6 +73,8 @@ const stripeGateway: StripeGateway = {
         }
 
         return {
+            stripePaymentMethod,
+            stripePaymentMethodIsCreditCard,
             ...this.settings,
         };
     },

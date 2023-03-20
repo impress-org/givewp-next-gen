@@ -122,7 +122,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         /**
          * Update Donation Meta
          */
-        $this->updateDonationMetaFromPaymentIntent($donation, $intent);
+        $this->updateDonationMetaFromPaymentIntent($donation, $intent, $stripeGatewayData);
 
         /**
          * Return response to client

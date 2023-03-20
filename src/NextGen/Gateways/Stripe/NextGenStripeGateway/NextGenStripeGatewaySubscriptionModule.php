@@ -88,6 +88,15 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         );
 
         /**
+         * Update Donation Meta
+         */
+        $this->updateDonationMetaFromPaymentIntent(
+            $donation,
+            $stripeSubscription->latest_invoice->payment_intent,
+            $stripeGatewayData
+        );
+
+        /**
          * Return response to client
          */
         return new RespondToBrowser([
@@ -138,7 +147,8 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         Donation $donation,
         Subscription $subscription,
         Customer $customer,
-        Plan $plan
+        Plan $plan,
+        StripeGatewayData $stripeGatewayData = null
     ): \Stripe\Subscription {
         /**
          * @see https://stripe.com/docs/api/subscriptions/create
@@ -179,11 +189,6 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             $subscription,
             $stripeSubscription
         );
-
-        /**
-         * Update Donation Meta
-         */
-        $this->updateDonationMetaFromPaymentIntent($donation, $stripeSubscription->latest_invoice->payment_intent);
 
         return $stripeSubscription;
     }

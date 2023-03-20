@@ -121,25 +121,31 @@ trait NextGenStripeRepository
         }
 
         return $intentArgs;
-   }
+    }
 
     /**
      * @return void
      * @throws Exception
      */
-   protected function updateDonationMetaFromPaymentIntent(Donation $donation, PaymentIntent $intent)
-   {
-       $donation->gatewayTransactionId = $intent->id;
-       $donation->status = DonationStatus::PROCESSING();
-       $donation->save();
+    protected function updateDonationMetaFromPaymentIntent(
+        Donation $donation,
+        PaymentIntent $intent,
+        StripeGatewayData $gatewayData
+    ) {
+        if (!$gatewayData->stripePaymentMethodIsCreditCard) {
+            $donation->status = DonationStatus::PROCESSING();
+        }
+        
+        $donation->gatewayTransactionId = $intent->id;
+        $donation->save();
 
-       DonationNote::create([
-           'donationId' => $donation->id,
-           'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id)
-       ]);
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id)
+        ]);
 
-       DonationNote::create([
-           'donationId' => $donation->id,
+        DonationNote::create([
+            'donationId' => $donation->id,
            'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
        ]);
 
