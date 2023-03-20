@@ -22,10 +22,8 @@ const StripeFields = ({gateway}) => {
     gateway.stripe = stripe;
     gateway.elements = elements;
     const handleOnChange = (event: StripePaymentElementChangeEvent) => {
-        if (event.complete) {
-            stripePaymentMethod = event.value.type;
-            stripePaymentMethodIsCreditCard = event.value.type === 'card';
-        }
+        stripePaymentMethod = event.value.type;
+        stripePaymentMethodIsCreditCard = event.value.type === 'card';
     };
 
     return <PaymentElement onChange={handleOnChange} />;
