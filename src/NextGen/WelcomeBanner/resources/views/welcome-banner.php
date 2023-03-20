@@ -61,7 +61,7 @@
             gap: 73px;
         ">
             <!-- Next Steps -->
-            <section style="flex:1;">
+            <section style="flex:3;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
@@ -163,7 +163,7 @@
             </section>
 
             <!-- What's New -->
-            <section style="flex:2;">
+            <section style="flex:5;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
