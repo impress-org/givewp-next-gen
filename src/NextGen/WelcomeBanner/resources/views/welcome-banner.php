@@ -221,6 +221,8 @@
 
 <script>
     jQuery(document).ready(function($) {
+
+        // Banner Dismiss
         $('#givewpNextGenWelcomeBannerDismiss').click(function() {
             $.post(ajaxurl, {
                 'action': '<?php echo $action; ?>',
@@ -229,6 +231,8 @@
                 $('#givewpNextGenWelcomeBanner').slideUp("slow");
             });
         });
+
+        // Next Gen Beta Subscribe
         $('#givewpNextGenNewsletter').submit(function(e) {
 
             e.preventDefault();
@@ -236,16 +240,15 @@
             $('#givewpNextGenNewsletter').slideUp();
             $('#givewpNextGenNewsletterSuccess').show();
 
-            //$.post('https://connect.givewp.com/activecampaign/subscribe', {
-            //    action: 'subscribe',
-            //    email: $('#givewpNextGenNewsletterEmail').val(),
-            //    first_name: '<?php //echo wp_get_current_user()->user_firstname; ?>//',
-            //    last_name: '<?php //echo wp_get_current_user()->user_lastname; ?>//',
-            //    website_url: '<?php //echo get_bloginfo('url'); ?>//',
-            //    website_name: '<?php //echo get_bloginfo('sitename'); ?>//',
-            //}, function(response) {
-            // });
-        })
-        console.log( 'ready' );
+            $.post('https://connect.givewp.com/activecampaign/subscribe/next-gen-beta', {
+                action: 'subscribe',
+                email: $('#givewpNextGenNewsletterEmail').val(),
+                first_name: '<?php echo wp_get_current_user()->user_firstname; ?>',
+                last_name: '<?php echo wp_get_current_user()->user_lastname; ?>',
+                website_url: '<?php echo get_bloginfo('url'); ?>',
+                website_name: '<?php echo get_bloginfo('sitename'); ?>',
+            }, function(response) {
+             });
+        });
     });
 </script>
