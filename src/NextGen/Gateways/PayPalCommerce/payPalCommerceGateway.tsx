@@ -149,7 +149,7 @@ const HostedFieldsContainer = () => {
             createOrder={createOrderHandler}
         >
 
-            <Divider label={__('Or pay with card', 'give')} style={{padding: '0 0 30px 0'}} />
+            <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
             <PayPalHostedField
                 id="card-number"
