@@ -192,7 +192,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             'metadata' => give_stripe_prepare_metadata($donation->id),
             'payment_behavior' => 'default_incomplete',
             'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
-            'expand' => ['latest_invoice.payment_intent', 'latest_invoice.charge'],
+            'expand' => ['latest_invoice.payment_intent'],
         ];
 
         /**
