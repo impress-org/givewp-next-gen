@@ -4,6 +4,7 @@ namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
@@ -14,6 +15,7 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactio
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use GiveRecurring\Infrastructure\Exceptions\PaymentGateways\Stripe\UnableToCreateStripePlan;
 use GiveRecurring\PaymentGateways\DataTransferObjects\SubscriptionDto;
 use GiveRecurring\PaymentGateways\Stripe\Actions\RetrieveOrCreatePlan;
@@ -25,6 +27,7 @@ use GiveRecurring\PaymentGateways\Stripe\Traits\CanUpdateStripeSubscriptionPayme
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Plan;
+use Stripe\Subscription as StripeSubscription;
 
 /**
  * @unreleased
@@ -88,11 +91,19 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         );
 
         /**
-         * Update Donation Meta
+         * Update Subscription Meta
          */
-        $this->updateDonationMetaFromPaymentIntent(
+        $this->updateSubscriptionMetaFromStripeSubscription(
+            $subscription,
+            $stripeSubscription
+        );
+
+        /**
+         * Update Initial Donation Meta
+         */
+        $this->updateSubscriptionInitialDonationMetaFromStripeSubscription(
+            $stripeSubscription,
             $donation,
-            $stripeSubscription->latest_invoice->payment_intent,
             $stripeGatewayData
         );
 
@@ -165,7 +176,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         Subscription $subscription,
         Customer $customer,
         Plan $plan
-    ): \Stripe\Subscription {
+    ): StripeSubscription {
         /**
          * @see https://stripe.com/docs/api/subscriptions/create
          *
@@ -181,11 +192,11 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             'metadata' => give_stripe_prepare_metadata($donation->id),
             'payment_behavior' => 'default_incomplete',
             'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
-            'expand' => ['latest_invoice.payment_intent'],
+            'expand' => ['latest_invoice.payment_intent', 'latest_invoice.charge'],
         ];
 
         /**
-         * @var \Stripe\Subscription $stripeSubscription
+         * @var StripeSubscription $stripeSubscription
          */
         $stripeSubscription = $customer->subscriptions->create($subscriptionArgs);
 
@@ -198,14 +209,68 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             )
         ]);
 
-        /**
-         * Update Subscription Meta
-         */
-        $this->updateSubscriptionMetaFromStripeSubscription(
-            $subscription,
-            $stripeSubscription
-        );
-
         return $stripeSubscription;
+    }
+
+    /**
+     * @unreleased
+     * @throws \Exception
+     */
+    protected function updateSubscriptionMetaFromStripeSubscription(
+        Subscription $subscription,
+        StripeSubscription $stripeSubscription
+    ) {
+        if ($stripeTransactionId = $stripeSubscription->latest_invoice->payment_intent->id) {
+            $subscription->transactionId = $stripeTransactionId;
+        }
+
+        $subscription->gatewaySubscriptionId = $stripeSubscription->id;
+
+        $subscription->status = SubscriptionStatus::ACTIVE();
+        $subscription->save();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    protected function updateSubscriptionInitialDonationMetaFromStripeSubscription(
+        StripeSubscription $stripeSubscription,
+        Donation $donation,
+        StripeGatewayData $gatewayData
+    ) {
+        if (!$gatewayData->stripePaymentMethodIsCreditCard) {
+            $donation->status = DonationStatus::PROCESSING();
+        }
+
+        $paymentIntentId = $stripeSubscription->latest_invoice->payment_intent->id;
+        $clientSecret = $stripeSubscription->latest_invoice->payment_intent->client_secret;
+
+        $donation->gatewayTransactionId = $paymentIntentId;
+        $donation->save();
+
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(
+                __('Stripe Charge/Payment Intent ID: %s', 'give'),
+                $paymentIntentId
+            )
+        ]);
+
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(
+                __('Stripe Payment Intent Client Secret: %s', 'give'),
+                $clientSecret
+            )
+        ]);
+
+        give_update_meta(
+            $donation->id,
+            '_give_stripe_payment_intent_client_secret',
+            $clientSecret
+        );
     }
 }

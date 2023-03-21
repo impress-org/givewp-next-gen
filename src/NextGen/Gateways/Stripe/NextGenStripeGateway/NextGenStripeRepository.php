@@ -9,8 +9,6 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\PaymentGateways\Stripe\ApplicationFee;
-use Give\Subscriptions\Models\Subscription;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Customer;
 use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
@@ -120,7 +118,10 @@ trait NextGenStripeRepository
             $intentArgs['receipt_email'] = $donation->email;
         }
 
-        return $intentArgs;
+        return apply_filters(
+            'givewp_stripe_create_intent_args',
+            $intentArgs
+        );
     }
 
     /**
@@ -135,7 +136,7 @@ trait NextGenStripeRepository
         if (!$gatewayData->stripePaymentMethodIsCreditCard) {
             $donation->status = DonationStatus::PROCESSING();
         }
-        
+
         $donation->gatewayTransactionId = $intent->id;
         $donation->save();
 
@@ -146,32 +147,14 @@ trait NextGenStripeRepository
 
         DonationNote::create([
             'donationId' => $donation->id,
-           'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
-       ]);
+            'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
+        ]);
 
-       give_update_meta(
-           $donation->id,
-           '_give_stripe_payment_intent_client_secret',
-           $intent->client_secret
-       );
-   }
-
-    /**
-     * @unreleased
-     * @throws \Exception
-     */
-    protected function updateSubscriptionMetaFromStripeSubscription(
-        Subscription $subscription,
-        \Stripe\Subscription $stripeSubscription
-    ) {
-        if ($stripeTransactionId = $stripeSubscription->latest_invoice->charge) {
-            $subscription->transactionId = $stripeTransactionId;
-        }
-
-        $subscription->gatewaySubscriptionId = $stripeSubscription->id;
-
-        $subscription->status = SubscriptionStatus::ACTIVE();
-        $subscription->save();
+        give_update_meta(
+            $donation->id,
+            '_give_stripe_payment_intent_client_secret',
+            $intent->client_secret
+        );
     }
 
     /**
