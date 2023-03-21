@@ -1,4 +1,4 @@
-import {__} from '@wordpress/i18n';
+import {__, _n} from '@wordpress/i18n';
 
 import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
@@ -8,6 +8,9 @@ import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 import {createInterpolateElement} from '@wordpress/element';
 import {RadioControl} from '@wordpress/components';
 import Notice from './notice';
+
+import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+
 
 const Edit = ({attributes, setAttributes}) => {
     const {
@@ -26,10 +29,15 @@ const Edit = ({attributes, setAttributes}) => {
         recurringOptInDefaultBillingPeriod,
     } = attributes;
 
+    const {gateways} = getFormBuilderData();
+    const isRecurringSupported = gateways.some((gateway) => gateway.supportsSubscriptions);
+    const isRecurring = isRecurringSupported && recurringEnabled;
+
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
-    const isRecurringAdmin = recurringEnabled && 'admin' === recurringDonationChoice;
-    const isRecurringDonor = recurringEnabled && 'donor' === recurringDonationChoice;
+    const isRecurringAdmin = isRecurring && 'admin' === recurringDonationChoice;
+    const isRecurringDonor = isRecurring && 'donor' === recurringDonationChoice;
+
     const amountFormatted = formatCurrencyAmount(setPrice);
 
     const DonationLevels = () => (
@@ -123,7 +131,7 @@ const Edit = ({attributes, setAttributes}) => {
     const displayFixedMessage = isFixedAmount && !customAmount;
 
     const displayFixedRecurringMessage =
-        recurringEnabled &&
+        isRecurring &&
         (displayFixedMessage || isRecurringAdmin || recurringLengthOfTime > 0 || recurringBillingInterval > 1);
 
     const displayFixedPriceMessage = displayFixedMessage && !displayFixedRecurringMessage;
