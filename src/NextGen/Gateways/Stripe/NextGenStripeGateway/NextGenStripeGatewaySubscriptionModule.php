@@ -123,6 +123,23 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
      */
     protected function createStripePlan(Donation $donation, Subscription $subscription): Plan
     {
+        /**
+         * Legacy gateways use the levelId for the subscription name.  We are not really doing that anymore in next gen.
+         * So, we can just add the amount to the subscription name.  Keeping this filter here for now since this part is preserving our logic
+         * used in legacy Stripe gateways but will eventually be refactored to its own functionality.
+         */
+        add_filter('give_recurring_subscription_name', static function ($subscriptionName) use ($donation) {
+            if ($donation->levelId) {
+                return $subscriptionName;
+            }
+
+            return sprintf(
+                '%1$s - %2$s',
+                $subscriptionName,
+                $donation->amount->formatToDecimal()
+            );
+        });
+
         return give(RetrieveOrCreatePlan::class)->handle(
             SubscriptionDto::fromArray(
                 [
@@ -147,8 +164,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         Donation $donation,
         Subscription $subscription,
         Customer $customer,
-        Plan $plan,
-        StripeGatewayData $stripeGatewayData = null
+        Plan $plan
     ): \Stripe\Subscription {
         /**
          * @see https://stripe.com/docs/api/subscriptions/create

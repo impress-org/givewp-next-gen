@@ -3,6 +3,7 @@
 namespace Give\NextGen\Gateways\Stripe;
 
 use Give\Donations\Models\Donation;
+use Give\Helpers\Gateways\Stripe;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 
 class LegacyStripeAdapter {
@@ -13,7 +14,7 @@ class LegacyStripeAdapter {
      */
     public function addDonationDetails()
     {
-         /**
+        /**
          * Transaction ID link in donation details
          */
         add_filter(
@@ -23,7 +24,10 @@ class LegacyStripeAdapter {
             2
         );
 
-          add_action('give_view_donation_details_payment_meta_after', static function ($donationId) {
+        /**
+         * Adds the stripe account details to donation details page.
+         */
+        add_action('give_view_donation_details_payment_meta_after', static function ($donationId) {
             /** @var Donation $donation */
             $donation = Donation::find($donationId);
 
@@ -44,6 +48,20 @@ class LegacyStripeAdapter {
                     </p>
                 </div>
                 <?php
+            }
+        });
+
+        /**
+         * Adds the stripe account details to donation details page.
+         */
+        add_action('give_insert_payment', static function ($donationId) {
+            /** @var Donation $donation */
+            $donation = Donation::find($donationId);
+
+            if ($donation->gatewayId === NextGenStripeGateway::id()) {
+                $formId = $donation->formId;
+
+                Stripe::addAccountDetail($donationId, $formId);
             }
         });
     }
