@@ -83,41 +83,17 @@
                     <div>
                         <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Join the journey', 'give'); ?></h3>
                         <p style="font-size: 12px;"><?php _e('Stay informed about Give 3.0 and Next Gen updates', 'give'); ?></p>
-                        <form id="givewpNextGenNewsletter" style="display: flex;flex-wrap:wrap;gap:8px;">
-                            <input
-                                id="givewpNextGenNewsletterEmail"
-                                style="
-                            flex:3;
-                            padding: 12px 24px 12px 16px;
-                            border-radius: 2px;
-                            border: solid 1px var(--givewp-grey-300);
-                            background-color: var(--givewp-shades-white);
-                        "
-                                type="email"
-                                value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>"
-                                placeholder="<?php esc_attr_e('Enter your email', 'give'); ?>"
-                            />
-                            <button type="submit" style="
-                        flex: 1;
-                        font-size: 14px;
-                        color: white;
-                        padding: 12px 24px;
-                        border-radius: 2px;
-                        border: solid 1px var(--givewp-green-500);
-                        background-color: var(--givewp-green-500);
-                    "><?php _e('Submit', 'give'); ?></button>
-                        </form>
+                        <givewp-welcome-banner-newsletter
+                            value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>"
+                            placeholder="<?php esc_attr_e('Enter your email', 'give'); ?>"
+                            submitLabel="<?php _e('Submit', 'give'); ?>"
+                        />
                         <div id="givewpNextGenNewsletterSuccess" style="
-                        display: none;
-                        text-align: center;
-                    margin: 12px 0 4px 0;
-                    padding: 8px 8px 8px 32px;
-                    border-radius: 4px;
-                    background-color: var(--givewp-green-25);
-                    color: var(--givewp-green-600);
-                ">
+                            visibility: hidden;
+                            margin-top: var(--givewp-spacing-4);
+                        ">
                             <div style="flex:1;">
-                                <?php _e('Subscribed', 'give'); ?>
+                                <?php _e('Awesome you’re in! You will be the first to receive updates on Give 3.0 and Next Gen.', 'give'); ?>
                             </div>
                         </div>
                     </div>
@@ -231,24 +207,6 @@
                 $('#givewpNextGenWelcomeBanner').slideUp("slow");
             });
         });
-
-        // Next Gen Beta Subscribe
-        $('#givewpNextGenNewsletter').submit(function(e) {
-
-            e.preventDefault();
-
-            $('#givewpNextGenNewsletter').slideUp();
-            $('#givewpNextGenNewsletterSuccess').show();
-
-            $.post('https://connect.givewp.com/activecampaign/subscribe/next-gen-beta', {
-                action: 'subscribe',
-                email: $('#givewpNextGenNewsletterEmail').val(),
-                first_name: '<?php echo wp_get_current_user()->user_firstname; ?>',
-                last_name: '<?php echo wp_get_current_user()->user_lastname; ?>',
-                website_url: '<?php echo get_bloginfo('url'); ?>',
-                website_name: '<?php echo get_bloginfo('sitename'); ?>',
-            }, function(response) {
-             });
-        });
     });
 </script>
+

@@ -17,6 +17,7 @@ class DisplayWelcomeBanner
 
     public function __invoke() {
         wp_enqueue_style('givewp-design-system-foundation');
+        echo View::load('NextGen/WelcomeBanner.components/newsletter');
         echo View::load('NextGen/WelcomeBanner.welcome-banner', $this->data);
     }
 }
