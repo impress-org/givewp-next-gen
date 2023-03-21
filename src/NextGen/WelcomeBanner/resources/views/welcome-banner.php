@@ -83,11 +83,7 @@
                     <div>
                         <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Join the journey', 'give'); ?></h3>
                         <p style="font-size: 12px;"><?php _e('Stay informed about Give 3.0 and Next Gen updates', 'give'); ?></p>
-                        <givewp-welcome-banner-newsletter
-                            value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>"
-                            placeholder="<?php esc_attr_e('Enter your email', 'give'); ?>"
-                            submitLabel="<?php _e('Submit', 'give'); ?>"
-                        />
+                        <givewp-welcome-banner-newsletter></givewp-welcome-banner-newsletter>
                         <div id="givewpNextGenNewsletterSuccess" style="
                             visibility: hidden;
                             margin-top: var(--givewp-spacing-4);
