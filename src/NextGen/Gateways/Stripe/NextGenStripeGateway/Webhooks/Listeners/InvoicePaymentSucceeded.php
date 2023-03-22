@@ -8,6 +8,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -112,20 +113,30 @@ class InvoicePaymentSucceeded
      */
     private function handleRenewal(Subscription $subscription, Invoice $invoice)
     {
-         // create renewal
+        $initialDonation = $subscription->initialDonation();
+
+        // create renewal
         Donation::create([
-            'amount' => give_stripe_cents_to_dollars($invoice->total),
+            'amount' => Money::fromDecimal(
+                give_stripe_cents_to_dollars($invoice->total),
+                strtoupper($invoice->currency)
+            ),
             'status' => DonationStatus::COMPLETE(),
             'type' => DonationType::RENEWAL(),
+            'createdAt' => Temporal::toDateTime(date_i18n('Y-m-d H:i:s', $invoice->created)),
+            'gatewayTransactionId' => $invoice->payment_intent,
             'subscriptionId' => $subscription->id,
             'gatewayId' => $subscription->gatewayId,
-            'gatewayTransactionId' => $invoice->payment_intent,
             'donorId' => $subscription->donorId,
-            'firstName' => $subscription->donor->firstName,
-            'lastName' => $subscription->donor->lastName,
-            'email' => $subscription->donor->email,
             'formId' => $subscription->donationFormId,
-            'createdAt' => Temporal::toDateTime(date_i18n('Y-m-d H:i:s', $invoice->created)),
+            /**
+             * TODO: these details might need to come from $invoice object
+             * It appears we do not store this on the subscription
+             * so otherwise would have to reach back to the initial donation to find out (which is how legacy works).
+             */
+            'firstName' => $initialDonation->firstName,
+            'lastName' => $initialDonation->lastName,
+            'email' => $initialDonation->email,
         ]);
 
         $subscription->bumpRenewalDate();
