@@ -200,7 +200,7 @@
                 'action': '<?php echo $action; ?>',
                 'nonce': '<?php echo $nonce; ?>',
             }, function(response) {
-                $('#givewpNextGenWelcomeBanner').slideUp("slow");
+                $('#givewpNextGenWelcomeBanner').remove();
             });
         });
     });
