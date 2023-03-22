@@ -94,7 +94,7 @@ class InvoicePaymentSucceeded
     private function handleInitialDonation(Donation $initialDonation)
     {
          // update initial donation
-        // TODO: this might already be handled by the payment_intent.succeeded event
+        // TODO: the payment_intent.succeeded event has this same logic
         if (!$initialDonation->status->isComplete()) {
             $initialDonation->status = DonationStatus::COMPLETE();
             $initialDonation->save();
@@ -121,8 +121,11 @@ class InvoicePaymentSucceeded
                 give_stripe_cents_to_dollars($invoice->total),
                 strtoupper($invoice->currency)
             ),
-            'status' => DonationStatus::COMPLETE(),
+            /**
+             * TODO: the payment_intent.succeeded event is going to try setting this status as complete
+             */
             'type' => DonationType::RENEWAL(),
+            'status' => DonationStatus::COMPLETE(),
             'createdAt' => Temporal::toDateTime(date_i18n('Y-m-d H:i:s', $invoice->created)),
             'gatewayTransactionId' => $invoice->payment_intent,
             'subscriptionId' => $subscription->id,
