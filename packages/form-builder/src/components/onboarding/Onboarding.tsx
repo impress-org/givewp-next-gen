@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {ShepherdTour, ShepherdTourContext} from "react-shepherd";
 import options from './options'
 import steps from './steps'
@@ -6,21 +6,21 @@ import steps from './steps'
 import "shepherd.js/dist/css/shepherd.css";
 
 
-function StartButton() {
+function AutoStart() {
     const tour = useContext(ShepherdTourContext);
 
-    return (
-        <button className="button dark" onClick={tour.start} style={{position: "fixed", top: '100px', left: 0}}>
-            Start Tour
-        </button>
-    );
+    useEffect(() => {
+        tour.isActive() || tour.start()
+    })
+
+    return <></>
 }
 
 
 const Onboarding = ({children}) => {
     return (
         <ShepherdTour steps={steps} tourOptions={options}>
-            <StartButton />
+            <AutoStart/>
             {children}
         </ShepherdTour>
     )

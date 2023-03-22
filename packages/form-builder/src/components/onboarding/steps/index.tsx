@@ -107,8 +107,9 @@ export default Object.values(compose(
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 // @ts-ignore
-                document.querySelector('.components-tab-panel__tabs button:last-of-type').click();
+                document.querySelector('.components-tab-panel__tabs button:first-of-type').click();
                 document.getElementById('AddBlockButtonContainer').querySelector('button').click();
+                console.log('CONGRAAAATS')
                 resolve();
             });
         },

@@ -1,4 +1,9 @@
 const withButtons = (steps) => {
+    const start = {
+        classes: 'shepherd-button-primary',
+        text: 'Get started',
+        type: 'next'
+    }
     const cancel = {
         classes: 'shepherd-button-secondary',
         text: 'Skip',
@@ -15,9 +20,21 @@ const withButtons = (steps) => {
         type: 'complete'
     }
     return steps.map((step, index) => {
-        const isLastStep = index === steps.length - 1;
+
+        if(index === 0) {
+            return {...step, ...{
+                buttons: [start]
+            }}
+        }
+
+        if(index === steps.length - 1) {
+            return {...step, ...{
+                buttons: [complete]
+            }}
+        }
+
         return {...step, ...{
-                buttons: isLastStep ? [complete] : [cancel, next]
+                buttons: [cancel, next]
             }}
     });
 }
