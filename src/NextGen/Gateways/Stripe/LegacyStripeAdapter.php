@@ -6,7 +6,8 @@ use Give\Donations\Models\Donation;
 use Give\Helpers\Gateways\Stripe;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 
-class LegacyStripeAdapter {
+class LegacyStripeAdapter
+{
     /**
      * This adds the Stripe details to the donation details page.
      *

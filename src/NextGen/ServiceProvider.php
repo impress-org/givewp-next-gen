@@ -5,6 +5,7 @@ namespace Give\NextGen;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\NextGen\DonationForm\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
@@ -15,6 +16,7 @@ use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -69,11 +71,13 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             );
         }
-
-        /**
-         * @unreleased
-         */
+        
         give(LegacyStripeAdapter::class)->addDonationDetails();
+
+        Hooks::addAction(
+            'give_recurring_stripe_process_invoice_payment_succeeded',
+            InvoicePaymentSucceeded::class
+        );
     }
 
     /**
