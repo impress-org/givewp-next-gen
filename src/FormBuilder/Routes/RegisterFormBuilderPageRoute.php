@@ -36,6 +36,8 @@ class RegisterFormBuilderPageRoute
             1
         );
 
+        wp_enqueue_style('givewp-design-system-foundation');
+
         add_action("admin_print_styles", static function () {
             if (FormBuilderRouteBuilder::isRoute()) {
                 wp_enqueue_style(

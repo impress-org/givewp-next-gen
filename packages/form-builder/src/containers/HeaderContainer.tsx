@@ -58,14 +58,19 @@ const HeaderContainer = ({
             contentLeft={
                 <>
                     <Logo />
-                    <Button
-                        style={{width: '32px', height: '32px', minWidth: '32px'}}
-                        className="rotate-icon"
-                        onClick={() => toggleSelectedSecondarySidebar('add')}
-                        isPressed={'add' === selectedSecondarySidebar}
-                        icon={plus}
-                        variant="primary"
-                    />
+                    <div id="AddBlockButtonContainer" style={{
+                        padding: 'var(--givewp-spacing-2)',
+                        margin: 'calc(var(--givewp-spacing-2) * -1)',
+                    }}>
+                        <Button
+                            style={{width: '32px', height: '32px', minWidth: '32px'}}
+                            className="rotate-icon"
+                            onClick={() => toggleSelectedSecondarySidebar('add')}
+                            isPressed={'add' === selectedSecondarySidebar}
+                            icon={plus}
+                            variant="primary"
+                        />
+                    </div>
                     <Button
                         style={{width: '32px', height: '32px'}}
                         onClick={() => toggleSelectedSecondarySidebar('list')}

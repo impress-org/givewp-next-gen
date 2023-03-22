@@ -2,13 +2,16 @@ import {BlockList, BlockTools, DefaultBlockAppender, ObserveTyping, WritingFlow}
 
 const FormBlocks = () => {
     return (
-        <BlockTools>
-            <WritingFlow>
-                <ObserveTyping>
-                    <BlockList renderAppender={DefaultBlockAppender} />
-                </ObserveTyping>
-            </WritingFlow>
-        </BlockTools>
+        <div id="FormBlocksCanvas" style={{padding: '58px', margin: '-58px'}}>
+            <BlockTools>
+                <WritingFlow>
+                    <ObserveTyping>
+                        <BlockList renderAppender={DefaultBlockAppender} />
+                    </ObserveTyping>
+                </WritingFlow>
+            </BlockTools>
+        </div>
+
     );
 };
 

@@ -7,6 +7,7 @@ import Feedback from '@givewp/form-builder/feedback';
 import {BlockInstance} from '@wordpress/blocks';
 
 import './App.scss';
+import Onboarding from "@givewp/form-builder/components/onboarding";
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -24,12 +25,14 @@ if (initialBlocks instanceof Error) {
 
 function App() {
     return (
-        <FormStateProvider initialState={initialState}>
-            <ShortcutProvider>
-                <BlockEditorContainer />
-                <Feedback />
-            </ShortcutProvider>
-        </FormStateProvider>
+        <Onboarding>
+            <FormStateProvider initialState={initialState}>
+                <ShortcutProvider>
+                    <BlockEditorContainer />
+                    <Feedback />
+                </ShortcutProvider>
+            </FormStateProvider>
+        </Onboarding>
     );
 }
 

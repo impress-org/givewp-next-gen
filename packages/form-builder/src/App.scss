@@ -2,6 +2,8 @@
 @import '~@wordpress/block-editor/build-style/style.css';
 
 #root {
+    --wp-blue-blue-50: #2271b1;
+
     // Gutenberg color mappings
     --wp-admin-border-width-focus: 2px;
 
@@ -194,7 +196,7 @@ code {
         svg {
             transition: transform .2s cubic-bezier(.165, .84, .44, 1);
         }
-        
+
         &.is-pressed {
 
             &.rotate-icon {
@@ -480,4 +482,52 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     color: black;
     outline: 1px solid lightgray;
     background-color: white;
+}
+
+.shepherd-element,
+.shepherd-modal-overlay-container {
+    z-index: 9999999999 !important;
+}
+.shepherd-element {
+    width: 336px;
+}
+.shepherd-text {
+    padding-bottom: 0;
+}
+.shepherd-target {
+    border: solid 2px var(--wp-blue-blue-50);
+}
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+    opacity: .3 !important;
+}
+.shepherd-header {
+    display: none !important;
+}
+.shepherd-footer {
+    margin-top: var(--givewp-spacing-5);
+}
+.shepherd-button {
+    flex: 1;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 2px;
+
+    &.shepherd-button-primary {
+        color: var(--givewp-shades-white);
+        background-color: var(--wp-admin-theme-color);
+        &:hover {
+            color: var(--givewp-shades-white) !important;
+            background-color: var(--wp-admin-theme-color-darker-10);
+        }
+    }
+    &.shepherd-button-secondary {
+        color: var(--wp-admin-theme-color) !important;
+        border: solid 1px var(--wp-admin-theme-color);
+        background-color: var(--givewp-shades-white);
+        &:hover {
+            color: var(--wp-admin-theme-color-darker-10) !important;
+            border: solid 1px var(--wp-admin-theme-color-darker-10);
+            background-color: var(--givewp-shades-white) !important;
+        }
+    }
 }
