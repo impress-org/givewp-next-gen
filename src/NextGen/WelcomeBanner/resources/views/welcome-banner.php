@@ -167,12 +167,12 @@
                         border: solid 1px var(--givewp-blue-500);
                         background-color: var(--givewp-blue-25);
                     ">
-                        <img style="width: 100%;" src="https://placehold.co/450x400?text=Design+Mode" alt="">
+                        <img style="width: 100%;" src="<?php esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/design-mode.min.png'); ?>" alt="">
                         <h3><?php _e('Design mode', 'give'); ?></h3>
                         <div><?php _e('Toggle the "Design" tab and customize the colors and features of your form based on the Form Design you choose.', 'give'); ?></div>
                     </div>
 
-                    <!-- Custom field support -->
+                    <!-- Custom fields -->
                     <div style="
                         flex: 1;
                         width: 318px;
@@ -181,7 +181,7 @@
                         border: solid 1px var(--givewp-blue-500);
                         background-color: var(--givewp-blue-25);
                     ">
-                        <img style="width: 100%;" src="https://placehold.co/450x400?text=Custom+Fields" alt="">
+                        <img style="width: 100%;" src="<?php esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/custom-fields.min.png'); ?>" alt="">
                         <h3><?php _e('Custom field support', 'give'); ?></h3>
                         <div><?php _e('Add custom fields to your form. Drag and drop them where you need, to any section. Even add new drag-and-droppable sections!', 'give'); ?></div>
                     </div>
