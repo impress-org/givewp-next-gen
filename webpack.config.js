@@ -41,6 +41,7 @@ module.exports = {
         donationConfirmationReceiptApp: srcPath(
             'NextGen/DonationForm/resources/receipt/DonationConfirmationReceiptApp.tsx'
         ),
+        baseFormDesignCss: srcPath('NextGen/DonationForm/resources/styles/base.scss'),
     },
 };
 
