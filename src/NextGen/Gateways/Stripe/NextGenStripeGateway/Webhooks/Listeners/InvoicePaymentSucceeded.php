@@ -49,15 +49,17 @@ class InvoicePaymentSucceeded
         }
 
         if ($this->shouldCreateRenewal($subscription)) {
-           $this->handleRenewal($subscription, $invoice);
+            $this->handleRenewal($subscription, $invoice);
 
             exit;
         }
 
+        if ($this->shouldEndSubscription($subscription)) {
+            $this->handleSubscriptionComplete($subscription);
 
-        // end subscription
-        $this->handleSubscriptionComplete($subscription);
-
+            exit;
+        }
+        
         exit;
     }
 
@@ -79,10 +81,12 @@ class InvoicePaymentSucceeded
     private function handleSubscriptionComplete(
         Subscription $subscription
     ) {
-        $subscription->status = SubscriptionStatus::COMPLETED();
-        $subscription->save();
+        if (0 !== $subscription->installments && (count($subscription->donations) >= $subscription->installments)) {
+            $subscription->cancel();
 
-        $subscription->cancel();
+            $subscription->status = SubscriptionStatus::COMPLETED();
+            $subscription->save();
+        }
     }
 
 
@@ -110,6 +114,7 @@ class InvoicePaymentSucceeded
      * @unreleased
      *
      * @throws Exception
+     * @throws \Exception
      */
     private function handleRenewal(Subscription $subscription, Invoice $invoice)
     {
@@ -143,5 +148,14 @@ class InvoicePaymentSucceeded
         ]);
 
         $subscription->bumpRenewalDate();
+        $subscription->save();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function shouldEndSubscription(Subscription $subscription): bool
+    {
+        return $subscription->installments !== 0 && (count($subscription->donations) >= $subscription->installments);
     }
 }
