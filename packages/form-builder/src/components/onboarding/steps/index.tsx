@@ -2,7 +2,6 @@ import {compose} from "@wordpress/compose";
 import withButtons from "./withButtons";
 import withText from "./withText";
 import withDefaults from "./withDefaults";
-import {dispatch, select} from "@wordpress/data";
 
 type Placement = 'top'|'top-start'|'top-end'|'bottom'|'bottom-start'|'bottom-end'|'right'|'right-start'|'right-end'|'left'|'left-start'|'left-end';
 
@@ -61,10 +60,7 @@ export default Object.values(compose(
         text: 'You can edit the structure of a block in a section. For eg. the “Donation Amount and Levels” is the block being edited here',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
-                const amountBlock = document.querySelector('[data-type="custom-block-editor/donation-amount-levels"]');
-                const amountBlockId = amountBlock.getAttribute('data-block');
-                console.log(amountBlockId);
-                dispatch('core/block-editor').selectBlock('bddaa0ea-29bf-4143-b62d-aae3396e9b0f');
+                document.dispatchEvent(new CustomEvent('selectAmountBlock'));
                 resolve();
             });
         },
