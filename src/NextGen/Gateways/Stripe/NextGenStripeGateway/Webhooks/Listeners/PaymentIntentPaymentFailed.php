@@ -27,7 +27,17 @@ class PaymentIntentPaymentFailed
      * @return void
      * @throws Exception
      */
-      public function __invoke(Event $event)
+    public function __invoke(Event $event)
+    {
+        $this->processEvent($event);
+
+        exit;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function processEvent(Event $event)
     {
         /* @var PaymentIntent $paymentIntent */
         $paymentIntent = $event->data->object;
@@ -47,7 +57,5 @@ class PaymentIntentPaymentFailed
                 'content' => __('Payment failed in Stripe.', 'give'),
             ]);
         }
-
-        exit;
     }
 }

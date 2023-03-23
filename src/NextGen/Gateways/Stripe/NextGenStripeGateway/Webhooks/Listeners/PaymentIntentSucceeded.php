@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners;
 
+use Exception;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Stripe\Event;
@@ -24,9 +25,19 @@ class PaymentIntentSucceeded
      * @unreleased
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function __invoke(Event $event)
+    {
+        $this->handle($event);
+
+        exit;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function processEvent(Event $event)
     {
         /* @var PaymentIntent $paymentIntent */
         $paymentIntent = $event->data->object;
@@ -46,7 +57,5 @@ class PaymentIntentSucceeded
                 'content' => __('Payment succeeded in Stripe.', 'give'),
             ]);
         }
-
-        exit;
     }
 }

@@ -60,9 +60,7 @@ class LegacyStripeAdapter
             $donation = Donation::find($donationId);
 
             if ($donation->gatewayId === NextGenStripeGateway::id()) {
-                $formId = $donation->formId;
-
-                Stripe::addAccountDetail($donationId, $formId);
+                Stripe::addAccountDetail($donationId, $donation->formId);
             }
         });
     }

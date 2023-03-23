@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Tests\Feature\Gateways;
+namespace Feature\Gateways\Stripe;
 
 use Exception;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
