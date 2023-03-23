@@ -10,22 +10,20 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
-use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use GiveRecurring\Infrastructure\Exceptions\PaymentGateways\Stripe\UnableToCreateStripePlan;
 use GiveRecurring\PaymentGateways\DataTransferObjects\SubscriptionDto;
 use GiveRecurring\PaymentGateways\Stripe\Actions\RetrieveOrCreatePlan;
-use GiveRecurring\PaymentGateways\Stripe\Traits\CanCancelStripeSubscription;
-use GiveRecurring\PaymentGateways\Stripe\Traits\CanHandleSecureCardAuthenticationRedirect;
-use GiveRecurring\PaymentGateways\Stripe\Traits\CanLinkStripeSubscriptionGatewayId;
-use GiveRecurring\PaymentGateways\Stripe\Traits\CanUpdateStripeSubscriptionAmount;
-use GiveRecurring\PaymentGateways\Stripe\Traits\CanUpdateStripeSubscriptionPaymentMethod;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
+use Stripe\PaymentMethod;
 use Stripe\Plan;
 use Stripe\Subscription as StripeSubscription;
 
@@ -34,15 +32,9 @@ use Stripe\Subscription as StripeSubscription;
  */
 class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable,
                                                                                    SubscriptionAmountEditable,
-                                                                                   SubscriptionPaymentMethodEditable,
                                                                                    SubscriptionTransactionsSynchronizable
 {
     use CanSetupStripeApp;
-    use CanCancelStripeSubscription;
-    use CanUpdateStripeSubscriptionAmount;
-    use CanLinkStripeSubscriptionGatewayId;
-    use CanUpdateStripeSubscriptionPaymentMethod;
-    use CanHandleSecureCardAuthenticationRedirect;
     use NextGenStripeRepository;
 
     /**
@@ -78,7 +70,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         /**
          * Setup Stripe Plan
          */
-        $plan = $this->createStripePlan($donation, $subscription);
+        $plan = $this->createStripePlan($subscription);
 
         /**
          * Create Stripe Subscription
@@ -117,6 +109,32 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
+     * @unreleased
+     *
+     * @inerhitDoc
+     * @throws PaymentGatewayException
+     */
+    public function cancelSubscription(Subscription $subscription)
+    {
+        try {
+            $this->setupStripeApp($subscription->donationFormId);
+
+            $stripeSubscription = StripeSubscription::retrieve($subscription->gatewaySubscriptionId);
+
+            $stripeSubscription->cancel();
+        } catch (\Exception $exception) {
+            throw new PaymentGatewayException(
+                sprintf(
+                    'Unable to cancel subscription with Stripe. %s',
+                    $exception->getMessage()
+                ),
+                $exception->getCode(),
+                $exception
+            );
+        }
+    }
+
+    /**
      * @since 2.0.0
      *
      * @inheritDoc
@@ -132,34 +150,38 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
      *
      * @throws UnableToCreateStripePlan
      */
-    protected function createStripePlan(Donation $donation, Subscription $subscription): Plan
+    protected function createStripePlan(Subscription $subscription): Plan
     {
+        $donation = $subscription->initialDonation();
         /**
          * Legacy gateways use the levelId for the subscription name.  We are not really doing that anymore in next gen.
          * So, we can just add the amount to the subscription name.  Keeping this filter here for now since this part is preserving our logic
          * used in legacy Stripe gateways but will eventually be refactored to its own functionality.
          */
-        add_filter('give_recurring_subscription_name', static function ($subscriptionName) use ($donation) {
-            if ($donation->levelId) {
-                return $subscriptionName;
-            }
+        add_filter(
+            'give_recurring_subscription_name',
+            static function ($subscriptionName) use ($donation, $subscription) {
+                if ($donation->levelId) {
+                    return $subscriptionName;
+                }
 
-            return sprintf(
-                '%1$s - %2$s',
-                $subscriptionName,
-                $donation->amount->formatToDecimal()
-            );
-        });
+                return sprintf(
+                    '%1$s - %2$s',
+                    $subscriptionName,
+                    $subscription->amount->formatToDecimal()
+                );
+            }
+        );
 
         return give(RetrieveOrCreatePlan::class)->handle(
             SubscriptionDto::fromArray(
                 [
-                    'formId' => $donation->formId,
+                    'formId' => $subscription->donationFormId,
                     'priceId' => $donation->levelId,
-                    'recurringDonationAmount' => $donation->amount,
+                    'recurringDonationAmount' => $subscription->amount,
                     'period' => $subscription->period->getValue(),
                     'frequency' => $subscription->frequency,
-                    'currencyCode' => $donation->amount->getCurrency(),
+                    'currencyCode' => $subscription->amount->getCurrency(),
                 ]
             )
         );
@@ -272,5 +294,105 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             '_give_stripe_payment_intent_client_secret',
             $clientSecret
         );
+    }
+
+    /**
+     * @unreleased
+     *
+     * TODO: This is the start to implementing SubscriptionPaymentMethodEditable but there needs to be a donor dashboard counterpart to this in GiveWP core to work.
+     * TODO: This would actually need to use the Payment Element because the payment methods are dynamic.
+     *
+     * @param  Subscription  $subscription
+     * @param  array|null  $gatewayData
+     * @return void
+     * @throws PaymentGatewayException
+     */
+    public function updateSubscriptionPaymentMethod(Subscription $subscription, $gatewayData)
+    {
+        if (!isset($gatewayData['give_stripe_payment_method'])) {
+            return;
+        }
+
+        $this->setupStripeApp($subscription->donationFormId);
+
+        try {
+            $stripePaymentMethod = PaymentMethod::retrieve($gatewayData['give_stripe_payment_method']);
+            $initialSubscriptionDonation = $subscription->initialDonation();
+            $stripeSubscription = StripeSubscription::retrieve($subscription->gatewaySubscriptionId);
+            $stripeConnectedAccountKey = $this->getStripeConnectedAccountKey($subscription->donationFormId);
+
+            /**
+             * Get or create a Stripe customer
+             */
+            $customer = $this->getOrCreateStripeCustomerFromDonation(
+                $stripeConnectedAccountKey,
+                $initialSubscriptionDonation
+            );
+
+            if ($stripeSubscription->customer === $customer->id) {
+                $stripePaymentMethod->attach(['customer' => $customer->id]);
+                /**
+                 * @see https://stripe.com/docs/api/customers/update#update_customer-invoice_settings
+                 */
+                $customer->invoice_settings->default_payment_method = $stripePaymentMethod->id;
+                $customer->save();
+            }
+
+            StripeSubscription::update(
+                $stripeSubscription->id,
+                ['default_payment_method' => $customer->invoice_settings->default_payment_method]
+            );
+        } catch (\Exception $e) {
+            throw new PaymentGatewayException($e->getMessage());
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @inheritDoc
+     */
+    public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount)
+    {
+        try {
+            $this->setupStripeApp($subscription->donationFormId);
+
+            $subscription->amount = $newRenewalAmount;
+
+            $plan = $this->createStripePlan($subscription);
+
+            $stripeSubscription = StripeSubscription::retrieve($subscription->gatewaySubscriptionId);
+
+            StripeSubscription::update(
+                $stripeSubscription->id,
+                [
+                    'items' => [
+                        [
+                            'id' => $stripeSubscription->items->data[0]->id,
+                            'plan' => $plan->id,
+                        ],
+                    ],
+                    'prorate' => false,
+                ]
+            );
+
+            $subscription->save();
+        } catch (Exception $e) {
+            throw new PaymentGatewayException("Unable to update Stripe Subscription Amount.");
+        } catch (ApiErrorException $e) {
+            throw new PaymentGatewayException($e->getMessage());
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
+    {
+        $stripeDashboardUrl = $subscription->mode->equals(SubscriptionMode::LIVE()) ?
+            'https://dashboard.stripe.com/' :
+            'https://dashboard.stripe.com/test/';
+
+        return esc_url("{$stripeDashboardUrl}subscriptions/$subscription->gatewaySubscriptionId");
     }
 }
