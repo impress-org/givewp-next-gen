@@ -9,6 +9,10 @@ import "shepherd.js/dist/css/shepherd.css";
 function AutoStart() {
     const tour = useContext(ShepherdTourContext);
 
+    tour.on('complete', () => {
+        localStorage.setItem('givewp-next-gen-onboarding-complete', 'true');
+    })
+
     useEffect(() => {
         tour.isActive() || tour.start()
     })
@@ -18,11 +22,16 @@ function AutoStart() {
 
 
 const Onboarding = ({children}) => {
+    const completed = localStorage.getItem('givewp-next-gen-onboarding-complete') === 'true';
     return (
-        <ShepherdTour steps={steps} tourOptions={options}>
-            <AutoStart/>
+        <>
+            {!completed && (
+                <ShepherdTour steps={steps} tourOptions={options}>
+                    <AutoStart/>
+                </ShepherdTour>
+            )}
             {children}
-        </ShepherdTour>
+        </>
     )
 }
 
