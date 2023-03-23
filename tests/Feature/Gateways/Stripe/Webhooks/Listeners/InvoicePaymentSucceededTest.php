@@ -68,7 +68,7 @@ class InvoicePaymentSucceededTest extends TestCase
      */
     public function testShouldCreateRenewal()
     {
-         /** @var PaymentGatewayRegister $registrar */
+        /** @var PaymentGatewayRegister $registrar */
         $registrar = give(PaymentGatewayRegister::class);
         $gatewayId = NextGenStripeGateway::id();
 
@@ -76,7 +76,7 @@ class InvoicePaymentSucceededTest extends TestCase
             $registrar->unregisterGateway($gatewayId);
         }
 
-         add_filter("givewp_gateway_{$gatewayId}_subscription_module", static function(){
+        add_filter("givewp_gateway_{$gatewayId}_subscription_module", static function () {
             return NextGenStripeGatewaySubscriptionModule::class;
         });
 
@@ -109,6 +109,8 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
+        $this->addMockStripeAccounts();
+
         $listener = new InvoicePaymentSucceeded();
 
         $listener->processEvent($mockEvent);
@@ -117,5 +119,32 @@ class InvoicePaymentSucceededTest extends TestCase
         $subscription = Subscription::find($subscription->id);
 
         $this->assertCount(2, $subscription->donations);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function addMockStripeAccounts()
+    {
+        $accounts = [
+            'account_1' => [
+                'type' => 'connect',
+                'live_secret_key' => 'sk_live_xxxxxxxx',
+                'live_publishable_key' => 'pk_live_xxxxxxxx',
+                'test_secret_key' => 'sk_test_xxxxxxxx',
+                'test_publishable_key' => 'pk_test_xxxxxxxx',
+            ],
+            'account_2' => [
+                'type' => 'manual',
+                'live_secret_key' => 'sk_live_xxxxxxxx',
+                'live_publishable_key' => 'pk_live_xxxxxxxx',
+                'test_secret_key' => 'sk_test_xxxxxxxx',
+                'test_publishable_key' => 'pk_test_xxxxxxxx',
+            ],
+        ];
+        give_update_option('_give_stripe_get_all_accounts', $accounts);
+
+        // Set dummy default key.
+        give_update_option('_give_stripe_default_account', 'account_2');
     }
 }
