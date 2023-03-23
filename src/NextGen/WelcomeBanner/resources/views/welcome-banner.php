@@ -196,11 +196,10 @@
 
         // Banner Dismiss
         $('#givewpNextGenWelcomeBannerDismiss').click(function() {
+            $('#givewpNextGenWelcomeBanner').remove();
             $.post(ajaxurl, {
                 'action': '<?php echo $action; ?>',
                 'nonce': '<?php echo $nonce; ?>',
-            }, function(response) {
-                $('#givewpNextGenWelcomeBanner').remove();
             });
         });
     });
