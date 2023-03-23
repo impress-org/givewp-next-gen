@@ -147,10 +147,15 @@ const SmartButtonsContainer = () => {
 
 const HostedFieldsContainer = () => {
 
+    const {useWatch} = window.givewp.form.hooks;
+    const firstName = useWatch({name: 'firstName'});
+    const lastName = useWatch({name: 'lastName'});
+    const cardholderDefault = [firstName ?? '', lastName ?? ''].filter(x => x).join(' ')
+
     const [_cardholderName, setCardholderName] = useState();
 
     useEffect(() => {
-        cardholderName = _cardholderName
+        cardholderName = _cardholderName ?? cardholderDefault
     })
 
     return (
@@ -161,7 +166,14 @@ const HostedFieldsContainer = () => {
 
             <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
-            <TextControl className="givewp-fields" value={_cardholderName} onChange={(value) => setCardholderName(value)} />
+            <TextControl
+                className="givewp-fields"
+                label={__('Cardholder Name', 'give')}
+                hideLabelFromVision={true}
+                placeholder={'Cardholder Name'}
+                value={_cardholderName ?? cardholderDefault}
+                onChange={(value) => setCardholderName(value)}
+            />
 
             <PayPalHostedField
                 id="card-number"
