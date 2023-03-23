@@ -8,6 +8,7 @@ import {
 import type {Gateway} from '@givewp/forms/types';
 import {__} from "@wordpress/i18n";
 import {debounce} from "react-ace/lib/editorOptions";
+import {Flex} from "@wordpress/components";
 
 let amount;
 let firstName;
@@ -161,27 +162,34 @@ const HostedFieldsContainer = () => {
                     placeholder: "4111 1111 1111 1111",
                 }}
             />
-            <PayPalHostedField
-                id="cvv"
-                className="card-field"
-                style={CUSTOM_FIELD_STYLE}
-                hostedFieldType="cvv"
-                options={{
-                    selector: "#cvv",
-                    placeholder: "123",
-                    maskInput: true,
-                }}
-            />
-            <PayPalHostedField
-                id="expiration-date"
-                className="givewp-fields"
-                style={CUSTOM_FIELD_STYLE}
-                hostedFieldType="expirationDate"
-                options={{
-                    selector: "#expiration-date",
-                    placeholder: "MM/YYYY",
-                }}
-            />
+
+            <Flex gap="10px">
+                <PayPalHostedField
+                    id="expiration-date"
+                    className="givewp-fields"
+                    style={CUSTOM_FIELD_STYLE}
+                    hostedFieldType="expirationDate"
+                    options={{
+                        selector: "#expiration-date",
+                        placeholder: "MM/YYYY",
+                    }}
+                />
+                <PayPalHostedField
+                    id="cvv"
+                    className="card-field"
+                    style={CUSTOM_FIELD_STYLE}
+                    hostedFieldType="cvv"
+                    options={{
+                        selector: "#cvv",
+                        placeholder: "123",
+                        maskInput: true,
+                    }}
+                />
+            </Flex>
+            <div style={{display: "flex", gap: '10px'}}>
+
+            </div>
+
             <HoistHostedFieldContext />
         </PayPalHostedFieldsProvider>
     )
