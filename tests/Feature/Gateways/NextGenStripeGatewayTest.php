@@ -68,7 +68,7 @@ class NextGenStripeGatewayTest extends TestCase
         /** @var Donation $donation */
         $donation = Donation::factory()->create(['formId' => $form->id]);
         $stripePublishableKey = 'stripe-publishable-key';
-        $stripeConnectedAccountKey = 'stripe-connected-account-key';
+        $stripeConnectedAccountId = 'stripe-connected-account-id';
         $stripePaymentIntent = $this->getMockIntent($donation->amount, $stripePublishableKey);
 
         $mockGateway = $this->getMockGateway([
@@ -81,13 +81,13 @@ class NextGenStripeGatewayTest extends TestCase
             'id' => 'stripe-customer-id',
             'name' => "$donation->firstName $donation->lastName",
             'email' => $donation->email,
-            ['stripe_account' => $stripeConnectedAccountKey]
+            ['stripe_account' => $stripeConnectedAccountId]
         ]);
 
         /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('getOrCreateStripeCustomerFromDonation')
-            ->with($stripeConnectedAccountKey, $donation)
+            ->with($stripeConnectedAccountId, $donation)
             ->willReturn($mockCustomer);
 
         $intentArgs = [
@@ -106,7 +106,7 @@ class NextGenStripeGatewayTest extends TestCase
         /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('generateStripePaymentIntent')
-            ->with($stripeConnectedAccountKey, $intentArgs)
+            ->with($stripeConnectedAccountId, $intentArgs)
             ->willReturn($stripePaymentIntent);
 
         /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
@@ -121,8 +121,10 @@ class NextGenStripeGatewayTest extends TestCase
         );
 
         $gatewayData = [
-            'stripeConnectedAccountId' => $stripeConnectedAccountKey,
+            'stripeConnectedAccountId' => $stripeConnectedAccountId,
             'successUrl' => $redirectReturnUrl,
+            'stripePaymentMethod' => 'card',
+            'stripePaymentMethodIsCreditCard' => true
         ];
 
         $response = $mockGateway->createPayment($donation, $gatewayData);
