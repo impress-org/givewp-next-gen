@@ -8,12 +8,14 @@ import {
 import type {Gateway} from '@givewp/forms/types';
 import {__} from "@wordpress/i18n";
 import {debounce} from "react-ace/lib/editorOptions";
-import {Flex} from "@wordpress/components";
+import {Flex, TextControl} from "@wordpress/components";
+import {useEffect, useState} from "react";
 
 let amount;
 let firstName;
 let lastName;
 let email;
+let cardholderName;
 let hostedField;
 let payPalDonationsSettings;
 let payPalOrderId;
@@ -144,6 +146,13 @@ const SmartButtonsContainer = () => {
 }
 
 const HostedFieldsContainer = () => {
+
+    const [_cardholderName, setCardholderName] = useState();
+
+    useEffect(() => {
+        cardholderName = _cardholderName
+    })
+
     return (
         <PayPalHostedFieldsProvider
             notEligibleError={<div>Your account is not eligible</div>}
@@ -151,6 +160,8 @@ const HostedFieldsContainer = () => {
         >
 
             <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
+
+            <TextControl className="givewp-fields" value={_cardholderName} onChange={(value) => setCardholderName(value)} />
 
             <PayPalHostedField
                 id="card-number"
@@ -181,7 +192,7 @@ const HostedFieldsContainer = () => {
                     hostedFieldType="cvv"
                     options={{
                         selector: "#cvv",
-                        placeholder: "123",
+                        placeholder: "CVV",
                         maskInput: true,
                     }}
                 />
@@ -217,7 +228,7 @@ const payPalCommerceGateway: Gateway = {
         }
 
         return hostedField.cardFields
-            .submit({cardholderName: 'Tester T. Test',})
+            .submit({cardholderName: cardholderName,})
             .then(async (data) => {
                 await fetch( `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` + data.orderId, {
                     method: 'POST',
