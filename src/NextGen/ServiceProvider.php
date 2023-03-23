@@ -16,7 +16,13 @@ use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\ChargeRefunded;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\CustomerSubscriptionDeleted;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentFailed;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -71,13 +77,10 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             );
         }
-        
+
         give(LegacyStripeAdapter::class)->addDonationDetails();
 
-        Hooks::addAction(
-            'give_recurring_stripe_process_invoice_payment_succeeded',
-            InvoicePaymentSucceeded::class
-        );
+        $this->addStripeWebhookListeners();
     }
 
     /**
@@ -90,5 +93,51 @@ class ServiceProvider implements ServiceProviderInterface
             $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
             $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
         });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function addStripeWebhookListeners()
+    {
+//        Hooks::addAction(
+//            'give_recurring_stripe_process_invoice_payment_succeeded',
+//            InvoicePaymentSucceeded::class
+//        );
+
+        Hooks::addAction(
+            'give_stripe_processing_payment_intent_succeeded',
+            PaymentIntentSucceeded::class
+        );
+
+        Hooks::addAction(
+            'give_stripe_processing_payment_intent_failed',
+            PaymentIntentPaymentFailed::class
+        );
+
+        Hooks::addAction(
+            'give_stripe_processing_charge_refunded',
+            ChargeRefunded::class
+        );
+
+        Hooks::addAction(
+            'give_recurring_stripe_processing_invoice_payment_succeeded',
+            InvoicePaymentSucceeded::class
+        );
+
+        Hooks::addAction(
+            'give_recurring_stripe_processing_invoice_payment_failed',
+            InvoicePaymentFailed::class
+        );
+
+        Hooks::addAction(
+            'give_recurring_stripe_processing_customer_subscription_created',
+            CustomerSubscriptionCreated::class
+        );
+
+        Hooks::addAction(
+            'give_recurring_stripe_processing_customer_subscription_deleted',
+            CustomerSubscriptionDeleted::class
+        );
     }
 }

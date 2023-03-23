@@ -20,9 +20,14 @@ use Stripe\Invoice;
  */
 class InvoicePaymentSucceeded
 {
+    use StripeWebhookListenerRepository;
 
     /**
      * Processes invoice.payment_succeeded event.
+     *
+     * Occurs whenever an invoice payment attempt succeeds.
+     *
+     * @see https://stripe.com/docs/api/events/types#event_types-invoice.payment_succeeded
      *
      * @unreleased
      *
@@ -37,7 +42,7 @@ class InvoicePaymentSucceeded
         $subscription = give()->subscriptions->queryByGatewaySubscriptionId($invoice->subscription)->get();
 
         // only use this for next gen for now
-        if (!$subscription || $subscription->gatewayId !== NextGenStripeGateway::id()) {
+        if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
             return;
         }
 
@@ -59,7 +64,7 @@ class InvoicePaymentSucceeded
 
             exit;
         }
-        
+
         exit;
     }
 
@@ -157,5 +162,13 @@ class InvoicePaymentSucceeded
     private function shouldEndSubscription(Subscription $subscription): bool
     {
         return $subscription->installments !== 0 && (count($subscription->donations) >= $subscription->installments);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function shouldProcessSubscription(Subscription $subscription): bool
+    {
+        return $subscription->gatewayId === NextGenStripeGateway::id();
     }
 }
