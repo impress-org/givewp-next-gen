@@ -36,6 +36,21 @@ class InvoicePaymentSucceeded
      */
     public function __invoke(Event $event)
     {
+        try {
+            $this->processEvent($event);
+        } catch (Exception $exception) {
+            $this->logWebhookError($event, $exception);
+        }
+
+        exit;
+    }
+
+    /**
+     * @unreleased
+     * @throws \Exception
+     */
+    public function processEvent(Event $event)
+    {
         /* @var Invoice $invoice */
         $invoice = $event->data->object;
 
@@ -48,7 +63,7 @@ class InvoicePaymentSucceeded
 
 
         if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
-           $this->handleInitialDonation($initialDonation);
+            $this->handleInitialDonation($initialDonation);
 
             exit;
         }
@@ -64,8 +79,6 @@ class InvoicePaymentSucceeded
 
             exit;
         }
-
-        exit;
     }
 
     /**

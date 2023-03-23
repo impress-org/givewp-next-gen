@@ -29,6 +29,22 @@ class ChargeRefunded
      */
     public function __invoke(Event $event)
     {
+        try {
+            $this->processEvent($event);
+        } catch (Exception $exception) {
+            $this->logWebhookError($event, $exception);
+        }
+
+        exit;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    protected function processEvent(Event $event)
+    {
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
 
@@ -47,7 +63,5 @@ class ChargeRefunded
                 'content' => __('Payment refunded in Stripe.', 'give'),
             ]);
         }
-
-        exit;
     }
 }

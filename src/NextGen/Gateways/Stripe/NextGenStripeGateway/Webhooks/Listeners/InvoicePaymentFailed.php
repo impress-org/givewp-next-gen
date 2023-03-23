@@ -28,25 +28,10 @@ class InvoicePaymentFailed
      */
     public function __invoke(Event $event)
     {
-        /* @var Invoice $invoice */
-        $invoice = $event->data->object;
-
-        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($invoice->subscription)->get();
-
-          // only use this for next gen for now
-        if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
-            return;
-        }
-
-         if (
-            $invoice->attempted &&
-            !$invoice->paid &&
-            null !== $invoice->next_payment_attempt
-        ) {
-            $this->triggerLegacyFailedEmailNotificationEvent($invoice);
-
-            $subscription->status = SubscriptionStatus::FAILING();
-            $subscription->save();
+        try {
+            $this->processEvent($event);
+        } catch (Exception $exception) {
+            $this->logWebhookError($event, $exception);
         }
 
         exit;
@@ -66,5 +51,34 @@ class InvoicePaymentFailed
             esc_html__('Subscription - Renewal Payment Failed', 'give'),
             print_r($invoice, true)
         );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function processEvent(Event $event)
+    {
+        /* @var Invoice $invoice */
+        $invoice = $event->data->object;
+
+        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($invoice->subscription)->get();
+
+        // only use this for next gen for now
+        if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
+            return;
+        }
+
+        if (
+            $invoice->attempted &&
+            !$invoice->paid &&
+            null !== $invoice->next_payment_attempt
+        ) {
+            $this->triggerLegacyFailedEmailNotificationEvent($invoice);
+
+            $subscription->status = SubscriptionStatus::FAILING();
+            $subscription->save();
+        }
     }
 }

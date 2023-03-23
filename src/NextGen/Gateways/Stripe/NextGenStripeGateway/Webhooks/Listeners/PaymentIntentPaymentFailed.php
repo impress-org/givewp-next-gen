@@ -29,7 +29,11 @@ class PaymentIntentPaymentFailed
      */
     public function __invoke(Event $event)
     {
-        $this->processEvent($event);
+        try {
+            $this->processEvent($event);
+        } catch (Exception $exception) {
+            $this->logWebhookError($event, $exception);
+        }
 
         exit;
     }
