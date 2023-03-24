@@ -63,12 +63,16 @@ class InvoicePaymentSucceeded
 
         if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
             $this->handleInitialDonation($initialDonation);
-        } elseif ($this->shouldCreateRenewal($subscription)) {
-            $this->handleRenewal($subscription, $invoice);
-        } elseif ($this->shouldEndSubscription($subscription)) {
-            $this->cancelSubscription($subscription);
+        } else {
+            if ($this->shouldCreateRenewal($subscription)) {
+                $subscription = $this->handleRenewal($subscription, $invoice);
+            }
 
-            $this->handleSubscriptionCompleted($subscription);
+            if ($this->shouldEndSubscription($subscription)) {
+                $this->cancelSubscription($subscription);
+
+                $this->handleSubscriptionCompleted($subscription);
+            }
         }
     }
 
@@ -130,7 +134,7 @@ class InvoicePaymentSucceeded
      * @throws Exception
      * @throws \Exception
      */
-    protected function handleRenewal(Subscription $subscription, Invoice $invoice)
+    protected function handleRenewal(Subscription $subscription, Invoice $invoice): Subscription
     {
         $initialDonation = $subscription->initialDonation();
 
@@ -163,6 +167,8 @@ class InvoicePaymentSucceeded
 
         $subscription->bumpRenewalDate();
         $subscription->save();
+
+        return Subscription::find($subscription->id);
     }
 
     /**

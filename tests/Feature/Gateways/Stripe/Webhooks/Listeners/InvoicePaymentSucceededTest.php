@@ -178,4 +178,68 @@ class InvoicePaymentSucceededTest extends TestCase
         $this->assertCount(1, $subscriptionDonations);
         $this->assertTrue($subscription->status->isCompleted());
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldCreateRenewalAndCompleteSubscription()
+    {
+        $this->addMockStripeAccounts();
+
+        $subscription = Subscription::factory()->createWithDonation([
+            'status' => SubscriptionStatus::ACTIVE(),
+            'installments' => 2,
+            'frequency' => 1,
+            'period' => SubscriptionPeriod::MONTH(),
+            'gatewaySubscriptionId' => 'stripe-subscription-id',
+            'gatewayId' => NextGenStripeGateway::id(),
+        ]);
+
+        $donation = $subscription->initialDonation();
+        $donation->gatewayTransactionId = 'stripe-payment-intent-id';
+        $donation->save();
+
+        //refresh subscription model
+        $subscription = Subscription::find($subscription->id);
+
+        //refresh donation model
+        $donation = Donation::find($donation->id);
+
+        $mockEvent = Event::constructFrom([
+            'data' => [
+                'object' => Invoice::constructFrom([
+                    'id' => $donation->gatewayTransactionId,
+                    'total' => $donation->amount->formatToMinorAmount(),
+                    'currency' => $donation->amount->getCurrency()->getCode(),
+                    'createdAt' => $donation->createdAt->format('U'),
+                    'subscription' => $subscription->gatewaySubscriptionId,
+                    'payment_intent' => 'new-stripe-payment-intent-id',
+                ])
+            ]
+        ]);
+
+        $listener = $this->createMock(
+            InvoicePaymentSucceeded::class,
+            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+                // partial mock gateway by setting methods on the mock builder
+                $mockBuilder->setMethods(['cancelSubscription']);
+
+                return $mockBuilder->getMock();
+            }
+        );
+
+        /** @var PHPUnit_Framework_MockObject_MockObject $listener */
+        $listener->expects($this->once())
+            ->method('cancelSubscription');
+
+        $listener->processEvent($mockEvent);
+
+        // Refresh subscription model
+        $subscription = Subscription::find($subscription->id);
+
+        $this->assertCount(2, $subscription->donations);
+        $this->assertTrue($subscription->status->isCompleted());
+    }
 }
