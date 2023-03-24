@@ -12,278 +12,284 @@ import {debounce} from "react-ace/lib/editorOptions";
 import {Flex, TextControl} from "@wordpress/components";
 import {CSSProperties, useEffect, useState} from "react";
 
-let amount;
-let firstName;
-let lastName;
-let email;
-let cardholderName;
-let hostedField;
-let payPalDonationsSettings;
-let payPalOrderId;
+(() => {
+    /**
+     * Hoisted values are used to pass data in contexts where hooks cannot be used.
+     * For example, the form uses hooks to get the values of the form fields,
+     * but the callbacks for PayPal cannot use hooks to access those values.
+     *
+     * The <FormFieldsProvider /> component is used to hoist the form field values
+     * which are then collected in createOrderHandler(). This callback is not
+     * a component, so it cannot use hooks to access the form field values.
+     */
+    let amount;
+    let firstName;
+    let lastName;
+    let email;
+    let cardholderName;
+    let hostedField;
+    let payPalDonationsSettings;
+    let payPalOrderId;
 
-const buttonsStyle = {
-    color: "gold" as "gold" | "blue" | "silver" | "white" | "black",
-    label: "paypal" as "paypal" | "checkout" | "buynow" | "pay" | "installment" | "subscribe" | "donate",
-    layout: "vertical" as "vertical" | "horizontal",
-    shape: "rect" as "rect" | "pill",
-    tagline: false,
-    // size: 'responsive', // The "size" options seems to have been replaced by "height" (responsive by default)
-}
-
-const CUSTOM_FIELD_STYLE = { // @todo How do we ensure that this matches the form design?
-    height: '50px', // @todo Magic number, but it works
-    borderWidth: ".078rem",
-    borderStyle: "solid",
-    borderColor: "#666",
-    borderRadius: ".25rem",
-    padding: "0 1.1875rem",
-    width: "100%",
-    marginBottom: ".5rem",
-    boxSizing: "inherit",
-    inlineSize: "100%",
-    backgroundColor: "#fff",
-    color: "#4d4d4d",
-    fontSize: "1rem",
-    fontFamily: "inherit",
-    fontWeight: "500",
-    lineHeight: "1.2"
-} as CSSProperties;
-
-const getFormData = () => {
-    const formData = new FormData();
-    formData.append('give-amount', amount);
-    formData.append('give_first', firstName);
-    formData.append('give_last', lastName);
-    formData.append('give_email', email);
-    formData.append('give-form-id', payPalDonationsSettings.donationFormId);
-    formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
-    return formData;
-}
-
-type hostedCardField = {
-    isValid: boolean,
-}
-
-const validateHostedFields = () => {
-    return Object.values(
-        hostedField.cardFields.getState().fields
-    ).some((field: hostedCardField) => field.isValid)
-}
-
-const createOrderHandler = async (): Promise<string> => {
-
-    const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, {
-        method: 'POST',
-        body: getFormData(),
-    } );
-    const responseJson = await response.json();
-
-    if ( ! responseJson.success ) {
-        throw responseJson.data.error;
+    const buttonsStyle = {
+        color: "gold" as "gold" | "blue" | "silver" | "white" | "black",
+        label: "paypal" as "paypal" | "checkout" | "buynow" | "pay" | "installment" | "subscribe" | "donate",
+        layout: "vertical" as "vertical" | "horizontal",
+        shape: "rect" as "rect" | "pill",
+        tagline: false,
     }
 
-    return payPalOrderId = responseJson.data.id
-}
+    const CUSTOM_FIELD_STYLE = {
+        height: '50px', // @todo Magic number, but it works
+        borderWidth: ".078rem",
+        borderStyle: "solid",
+        borderColor: "#666",
+        borderRadius: ".25rem",
+        padding: "0 1.1875rem",
+        width: "100%",
+        marginBottom: ".5rem",
+        boxSizing: "inherit",
+        inlineSize: "100%",
+        backgroundColor: "#fff",
+        color: "#4d4d4d",
+        fontSize: "1rem",
+        fontFamily: "inherit",
+        fontWeight: "500",
+        lineHeight: "1.2"
+    } as CSSProperties;
 
-const Divider = ({label, style = {}}) => {
-
-    const styles = {
-        container: {
-            fontSize: '16px',
-            fontStyle: 'italic',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            ...style,
-        },
-        dashedLine: {
-            border: '1px solid #d4d4d4',
-            flexGrow: 1,
-        },
-        label: {
-            padding: '0 6px',
-            fontSize: '14px',
-            color: '#8d8e8e',
-        },
+    const getFormData = () => {
+        const formData = new FormData();
+        formData.append('give-amount', amount);
+        formData.append('give_first', firstName);
+        formData.append('give_last', lastName);
+        formData.append('give_email', email);
+        formData.append('give-form-id', payPalDonationsSettings.donationFormId);
+        formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
+        return formData;
     }
 
-    return (
-        <div className="separator-with-text" style={styles.container}>
-            <div className="dashed-line" style={styles.dashedLine} />
-            <div className="label" style={styles.label}>
-                {label}
-            </div>
-            <div className="dashed-line" style={styles.dashedLine} />
-        </div>
-    )
-}
+    const validateHostedFields = () => {
+        return Object.values(
+            hostedField.cardFields.getState().fields
+        ).some((field: { isValid: boolean }) => field.isValid)
+    }
 
-const HoistHostedFieldContext = () => {
-    hostedField = usePayPalHostedFields();
-    return <></>
-}
+    const createOrderHandler = async (): Promise<string> => {
 
-const FormFieldsProvider = ({children}) => {
-    const {useWatch} = window.givewp.form.hooks;
-    amount = useWatch({name: 'amount'});
-    firstName = useWatch({name: 'firstName'});
-    lastName = useWatch({name: 'lastName'});
-    email = useWatch({name: 'email'});
+        const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, {
+            method: 'POST',
+            body: getFormData(),
+        } );
+        const responseJson = await response.json();
 
-    return children;
-}
+        if ( ! responseJson.success ) {
+            throw responseJson.data.error;
+        }
 
-const SmartButtonsContainer = () => {
+        return payPalOrderId = responseJson.data.id
+    }
 
-    const {useWatch} = window.givewp.form.hooks;
-    const currency = useWatch({name: 'currency'});
+    const Divider = ({label, style = {}}) => {
 
-    const [{ options }, dispatch] = usePayPalScriptReducer();
-
-    useEffect(() => {
-        dispatch({
-            type: "resetOptions",
-            value: {
-                ...options,
-                currency: currency,
+        const styles = {
+            container: {
+                fontSize: '16px',
+                fontStyle: 'italic',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                ...style,
             },
-        });
-    }, [currency]);
+            dashedLine: {
+                border: '1px solid #d4d4d4',
+                flexGrow: 1,
+            },
+            label: {
+                padding: '0 6px',
+                fontSize: '14px',
+                color: '#8d8e8e',
+            },
+        }
 
-    return (
-        <PayPalButtons
-            style={buttonsStyle}
-            // @ts-ignore
-            forceReRender={debounce(() => [amount, firstName, lastName, email, currency], 500)}
-            createOrder={createOrderHandler}
-            onApprove={async (data, actions) => {
-                return actions.order.capture().then((details) => {
-                    // @ts-ignore
-                    document.forms[0].querySelector('[type="submit"]').click()
-                });
-            }}
-        />
-    )
-}
+        return (
+            <div className="separator-with-text" style={styles.container}>
+                <div className="dashed-line" style={styles.dashedLine} />
+                <div className="label" style={styles.label}>
+                    {label}
+                </div>
+                <div className="dashed-line" style={styles.dashedLine} />
+            </div>
+        )
+    }
 
-const HostedFieldsContainer = () => {
+    const HoistHostedFieldContext = () => {
+        hostedField = usePayPalHostedFields();
+        return <></>
+    }
 
-    const {useWatch} = window.givewp.form.hooks;
-    const firstName = useWatch({name: 'firstName'});
-    const lastName = useWatch({name: 'lastName'});
-    const cardholderDefault = [firstName ?? '', lastName ?? ''].filter(x => x).join(' ')
+    const FormFieldsProvider = ({children}) => {
+        const {useWatch} = window.givewp.form.hooks;
+        amount = useWatch({name: 'amount'});
+        firstName = useWatch({name: 'firstName'});
+        lastName = useWatch({name: 'lastName'});
+        email = useWatch({name: 'email'});
 
-    const [_cardholderName, setCardholderName] = useState(null);
+        return children;
+    }
 
-    useEffect(() => {
-        cardholderName = _cardholderName ?? cardholderDefault
-    })
+    const SmartButtonsContainer = () => {
 
-    return (
-        <PayPalHostedFieldsProvider
-            notEligibleError={<div>Your account is not eligible</div>}
-            createOrder={createOrderHandler}
-        >
+        const {useWatch} = window.givewp.form.hooks;
+        const currency = useWatch({name: 'currency'});
 
-            <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
+        const [{ options }, dispatch] = usePayPalScriptReducer();
 
-            <TextControl
-                className="givewp-fields"
-                label={__('Cardholder Name', 'give')}
-                hideLabelFromVision={true}
-                placeholder={'Cardholder Name'}
-                value={_cardholderName ?? cardholderDefault}
-                onChange={(value) => setCardholderName(value)}
-            />
+        useEffect(() => {
+            dispatch({
+                type: "resetOptions",
+                value: {
+                    ...options,
+                    currency: currency,
+                },
+            });
+        }, [currency]);
 
-            <PayPalHostedField
-                id="card-number"
-                className="card-field"
-                style={CUSTOM_FIELD_STYLE}
-                hostedFieldType="number"
-                options={{
-                    selector: "#card-number",
-                    placeholder: "4111 1111 1111 1111",
+        return (
+            <PayPalButtons
+                style={buttonsStyle}
+                // @ts-ignore
+                forceReRender={debounce(() => [amount, firstName, lastName, email, currency], 500)}
+                createOrder={createOrderHandler}
+                onApprove={async (data, actions) => {
+                    return actions.order.capture().then((details) => {
+                        // @ts-ignore
+                        document.forms[0].querySelector('[type="submit"]').click()
+                    });
                 }}
             />
+        )
+    }
 
-            <Flex gap="10px">
-                <PayPalHostedField
-                    id="expiration-date"
+    const HostedFieldsContainer = () => {
+
+        const {useWatch} = window.givewp.form.hooks;
+        const firstName = useWatch({name: 'firstName'});
+        const lastName = useWatch({name: 'lastName'});
+        const cardholderDefault = [firstName ?? '', lastName ?? ''].filter(x => x).join(' ')
+
+        const [_cardholderName, setCardholderName] = useState(null);
+
+        useEffect(() => {
+            cardholderName = _cardholderName ?? cardholderDefault
+        })
+
+        return (
+            <PayPalHostedFieldsProvider
+                notEligibleError={<div>Your account is not eligible</div>}
+                createOrder={createOrderHandler}
+            >
+
+                <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
+
+                <TextControl
                     className="givewp-fields"
-                    style={CUSTOM_FIELD_STYLE}
-                    hostedFieldType="expirationDate"
-                    options={{
-                        selector: "#expiration-date",
-                        placeholder: "MM/YYYY",
-                    }}
+                    label={__('Cardholder Name', 'give')}
+                    hideLabelFromVision={true}
+                    placeholder={'Cardholder Name'}
+                    value={_cardholderName ?? cardholderDefault}
+                    onChange={(value) => setCardholderName(value)}
                 />
+
                 <PayPalHostedField
-                    id="cvv"
+                    id="card-number"
                     className="card-field"
                     style={CUSTOM_FIELD_STYLE}
-                    hostedFieldType="cvv"
+                    hostedFieldType="number"
                     options={{
-                        selector: "#cvv",
-                        placeholder: "CVV",
-                        maskInput: true,
+                        selector: "#card-number",
+                        placeholder: "4111 1111 1111 1111",
                     }}
                 />
-            </Flex>
-            <div style={{display: "flex", gap: '10px'}}>
 
-            </div>
+                <Flex gap="10px">
+                    <PayPalHostedField
+                        id="expiration-date"
+                        className="givewp-fields"
+                        style={CUSTOM_FIELD_STYLE}
+                        hostedFieldType="expirationDate"
+                        options={{
+                            selector: "#expiration-date",
+                            placeholder: "MM/YYYY",
+                        }}
+                    />
+                    <PayPalHostedField
+                        id="cvv"
+                        className="card-field"
+                        style={CUSTOM_FIELD_STYLE}
+                        hostedFieldType="cvv"
+                        options={{
+                            selector: "#cvv",
+                            placeholder: "CVV",
+                            maskInput: true,
+                        }}
+                    />
+                </Flex>
+                <div style={{display: "flex", gap: '10px'}}>
 
-            <HoistHostedFieldContext />
-        </PayPalHostedFieldsProvider>
-    )
-}
+                </div>
 
-const payPalCommerceGateway: Gateway = {
-    id: 'paypal-commerce',
-    supportsRecurring: false,
-    supportsCurrency(currency: string): boolean {
-        return true;
-    },
-    initialize() {
-        payPalDonationsSettings = this.settings;
-    },
-    beforeCreatePayment: async function (values): Promise<object> {
+                <HoistHostedFieldContext />
+            </PayPalHostedFieldsProvider>
+        )
+    }
 
-        if(payPalOrderId) { // If order ID already set by payment buttons then return early.
-            return {
-                payPalOrderId: payPalOrderId
-            };
-        }
+    const payPalCommerceGateway: Gateway = {
+        id: 'paypal-commerce',
+        supportsRecurring: false,
+        supportsCurrency(currency: string): boolean {
+            return true;
+        },
+        initialize() {
+            payPalDonationsSettings = this.settings;
+        },
+        beforeCreatePayment: async function (values): Promise<object> {
 
-        if(!validateHostedFields()) {
-            throw new Error('Invalid hosted fields');
-        }
+            if(payPalOrderId) { // If order ID already set by payment buttons then return early.
+                return {
+                    payPalOrderId: payPalOrderId
+                };
+            }
 
-        return hostedField.cardFields
-            .submit({cardholderName: cardholderName,})
-            .then(async (data) => {
-                await fetch( `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` + data.orderId, {
-                    method: 'POST',
-                    body: getFormData(),
-                } );
-                return {...data, payPalOrderId: data.orderId}
-            })
-            .catch((err) => {
-                console.log('paypal commerce error', err)
-                throw new Error('paypal commerce error');
-            });
-    },
-    Fields() { // Can we get this.settings to be available here?
-        return (
-            <FormFieldsProvider>
-                <PayPalScriptProvider options={payPalDonationsSettings.sdkOptions}>
-                    <SmartButtonsContainer />
-                    <HostedFieldsContainer />
-                </PayPalScriptProvider>
-            </FormFieldsProvider>
-        );
-    },
-};
+            if(!validateHostedFields()) {
+                throw new Error('Invalid hosted fields');
+            }
 
-window.givewp.gateways.register(payPalCommerceGateway);
+            return hostedField.cardFields
+                .submit({cardholderName: cardholderName,})
+                .then(async (data) => {
+                    await fetch( `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` + data.orderId, {
+                        method: 'POST',
+                        body: getFormData(),
+                    } );
+                    return {...data, payPalOrderId: data.orderId}
+                })
+                .catch((err) => {
+                    console.log('paypal commerce error', err)
+                    throw new Error('paypal commerce error');
+                });
+        },
+        Fields() { // Can we get this.settings to be available here?
+            return (
+                <FormFieldsProvider>
+                    <PayPalScriptProvider options={payPalDonationsSettings.sdkOptions}>
+                        <SmartButtonsContainer />
+                        <HostedFieldsContainer />
+                    </PayPalScriptProvider>
+                </FormFieldsProvider>
+            );
+        },
+    };
+
+    window.givewp.gateways.register(payPalCommerceGateway);
+})()
