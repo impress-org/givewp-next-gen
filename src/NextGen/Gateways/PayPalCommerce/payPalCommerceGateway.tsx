@@ -30,6 +30,7 @@ import {CSSProperties, useEffect, useState} from "react";
     let hostedField;
     let payPalDonationsSettings;
     let payPalOrderId;
+    let payPalSubscriptionId;
 
     const buttonsStyle = {
         color: "gold" as "gold" | "blue" | "silver" | "white" | "black",
@@ -90,6 +91,24 @@ import {CSSProperties, useEffect, useState} from "react";
         return payPalOrderId = responseJson.data.id
     }
 
+    const createSubscriptionHandler = async (data, actions) => {
+        // eslint-disable-next-line
+        const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
+            method: 'POST',
+            body: getFormData(),
+        } );
+
+        const responseJson = await response.json();
+
+        if ( ! responseJson.success ) {
+            throw responseJson.data.error;
+        }
+
+        payPalSubscriptionId = responseJson.data.id;
+
+        return actions.subscription.create( { plan_id: payPalSubscriptionId  } );
+    }
+
     const Divider = ({label, style = {}}) => {
 
         const styles = {
@@ -142,6 +161,7 @@ import {CSSProperties, useEffect, useState} from "react";
 
         const {useWatch} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
+        const donationType = useWatch({name: 'donationType'});
 
         const [{ options }, dispatch] = usePayPalScriptReducer();
 
@@ -151,9 +171,11 @@ import {CSSProperties, useEffect, useState} from "react";
                 value: {
                     ...options,
                     currency: currency,
+                    vault: donationType === 'subscription',
+                    intent: donationType === 'subscription' ? 'subscription' : 'capture',
                 },
             });
-        }, [currency]);
+        }, [currency, donationType]);
 
         return (
             <PayPalButtons
@@ -161,6 +183,7 @@ import {CSSProperties, useEffect, useState} from "react";
                 // @ts-ignore
                 forceReRender={debounce(() => [amount, firstName, lastName, email, currency], 500)}
                 createOrder={createOrderHandler}
+                createSubscription={createSubscriptionHandler}
                 onApprove={async (data, actions) => {
                     return actions.order.capture().then((details) => {
                         // @ts-ignore
