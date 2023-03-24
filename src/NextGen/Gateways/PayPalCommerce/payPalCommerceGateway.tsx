@@ -4,12 +4,14 @@ import {
     PayPalHostedFieldsProvider,
     PayPalHostedField,
     usePayPalHostedFields,
+    usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
 import type {Gateway} from '@givewp/forms/types';
 import {__} from "@wordpress/i18n";
 import {debounce} from "react-ace/lib/editorOptions";
 import {Flex, TextControl} from "@wordpress/components";
 import {useEffect, useState} from "react";
+import useCurrencyFormatter from "@givewp/forms/app/hooks/useCurrencyFormatter";
 
 let amount;
 let firstName;
@@ -129,11 +131,27 @@ const FormFieldsProvider = ({children}) => {
 }
 
 const SmartButtonsContainer = () => {
+
+    const {useWatch} = window.givewp.form.hooks;
+    const currency = useWatch({name: 'currency'});
+
+    const [{ options }, dispatch] = usePayPalScriptReducer();
+
+    useEffect(() => {
+        dispatch({
+            type: "resetOptions",
+            value: {
+                ...options,
+                currency: currency,
+            },
+        });
+    }, [currency]);
+
     return (
         <PayPalButtons
             style={buttonsStyle}
             // @ts-ignore
-            forceReRender={debounce(() => [amount, firstName, lastName, email], 500)}
+            forceReRender={debounce(() => [amount, firstName, lastName, email, currency], 500)}
             createOrder={createOrderHandler}
             onApprove={async (data, actions) => {
                 return actions.order.capture().then((details) => {
