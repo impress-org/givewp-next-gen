@@ -39,7 +39,7 @@ class CustomerSubscriptionCreated
     /**
      * @unreleased
      */
-    protected function processEvent(Event $event)
+    public function processEvent(Event $event)
     {
         /* @var StripeSubscription $stripeSubscription */
         $stripeSubscription = $event->data->object;

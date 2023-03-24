@@ -43,7 +43,7 @@ class ChargeRefunded
      *
      * @throws Exception
      */
-    protected function processEvent(Event $event)
+    public function processEvent(Event $event)
     {
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
