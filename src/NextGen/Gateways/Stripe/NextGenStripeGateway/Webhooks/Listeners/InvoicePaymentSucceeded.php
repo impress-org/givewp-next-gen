@@ -70,14 +70,16 @@ class InvoicePaymentSucceeded
         }
 
         if ($this->shouldEndSubscription($subscription)) {
-            $this->handleSubscriptionComplete($subscription);
+            $this->cancelSubscription($subscription);
+
+            $this->handleSubscriptionCompleted($subscription);
         }
     }
 
     /**
      * @unreleased
      */
-    private function shouldCreateRenewal(Subscription $subscription): bool
+    protected function shouldCreateRenewal(Subscription $subscription): bool
     {
         $billTimes = $subscription->installments;
         $totalPayments = count($subscription->donations);
@@ -89,15 +91,20 @@ class InvoicePaymentSucceeded
      * @unreleased
      * @throws \Exception
      */
-    private function handleSubscriptionComplete(
+    protected function handleSubscriptionCompleted(
         Subscription $subscription
     ) {
-        if (0 !== $subscription->installments && (count($subscription->donations) >= $subscription->installments)) {
-            $subscription->cancel();
+        $subscription->status = SubscriptionStatus::COMPLETED();
+        $subscription->save();
+    }
 
-            $subscription->status = SubscriptionStatus::COMPLETED();
-            $subscription->save();
-        }
+    /**
+     * @unreleased
+     * @throws \Exception
+     */
+    protected function cancelSubscription(Subscription $subscription)
+    {
+        $subscription->cancel();
     }
 
 
@@ -106,9 +113,9 @@ class InvoicePaymentSucceeded
      *
      * @throws Exception
      */
-    private function handleInitialDonation(Donation $initialDonation)
+    protected function handleInitialDonation(Donation $initialDonation)
     {
-         // update initial donation
+        // update initial donation
         // TODO: the payment_intent.succeeded event has this same logic
         if (!$initialDonation->status->isComplete()) {
             $initialDonation->status = DonationStatus::COMPLETE();
@@ -127,7 +134,7 @@ class InvoicePaymentSucceeded
      * @throws Exception
      * @throws \Exception
      */
-    private function handleRenewal(Subscription $subscription, Invoice $invoice)
+    protected function handleRenewal(Subscription $subscription, Invoice $invoice)
     {
         $initialDonation = $subscription->initialDonation();
 
@@ -165,7 +172,7 @@ class InvoicePaymentSucceeded
     /**
      * @unreleased
      */
-    private function shouldEndSubscription(Subscription $subscription): bool
+    protected function shouldEndSubscription(Subscription $subscription): bool
     {
         return $subscription->installments !== 0 && (count($subscription->donations) >= $subscription->installments);
     }
