@@ -125,18 +125,16 @@ trait NextGenStripeRepository
     }
 
     /**
+     * @unreleased
+     *
      * @return void
      * @throws Exception
      */
     protected function updateDonationMetaFromPaymentIntent(
         Donation $donation,
-        PaymentIntent $intent,
-        StripeGatewayData $gatewayData
+        PaymentIntent $intent
     ) {
-        if (!$gatewayData->stripePaymentMethodIsCreditCard) {
-            $donation->status = DonationStatus::PROCESSING();
-        }
-
+        $donation->status = DonationStatus::PROCESSING();
         $donation->gatewayTransactionId = $intent->id;
         $donation->save();
 

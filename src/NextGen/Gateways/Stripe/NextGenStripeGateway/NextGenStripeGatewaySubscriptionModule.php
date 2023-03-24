@@ -95,8 +95,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
          */
         $this->updateSubscriptionInitialDonationMetaFromStripeSubscription(
             $stripeSubscription,
-            $donation,
-            $stripeGatewayData
+            $donation
         );
 
         /**
@@ -260,16 +259,12 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
      */
     protected function updateSubscriptionInitialDonationMetaFromStripeSubscription(
         StripeSubscription $stripeSubscription,
-        Donation $donation,
-        StripeGatewayData $gatewayData
+        Donation $donation
     ) {
-        if (!$gatewayData->stripePaymentMethodIsCreditCard) {
-            $donation->status = DonationStatus::PROCESSING();
-        }
-
         $paymentIntentId = $stripeSubscription->latest_invoice->payment_intent->id;
         $clientSecret = $stripeSubscription->latest_invoice->payment_intent->client_secret;
 
+        $donation->status = DonationStatus::PROCESSING();
         $donation->gatewayTransactionId = $paymentIntentId;
         $donation->save();
 
@@ -351,6 +346,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
      * @unreleased
      *
      * @inheritDoc
+     * @throws PaymentGatewayException
      */
     public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount)
     {
@@ -377,10 +373,8 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             );
 
             $subscription->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new PaymentGatewayException("Unable to update Stripe Subscription Amount.");
-        } catch (ApiErrorException $e) {
-            throw new PaymentGatewayException($e->getMessage());
         }
     }
 
