@@ -97,7 +97,7 @@ class InvoicePaymentSucceededTest extends TestCase
                     'currency' => $donation->amount->getCurrency()->getCode(),
                     'createdAt' => $donation->createdAt->format('U'),
                     'subscription' => $subscription->gatewaySubscriptionId,
-                    'payment_intent' => $donation->gatewayTransactionId,
+                    'payment_intent' => 'new-stripe-payment-intent-id'
                 ])
             ]
         ]);
@@ -150,7 +150,7 @@ class InvoicePaymentSucceededTest extends TestCase
                     'currency' => $donation->amount->getCurrency()->getCode(),
                     'createdAt' => $donation->createdAt->format('U'),
                     'subscription' => $subscription->gatewaySubscriptionId,
-                    'payment_intent' => $donation->gatewayTransactionId,
+                    'payment_intent' => 'new-stripe-payment-intent-id',
                 ])
             ]
         ]);

@@ -63,13 +63,9 @@ class InvoicePaymentSucceeded
 
         if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
             $this->handleInitialDonation($initialDonation);
-        }
-
-        if ($this->shouldCreateRenewal($subscription)) {
+        } elseif ($this->shouldCreateRenewal($subscription)) {
             $this->handleRenewal($subscription, $invoice);
-        }
-
-        if ($this->shouldEndSubscription($subscription)) {
+        } elseif ($this->shouldEndSubscription($subscription)) {
             $this->cancelSubscription($subscription);
 
             $this->handleSubscriptionCompleted($subscription);
