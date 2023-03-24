@@ -39,22 +39,6 @@ class InvoicePaymentFailed
 
     /**
      * @unreleased
-     */
-    private function triggerLegacyFailedEmailNotificationEvent(Invoice $invoice)
-    {
-        $subscription = give_recurring_get_subscription_by('profile', $invoice->subscription);
-
-        do_action('give_donor-subscription-payment-failed_email_notification', $subscription, $invoice);
-
-        // Log the invoice object for debugging purpose.
-        give_stripe_record_log(
-            esc_html__('Subscription - Renewal Payment Failed', 'give'),
-            print_r($invoice, true)
-        );
-    }
-
-    /**
-     * @unreleased
      *
      * @throws Exception
      */
@@ -80,5 +64,21 @@ class InvoicePaymentFailed
             $subscription->status = SubscriptionStatus::FAILING();
             $subscription->save();
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function triggerLegacyFailedEmailNotificationEvent(Invoice $invoice)
+    {
+        $subscription = give_recurring_get_subscription_by('profile', $invoice->subscription);
+
+        do_action('give_donor-subscription-payment-failed_email_notification', $subscription, $invoice);
+
+        // Log the invoice object for debugging purpose.
+        give_stripe_record_log(
+            esc_html__('Subscription - Renewal Payment Failed', 'give'),
+            print_r($invoice, true)
+        );
     }
 }
