@@ -303,11 +303,15 @@ import {CSSProperties, useEffect, useState} from "react";
                 });
         },
         Fields() { // Can we get this.settings to be available here?
+            const {useWatch} = window.givewp.form.hooks;
+            const donationType = useWatch({name: 'donationType'});
+            const supportsHostedFields = donationType !== 'subscription';
+
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider options={payPalDonationsSettings.sdkOptions}>
                         <SmartButtonsContainer />
-                        <HostedFieldsContainer />
+                        {!!supportsHostedFields && <HostedFieldsContainer />}
                     </PayPalScriptProvider>
                 </FormFieldsProvider>
             );
