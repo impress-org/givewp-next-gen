@@ -10,8 +10,7 @@ import type {Gateway} from '@givewp/forms/types';
 import {__} from "@wordpress/i18n";
 import {debounce} from "react-ace/lib/editorOptions";
 import {Flex, TextControl} from "@wordpress/components";
-import {useEffect, useState} from "react";
-import useCurrencyFormatter from "@givewp/forms/app/hooks/useCurrencyFormatter";
+import {CSSProperties, useEffect, useState} from "react";
 
 let amount;
 let firstName;
@@ -48,7 +47,7 @@ const CUSTOM_FIELD_STYLE = { // @todo How do we ensure that this matches the for
     fontFamily: "inherit",
     fontWeight: "500",
     lineHeight: "1.2"
-};
+} as CSSProperties;
 
 const getFormData = () => {
     const formData = new FormData();
@@ -61,13 +60,17 @@ const getFormData = () => {
     return formData;
 }
 
+type hostedCardField = {
+    isValid: boolean,
+}
+
 const validateHostedFields = () => {
     return Object.values(
         hostedField.cardFields.getState().fields
-    ).some((field) => field.isValid)
+    ).some((field: hostedCardField) => field.isValid)
 }
 
-const createOrderHandler = async (data, actions) => {
+const createOrderHandler = async (): Promise<string> => {
 
     const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, {
         method: 'POST',
@@ -170,7 +173,7 @@ const HostedFieldsContainer = () => {
     const lastName = useWatch({name: 'lastName'});
     const cardholderDefault = [firstName ?? '', lastName ?? ''].filter(x => x).join(' ')
 
-    const [_cardholderName, setCardholderName] = useState();
+    const [_cardholderName, setCardholderName] = useState(null);
 
     useEffect(() => {
         cardholderName = _cardholderName ?? cardholderDefault
