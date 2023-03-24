@@ -10,7 +10,6 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
-use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Framework\Support\ValueObjects\Money;
@@ -31,8 +30,7 @@ use Stripe\Subscription as StripeSubscription;
  * @unreleased
  */
 class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable,
-                                                                                   SubscriptionAmountEditable,
-                                                                                   SubscriptionTransactionsSynchronizable
+                                                                                   SubscriptionAmountEditable
 {
     use CanSetupStripeApp;
     use NextGenStripeRepository;
@@ -131,17 +129,6 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
                 $exception
             );
         }
-    }
-
-    /**
-     * @since 2.0.0
-     *
-     * @inheritDoc
-     */
-    public function synchronizeSubscription(Subscription $subscription)
-    {
-        // TODO: Implement synchronizeSubscription() method.
-        // We are processing sync subscription request with legacy code (MockLegacyGiveRecurringGateway::addSyncSubscriptionActionHook)
     }
 
     /**
