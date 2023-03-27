@@ -303,9 +303,15 @@ import {CSSProperties, useEffect, useState} from "react";
                 });
         },
         Fields() { // Can we get this.settings to be available here?
-            const {useWatch} = window.givewp.form.hooks;
+            const {useWatch, useFormState} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const supportsHostedFields = donationType !== 'subscription';
+
+            const {
+                isSubmitting
+            } = useFormState();
+
+            console.log('IS SUBMITTING', isSubmitting)
 
             return (
                 <FormFieldsProvider>
