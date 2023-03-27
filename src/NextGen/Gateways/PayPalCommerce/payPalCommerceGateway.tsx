@@ -28,7 +28,6 @@ import {CSSProperties, useEffect, useState} from "react";
     let email;
     let cardholderName;
     let hostedField;
-    let payPalDonationsSettings;
     let payPalOrderId;
     let payPalSubscriptionId;
 
@@ -273,9 +272,6 @@ import {CSSProperties, useEffect, useState} from "react";
         supportsCurrency(currency: string): boolean {
             return true;
         },
-        initialize() {
-            payPalDonationsSettings = this.settings;
-        },
         beforeCreatePayment: async function (values): Promise<object> {
 
             if(payPalOrderId) { // If order ID already set by payment buttons then return early.
@@ -307,9 +303,12 @@ import {CSSProperties, useEffect, useState} from "react";
             const donationType = useWatch({name: 'donationType'});
             const supportsHostedFields = donationType !== 'subscription';
 
+            // @ts-ignore
+            const {sdkOptions} = payPalCommerceGateway.settings;
+
             return (
                 <FormFieldsProvider>
-                    <PayPalScriptProvider options={payPalDonationsSettings.sdkOptions}>
+                    <PayPalScriptProvider options={sdkOptions}>
                         <SmartButtonsContainer />
                         {!!supportsHostedFields && <HostedFieldsContainer />}
                     </PayPalScriptProvider>
