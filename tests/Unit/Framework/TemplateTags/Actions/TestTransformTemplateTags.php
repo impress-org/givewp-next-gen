@@ -12,7 +12,7 @@ class TestTransformTemplateTags extends TestCase {
      * @return void
      */
     public function testShouldTransformTemplateTags() {
-        $content = "{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donation.email}.";
+        $content = "{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.";
         $tags = [
             '{first_name}' => 'Bill',
             '{email}' => 'bill@murray.com'
