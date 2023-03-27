@@ -93,7 +93,7 @@ import {CSSProperties, useEffect, useState} from "react";
 
     const createSubscriptionHandler = async (data, actions) => {
         // eslint-disable-next-line
-        const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
+        const response = await fetch( `${ payPalDonationsSettings.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
             method: 'POST',
             body: getFormData(),
         } );
