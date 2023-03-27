@@ -8,15 +8,12 @@ const TemplateTags = () => (
         <dt>
             <code>{'{first_name}'}</code>
         </dt>
-        <dd>First name field</dd>
         <dt>
             <code>{'{last_name}'}</code>
         </dt>
-        <dd>Last name field</dd>
         <dt>
             <code>{'{email}'}</code>
         </dt>
-        <dd>Email field</dd>
     </dl>
 );
 
