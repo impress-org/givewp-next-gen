@@ -81,8 +81,6 @@ class DonationFormViewModel
      */
     public function enqueueGlobalStyles()
     {
-        wp_enqueue_global_styles(); // Merge note: Not sure if this is needed or not.
-
         wp_register_style(
             'givewp-global-form-styles',
             GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/styles/global.css'
