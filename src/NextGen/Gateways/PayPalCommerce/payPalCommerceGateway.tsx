@@ -159,9 +159,13 @@ import {CSSProperties, useEffect, useState} from "react";
 
     const SmartButtonsContainer = () => {
 
-        const {useWatch} = window.givewp.form.hooks;
+        const {useWatch, useFormState} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
+
+        const {
+            isSubmitting
+        } = useFormState();
 
         const [{ options }, dispatch] = usePayPalScriptReducer();
 
@@ -179,11 +183,12 @@ import {CSSProperties, useEffect, useState} from "react";
 
         return (
             <PayPalButtons
+                disabled={isSubmitting}
                 style={buttonsStyle}
                 // @ts-ignore
                 forceReRender={debounce(() => [amount, firstName, lastName, email, currency], 500)}
                 createOrder={createOrderHandler}
-                createSubscription={createSubscriptionHandler}
+                // createSubscription={createSubscriptionHandler}
                 onApprove={async (data, actions) => {
                     return actions.order.capture().then((details) => {
                         // @ts-ignore
@@ -303,15 +308,9 @@ import {CSSProperties, useEffect, useState} from "react";
                 });
         },
         Fields() { // Can we get this.settings to be available here?
-            const {useWatch, useFormState} = window.givewp.form.hooks;
+            const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const supportsHostedFields = donationType !== 'subscription';
-
-            const {
-                isSubmitting
-            } = useFormState();
-
-            console.log('IS SUBMITTING', isSubmitting)
 
             return (
                 <FormFieldsProvider>
