@@ -20,10 +20,12 @@ function AutoStart() {
         selectBlock(amountBlockId).then(() => console.log('Amount block selected'));
     })
 
-    document.addEventListener('exitTour', () => {
-        console.log('Exiting tour')
-        tour.complete();
-    })
+    document.addEventListener('click',function(event){
+        var element = event.target as Element;
+        if(tour.isActive() && element.classList.contains('js-exit-tour')){
+             tour.complete();
+        }
+    },true);
 
     tour.on('complete', () => {
         localStorage.setItem('givewp-next-gen-onboarding-complete', 'true');

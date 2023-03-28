@@ -14,6 +14,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
             {!isFirst && !isLast &&(
                 <div style={{display:'flex', backgroundColor: 'var(--givewp-blue-25)', fontSize: '12px',padding:'4px',borderRadius:'2px',justifyContent:'space-between'}}>
                     <div><strong>Step {stepNumber}</strong> out of {stepCount}</div>
+                    <Button variant='tertiary' className={'js-exit-tour'}>{__('Exit tour', 'give')}</Button>
                 </div>
             )}
             <h3 style={{
