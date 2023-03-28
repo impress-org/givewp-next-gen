@@ -14,6 +14,7 @@ use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
+use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\ChargeRefunded;
@@ -24,6 +25,7 @@ use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\Invoice
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
+use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -64,6 +66,16 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(NextGenTestGatewayOffsite::class);
             $registrar->unregisterGateway(PayPalStandard::id());
             $registrar->registerGateway(PayPalStandardGateway::class);
+
+            $registrar->unregisterGateway(PayPalCommerce::id());
+            $registrar->registerGateway(PayPalCommerceGateway::class);
+        });
+
+
+        add_filter("givewp_create_payment_gateway_data_" . PayPalCommerce::id(), function ($gatewayData) {
+            //
+            $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
+            return $gatewayData;
         });
 
         /**
