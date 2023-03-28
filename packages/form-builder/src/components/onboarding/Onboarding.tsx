@@ -20,6 +20,11 @@ function AutoStart() {
         selectBlock(amountBlockId).then(() => console.log('Amount block selected'));
     })
 
+    document.addEventListener('exitTour', () => {
+        console.log('Exiting tour')
+        tour.complete();
+    })
+
     tour.on('complete', () => {
         localStorage.setItem('givewp-next-gen-onboarding-complete', 'true');
     })

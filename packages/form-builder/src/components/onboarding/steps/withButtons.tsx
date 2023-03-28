@@ -4,10 +4,10 @@ const withButtons = (steps) => {
         text: 'Get started',
         type: 'next'
     }
-    const cancel = {
+    const previous = {
         classes: 'shepherd-button-secondary',
-        text: 'Skip',
-        type: 'cancel'
+        text: 'Previous',
+        type: 'back'
     };
     const next = {
         classes: 'shepherd-button-primary',
@@ -34,7 +34,7 @@ const withButtons = (steps) => {
         }
 
         return {...step, ...{
-                buttons: [cancel, next]
+                buttons: [previous, next]
             }}
     });
 }

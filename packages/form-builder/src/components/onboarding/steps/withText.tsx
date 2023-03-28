@@ -1,5 +1,7 @@
 import {renderToStaticMarkup} from "react-dom/server";
 import Logo from "@givewp/form-builder/components/icons/logo";
+import {Button} from "@wordpress/components";
+import {__} from "@wordpress/i18n";
 
 const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast}) => {
     return (
@@ -11,10 +13,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
             )}
             {!isFirst && !isLast &&(
                 <div style={{display:'flex', backgroundColor: 'var(--givewp-blue-25)', fontSize: '12px',padding:'4px',borderRadius:'2px',justifyContent:'space-between'}}>
-                    <div>
-                        <strong>Tour guide</strong>: Form builder mode
-                    </div>
-                    <div><strong>{stepNumber}</strong>/{stepCount}</div>
+                    <div><strong>Step {stepNumber}</strong> out of {stepCount}</div>
                 </div>
             )}
             <h3 style={{
