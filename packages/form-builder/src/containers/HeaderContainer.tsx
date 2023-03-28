@@ -90,7 +90,7 @@ const HeaderContainer = ({
                         disabled={isSaving || !isDirty}
                         variant="primary"
                     >
-                        {isSaving ? __('Updating...', 'give') : __('Update', 'give')}
+                        {isSaving ? __('Updating...', 'give') : __('Publish', 'give')}
                     </Button>
                     <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={cog} />
                 </>
