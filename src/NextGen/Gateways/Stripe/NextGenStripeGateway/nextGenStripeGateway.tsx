@@ -6,13 +6,37 @@ let stripePromise = null;
 let stripePaymentMethod = null;
 let stripePaymentMethodIsCreditCard = false;
 
+// @see https://stripe.com/docs/currencies#zero-decimal
+const zeroDecimalCurrencies = [
+    'BIF',
+    'CLP',
+    'DJF',
+    'GNF',
+    'JPY',
+    'KMF',
+    'KRW',
+    'MGA',
+    'PYG',
+    'RWF',
+    'UGX',
+    'VND',
+    'VUV',
+    'XAF',
+    'XOF',
+    'XPF',
+];
+
 /**
  * Takes in an amount value in dollar units and returns the calculated cents amount
  *
  * @unreleased
  */
-const dollarsToCents = (amount) => {
-    return Math.round(amount * 100);
+const dollarsToCents = (amount: string, currency: string) => {
+    if (zeroDecimalCurrencies.includes(currency)) {
+        return parseInt(amount);
+    }
+
+    return parseFloat(amount) * 100;
 };
 
 const StripeFields = ({gateway}) => {
@@ -111,10 +135,11 @@ const stripeGateway: StripeGateway = {
         const donationType = useWatch({name: 'donationType'});
         const donationCurrency = useWatch({name: 'currency'});
         const donationAmount = useWatch({name: 'amount'});
+        const stripeAmount = dollarsToCents(donationAmount, donationCurrency.toString().toUpperCase());
 
         const stripeElementOptions = {
             mode: donationType === 'subscription' ? 'subscription' : 'payment',
-            amount: dollarsToCents(donationAmount),
+            amount: stripeAmount,
             currency: donationCurrency.toLowerCase(),
         };
 
