@@ -100,11 +100,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function addStripeWebhookListeners()
     {
-//        Hooks::addAction(
-//            'give_recurring_stripe_process_invoice_payment_succeeded',
-//            InvoicePaymentSucceeded::class
-//        );
-
         Hooks::addAction(
             'give_stripe_processing_payment_intent_succeeded',
             PaymentIntentSucceeded::class
