@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {GiveIcon} from '../components/icons';
-import {cog, listView, plus} from '@wordpress/icons';
+import {close, cog, Icon, listView, plus, moreVertical} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
-import {Button} from '@wordpress/components';
+import {Button, ExternalLink, TextControl, Dropdown, DropdownMenu, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
+import {ShepherdTourContext} from "react-shepherd";
 
 const Logo = () => (
     <div
@@ -53,6 +54,7 @@ const HeaderContainer = ({
             });
     };
 
+    // @ts-ignore
     return (
         <Header
             contentLeft={
@@ -98,6 +100,37 @@ const HeaderContainer = ({
                         {isSaving ? __('Updating...', 'give') : __('Update', 'give')}
                     </Button>
                     <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={cog} />
+                    <Dropdown
+                        // className="my-container-class-name"
+                        // contentClassName="givewp-sidebar-dropdown-content"
+                        // @ts-ignore
+                        popoverProps={ { placement: 'bottom-start' } }
+                        focusOnMount={"container"}
+                        renderToggle={ ( { isOpen, onToggle } ) => (
+                            <Button
+                                onClick={onToggle}
+                                icon={moreVertical}
+                            />
+                        ) }
+                        renderContent={ ({onClose}) => (
+                            <div style={{minWidth: '280px', maxWidth: '400px'}}>
+                                <MenuGroup label={__('Tools', 'give')}>
+                                    <MenuItem
+                                        onClick={() => {
+                                            // @ts-ignore
+                                            if(!window.tour.isActive()) {
+                                                // @ts-ignore
+                                                window.tour.start()
+                                                onClose()
+                                            }
+                                        }}
+                                    >
+                                        {__('Show Guided Tour', 'give')}
+                                    </MenuItem>
+                                </MenuGroup>
+                            </div>
+                        )}
+                    />
                 </>
             }
         />

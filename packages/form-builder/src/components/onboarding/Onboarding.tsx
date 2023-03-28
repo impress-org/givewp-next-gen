@@ -8,7 +8,10 @@ import {useSelect, useDispatch} from "@wordpress/data";
 
 
 function AutoStart() {
-    const tour = useContext(ShepherdTourContext);
+    // @ts-ignore
+    const tour = window.tour = useContext(ShepherdTourContext);
+
+    const completed = localStorage.getItem('givewp-next-gen-onboarding-complete') === 'true';
 
     const {selectBlock} = useDispatch('core/block-editor');
     document.addEventListener('selectAmountBlock', () => {
@@ -22,7 +25,7 @@ function AutoStart() {
     })
 
     useEffect(() => {
-        tour.isActive() || tour.start()
+        ! completed && ( tour.isActive() || tour.start() )
     })
 
     return <></>
@@ -30,12 +33,9 @@ function AutoStart() {
 
 
 const Onboarding = () => {
-    const completed = localStorage.getItem('givewp-next-gen-onboarding-complete') === 'true';
-    return !completed ? (
-        <ShepherdTour steps={steps} tourOptions={options}>
-            <AutoStart/>
-        </ShepherdTour>
-    ) : <></>
+    return <ShepherdTour steps={steps} tourOptions={options}>
+        <AutoStart/>
+    </ShepherdTour>
 }
 
 export default Onboarding;
