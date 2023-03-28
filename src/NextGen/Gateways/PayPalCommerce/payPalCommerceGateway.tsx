@@ -183,7 +183,7 @@ import {CSSProperties, useEffect, useState} from "react";
 
         return (
             <PayPalButtons
-                disabled={isSubmitting}
+                disabled={isSubmitting || isSubmitSuccessful}
                 style={buttonsStyle}
                 // @ts-ignore
                 forceReRender={debounce(() => [amount, firstName, lastName, email, currency], 500)}
