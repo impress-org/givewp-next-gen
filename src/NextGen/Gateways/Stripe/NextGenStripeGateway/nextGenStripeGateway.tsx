@@ -1,4 +1,10 @@
-import {loadStripe, Stripe, StripeElements, StripePaymentElementChangeEvent} from '@stripe/stripe-js';
+import {
+    loadStripe,
+    Stripe,
+    StripeElements,
+    StripeElementsOptionsMode,
+    StripePaymentElementChangeEvent,
+} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
@@ -78,12 +84,9 @@ const stripeGateway: StripeGateway = {
 
         /**
          * Create the Stripe object and pass our api keys
+         * @see https://stripe.com/docs/payments/accept-a-payment-deferred
          */
         stripePromise = loadStripe(stripeKey, {
-            /**
-             * @see https://stripe.com/docs/payments/accept-a-payment-deferred
-             */
-            betas: ['elements_enable_deferred_intent_beta_1'],
             stripeAccount: stripeConnectedAccountId,
         });
     },
@@ -91,7 +94,14 @@ const stripeGateway: StripeGateway = {
         if (!this.stripe || !this.elements) {
             // Stripe.js has not yet loaded.
             // Make sure to disable form submission until Stripe.js has loaded.
-            return;
+            throw new Error('Stripe was not able to load.');
+        }
+
+        // Trigger form validation and wallet collection
+        const {error: submitError} = await this.elements.submit();
+
+        if (submitError) {
+            throw new Error(submitError);
         }
 
         return {
@@ -137,14 +147,13 @@ const stripeGateway: StripeGateway = {
         const donationAmount = useWatch({name: 'amount'});
         const stripeAmount = dollarsToCents(donationAmount, donationCurrency.toString().toUpperCase());
 
-        const stripeElementOptions = {
+        const stripeElementOptions: StripeElementsOptionsMode = {
             mode: donationType === 'subscription' ? 'subscription' : 'payment',
             amount: stripeAmount,
             currency: donationCurrency.toLowerCase(),
         };
 
         return (
-            // @ts-ignore - we are using a beta version of elements so ignore typescript temporarily
             <Elements stripe={stripePromise} options={stripeElementOptions}>
                 <StripeFields gateway={stripeGateway} />
             </Elements>
