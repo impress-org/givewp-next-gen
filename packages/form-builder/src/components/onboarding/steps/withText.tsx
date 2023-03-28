@@ -7,7 +7,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
     return (
         <div>
             {isFirst && (
-                <div style={{display: "flex", justifyContent: 'center', margin: 'var(--givewp-spacing-4) auto'}}>
+                <div style={{display: "flex", justifyContent: 'center', margin: '0 auto var(--givewp-spacing-4)'}}>
                     <Logo/>
                 </div>
             )}
