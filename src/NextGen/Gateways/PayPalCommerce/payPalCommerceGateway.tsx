@@ -164,7 +164,7 @@ import {CSSProperties, useEffect, useState} from "react";
         const donationType = useWatch({name: 'donationType'});
 
         const {
-            isSubmitting
+            isSubmitting, isSubmitSuccessful
         } = useFormState();
 
         const [{ options }, dispatch] = usePayPalScriptReducer();
