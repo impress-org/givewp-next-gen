@@ -112,7 +112,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         $intentArgs = $this->getPaymentIntentArgsFromDonation($donation, $customer);
 
         /**
-         * Update Payment Intent
+         * Generate Payment Intent
          */
         $intent = $this->generateStripePaymentIntent(
             $stripeGatewayData->stripeConnectedAccountId,
