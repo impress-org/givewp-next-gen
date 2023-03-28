@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Decorators\SubscriptionModelDecorator;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -155,6 +156,8 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
+        $subscriptionModelDecorator = new SubscriptionModelDecorator($subscription);
+
         $listener = $this->createMock(
             InvoicePaymentSucceeded::class,
             function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
@@ -168,7 +171,7 @@ class InvoicePaymentSucceededTest extends TestCase
         /** @var PHPUnit_Framework_MockObject_MockObject $listener */
         $listener->expects($this->once())
             ->method('cancelSubscription')
-            ->with($subscription);
+            ->with($subscriptionModelDecorator);
 
         $listener->processEvent($mockEvent);
 

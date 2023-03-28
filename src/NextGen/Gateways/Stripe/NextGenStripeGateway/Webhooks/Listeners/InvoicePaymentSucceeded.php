@@ -5,13 +5,9 @@ namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\Framework\Support\ValueObjects\Money;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Decorators\SubscriptionModelDecorator;
 use Give\Subscriptions\Models\Subscription;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Event;
 use Stripe\Invoice;
 
@@ -64,14 +60,15 @@ class InvoicePaymentSucceeded
         if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
             $this->handleInitialDonation($initialDonation);
         } else {
-            if ($this->shouldCreateRenewal($subscription)) {
-                $subscription = $this->handleRenewal($subscription, $invoice);
+            $subscriptionModel = $this->getSubscriptionModelDecorator($subscription);
+
+            if ($subscriptionModel->shouldCreateRenewal()) {
+                $subscriptionModel = $subscriptionModel->handleRenewal($invoice);
             }
 
-            if ($this->shouldEndSubscription($subscription)) {
-                $this->cancelSubscription($subscription);
-
-                $this->handleSubscriptionCompleted($subscription);
+            if ($subscriptionModel->shouldEndSubscription()) {
+                $this->cancelSubscription($subscriptionModel);
+                $subscriptionModel->handleSubscriptionCompleted();
             }
         }
     }
@@ -79,32 +76,9 @@ class InvoicePaymentSucceeded
     /**
      * @unreleased
      */
-    protected function shouldCreateRenewal(Subscription $subscription): bool
+    protected function getSubscriptionModelDecorator(Subscription $subscription): SubscriptionModelDecorator
     {
-        $billTimes = $subscription->installments;
-        $totalPayments = count($subscription->donations);
-
-        return $subscription->status->isActive() && (0 === $billTimes || $totalPayments < $billTimes);
-    }
-
-    /**
-     * @unreleased
-     * @throws \Exception
-     */
-    protected function handleSubscriptionCompleted(
-        Subscription $subscription
-    ) {
-        $subscription->status = SubscriptionStatus::COMPLETED();
-        $subscription->save();
-    }
-
-    /**
-     * @unreleased
-     * @throws \Exception
-     */
-    protected function cancelSubscription(Subscription $subscription)
-    {
-        $subscription->cancel();
+        return new SubscriptionModelDecorator($subscription);
     }
 
 
@@ -130,60 +104,10 @@ class InvoicePaymentSucceeded
 
     /**
      * @unreleased
-     *
-     * @throws Exception
      * @throws \Exception
      */
-    protected function handleRenewal(Subscription $subscription, Invoice $invoice): Subscription
+    protected function cancelSubscription(SubscriptionModelDecorator $subscriptionModel)
     {
-        $initialDonation = $subscription->initialDonation();
-
-        // create renewal
-        Donation::create([
-            'amount' => Money::fromDecimal(
-                give_stripe_cents_to_dollars($invoice->total),
-                strtoupper($invoice->currency)
-            ),
-            /**
-             * TODO: the payment_intent.succeeded event is going to try setting this status as complete
-             */
-            'type' => DonationType::RENEWAL(),
-            'status' => DonationStatus::COMPLETE(),
-            'createdAt' => Temporal::toDateTime(date_i18n('Y-m-d H:i:s', $invoice->created)),
-            'gatewayTransactionId' => $invoice->payment_intent,
-            'subscriptionId' => $subscription->id,
-            'gatewayId' => $subscription->gatewayId,
-            'donorId' => $subscription->donorId,
-            'formId' => $subscription->donationFormId,
-            /**
-             * TODO: these details might need to come from $invoice object
-             * It appears we do not store this on the subscription
-             * so otherwise would have to reach back to the initial donation to find out (which is how legacy works).
-             */
-            'firstName' => $initialDonation->firstName,
-            'lastName' => $initialDonation->lastName,
-            'email' => $initialDonation->email,
-        ]);
-
-        $subscription->bumpRenewalDate();
-        $subscription->save();
-
-        return Subscription::find($subscription->id);
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function shouldEndSubscription(Subscription $subscription): bool
-    {
-        return $subscription->installments !== 0 && (count($subscription->donations) >= $subscription->installments);
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function shouldProcessSubscription(Subscription $subscription): bool
-    {
-        return $subscription->gatewayId === NextGenStripeGateway::id();
+        $subscriptionModel->cancelSubscription();
     }
 }
