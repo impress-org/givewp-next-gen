@@ -26,7 +26,7 @@ class LegacyStripeAdapter
         );
 
         /**
-         * Adds the stripe account details to donation details page.
+         * Displays the stripe account details to donation details page.
          */
         add_action('give_view_donation_details_payment_meta_after', static function ($donationId) {
             /** @var Donation $donation */
@@ -53,7 +53,7 @@ class LegacyStripeAdapter
         });
 
         /**
-         * Adds the stripe account details to donation details page.
+         * Adds the stripe account details to donation notes and donation meta.
          */
         add_action('give_insert_payment', static function ($donationId) {
             /** @var Donation $donation */
