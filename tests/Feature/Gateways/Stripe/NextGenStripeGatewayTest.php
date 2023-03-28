@@ -9,6 +9,7 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripePaymentIntentData;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\Tests\TestCase;
@@ -73,7 +74,7 @@ class NextGenStripeGatewayTest extends TestCase
 
         $mockGateway = $this->getMockGateway([
             'getOrCreateStripeCustomerFromDonation',
-            'getPaymentIntentArgsFromDonation',
+            'getPaymentIntentDataFromDonation',
             'updateDonationMetaFromPaymentIntent'
         ]);
 
@@ -90,23 +91,25 @@ class NextGenStripeGatewayTest extends TestCase
             ->with($stripeConnectedAccountId, $donation)
             ->willReturn($mockCustomer);
 
-        $intentArgs = [
+        $intentData = StripePaymentIntentData::fromArray([
             'amount' => $donation->amount->formatToMinorAmount(),
             'customer' => $mockCustomer->id,
             'description' => (new SaveDonationSummary)($donation)->getSummaryWithDonor(),
             'metadata' => give_stripe_prepare_metadata($donation->id),
-        ];
+            'currency' => $donation->amount->getCurrency()->getCode(),
+            'statement_descriptor' => 'statement-descriptor',
+        ]);
 
         /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
         $mockGateway->expects($this->once())
-            ->method('getPaymentIntentArgsFromDonation')
+            ->method('getPaymentIntentDataFromDonation')
             ->with($donation, $mockCustomer)
-            ->willReturn($intentArgs);
+            ->willReturn($intentData);
 
         /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('generateStripePaymentIntent')
-            ->with($stripeConnectedAccountId, $intentArgs)
+            ->with($stripeConnectedAccountId, $intentData)
             ->willReturn($stripePaymentIntent);
 
         /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */

@@ -13,6 +13,7 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardL
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripeGatewayData;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;

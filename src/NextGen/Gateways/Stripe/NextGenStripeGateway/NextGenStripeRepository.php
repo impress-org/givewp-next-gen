@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripePaymentIntentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\PaymentGateways\Stripe\ApplicationFee;
@@ -18,14 +19,17 @@ use Stripe\PaymentIntent;
 trait NextGenStripeRepository
 {
     /**
+     * @unreleased update params to use StripePaymentIntentData
      * @since 0.1.0
      * @throws ApiErrorException
      */
-    protected function generateStripePaymentIntent(string $accountId, array $args): PaymentIntent
-    {
+    protected function generateStripePaymentIntent(
+        string $stripeConnectAccountId,
+        StripePaymentIntentData $data
+    ): PaymentIntent {
         return PaymentIntent::create(
-            $args,
-            ['stripe_account' => $accountId]
+            $data->toParams(),
+            $data->toOptions($stripeConnectAccountId)
         );
     }
 
@@ -91,8 +95,10 @@ trait NextGenStripeRepository
      *
      * @throws InvalidPropertyName
      */
-    protected function getPaymentIntentArgsFromDonation(Donation $donation, Customer $customer): array
-    {
+    protected function getPaymentIntentDataFromDonation(
+        Donation $donation,
+        Customer $customer
+    ): StripePaymentIntentData {
         // Collect intent args to be updated
         $intentArgs = [
             'amount' => $donation->amount->formatToMinorAmount(),
@@ -118,10 +124,7 @@ trait NextGenStripeRepository
             $intentArgs['receipt_email'] = $donation->email;
         }
 
-        return apply_filters(
-            'givewp_stripe_create_intent_args',
-            $intentArgs
-        );
+        return StripePaymentIntentData::fromArray($intentArgs);
     }
 
     /**

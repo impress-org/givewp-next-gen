@@ -9,6 +9,7 @@ use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripeGatewayData;
 use Stripe\Exception\ApiErrorException;
 
 /**
@@ -109,14 +110,17 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         /**
          * Setup Stripe Payment Intent args
          */
-        $intentArgs = $this->getPaymentIntentArgsFromDonation($donation, $customer);
+        $intentData = $this->getPaymentIntentDataFromDonation(
+            $donation,
+            $customer
+        );
 
         /**
          * Generate Payment Intent
          */
         $intent = $this->generateStripePaymentIntent(
             $stripeGatewayData->stripeConnectedAccountId,
-            $intentArgs
+            $intentData
         );
 
         /**
