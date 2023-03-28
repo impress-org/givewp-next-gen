@@ -97,7 +97,9 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
         );
 
         /**
-         * Return response to client
+         * Return response to client.
+         * 'clientSecret' is required to confirm payment intent on client side.
+         * 'returnUrl' is required to redirect user to success page.
          */
         return new RespondToBrowser([
             'clientSecret' => $stripeSubscription->latest_invoice->payment_intent->client_secret,
