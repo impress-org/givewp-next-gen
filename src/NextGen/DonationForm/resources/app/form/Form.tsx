@@ -42,7 +42,7 @@ async function handleRedirect(url: string) {
 }
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
-    if (values?.donationType === 'subscription' && !gateway.supportsRecurring) {
+    if (values?.donationType === 'subscription' && !gateway.supportsSubscriptions) {
         return setError('FORM_ERROR', {
             message: __(
                 'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
