@@ -8,7 +8,6 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardL
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
-use Give\Subscriptions\ValueObjects\SubscriptionMode;
 
 /**
  * @unreleased
@@ -177,6 +176,12 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
             }
         );
 
+        // TODO: Preserving this Legacy functionality?
+        // Taken from give-recurring-paypal->create_payment_profile().
+        // "This is a temporary ID used to look it up later during IPN processing"
+        $subscription->gatewaySubscriptionId = 'paypal-' . $donation->purchaseKey;
+        $subscription->save();
+
         // Re-use the PayPal Standard gateway create payment method to build the args and redirect to PayPal..
         return give(PayPalStandardGateway::class)->createPayment($donation, $gatewayData);
     }
@@ -202,12 +207,11 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {
-        //TODO: Implement gatewayDashboardSubscriptionUrl() method.
+        $baseUrl = $subscription->mode->getValue(
+        ) === 'live' ? 'https://www.paypal.com' : 'https://www.sandbox.paypal.com';
 
-        $url = $subscription->mode->equals(SubscriptionMode::LIVE()) ?
-            'https://test.com/' :
-            'https://live/';
-
-        return esc_url("{$url}subscriptions/$subscription->gatewaySubscriptionId");
+        return esc_url(
+            "{$baseUrl}/cgi-bin/webscr?cmd=_profile-recurring-payments&encrypted_profile_id={$subscription->gatewaySubscriptionId}"
+        );
     }
 }
