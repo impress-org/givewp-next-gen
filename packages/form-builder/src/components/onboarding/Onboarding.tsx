@@ -33,7 +33,7 @@ function TourEffectsAndEvents() {
         return () => {
             window.removeEventListener('selectAmountBlock', selectAmountBlockCallback);
         }
-    })
+    }, [])
 
     useEffect(() => {
 
@@ -49,7 +49,7 @@ function TourEffectsAndEvents() {
         return () => {
             window.removeEventListener('click', clickExitTourCallback);
         }
-    })
+    }, [])
 
     useEffect(() => {
         const onTourComplete = () => {
@@ -61,11 +61,11 @@ function TourEffectsAndEvents() {
         return () => {
             tour.off('complete', onTourComplete );
         }
-    })
+    }, [])
 
     useEffect(() => {
         window.onboardingTourData.autoStartTour && ( tour.isActive() || tour.start() );
-    })
+    }, [])
 
     return <></>
 }
