@@ -2,18 +2,19 @@
 
 namespace Give\NextGen\Gateways\PayPal\PayPalStandardGateway;
 
+use Exception;
 use Give\Donations\Models\Donation;
-use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
-use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\Actions\CancelPayPalStandardSubscription;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * @unreleased
  */
-class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable,
-                                                                                    SubscriptionAmountEditable
+class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable
 {
     /**
      * @unreleased
@@ -22,8 +23,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
         Donation $donation,
         Subscription $subscription,
         $gatewayData
-    )
-    {
+    ) {
         $invoiceIdPrefix = $this->getInvoiceIdPrefix();
         /**
          * Add additional query args to PayPal redirect URLs.
@@ -200,18 +200,18 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
 
     /**
      * @unreleased
+     * @throws PaymentGatewayException
      */
     public function cancelSubscription(Subscription $subscription)
     {
-        //TODO: Implement cancelSubscription() method.
-    }
+        try {
+            (new CancelPayPalStandardSubscription())($subscription);
 
-    /**
-     * @unreleased
-     */
-    public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount)
-    {
-        //TODO: Implement updateSubscriptionAmount() method.
+            $subscription->status = SubscriptionStatus::CANCELLED();
+            $subscription->save();
+        } catch (Exception $e) {
+            throw new PaymentGatewayException($e->getMessage());
+        }
     }
 
     /**
@@ -219,8 +219,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {
-        $baseUrl = $subscription->mode->getValue(
-        ) === 'live' ? 'https://www.paypal.com' : 'https://www.sandbox.paypal.com';
+        $baseUrl = $subscription->mode->getValue() === 'live' ? 'https://www.paypal.com' : 'https://www.sandbox.paypal.com';
 
         $gatewaySubscriptionId = !str_contains(
             $subscription->gatewaySubscriptionId,
