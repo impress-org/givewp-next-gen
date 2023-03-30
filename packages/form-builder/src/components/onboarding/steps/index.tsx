@@ -20,7 +20,7 @@ export default Object.values(compose(
     {
         id: 'welcome',
         title: 'Welcome to the visual donation form builder!',
-        text: 'We’ll take you through a quick tour of the new visual donation form builder. This will take less than a minute.',
+        text: 'The following is a quick (less than a minute) tour of the visual donation form builder, to introduce the tools for creating engaging donation forms.',
     },
     {
         id: 'canvas',
