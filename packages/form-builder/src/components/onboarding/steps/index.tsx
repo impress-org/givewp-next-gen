@@ -69,7 +69,7 @@ export default Object.values(compose(
         id: 'designTab',
         attachTo: { element: '.components-tab-panel__tabs button:last-of-type', on: 'left' as Placement },
         title: 'Design Mode',
-        text: 'This is where you get to see and edit the appearance of your form',
+        text: 'Select the design tab to switch the canvas into a preview of what the form will look like, and access various settings for the visual aspect of the form.',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 // @ts-ignore
