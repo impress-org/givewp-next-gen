@@ -93,7 +93,7 @@ export default Object.values(compose(
     {
         id: 'editingAFormDesign',
         attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
-        title: 'Editing a form design',
+        title: 'Design Settings',
         text: 'You can customize the appearance (i.e. colors and features) of your form based on the selected form template',
     },
     {
