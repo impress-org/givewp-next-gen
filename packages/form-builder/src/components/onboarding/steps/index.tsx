@@ -26,7 +26,7 @@ export default Object.values(compose(
         id: 'canvas',
         attachTo: { element: '#FormBlocksCanvas', on: 'right-start' as Placement },
         title: 'Canvas',
-        text: 'This is where you add and edit various blocks and sections to make up your form.',
+        text: 'Add, reorder, and edit blocks and sections here to make up your form.',
     },
     {
         id: 'section',
