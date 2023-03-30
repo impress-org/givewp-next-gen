@@ -45,7 +45,7 @@ export default Object.values(compose(
         id: 'addBlock',
         attachTo: { element: '.givewp-next-gen-sidebar-secondary', on: 'right-start' as Placement },
         title: 'Quick Inserter',
-        text: 'You can drag and drop any block of your choosing on the canvas.',
+        text: 'Drag and drop the block you need onto the canvas. Input fields that can only be inserted once are greyed out when in use.',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 document.getElementById('AddBlockButtonContainer').querySelector('button').click();
