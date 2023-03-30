@@ -19,33 +19,33 @@ export default Object.values(compose(
 )([
     {
         id: 'welcome',
-        title: 'Welcome to the new visual donation form builder',
-        text: 'We’ll take you through a quick tour of the new visual donation form builder. This will take less than a minute.',
+        title: 'Welcome to the visual donation form builder!',
+        text: 'The following is a quick (less than a minute) tour of the visual donation form builder, to introduce the tools for creating engaging donation forms.',
     },
     {
         id: 'canvas',
         attachTo: { element: '#FormBlocksCanvas', on: 'right-start' as Placement },
         title: 'Canvas',
-        text: 'This is where you add and edit various blocks and sections to make up your form.',
+        text: 'Add, reorder, and edit blocks and sections here to make up your form.',
     },
     {
         id: 'section',
         attachTo: { element: '.block-editor-block-list__layout .wp-block > div', on: 'right-start' as Placement },
-        title: 'Section',
-        text: 'This houses the form fields and content.',
+        title: 'Form Sections',
+        text: 'Forms are broken into sections, which contain blocks for fields or content.',
         modalOverlayOpeningRadius: 5, // Match the border radius of the section block element
     },
     {
         id: 'addButton',
         attachTo: { element: '#AddBlockButtonContainer', on: 'bottom' as Placement },
-        title: 'Add button',
-        text: 'This toggles the sidebar and quick inserter for section and blocks for the form',
+        title: 'Sidebar Toggles',
+        text: 'These two buttons give you the ability to add and reorder sections and blocks to the canvas, with drag-and-drop ease.',
     },
     {
         id: 'addBlock',
         attachTo: { element: '.givewp-next-gen-sidebar-secondary', on: 'right-start' as Placement },
-        title: 'Add section/block',
-        text: 'You can drag and drop any block of your choosing on the canvas.',
+        title: 'Quick Inserter',
+        text: 'Drag and drop the block you need onto the canvas. Input fields that can only be inserted once are greyed out when in use.',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 document.getElementById('AddBlockButtonContainer').querySelector('button').click();
@@ -56,8 +56,8 @@ export default Object.values(compose(
     {
         id: 'editingABlock',
         attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
-        title: 'Editing a block',
-        text: 'You can edit the structure of a block in a section. For eg. the “Donation Amount and Levels” is the block being edited here',
+        title: 'Block Settings',
+        text: 'Select a block to edit the settings for that individual block on the Block tab of the editor. Settings will vary depending on the type of block selected.',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 document.dispatchEvent(new CustomEvent('selectAmountBlock'));
@@ -68,8 +68,8 @@ export default Object.values(compose(
     {
         id: 'designTab',
         attachTo: { element: '.components-tab-panel__tabs button:last-of-type', on: 'left' as Placement },
-        title: 'Design tab',
-        text: 'This is where you get to see and edit the appearance of your form',
+        title: 'Design Mode',
+        text: 'Select the design tab to switch the canvas into a preview of what the form will look like, and access various settings for the visual aspect of the form.',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 // @ts-ignore
@@ -81,25 +81,25 @@ export default Object.values(compose(
     {
         id: 'formTemplate',
         attachTo: { element: '.components-panel__row', on: 'left-start' as Placement },
-        title: 'Form template',
-        text: 'Select from an array of available form template options here. More template options are being developed now!',
+        title: 'Form Design',
+        text: 'Select the design of the form based on what you need. More form designs are coming soon!',
     },
     {
         id: 'formDesign',
         attachTo: { element: 'iframe', on: 'right-start' as Placement },
-        title: 'Form design',
-        text: 'This shows how your form looks like with the selected form template',
+        title: 'Live Preview',
+        text: 'As you make changes or select a different design, those changes happen live on the canvas.',
     },
     {
         id: 'editingAFormDesign',
         attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
-        title: 'Editing a form design',
-        text: 'You can customize the appearance (i.e. colors and features) of your form based on the selected form template',
+        title: 'Design Settings',
+        text: 'Individual form designs have various settings and options to allow you to customize appearance via  features like goal progress bars, headings, and custom CSS.',
     },
     {
         id: 'congrats',
-        title: 'Congrats 🎉',
-        text: 'Experience the new visual donation form builder and create the donation form of your dreams',
+        title: 'You\'re Ready to Build!',
+        text: 'The visual donation form builder lets you build and customize forms to more easily raise money online. If you need it, access this tour again with the three-dot menu in the top right of the editor screen. Happy fundraising!',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 // @ts-ignore
