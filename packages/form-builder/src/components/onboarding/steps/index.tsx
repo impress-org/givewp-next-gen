@@ -94,12 +94,12 @@ export default Object.values(compose(
         id: 'editingAFormDesign',
         attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
         title: 'Design Settings',
-        text: 'You can customize the appearance (i.e. colors and features) of your form based on the selected form template',
+        text: 'Individual form designs have various settings and options to allow you to customize appearance via  features like goal progress bars, headings, and custom CSS.',
     },
     {
         id: 'congrats',
-        title: 'Congrats 🎉',
-        text: 'Experience the new visual donation form builder and create the donation form of your dreams',
+        title: 'You\'re Ready to Build!',
+        text: 'The visual donation form builder lets you build and customize forms to more easily raise money online. If you need it, access this tour again with the three-dot menu in the top right of the editor screen. Happy fundraising!',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 // @ts-ignore
