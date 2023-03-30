@@ -101,8 +101,6 @@ const HeaderContainer = ({
                     </Button>
                     <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={cog} />
                     <Dropdown
-                        // className="my-container-class-name"
-                        // contentClassName="givewp-sidebar-dropdown-content"
                         // @ts-ignore
                         popoverProps={ { placement: 'bottom-start' } }
                         focusOnMount={"container"}
