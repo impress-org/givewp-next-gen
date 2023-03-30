@@ -19,7 +19,7 @@ export default Object.values(compose(
 )([
     {
         id: 'welcome',
-        title: 'Welcome to the new visual donation form builder',
+        title: 'Welcome to the visual donation form builder!',
         text: 'We’ll take you through a quick tour of the new visual donation form builder. This will take less than a minute.',
     },
     {
