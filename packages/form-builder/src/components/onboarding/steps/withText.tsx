@@ -1,7 +1,8 @@
 import {renderToStaticMarkup} from "react-dom/server";
 import Logo from "@givewp/form-builder/components/icons/logo";
 import {Button} from "@wordpress/components";
-import {__} from "@wordpress/i18n";
+import {__, sprintf} from "@wordpress/i18n";
+import {createInterpolateElement} from "@wordpress/element";
 
 const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast}) => {
     return (
@@ -13,7 +14,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
             )}
             {!isFirst && !isLast &&(
                 <div style={{display:'flex', backgroundColor: 'var(--givewp-blue-25)', fontSize: '12px',padding:'4px',borderRadius:'2px',justifyContent:'space-between', alignItems: 'center'}}>
-                    <div><strong>Step {stepNumber}</strong> out of {stepCount}</div>
+                    <div>{sprintf(__('Step %s of %s', 'give'), stepNumber, stepCount)}</div>
                     <Button variant='tertiary' className={'js-exit-tour'}>{__('Exit tour', 'give')}</Button>
                 </div>
             )}
@@ -29,11 +30,12 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
 const withText = (steps) => {
 
     return steps.map((step, index) => {
+        const stepCountAdjustedForBookends = steps.length - 2;
         const textContent = <TextContent
             title={step.title}
             description={step.text}
             stepNumber={index + 1}
-            stepCount={steps.length}
+            stepCount={stepCountAdjustedForBookends}
             isFirst={index === 0}
             isLast={index === steps.length - 1}
         />;
