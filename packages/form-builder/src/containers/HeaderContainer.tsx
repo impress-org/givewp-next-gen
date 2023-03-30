@@ -7,7 +7,7 @@ import {Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
-import {FormSettings} from '@givewp/form-builder/types';
+import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 
 const Logo = () => (
@@ -41,9 +41,12 @@ const HeaderContainer = ({
     const dispatch = useFormStateDispatch();
     const [isSaving, setSaving] = useState(false);
 
-    const onSave = () => {
+    const onSave = (formStatus: FormStatus) => {
         setSaving(true);
-        Storage.save({blocks, formSettings})
+
+        dispatch(setFormSettings({formStatus}))
+
+        Storage.save({blocks, formSettings: {...formSettings, formStatus}})
             .catch((error) => alert(error.message))
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
@@ -85,12 +88,25 @@ const HeaderContainer = ({
             contentRight={
                 <>
                     <Button
-                        onClick={onSave}
+                        onClick={() => onSave('draft')}
+                        aria-disabled={isSaving || !isDirty}
+                        disabled={isSaving || !isDirty}
+                        variant="tertiary"
+                    >
+                        {'draft' === formSettings.formStatus ? __('Save as Draft', 'give') : __('Switch to Draft', 'give')}
+                    </Button>
+                    <Button
+                        onClick={() => onSave('publish')}
                         aria-disabled={isSaving || !isDirty}
                         disabled={isSaving || !isDirty}
                         variant="primary"
                     >
-                        {isSaving ? __('Updating...', 'give') : __('Publish', 'give')}
+                        {isSaving
+                            ? __('Updating...', 'give')
+                            : 'publish' === formSettings.formStatus
+                                ? __('Update', 'give')
+                                : __('Publish', 'give')
+                        }
                     </Button>
                     <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={cog} />
                 </>

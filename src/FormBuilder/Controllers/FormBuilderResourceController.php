@@ -77,7 +77,7 @@ class FormBuilderResourceController
             return rest_ensure_response($requiredFieldsError);
         }
 
-        $form->status = DonationFormStatus::PUBLISHED();
+        $form->status = $updatedSettings->formStatus;
         $form->save();
 
         return rest_ensure_response([
