@@ -170,10 +170,20 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
                  * The currency of the payment. Default is USD.
                  */
                 $paypalPaymentArguments['currency_code'] = $subscription->amount->getCurrency()->getCode();
+
                 if (!empty($invoiceIdPrefix)) {
+                    /**
+                     * PayPal Docs:
+                     *
+                     * Pass-through variable you can use to identify your invoice number for this purchase.
+                     *
+                     * By default, no variable is passed back to you.
+                     *
+                     * Character Length: 127
+                     */
                     $paypalPaymentArguments['invoice'] = trim($invoiceIdPrefix) . $donation->purchaseKey;
                 }
-                
+
                 return $paypalPaymentArguments;
             }
         );
