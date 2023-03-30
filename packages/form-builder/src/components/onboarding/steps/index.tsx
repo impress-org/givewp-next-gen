@@ -38,7 +38,7 @@ export default Object.values(compose(
     {
         id: 'addButton',
         attachTo: { element: '#AddBlockButtonContainer', on: 'bottom' as Placement },
-        title: 'Add button',
+        title: 'Sidebar Toggles',
         text: 'These two buttons give you the ability to add and reorder sections and blocks to the canvas, with drag-and-drop ease.',
     },
     {
