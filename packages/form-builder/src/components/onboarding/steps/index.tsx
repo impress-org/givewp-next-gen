@@ -57,7 +57,7 @@ export default Object.values(compose(
         id: 'editingABlock',
         attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
         title: 'Block Settings',
-        text: 'You can edit the structure of a block in a section. For eg. the “Donation Amount and Levels” is the block being edited here',
+        text: 'Select a block to edit the settings for that individual block on the Block tab of the editor. Settings will vary depending on the type of block selected.',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
                 document.dispatchEvent(new CustomEvent('selectAmountBlock'));
