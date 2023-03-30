@@ -56,7 +56,7 @@ export default Object.values(compose(
     {
         id: 'editingABlock',
         attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
-        title: 'Editing a block',
+        title: 'Block Settings',
         text: 'You can edit the structure of a block in a section. For eg. the “Donation Amount and Levels” is the block being edited here',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
