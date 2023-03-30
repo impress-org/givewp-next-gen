@@ -68,7 +68,7 @@ export default Object.values(compose(
     {
         id: 'designTab',
         attachTo: { element: '.components-tab-panel__tabs button:last-of-type', on: 'left' as Placement },
-        title: 'Design tab',
+        title: 'Design Mode',
         text: 'This is where you get to see and edit the appearance of your form',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
