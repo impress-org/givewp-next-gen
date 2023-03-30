@@ -88,7 +88,7 @@ export default Object.values(compose(
         id: 'formDesign',
         attachTo: { element: 'iframe', on: 'right-start' as Placement },
         title: 'Live Preview',
-        text: 'This shows how your form looks like with the selected form template',
+        text: 'As you make changes or select a different design, those changes happen live on the canvas.',
     },
     {
         id: 'editingAFormDesign',
