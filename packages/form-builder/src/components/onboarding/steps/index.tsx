@@ -81,7 +81,7 @@ export default Object.values(compose(
     {
         id: 'formTemplate',
         attachTo: { element: '.components-panel__row', on: 'left-start' as Placement },
-        title: 'Form template',
+        title: 'Form Design',
         text: 'Select from an array of available form template options here. More template options are being developed now!',
     },
     {
