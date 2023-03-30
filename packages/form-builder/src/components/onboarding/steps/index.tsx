@@ -44,7 +44,7 @@ export default Object.values(compose(
     {
         id: 'addBlock',
         attachTo: { element: '.givewp-next-gen-sidebar-secondary', on: 'right-start' as Placement },
-        title: 'Add section/block',
+        title: 'Quick Inserter',
         text: 'You can drag and drop any block of your choosing on the canvas.',
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
