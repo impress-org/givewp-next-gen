@@ -24,7 +24,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
         $gatewayData
     )
     {
-        // TODO: Implement createSubscription() method.
+        $invoiceIdPrefix = $this->getInvoiceIdPrefix();
         /**
          * Add additional query args to PayPal redirect URLs.
          * This does not affect the core PayPal Standard gateway functionality.
@@ -35,7 +35,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
          */
         add_filter(
             'give_gateway_paypal_redirect_args',
-            static function ($paypalPaymentArguments) use ($gatewayData, $donation, $subscription) {
+            static function ($paypalPaymentArguments) use ($gatewayData, $donation, $subscription, $invoiceIdPrefix) {
                 /**
                  * PayPal Docs:
                  * The URL to which PayPal redirects buyers' browser after they complete their payments. For example, specify a URL on your site that displays a thank you for your payment page.
@@ -170,8 +170,10 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
                  * The currency of the payment. Default is USD.
                  */
                 $paypalPaymentArguments['currency_code'] = $subscription->amount->getCurrency()->getCode();
-
-
+                if (!empty($invoiceIdPrefix)) {
+                    $paypalPaymentArguments['invoice'] = trim($invoiceIdPrefix) . $donation->purchaseKey;
+                }
+                
                 return $paypalPaymentArguments;
             }
         );
@@ -179,7 +181,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
         // TODO: Preserving this Legacy functionality?
         // Taken from give-recurring-paypal->create_payment_profile().
         // "This is a temporary ID used to look it up later during IPN processing"
-        $subscription->gatewaySubscriptionId = 'paypal-' . $donation->purchaseKey;
+        $subscription->gatewaySubscriptionId = 'paypal-' . trim($invoiceIdPrefix) . $donation->purchaseKey;
         $subscription->save();
 
         // Re-use the PayPal Standard gateway create payment method to build the args and redirect to PayPal..
@@ -210,8 +212,25 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
         $baseUrl = $subscription->mode->getValue(
         ) === 'live' ? 'https://www.paypal.com' : 'https://www.sandbox.paypal.com';
 
+        $gatewaySubscriptionId = !str_contains(
+            $subscription->gatewaySubscriptionId,
+            'paypal-'
+        ) ? $subscription->gatewaySubscriptionId : null;
+
+        if (!$gatewaySubscriptionId) {
+            return "{$baseUrl}/cgi-bin/webscr?cmd=_profile-recurring-payments";
+        }
+
         return esc_url(
-            "{$baseUrl}/cgi-bin/webscr?cmd=_profile-recurring-payments&encrypted_profile_id={$subscription->gatewaySubscriptionId}"
+            "{$baseUrl}/cgi-bin/webscr?cmd=_profile-recurring-payments&encrypted_profile_id={$gatewaySubscriptionId}"
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getInvoiceIdPrefix()
+    {
+        return give_get_option('paypal_invoice_prefix', 'GIVE-');
     }
 }
