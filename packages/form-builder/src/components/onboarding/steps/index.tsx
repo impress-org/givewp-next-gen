@@ -32,7 +32,7 @@ export default Object.values(compose(
         id: 'section',
         attachTo: { element: '.block-editor-block-list__layout .wp-block > div', on: 'right-start' as Placement },
         title: 'Section',
-        text: 'This houses the form fields and content.',
+        text: 'Forms are broken into sections, which contain blocks for fields or content.',
         modalOverlayOpeningRadius: 5, // Match the border radius of the section block element
     },
     {
