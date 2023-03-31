@@ -44,7 +44,7 @@ export default Object.values(compose(
     },
     {
         id: 'addBlock',
-        attachTo: { element: '.givewp-next-gen-sidebar-secondary', on: 'right-start' as Placement },
+        attachTo: { element: '#givewp-next-gen-sidebar-secondary', on: 'right-start' as Placement },
         title: __('Quick Inserter', 'give'),
         text: __('Drag and drop the block you need onto the canvas. Input fields that can only be inserted once are greyed out when in use.', 'give'),
         beforeShowPromise: function () {
