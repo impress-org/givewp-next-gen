@@ -1,4 +1,4 @@
-import {__, _n} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 
 import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
@@ -6,14 +6,14 @@ import Inspector from './inspector';
 import periodLookup from './period-lookup';
 import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 import {createInterpolateElement} from '@wordpress/element';
-import {RadioControl} from '@wordpress/components';
+import {BaseControl, RadioControl} from '@wordpress/components';
 import Notice from './notice';
 
-import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
-
+import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 
 const Edit = ({attributes, setAttributes}) => {
     const {
+        label = __('Donation Amount', 'give'),
         levels,
         priceOption,
         setPrice,
@@ -32,7 +32,6 @@ const Edit = ({attributes, setAttributes}) => {
     const {gateways} = getFormBuilderData();
     const isRecurringSupported = gateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
-
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
     const isRecurringAdmin = isRecurring && 'admin' === recurringDonationChoice;
@@ -137,19 +136,21 @@ const Edit = ({attributes, setAttributes}) => {
     const displayFixedPriceMessage = displayFixedMessage && !displayFixedRecurringMessage;
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
-            {isRecurringDonor && <BillingPeriodControl options={recurringBillingPeriodOptions} />}
+        <BaseControl id="amount-field" label={label}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
+                {isRecurringDonor && <BillingPeriodControl options={recurringBillingPeriodOptions} />}
 
-            {isMultiLevel && <DonationLevels />}
+                {isMultiLevel && <DonationLevels />}
 
-            {customAmount && <CustomAmount />}
+                {customAmount && <CustomAmount />}
 
-            {displayFixedRecurringMessage && <FixedRecurringMessage />}
+                {displayFixedRecurringMessage && <FixedRecurringMessage />}
 
-            {displayFixedPriceMessage && <FixedPriceMessage />}
+                {displayFixedPriceMessage && <FixedPriceMessage />}
 
-            <Inspector attributes={attributes} setAttributes={setAttributes} />
-        </div>
+                <Inspector attributes={attributes} setAttributes={setAttributes} />
+            </div>
+        </BaseControl>
     );
 };
 

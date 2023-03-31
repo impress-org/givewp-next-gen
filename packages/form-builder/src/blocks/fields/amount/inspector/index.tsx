@@ -1,15 +1,25 @@
-import {BaseControl, CheckboxControl, PanelBody, PanelRow, SelectControl, ToggleControl} from '@wordpress/components';
+import {
+    BaseControl,
+    CheckboxControl,
+    PanelBody,
+    PanelRow,
+    SelectControl,
+    TextControl,
+    ToggleControl,
+} from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import DeleteButton from './delete-button';
 import AddButton from './add-button';
 import {CurrencyControl} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
-import RecurringDonationsPromo from "@givewp/form-builder/promos/recurring-donations";
-import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
+import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 const Inspector = ({attributes, setAttributes}) => {
     const {
+        label = __('Donation Amount', 'give'),
         levels,
         priceOption,
         setPrice,
@@ -44,6 +54,15 @@ const Inspector = ({attributes, setAttributes}) => {
 
     return (
         <InspectorControls>
+            <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
+                <PanelRow>
+                    <TextControl
+                        label={__('Label', 'give')}
+                        value={label}
+                        onChange={(label) => setAttributes({label})}
+                    />
+                </PanelRow>
+            </PanelBody>
             <PanelBody title={__('Donation Options', 'give')} initialOpen={true}>
                 <SelectControl
                     label={__('Donation Option', 'give')}
@@ -63,7 +82,8 @@ const Inspector = ({attributes, setAttributes}) => {
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
                         value={setPrice}
-                        onValueChange={(setPrice) => setAttributes({setPrice})}
+                        onBlur={() => setPrice || setAttributes({setPrice: 25})}
+                        onValueChange={(setPrice) => setAttributes({setPrice: setPrice ? parseInt(setPrice) : 0})}
                     />
                 )}
             </PanelBody>
@@ -121,7 +141,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                                 setAttributes({levels: newLevels});
                                             }}
                                             label="Donation amount Level"
-                                            hideLabelFromVision
+                                            hideLabelFromVision={true}
                                         />
                                         <DeleteButton
                                             onClick={() => {
@@ -144,16 +164,17 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelBody>
             )}
             <PanelBody title={__('Recurring donation', 'give')} initialOpen={false}>
-
                 {!isRecurringSupported && <RecurringDonationsPromo />}
 
-                {isRecurringSupported && (<PanelRow>
-                    <ToggleControl
-                        label={__('Enable recurring donation', 'give')}
-                        checked={recurringEnabled}
-                        onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
-                    />
-                </PanelRow>)}
+                {isRecurringSupported && (
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Enable recurring donation', 'give')}
+                            checked={recurringEnabled}
+                            onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
+                        />
+                    </PanelRow>
+                )}
                 {!!isRecurring && (
                     <PanelRow>
                         <SelectControl

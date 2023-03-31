@@ -13,6 +13,7 @@
                 "name": "custom-block-editor/donation-amount-levels",
                 "isValid": true,
                 "attributes": {
+                    "label": "Donation Amount",
                     "levels": [
                         "10",
                         "25",
@@ -22,7 +23,7 @@
                         "500"
                     ],
                     "priceOption": "multi",
-                    "setPrice": "100",
+                    "setPrice": "25",
                     "customAmount": "true",
                     "customAmountMin": 1,
                     "recurringBillingPeriodOptions": [
