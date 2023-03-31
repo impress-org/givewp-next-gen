@@ -92,7 +92,7 @@ class RegisterFormBuilderPageRoute
 
         wp_localize_script( '@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
-            'autoStartTour' => !get_user_meta(get_current_user_id(), 'give-form-builder-tour-completed', true),
+            'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
         ]);
 
         View::render('FormBuilder.admin-form-builder');
