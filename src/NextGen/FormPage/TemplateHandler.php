@@ -16,7 +16,7 @@ class TemplateHandler
      */
     private $formPageTemplatePath;
 
-    public function __construct( ?Post $post, string $formPageTemplatePath )
+    public function __construct( $post, string $formPageTemplatePath )
     {
         $this->post = $post;
         $this->formPageTemplatePath = $formPageTemplatePath;
