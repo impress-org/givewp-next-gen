@@ -11,6 +11,7 @@ use Give\NextGen\DonationForm\FormDesigns\DeveloperFormDesign\DeveloperFormDesig
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGatewaySubscriptionModule;
 use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGatewaySubscriptionModule;
@@ -94,6 +95,13 @@ class ServiceProvider implements ServiceProviderInterface
                 sprintf("givewp_gateway_%s_subscription_module", PayPalStandardGateway::id()),
                 static function () {
                     return PayPalStandardGatewaySubscriptionModule::class;
+                }
+            );
+
+            add_filter(
+                sprintf("givewp_gateway_%s_subscription_module", NextGenTestGateway::id()),
+                static function () {
+                    return NextGenTestGatewaySubscriptionModule::class;
                 }
             );
         }
