@@ -25,7 +25,7 @@ export default Object.values(compose(
     },
     {
         id: 'canvas',
-        attachTo: { element: '#FormBlocksCanvas', on: 'right-start' as Placement },
+        attachTo: { element: '#form-blocks-canvas', on: 'right-start' as Placement },
         title: __('Canvas', 'give'),
         text: __('Add, reorder, and edit blocks and sections here to make up your form.', 'give'),
     },

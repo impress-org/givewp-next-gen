@@ -2,7 +2,7 @@ import {BlockList, BlockTools, DefaultBlockAppender, ObserveTyping, WritingFlow}
 
 const FormBlocks = () => {
     return (
-        <div id="FormBlocksCanvas">
+        <div id="form-blocks-canvas">
             <BlockTools>
                 <WritingFlow>
                     <ObserveTyping>
