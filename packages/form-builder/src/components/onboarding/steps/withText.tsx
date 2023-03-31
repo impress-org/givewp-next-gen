@@ -34,7 +34,7 @@ const withText = (steps) => {
         const textContent = <TextContent
             title={step.title}
             description={step.text}
-            stepNumber={index + 1}
+            stepNumber={index}
             stepCount={stepCountAdjustedForBookends}
             isFirst={index === 0}
             isLast={index === steps.length - 1}
