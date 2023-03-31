@@ -39,10 +39,13 @@ const HeaderContainer = ({
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
-    const [isSaving, setSaving] = useState(false);
+    const [isSaving, setSaving] = useState(null);
+
+    const isDraftDisabled = ( isSaving || !isDirty ) && 'draft' === formSettings.formStatus;
+    const isPublishDisabled = ( isSaving || !isDirty ) && 'publish' === formSettings.formStatus;
 
     const onSave = (formStatus: FormStatus) => {
-        setSaving(true);
+        setSaving(formStatus);
 
         dispatch(setFormSettings({formStatus}))
 
@@ -51,7 +54,7 @@ const HeaderContainer = ({
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
                 dispatch(setIsDirty(false));
-                setSaving(false);
+                setSaving(null);
                 onSaveNotice();
             });
     };
@@ -89,19 +92,24 @@ const HeaderContainer = ({
                 <>
                     <Button
                         onClick={() => onSave('draft')}
-                        aria-disabled={isSaving || !isDirty}
-                        disabled={isSaving || !isDirty}
+                        aria-disabled={isDraftDisabled}
+                        disabled={isDraftDisabled}
                         variant="tertiary"
                     >
-                        {'draft' === formSettings.formStatus ? __('Save as Draft', 'give') : __('Switch to Draft', 'give')}
+                        {isSaving && 'draft' === isSaving
+                            ? __('Saving...', 'give')
+                            : 'draft' === formSettings.formStatus
+                                ? __('Save as Draft', 'give')
+                                : __('Switch to Draft', 'give')
+                        }
                     </Button>
                     <Button
                         onClick={() => onSave('publish')}
-                        aria-disabled={isSaving || !isDirty}
-                        disabled={isSaving || !isDirty}
+                        aria-disabled={isPublishDisabled}
+                        disabled={isPublishDisabled}
                         variant="primary"
                     >
-                        {isSaving
+                        {isSaving && 'publish' === isSaving
                             ? __('Updating...', 'give')
                             : 'publish' === formSettings.formStatus
                                 ? __('Update', 'give')
