@@ -11,10 +11,11 @@ use Give\NextGen\DonationForm\FormDesigns\DeveloperFormDesign\DeveloperFormDesig
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGatewaySubscriptionModule;
 use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
-use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceGateway;
+use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\ChargeRefunded;
@@ -86,6 +87,13 @@ class ServiceProvider implements ServiceProviderInterface
                 sprintf("givewp_gateway_%s_subscription_module", NextGenStripeGateway::id()),
                 static function () {
                     return NextGenStripeGatewaySubscriptionModule::class;
+                }
+            );
+
+            add_filter(
+                sprintf("givewp_gateway_%s_subscription_module", NextGenTestGateway::id()),
+                static function () {
+                    return NextGenTestGatewaySubscriptionModule::class;
                 }
             );
         }
