@@ -13,6 +13,11 @@ const settings: FieldBlock['settings'] = {
         html: false, // Removes support for an HTML mode.
     },
     attributes: {
+        label: {
+            type: 'string',
+            source: 'attribute',
+            default: __('Donation Amount', 'give'),
+        },
         levels: {
             type: 'array',
             default: ['10', '25', '50', '100', '250'],
@@ -23,7 +28,7 @@ const settings: FieldBlock['settings'] = {
         },
         setPrice: {
             type: 'number',
-            default: '100',
+            default: '25',
         },
         customAmount: {
             type: 'boolean',
