@@ -44,7 +44,7 @@ export default Object.values(compose(
     },
     {
         id: 'addBlock',
-        attachTo: { element: '#givewp-next-gen-sidebar-secondary', on: 'right-start' as Placement },
+        attachTo: { element: '#sidebar-secondary', on: 'right-start' as Placement },
         title: __('Quick Inserter', 'give'),
         text: __('Drag and drop the block you need onto the canvas. Input fields that can only be inserted once are greyed out when in use.', 'give'),
         beforeShowPromise: function () {
@@ -56,7 +56,7 @@ export default Object.values(compose(
     },
     {
         id: 'editingABlock',
-        attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
+        attachTo: { element: '#sidebar-primary', on: 'left-start' as Placement },
         title: __('Block Settings', 'give'),
         text: __('Select a block to edit the settings for that individual block on the Block tab of the editor. Settings will vary depending on the type of block selected.', 'give'),
         beforeShowPromise: function () {

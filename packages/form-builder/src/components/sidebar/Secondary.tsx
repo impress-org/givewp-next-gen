@@ -18,7 +18,7 @@ const Sidebar = ({selected}: PropTypes) => {
     /* eslint-disable react/jsx-pascal-case */
     return (
         <div
-            id="givewp-next-gen-sidebar-secondary"
+            id="sidebar-secondary"
             className="givewp-next-gen-sidebar
              givewp-next-gen-sidebar-secondary"
             role="region"
