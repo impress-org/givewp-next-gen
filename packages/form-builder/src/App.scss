@@ -498,6 +498,10 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 .shepherd-target {
     border: solid 2px var(--wp-blue-blue-50);
 }
+#FormBlocksCanvas.shepherd-target {
+    padding: 58px;
+    margin: -58px;
+}
 .shepherd-modal-overlay-container.shepherd-modal-is-visible {
     opacity: .3 !important;
 }
