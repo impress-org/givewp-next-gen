@@ -71,6 +71,7 @@ import {CSSProperties, useEffect, useState} from 'react';
 
         formData.append('give-amount', amount);
 
+        formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
         formData.append('frequency', subscriptionFrequency);
         formData.append('times', subscriptionInstallments);

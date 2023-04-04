@@ -75,9 +75,20 @@ class ServiceProvider implements ServiceProviderInterface
 
 
         add_filter("givewp_create_payment_gateway_data_" . PayPalCommerce::id(), function ($gatewayData) {
-            //
             $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
             return $gatewayData;
+        });
+
+        add_filter('give_recurring_modify_donation_data', function($recurringData) {
+
+            // PayPal Donations/Commerce (NextGen)
+            if(isset($_GET['action']) && 'give_paypal_commerce_create_plan_id' == $_GET['action']) {
+                $recurringData['period'] = $recurringData['post_data']['period'];
+                $recurringData['frequency'] = $recurringData['post_data']['frequency'];
+                $recurringData['times'] = $recurringData['post_data']['times'];
+            }
+
+            return $recurringData;
         });
 
         /**
