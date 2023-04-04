@@ -32,6 +32,10 @@ import {CSSProperties, useEffect, useState} from 'react';
     let payPalOrderId;
     let payPalSubscriptionId;
 
+    let subscriptionFrequency;
+    let subscriptionInstallments;
+    let subscriptionPeriod;
+
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
         label: 'paypal' as 'paypal' | 'checkout' | 'buynow' | 'pay' | 'installment' | 'subscribe' | 'donate',
@@ -61,12 +65,20 @@ import {CSSProperties, useEffect, useState} from 'react';
 
     const getFormData = () => {
         const formData = new FormData();
+
+        formData.append('give-form-id', payPalDonationsSettings.donationFormId);
+        formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
+
         formData.append('give-amount', amount);
+
+        formData.append('period', subscriptionPeriod);
+        formData.append('frequency', subscriptionFrequency);
+        formData.append('times', subscriptionInstallments);
+
         formData.append('give_first', firstName);
         formData.append('give_last', lastName);
         formData.append('give_email', email);
-        formData.append('give-form-id', payPalDonationsSettings.donationFormId);
-        formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
+
         return formData;
     };
 
@@ -92,7 +104,7 @@ import {CSSProperties, useEffect, useState} from 'react';
 
     const createSubscriptionHandler = async (data, actions) => {
         // eslint-disable-next-line
-        const response = await fetch(`${payPalDonationsSettings.ajaxurl}?action=give_paypal_commerce_create_plan_id`, {
+        const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`, {
             method: 'POST',
             body: getFormData(),
         });
@@ -152,6 +164,11 @@ import {CSSProperties, useEffect, useState} from 'react';
         lastName = useWatch({name: 'lastName'});
         email = useWatch({name: 'email'});
 
+
+        subscriptionFrequency = useWatch({name: 'subscriptionFrequency'});
+        subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
+        subscriptionPeriod = useWatch({name: 'subscriptionPeriod'});
+
         return children;
     };
 
@@ -167,6 +184,13 @@ import {CSSProperties, useEffect, useState} from 'react';
             disabled: isSubmitting || isSubmitSuccessful,
             forceReRender: debounce(() => [amount, firstName, lastName, email, currency], 500),
             onApprove: async (data, actions) => {
+
+                if(donationType === 'subscription') {
+                    // @ts-ignore
+                    document.forms[0].querySelector('[type="submit"]').click();
+                    return;
+                }
+
                 return actions.order.capture().then((details) => {
                     // @ts-ignore
                     document.forms[0].querySelector('[type="submit"]').click();
@@ -200,11 +224,12 @@ import {CSSProperties, useEffect, useState} from 'react';
         const supportsHostedFields = donationType !== 'subscription';
 
         return (
-            <div style={{ display: supportsHostedFields ? 'initial' : 'none'}}>
+
                 <PayPalHostedFieldsProvider
                     notEligibleError={<div>Your account is not eligible</div>}
                     createOrder={createOrderHandler}
                 >
+                    <div style={{ display: supportsHostedFields ? 'initial' : 'none'}}>
                     <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
                     <TextControl
@@ -253,8 +278,10 @@ import {CSSProperties, useEffect, useState} from 'react';
                     <div style={{display: 'flex', gap: '10px'}}></div>
 
                     <HoistHostedFieldContext />
+
+                    </div>
                 </PayPalHostedFieldsProvider>
-            </div>
+
         );
     };
 
@@ -322,6 +349,7 @@ import {CSSProperties, useEffect, useState} from 'react';
                 });
         },
         Fields() {
+            console.log(payPalDonationsSettings)
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider
