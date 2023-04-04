@@ -162,20 +162,6 @@ import {CSSProperties, useEffect, useState} from 'react';
 
         const {isSubmitting, isSubmitSuccessful} = useFormState();
 
-        const [{options}, dispatch] = usePayPalScriptReducer();
-
-        useEffect(() => {
-            dispatch({
-                type: 'resetOptions',
-                value: {
-                    ...options,
-                    currency: currency,
-                    vault: donationType === 'subscription',
-                    intent: donationType === 'subscription' ? 'subscription' : 'capture',
-                },
-            });
-        }, [currency, donationType]);
-
         const props = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
@@ -201,14 +187,17 @@ import {CSSProperties, useEffect, useState} from 'react';
         const lastName = useWatch({name: 'lastName'});
         const donationType = useWatch({name: 'donationType'});
 
-        const supportsHostedFields = donationType !== 'subscription';
-
         const cardholderDefault = [firstName ?? '', lastName ?? ''].filter((x) => x).join(' ');
         const [_cardholderName, setCardholderName] = useState(null);
 
         useEffect(() => {
             cardholderName = _cardholderName ?? cardholderDefault;
         });
+
+        /**
+         * Hosted fields are not supported for subscriptions at this time.
+         */
+        const supportsHostedFields = donationType !== 'subscription';
 
         return (
             <div style={{ display: supportsHostedFields ? 'initial' : 'none'}}>
@@ -269,6 +258,34 @@ import {CSSProperties, useEffect, useState} from 'react';
         );
     };
 
+    function PaymentMethodsWrapper() {
+
+        const {useWatch} = window.givewp.form.hooks;
+        const currency = useWatch({name: 'currency'});
+        const donationType = useWatch({name: 'donationType'});
+
+        const [{options}, dispatch] = usePayPalScriptReducer();
+
+        useEffect(() => {
+            dispatch({
+                type: 'resetOptions',
+                value: {
+                    ...options,
+                    currency: currency,
+                    vault: donationType === 'subscription',
+                    intent: donationType === 'subscription' ? 'subscription' : 'capture',
+                },
+            });
+        }, [currency, donationType]);
+
+        return (
+            <>
+                <SmartButtonsContainer />
+                <HostedFieldsContainer />
+            </>
+        );
+    }
+
     const payPalCommerceGateway: Gateway = {
         id: 'paypal-commerce',
         initialize() {
@@ -307,9 +324,11 @@ import {CSSProperties, useEffect, useState} from 'react';
         Fields() {
             return (
                 <FormFieldsProvider>
-                    <PayPalScriptProvider options={payPalDonationsSettings.sdkOptions}>
-                        <SmartButtonsContainer />
-                        <HostedFieldsContainer />
+                    <PayPalScriptProvider
+                        deferLoading={true}
+                        options={payPalDonationsSettings.sdkOptions}
+                    >
+                        <PaymentMethodsWrapper />
                     </PayPalScriptProvider>
                 </FormFieldsProvider>
             );
