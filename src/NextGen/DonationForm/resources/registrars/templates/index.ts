@@ -2,9 +2,11 @@ import TextField from './fields/Text';
 import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
+import RadioField from './fields/Radio';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
 import NameGroup from './groups/Name';
+import DonationAmountGroup from './groups/DonationAmount';
 import SectionLayout from './layouts/Section';
 import Form from './layouts/Form';
 import AmountField from './fields/Amount';
@@ -30,6 +32,7 @@ const defaultFormTemplates = {
         hidden: HiddenField,
         gateways: Gateways,
         select: SelectField,
+        radio: RadioField,
     },
     elements: {
         paragraph: Paragraph,
@@ -38,6 +41,7 @@ const defaultFormTemplates = {
     },
     groups: {
         name: NameGroup,
+        donationAmount: DonationAmountGroup,
     },
     layouts: {
         wrapper: NodeWrapper,

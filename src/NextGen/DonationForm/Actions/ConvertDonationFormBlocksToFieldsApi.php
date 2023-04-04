@@ -2,7 +2,6 @@
 
 namespace Give\NextGen\DonationForm\Actions;
 
-use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
@@ -24,14 +23,25 @@ use Give\NextGen\Framework\Blocks\BlockModel;
 class ConvertDonationFormBlocksToFieldsApi
 {
     /**
+     * @var int
+     */
+    protected $formId;
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
      * @since 0.1.0
      *
      * @throws TypeNotSupported|NameCollisionException
      */
-    public function __invoke(BlockCollection $blocks): Form
+    public function __invoke(BlockCollection $blocks, int $formId): Form
     {
-        $form = new Form('donation-form');
+        $this->formId = $formId;
+        $this->currency = give_get_currency($formId);
 
+        $form = new Form('donation-form');
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
             $blockIndex++;
@@ -69,24 +79,20 @@ class ConvertDonationFormBlocksToFieldsApi
      * @since 0.1.0
      *
      * @throws EmptyNameException
+     * @throws NameCollisionException
      */
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block): Node
     {
         switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
-                return Amount::make('amount')
-                    ->label(__('Donation Amount', 'give'))
-                    ->levels(...array_map('absint', $block->attributes['levels']))
-                    ->rules('required', 'numeric', 'min:1')
-                    ->allowCustomAmount()
-                    ->defaultValue(50);
+                return $this->createNodeFromAmountBlock($block);
 
             case "custom-block-editor/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
 
             case "custom-block-editor/paragraph":
                 return Paragraph::make(substr(md5(mt_rand()), 0, 7))
-                    ->content($block->attributes['content']);
+                    ->content($block->getAttribute('content'));
 
             case "custom-block-editor/email-field":
                 return Email::make('email')
@@ -105,7 +111,9 @@ class ConvertDonationFormBlocksToFieldsApi
 
             default:
                 return Text::make(
-                    $block->hasAttribute('fieldName') ? $block->getAttribute('fieldName') : $block->clientId
+                    $block->hasAttribute('fieldName') ?
+                        $block->getAttribute('fieldName') :
+                        $block->clientId
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
@@ -119,24 +127,35 @@ class ConvertDonationFormBlocksToFieldsApi
     {
         return Name::make('name')->tap(function ($group) use ($block) {
             $group->getNodeByName('firstName')
-                ->label($block->attributes['firstNameLabel'])
-                ->placeholder($block->attributes['firstNamePlaceholder'])
+                ->label($block->getAttribute('firstNameLabel'))
+                ->placeholder($block->getAttribute('firstNamePlaceholder'))
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('lastName')
-                ->label($block->attributes['lastNameLabel'])
-                ->placeholder($block->attributes['lastNamePlaceholder'])
-                ->required($block->attributes['requireLastName'])
+                ->label($block->getAttribute('lastNameLabel'))
+                ->placeholder($block->getAttribute('lastNamePlaceholder'))
+                ->required($block->getAttribute('requireLastName'))
                 ->rules('max:255');
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')
                     ->label('Title')
-                    ->options(...$block->attributes['honorifics']);
+                    ->options(...$block->getAttribute('honorifics'));
             } else {
                 $group->remove('honorific');
             }
         });
+    }
+
+    /**
+     * @since 0.2.0
+     *
+     * @throws NameCollisionException
+     * @throws EmptyNameException
+     */
+    protected function createNodeFromAmountBlock(BlockModel $block): Node
+    {
+        return (new ConvertDonationAmountBlockToFieldsApi())($block, $this->currency);
     }
 
     /**
@@ -147,26 +166,26 @@ class ConvertDonationFormBlocksToFieldsApi
         if ('field' === $node->getNodeType()) {
             // Label
             if ($block->hasAttribute('label')) {
-                $node->label($block->attributes['label']);
+                $node->label($block->getAttribute('label'));
             }
 
             // Placeholder
             if ($block->hasAttribute('placeholder')) {
-                $node->placeholder($block->attributes['placeholder']);
+                $node->placeholder($block->getAttribute('placeholder'));
             }
 
             // Required
             if ($block->hasAttribute('isRequired')) {
-                $node->required($block->attributes['isRequired']);
+                $node->required($block->getAttribute('isRequired'));
             }
 
-            if($block->hasAttribute('displayInAdmin') && $block->attributes['displayInAdmin']) {
-                $node->displayInAdmin = $block->attributes['displayInAdmin'];
+            if ($block->hasAttribute('displayInAdmin') && $block->getAttribute('displayInAdmin')) {
+                $node->displayInAdmin = $block->getAttribute('displayInAdmin');
             }
 
             /** TODO: ask kyle about $node->showInReceipt() */
-            if($block->hasAttribute('displayInReceipt') && $block->attributes['displayInReceipt']) {
-                $node->displayInReceipt = $block->attributes['displayInReceipt'];
+            if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
+                $node->displayInReceipt = $block->getAttribute('displayInReceipt');
             }
         }
 

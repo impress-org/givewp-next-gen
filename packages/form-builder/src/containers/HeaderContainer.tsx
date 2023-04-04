@@ -1,66 +1,89 @@
-import React, {useState} from 'react';
-import {AddIcon, GiveIcon, ListIcon, SettingsIcon} from '../components/icons';
+import React, {useContext, useState} from 'react';
+import {GiveIcon} from '../components/icons';
+import {close, cog, Icon, listView, plus, moreVertical, drawerRight} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
-import {Button} from '@wordpress/components';
+import {Button, ExternalLink, TextControl, Dropdown, DropdownMenu, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
-import {FormSettings} from "@givewp/form-builder/types";
+import {FormSettings, FormStatus} from '@givewp/form-builder/types';
+import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
+import {ShepherdTourContext} from "react-shepherd";
+
+const Logo = () => (
+    <div
+        style={{
+            height: '60px',
+            width: '50px',
+            backgroundColor: '#FFF',
+            display: 'flex',
+            alignItems: 'center',
+        }}
+    >
+        <div>
+            <a href="edit.php?post_type=give_forms&page=give-forms" title={__('Return to GiveWP', 'give')}>
+                <GiveIcon />
+            </a>
+        </div>
+    </div>
+);
 
 const HeaderContainer = ({
-                             selectedSecondarySidebar,
-                             toggleSelectedSecondarySidebar,
-                             showSidebar,
-                             toggleShowSidebar,
-                             onSaveNotice
-                         }) => {
-    const {blocks, settings: formSettings} = useFormState();
+    selectedSecondarySidebar,
+    toggleSelectedSecondarySidebar,
+    showSidebar,
+    toggleShowSidebar,
+    onSaveNotice,
+}) => {
+    const {blocks, settings: formSettings, isDirty} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
-    const [isSaving, setSaving] = useState(false);
+    const [isSaving, setSaving] = useState(null);
 
-    const onSave = () => {
-        setSaving(true);
-        Storage.save({blocks, formSettings})
+    const isDraftDisabled = ( isSaving || !isDirty ) && 'draft' === formSettings.formStatus;
+    const isPublishDisabled = ( isSaving || !isDirty ) && 'publish' === formSettings.formStatus;
+
+    const onSave = (formStatus: FormStatus) => {
+        setSaving(formStatus);
+
+        dispatch(setFormSettings({formStatus}))
+
+        Storage.save({blocks, formSettings: {...formSettings, formStatus}})
             .catch((error) => alert(error.message))
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
-                setSaving(false);
-                onSaveNotice()
+                dispatch(setIsDirty(false));
+                setSaving(null);
+                onSaveNotice();
             });
     };
 
+    // @ts-ignore
     return (
         <Header
             contentLeft={
                 <>
-                    <div
-                        style={{
-                            height: '60px',
-                            width: '60px',
-                            backgroundColor: '#FFF',
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <div>
-                            <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
-                                <GiveIcon/>
-                            </a>
-                        </div>
+                    <Logo />
+                    <div id="AddBlockButtonContainer" style={{
+                        padding: 'var(--givewp-spacing-2)',
+                        margin: 'calc(var(--givewp-spacing-2) * -1)',
+                    }}>
+                        <Button
+                            style={{width: '32px', height: '32px', minWidth: '32px'}}
+                            className="rotate-icon"
+                            onClick={() => toggleSelectedSecondarySidebar('add')}
+                            isPressed={'add' === selectedSecondarySidebar}
+                            icon={plus}
+                            variant="primary"
+                        />
                     </div>
                     <Button
-                        onClick={() => toggleSelectedSecondarySidebar('add')}
-                        isPressed={'add' === selectedSecondarySidebar}
-                        icon={<AddIcon/>}
-                        variant={'primary'}
-                    />
-                    <Button
+                        style={{width: '32px', height: '32px'}}
                         onClick={() => toggleSelectedSecondarySidebar('list')}
                         isPressed={'list' === selectedSecondarySidebar}
-                        icon={<ListIcon/>}
+                        icon={listView}
                     />
                 </>
             }
@@ -74,10 +97,62 @@ const HeaderContainer = ({
             }
             contentRight={
                 <>
-                    <Button onClick={onSave} disabled={isSaving} variant="primary">
-                        {isSaving ? __('Publishing...', 'give') : __('Publish', 'give')}
+                    <Button
+                        onClick={() => onSave('draft')}
+                        aria-disabled={isDraftDisabled}
+                        disabled={isDraftDisabled}
+                        variant="tertiary"
+                    >
+                        {isSaving && 'draft' === isSaving
+                            ? __('Saving...', 'give')
+                            : 'draft' === formSettings.formStatus
+                                ? __('Save as Draft', 'give')
+                                : __('Switch to Draft', 'give')
+                        }
                     </Button>
-                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon/>}/>
+                    <Button
+                        onClick={() => onSave('publish')}
+                        aria-disabled={isPublishDisabled}
+                        disabled={isPublishDisabled}
+                        variant="primary"
+                    >
+                        {isSaving && 'publish' === isSaving
+                            ? __('Updating...', 'give')
+                            : 'publish' === formSettings.formStatus
+                                ? __('Update', 'give')
+                                : __('Publish', 'give')
+                        }
+                    </Button>
+                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                    <Dropdown
+                        // @ts-ignore
+                        popoverProps={ { placement: 'bottom-start' } }
+                        focusOnMount={"container"}
+                        renderToggle={ ( { isOpen, onToggle } ) => (
+                            <Button
+                                onClick={onToggle}
+                                icon={moreVertical}
+                            />
+                        ) }
+                        renderContent={ ({onClose}) => (
+                            <div style={{minWidth: '280px', maxWidth: '400px'}}>
+                                <MenuGroup label={__('Tools', 'give')}>
+                                    <MenuItem
+                                        onClick={() => {
+                                            // @ts-ignore
+                                            if(!window.tour.isActive()) {
+                                                // @ts-ignore
+                                                window.tour.start()
+                                                onClose()
+                                            }
+                                        }}
+                                    >
+                                        {__('Show Guided Tour', 'give')}
+                                    </MenuItem>
+                                </MenuGroup>
+                            </div>
+                        )}
+                    />
                 </>
             }
         />

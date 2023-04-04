@@ -1,4 +1,13 @@
-import {Element, Field, Gateway, Group, ReceiptDetail, Section as SectionType, SelectOption} from '@givewp/forms/types';
+import {
+    Element,
+    Field,
+    Gateway,
+    Group,
+    RadioOption,
+    ReceiptDetail,
+    Section as SectionType,
+    SelectOption,
+} from '@givewp/forms/types';
 import {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
 import {FC, FormHTMLAttributes, ReactNode} from 'react';
 
@@ -22,11 +31,19 @@ export interface SelectFieldProps extends FieldProps {
     options: Array<SelectOption>;
 }
 
+export interface RadioFieldProps extends FieldProps {
+    options: Array<RadioOption>;
+}
+
 export interface ElementProps extends Element {}
 
 export interface GroupProps extends Group {
     fields: {
         [key: string]: FC<FieldProps>;
+    };
+
+    fieldProps: {
+        [key: string]: FieldProps;
     };
 }
 
@@ -42,9 +59,33 @@ export interface NameProps extends GroupProps {
     };
 }
 
+export interface DonationAmountProps extends GroupProps {
+    fields: {
+        amount: FC<AmountProps | {}>;
+        donationType: FC<FieldProps | {}>;
+        currency: FC<FieldProps | {}>;
+        subscriptionFrequency: FC<FieldProps | {}>;
+        subscriptionPeriod: FC<FieldProps | {}>;
+        subscriptionInstallments: FC<FieldProps | {}>;
+    };
+    fieldProps: {
+        amount: AmountProps;
+        donationType: FieldProps;
+        currency: FieldProps;
+        subscriptionFrequency: FieldProps;
+        subscriptionPeriod: FieldProps;
+        subscriptionInstallments: FieldProps;
+    };
+    subscriptionsEnabled: boolean;
+    subscriptionDetailsAreFixed: boolean;
+}
+
 export interface AmountProps extends FieldProps {
     levels: Number[];
+    allowLevels: boolean;
     allowCustomAmount: boolean;
+
+    fixedAmountValue: number;
 }
 
 export interface ParagraphProps extends ElementProps {

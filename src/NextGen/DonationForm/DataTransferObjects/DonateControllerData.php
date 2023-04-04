@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
@@ -9,6 +10,10 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 class DonateControllerData
 {
@@ -64,11 +69,26 @@ class DonateControllerData
      * @var string|null
      */
     public $embedId;
-
     /**
      * @var bool
      */
     public $isEmbed;
+    /**
+     * @var DonationType
+     */
+    public $donationType;
+    /**
+     * @var SubscriptionPeriod|null
+     */
+    public $subscriptionPeriod;
+    /**
+     * @var int|null
+     */
+    public $subscriptionFrequency;
+    /**
+     * @var int|null
+     */
+    public $subscriptionInstallments;
 
     /**
      * @since 0.1.0
@@ -80,7 +100,7 @@ class DonateControllerData
         return new Donation([
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
-            'amount' => Money::fromDecimal($this->amount, $this->currency),
+            'amount' => $this->amount(),
             'donorId' => $donorId,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
@@ -89,6 +109,29 @@ class DonateControllerData
             'formTitle' => $form->title,
             'company' => $this->company,
             'type' => DonationType::SINGLE()
+        ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
+    {
+        $form = $this->getDonationForm();
+
+        return new Donation([
+            'status' => DonationStatus::PENDING(),
+            'gatewayId' => $this->gatewayId,
+            'amount' => $this->amount(),
+            'donorId' => $donorId,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'formId' => $this->formId,
+            'formTitle' => $form->title,
+            'company' => $this->company,
+            'type' => DonationType::SUBSCRIPTION(),
+            'subscriptionId' => $subscriptionId,
         ]);
     }
 
@@ -153,6 +196,7 @@ class DonateControllerData
                 $param,
                 array_merge(
                     Donation::propertyKeys(),
+                    Subscription::propertyKeys(),
                     [
                         'currency',
                         'wpUserId',
@@ -160,10 +204,41 @@ class DonateControllerData
                         'originUrl',
                         'isEmbed',
                         'embedId',
+                        'donationType',
+                        'subscriptionPeriod',
+                        'subscriptionFrequency',
+                        'subscriptionInstallments'
                     ]
                 ),
                 true
             );
         }, ARRAY_FILTER_USE_KEY);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function toSubscription(int $donorId): Subscription
+    {
+        return new Subscription([
+            'amount' => $this->amount(),
+            'period' => $this->subscriptionPeriod,
+            'frequency' => (int)$this->subscriptionFrequency,
+            'donorId' => $donorId,
+            'installments' => (int)$this->subscriptionInstallments,
+            'status' => SubscriptionStatus::PENDING(),
+            'mode' => give_is_test_mode() ? SubscriptionMode::TEST() : SubscriptionMode::LIVE(),
+            'donationFormId' => $this->formId,
+        ]);
+    }
+
+    /**
+     * @return Money
+     */
+    public function amount(): Money
+    {
+        return Money::fromDecimal($this->amount, $this->currency);
     }
 }

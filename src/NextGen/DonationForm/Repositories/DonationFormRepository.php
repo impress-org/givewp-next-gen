@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Repositories;
 
+use Closure;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
@@ -316,13 +317,18 @@ class DonationFormRepository
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             $gatewayId = $gateway::id();
+            $settings = $this->getGatewayFormSettings($formId, $gateway);
+            $label = give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel();
 
-            $formDataGateways[$gatewayId] = array_merge(
-                [
-                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel(),
-                ],
-                method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
-            );
+            /*
+             * TODO: Make gateway arrayable
+             */
+            $formDataGateways[] = [
+                'id' => $gatewayId,
+                'label' => $label,
+                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
+                'settings' => $settings
+            ];
         }
 
         return $formDataGateways;
@@ -380,23 +386,31 @@ class DonationFormRepository
      */
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form
     {
-        $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks);
+        try {
+            $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+            $formNodes = $form->all();
 
-        $formNodes = $form->all();
+            /** @var Section $lastSection */
+            $lastSection = $form->count() ? end($formNodes) : null;
 
-        /** @var Section $lastSection */
-        $lastSection = $form->count() ? end($formNodes) : null;
+            if ($lastSection) {
+                $lastSection->append(
+                    Hidden::make('formId')
+                        ->defaultValue($formId)
+                        ->rules(
+                            'required', 'integer',
+                            function ($value, Closure $fail, string $key, array $values) use ($formId) {
+                                if ($value !== $formId) {
+                                    $fail('Invalid donation form ID');
+                                }
+                            }
+                        )
+                );
+            }
+        } catch (Exception $exception) {
+            Log::error('Failed converting donation form blocks to fields', compact('formId', 'blocks'));
 
-        if ($lastSection) {
-            $lastSection->append(
-                Hidden::make('formId')
-                    ->defaultValue($formId)
-                    ->rules('required', 'integer'),
-
-                Hidden::make('currency')
-                    ->defaultValue(give_get_currency($formId))
-                    ->rules('required', 'currency')
-            );
+            $form = new Form('donation-form');
         }
 
         Hooks::doAction('givewp_donation_form_schema', $form, $formId);
@@ -412,5 +426,30 @@ class DonationFormRepository
         $form = DB::table('posts')->select(['post_content', 'data'])->where('ID', $formId)->get();
 
         return empty($form->data);
+    }
+
+    /**
+     * Get gateway form settings and handle any exceptions.
+     *
+     * @since 0.2.0
+     */
+    private function getGatewayFormSettings(int $formId, PaymentGateway $gateway): array
+    {
+        if (!method_exists($gateway, 'formSettings')) {
+            return [];
+        }
+
+        try {
+            return $gateway->formSettings($formId);
+        } catch (\Exception $exception) {
+            $gatewayName = $gateway->getName();
+            Log::error("Failed getting gateway ($gatewayName) form settings", [
+                'formId' => $formId,
+                'gateway' => $gatewayName,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return [];
+        }
     }
 }
