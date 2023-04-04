@@ -116,9 +116,9 @@ import {CSSProperties, useEffect, useState} from 'react';
             throw responseJson.data.error;
         }
 
-        payPalSubscriptionId = responseJson.data.id;
-
-        return actions.subscription.create({plan_id: payPalSubscriptionId});
+        return actions.subscription.create({plan_id: responseJson.data.id}).then((orderId) => {
+            return payPalSubscriptionId = orderId;
+        });
     };
 
     const Divider = ({label, style = {}}) => {
@@ -327,6 +327,12 @@ import {CSSProperties, useEffect, useState} from 'react';
                 };
             }
 
+            if(payPalSubscriptionId) {
+                return {
+                    payPalSubscriptionId: payPalSubscriptionId,
+                }
+            }
+
             if (!validateHostedFields()) {
                 throw new Error('Invalid hosted fields');
             }
@@ -350,7 +356,6 @@ import {CSSProperties, useEffect, useState} from 'react';
                 });
         },
         Fields() {
-            console.log(payPalDonationsSettings)
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider

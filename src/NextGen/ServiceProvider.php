@@ -16,6 +16,7 @@ use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGatewaySubscriptionModule;
 use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceGateway;
+use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
 use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
@@ -80,12 +81,11 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_filter('give_recurring_modify_donation_data', function($recurringData) {
-
             // PayPal Donations/Commerce (NextGen)
             if(isset($_GET['action']) && 'give_paypal_commerce_create_plan_id' == $_GET['action']) {
-                $recurringData['period'] = $recurringData['post_data']['period'];
-                $recurringData['frequency'] = $recurringData['post_data']['frequency'];
-                $recurringData['times'] = $recurringData['post_data']['times'];
+                $recurringData['period'] = $recurringData['period'] || $recurringData['post_data']['period'];
+                $recurringData['frequency'] = $recurringData['frequency'] || $recurringData['post_data']['frequency'];
+                $recurringData['times'] = $recurringData['times'] || $recurringData['post_data']['times'];
             }
 
             return $recurringData;
@@ -113,6 +113,13 @@ class ServiceProvider implements ServiceProviderInterface
                 sprintf("givewp_gateway_%s_subscription_module", NextGenTestGateway::id()),
                 static function () {
                     return NextGenTestGatewaySubscriptionModule::class;
+                }
+            );
+
+            add_filter(
+                sprintf("givewp_gateway_%s_subscription_module", PayPalCommerce::id()),
+                static function () {
+                    return PayPalCommerceSubscriptionModule::class;
                 }
             );
         }
