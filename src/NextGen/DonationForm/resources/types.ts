@@ -104,9 +104,9 @@ export interface Gateway extends RegisteredGateway {
 
 export interface BasicCondition {
     type: 'basic';
-    boolean: 'and' | 'or';
+    logicalOperator: 'and' | 'or';
     field: string;
-    operator: '==' | '!=' | '>' | '<' | '>=' | '<=';
+    comparisonOperator: '==' | '!=' | '>' | '<' | '>=' | '<=' | 'contains' | 'not_contains';
     value: any;
 }
 
@@ -115,16 +115,16 @@ export interface NestedCondition {
 
     boolean: 'and' | 'or';
 
-    conditions: VisibilityCondition[];
+    conditions: FieldCondition[];
 }
 
-export type VisibilityCondition = BasicCondition | NestedCondition;
+export type FieldCondition = BasicCondition | NestedCondition;
 
 export interface Node {
     name: string;
     type: string;
     nodeType: string;
-    visibilityConditions: VisibilityCondition[];
+    visibilityConditions: FieldCondition[];
 }
 
 export interface Field extends Node {

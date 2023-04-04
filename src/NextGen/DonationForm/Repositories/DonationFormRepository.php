@@ -410,7 +410,8 @@ class DonationFormRepository
         } catch (Exception $exception) {
             Log::error('Failed converting donation form blocks to fields', compact('formId', 'blocks'));
 
-            $form = new Form('donation-form');
+            $formId = 'donation-form';
+            $form = new Form($formId);
         }
 
         Hooks::doAction('givewp_donation_form_schema', $form, $formId);

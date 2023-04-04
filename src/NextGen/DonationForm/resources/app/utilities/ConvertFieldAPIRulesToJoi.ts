@@ -1,5 +1,5 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
-import {Field, Form, isField} from '@givewp/forms/types';
+import {BasicCondition, Field, FieldCondition, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 
 /**
@@ -10,6 +10,17 @@ const requiredMessage = sprintf(
     __('%s is required.', 'give`'),
     `{#label}`
 );
+
+const conditionOperatorMap = (key, value) => ({
+    '=': Joi.number().equal(value),
+    '!=': Joi.number().not(Joi.number().equal(value)),
+    '>': Joi.number().greater(value),
+    '>=': Joi.number().greater(value).allow(value),
+    '<': Joi.number().less(value),
+    '<=': Joi.number().less(value).allow(value),
+    contains: Joi.string().regex(new RegExp(value)),
+    not_contains: Joi.string().not(Joi.string().regex(new RegExp(value))),
+});
 
 /**
  * @since 0.1.0
@@ -74,6 +85,16 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         }
     }
 
+    if (rules.excludeUnless) {
+        rules.excludeUnless.forEach((condition: BasicCondition) => {
+            joiRules = joiRules.when(condition.field, {
+                is: conditionOperatorMap(condition.comparisonOperator, condition.value),
+                then: Joi.required(),
+                otherwise: joiRules.optional(),
+            });
+        });
+    }
+
     if (rules.hasOwnProperty('number') || !rules.hasOwnProperty('boolean')) {
         if (rules.hasOwnProperty('min')) {
             joiRules = joiRules.min(rules.min);
@@ -95,7 +116,6 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
     return joiRules;
 }
 
-
 /**
  * @since 0.2.0
  */
@@ -116,16 +136,16 @@ function getJoiRulesForAmountField(rules, joiRules): AnySchema {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
             then: Joi.number().integer().required(),
-            otherwise: Joi.optional()
-        })
+            otherwise: Joi.optional(),
+        });
     }
 
     if (rules.hasOwnProperty('subscriptionInstallments')) {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
             then: Joi.number().integer().required(),
-            otherwise: Joi.optional()
-        })
+            otherwise: Joi.optional(),
+        });
     }
 
     return joiRules;

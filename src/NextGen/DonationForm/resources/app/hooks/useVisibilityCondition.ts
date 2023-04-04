@@ -1,6 +1,6 @@
 import {useMemo} from 'react';
 import {useWatch} from 'react-hook-form';
-import {VisibilityCondition} from '@givewp/forms/types';
+import {FieldCondition} from '@givewp/forms/types';
 
 type WatchedFields = Map<string, any>;
 
@@ -15,7 +15,13 @@ const operators = {
     not_contains: (a, b) => !a.includes(b),
 };
 
-export default function useVisibilityCondition(conditions: VisibilityCondition[]): boolean {
+/**
+ * Adds visibility conditions to a field. The given conditions are watched and the hook returns true or false based on
+ * whether the conditions are met.
+ *
+ * @unreleased
+ */
+export default function useVisibilityCondition(conditions: FieldCondition[]): boolean {
     const watchedFieldNames = useMemo<string[]>(() => {
         if (!conditions.length) {
             return [];
@@ -40,13 +46,13 @@ export default function useVisibilityCondition(conditions: VisibilityCondition[]
             return true;
         }
 
-        function conditionPassReducer(passing: boolean, condition: VisibilityCondition) {
+        function conditionPassReducer(passing: boolean, condition: FieldCondition) {
             if (condition.type === 'basic') {
                 const value = watchedFields.get(condition.field);
 
-                const conditionPasses = operators[condition.operator](value, condition.value);
+                const conditionPasses = operators[condition.comparisonOperator](value, condition.value);
 
-                return condition.boolean === 'and' ? passing && conditionPasses : passing || conditionPasses;
+                return condition.logicalOperator === 'and' ? passing && conditionPasses : passing || conditionPasses;
             }
 
             return condition.boolean === 'and'
@@ -63,7 +69,7 @@ export default function useVisibilityCondition(conditions: VisibilityCondition[]
  *
  * @unreleased
  */
-function watchFieldsReducer(fields: Set<string>, condition: VisibilityCondition) {
+function watchFieldsReducer(fields: Set<string>, condition: FieldCondition) {
     if (condition.type === 'basic') {
         return fields.add(condition.field);
     }
