@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\Actions;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\FieldsAPI\Amount;
+use Give\Framework\FieldsAPI\DonationAmount;
 use Give\Framework\FieldsAPI\Field;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
@@ -107,8 +108,17 @@ class StoreBackwardsCompatibleFormMeta
         );
 
         if (!$donationType->isSubscription()) {
+            $this->saveSingleFormMeta(
+                $donationForm->id,
+                '_give_recurring',
+                'no'
+            );
+
             return;
         }
+
+        /** @var DonationAmount $donationAmountField */
+        $donationAmountField = $donationFormSchema->getNodeByName('donationAmount');
 
         /** @var  Field $subscriptionPeriodField */
         $subscriptionPeriodField = $donationFormSchema->getNodeByName('subscriptionPeriod');
@@ -118,6 +128,12 @@ class StoreBackwardsCompatibleFormMeta
 
         /** @var  Field $subscriptionInstallmentsField */
         $subscriptionInstallmentsField = $donationFormSchema->getNodeByName('subscriptionInstallments');
+
+        $this->saveSingleFormMeta(
+            $donationForm->id,
+            '_give_recurring',
+            $donationAmountField->subscriptionDetailsAreFixed ? 'yes_admin' : 'yes'
+        );
 
         // period
         $this->saveSingleFormMeta(

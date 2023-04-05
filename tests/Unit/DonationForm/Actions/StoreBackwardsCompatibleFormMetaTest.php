@@ -109,6 +109,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
         $this->assertEquals('month', $this->getSingleFormMeta($donationForm->id, '_give_period'));
         $this->assertEquals(1, $this->getSingleFormMeta($donationForm->id, '_give_period_interval'));
         $this->assertEquals(0, $this->getSingleFormMeta($donationForm->id, '_give_times'));
+        $this->assertEquals('yes_admin', $this->getSingleFormMeta($donationForm->id, '_give_recurring'));
     }
 
     /**
@@ -156,6 +157,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
         $this->assertEquals('month', $this->getSingleFormMeta($donationForm->id, '_give_period'));
         $this->assertEquals(1, $this->getSingleFormMeta($donationForm->id, '_give_period_interval'));
         $this->assertEquals(0, $this->getSingleFormMeta($donationForm->id, '_give_times'));
+        $this->assertEquals('yes_admin', $this->getSingleFormMeta($donationForm->id, '_give_recurring'));
     }
 
     /**
