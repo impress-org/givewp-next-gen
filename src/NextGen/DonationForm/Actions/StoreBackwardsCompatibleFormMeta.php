@@ -100,9 +100,11 @@ class StoreBackwardsCompatibleFormMeta
     {
         $donationFormSchema = $donationForm->schema();
 
-        /** @var Field $donationTypeField */
+        /** @var Field|null $donationTypeField */
         $donationTypeField = $donationFormSchema->getNodeByName('donationType');
-        $donationType = new DonationType($donationTypeField->getDefaultValue());
+        $donationType = !$donationTypeField ? DonationType::SINGLE() : new DonationType(
+            $donationTypeField->getDefaultValue()
+        );
 
         if (!$donationType->isSubscription()) {
             return;
