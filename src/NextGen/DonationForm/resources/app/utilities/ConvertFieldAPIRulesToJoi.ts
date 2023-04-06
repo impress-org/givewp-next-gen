@@ -11,16 +11,39 @@ const requiredMessage = sprintf(
     `{#label}`
 );
 
-const conditionOperatorMap = (key, value) => ({
-    '=': Joi.number().equal(value),
-    '!=': Joi.number().not(Joi.number().equal(value)),
-    '>': Joi.number().greater(value),
-    '>=': Joi.number().greater(value).allow(value),
-    '<': Joi.number().less(value),
-    '<=': Joi.number().less(value).allow(value),
-    contains: Joi.string().regex(new RegExp(value)),
-    not_contains: Joi.string().not(Joi.string().regex(new RegExp(value))),
-});
+const conditionOperatorMap = (key, value) => {
+    if (key === '=') {
+        return Joi.equal(value);
+    }
+
+    if (key === '!=') {
+        return Joi.not(Joi.equal(value));
+    }
+
+    if (key === '>') {
+        return Joi.number().greater(Number(value));
+    }
+
+    if (key === '>=') {
+        return Joi.number().greater(Number(value)).allow(Number(value));
+    }
+
+    if (key === '<') {
+        return Joi.number().less(Number(value));
+    }
+
+    if (key === '<=') {
+        return Joi.number().less(Number(value)).allow(Number(value));
+    }
+
+    if (key === 'contains') {
+        return Joi.string().regex(new RegExp(value));
+    }
+
+    if (key === 'not_contains') {
+        return Joi.string().not(Joi.string().regex(new RegExp(value)));
+    }
+};
 
 /**
  * @since 0.1.0
@@ -56,6 +79,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
+ * @unreleased add support for excludeUnless rule with basic conditions
  * @since 0.1.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
@@ -85,16 +109,6 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         }
     }
 
-    if (rules.excludeUnless) {
-        rules.excludeUnless.forEach((condition: BasicCondition) => {
-            joiRules = joiRules.when(condition.field, {
-                is: conditionOperatorMap(condition.comparisonOperator, condition.value),
-                then: Joi.required(),
-                otherwise: joiRules.optional(),
-            });
-        });
-    }
-
     if (rules.hasOwnProperty('number') || !rules.hasOwnProperty('boolean')) {
         if (rules.hasOwnProperty('min')) {
             joiRules = joiRules.min(rules.min);
@@ -103,6 +117,29 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         if (rules.hasOwnProperty('max')) {
             joiRules = joiRules.max(rules.max);
         }
+    }
+
+    if (rules.hasOwnProperty('excludeUnless')) {
+        /**
+         * This assumes basic conditions only. If we decided in the future to add support for nested conditions then
+         * this will need to be updated.
+         */
+        rules.excludeUnless.forEach((condition: BasicCondition) => {
+            joiRules = joiRules.when(condition.field, {
+                is: conditionOperatorMap(condition.comparisonOperator, condition.value),
+                otherwise: Joi.optional().allow('', null),
+            });
+        });
+
+        const conditionRules = rules.excludeUnless.reduce((rules, condition: BasicCondition) => {
+            rules[condition.field] = conditionOperatorMap(condition.comparisonOperator, condition.value);
+            return rules;
+        }, {});
+
+        joiRules = joiRules.when(Joi.object(conditionRules), {
+            otherwise: joiRules.optional(),
+            break: true,
+        });
     }
 
     if (rules.required) {

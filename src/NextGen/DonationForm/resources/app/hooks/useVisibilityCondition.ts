@@ -11,8 +11,8 @@ const operators = {
     '>=': (a, b) => a >= b,
     '<': (a, b) => a < b,
     '<=': (a, b) => a <= b,
-    contains: (a, b) => a.includes(b),
-    not_contains: (a, b) => !a.includes(b),
+    contains: (a, b) => String(a).includes(b),
+    not_contains: (a, b) => !String(a).includes(b),
 };
 
 /**
