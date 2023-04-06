@@ -9,6 +9,22 @@ use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 class LegacyStripeAdapter
 {
     /**
+     * This adds the Next Gen Stripe Gateway to the list of give_stripe_supported_payment_methods.
+     *
+     * If this is not included, then the webhooks will not be registered unless a legacy stripe gateway is enabled.
+     *
+     * @unreleased
+     */
+    public function addToStripeSupportedPaymentMethodsList()
+    {
+        add_action('give_stripe_supported_payment_methods', static function ($gateways) {
+            $gateways[] = NextGenStripeGateway::id();
+
+            return $gateways;
+        });
+    }
+
+    /**
      * This adds the Stripe details to the donation details page.
      *
      * @unreleased
