@@ -2,12 +2,14 @@
 
 namespace Give\NextGen\Gateways\PayPalCommerce;
 
-use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
+use GiveRecurring\PaymentGateways\PayPalCommerce\Repositories\Subscription as SubscriptionRepository;
 
 class PayPalCommerceSubscriptionModule extends SubscriptionModule
 {
@@ -27,6 +29,18 @@ class PayPalCommerceSubscriptionModule extends SubscriptionModule
 
     public function cancelSubscription(Subscription $subscription)
     {
-        // TODO: Implement cancelSubscription() method.
+        try {
+            give(SubscriptionRepository::class)
+                ->updateStatus($subscription->gatewaySubscriptionId, 'cancel');
+
+            $subscription->status = SubscriptionStatus::CANCELLED();
+            $subscription->save();
+        } catch (\Exception $exception) {
+            throw new PaymentGatewayException(
+                sprintf('Unable to cancel subscription with PayPal. %s', $exception->getMessage()),
+                $exception->getCode(),
+                $exception
+            );
+        }
     }
 }
