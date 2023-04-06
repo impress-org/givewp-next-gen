@@ -18,7 +18,11 @@ class LegacyStripeAdapter
     public function addToStripeSupportedPaymentMethodsList()
     {
         add_action('give_stripe_supported_payment_methods', static function ($gateways) {
-            $gateways[] = NextGenStripeGateway::id();
+            $gatewayId = NextGenStripeGateway::id();
+
+            if (!in_array($gatewayId, $gateways, true)) {
+                $gateways[] = $gatewayId;
+            }
 
             return $gateways;
         });
