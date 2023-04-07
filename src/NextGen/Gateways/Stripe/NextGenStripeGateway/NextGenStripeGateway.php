@@ -25,7 +25,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public static function id(): string
     {
-        return 'next-gen-stripe';
+        return 'stripe_payment_element';
     }
 
     /**

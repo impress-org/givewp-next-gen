@@ -4,10 +4,27 @@ namespace Give\NextGen\Gateways\Stripe;
 
 use Give\Donations\Models\Donation;
 use Give\Helpers\Gateways\Stripe;
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give_Stripe;
 
 class LegacyStripeAdapter
 {
+    /**
+     * Legacy Stripe gates these files by the use of give_stripe_supported_payment_methods.
+     * This makes it possible to load the files without having to enable a legacy stripe gateway.
+     *
+     * @unreleased
+     */
+    public function loadLegacyStripeWebhooksAndFilters()
+    {
+        $gateways = give_get_option('gateways');
+
+        if (!class_exists('Give_Stripe_Webhooks') && array_key_exists(NextGenTestGateway::id(), $gateways)) {
+            (new Give_Stripe())->include_frontend_files();
+        }
+    }
+
     /**
      * This adds the Next Gen Stripe Gateway to the list of give_stripe_supported_payment_methods.
      *

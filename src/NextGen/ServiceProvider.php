@@ -193,6 +193,6 @@ class ServiceProvider implements ServiceProviderInterface
         $legacyStripeAdapter = give(LegacyStripeAdapter::class);
 
         $legacyStripeAdapter->addDonationDetails();
-        $legacyStripeAdapter->addToStripeSupportedPaymentMethodsList();
+        $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
     }
 }
