@@ -19,7 +19,17 @@ class LegacyStripeAdapter
      */
     public function loadLegacyStripeWebhooksAndFilters()
     {
-        $gateways = give_get_option('gateways');
+        $settings = give_get_settings();
+        $gatewaysFromSettings = $settings['gateways'] ?? [];
+        $gatewaysFromOption = give_get_option('gateways');
+
+        // for some reason, the gateways from the settings are not always in the gateways from the option.
+        // this might be a service provider race conditions.
+        // for now im merging the two arrays to make sure we're checking both places..
+        $gateways = array_merge(
+            $gatewaysFromOption,
+            $gatewaysFromSettings
+        );
 
         if (!class_exists('Give_Stripe_Webhooks') && array_key_exists(NextGenTestGateway::id(), $gateways)) {
             (new Give_Stripe())->include_frontend_files();

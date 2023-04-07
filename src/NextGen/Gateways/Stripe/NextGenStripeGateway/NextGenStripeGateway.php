@@ -49,7 +49,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Stripe (Next Gen)', 'give');
+        return __('Stripe Payment Element (Next Gen)', 'give');
     }
 
     /**
