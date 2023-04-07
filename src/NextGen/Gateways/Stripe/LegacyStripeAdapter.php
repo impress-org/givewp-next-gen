@@ -13,6 +13,7 @@ class LegacyStripeAdapter
     /**
      * Legacy Stripe gates these files by the use of give_stripe_supported_payment_methods.
      * This makes it possible to load the files without having to enable a legacy stripe gateway.
+     * This also makes it possible to load the files without the use of the give_stripe_supported_payment_methods filter.
      *
      * @unreleased
      */
