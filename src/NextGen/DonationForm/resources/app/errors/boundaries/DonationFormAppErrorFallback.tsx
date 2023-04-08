@@ -4,6 +4,13 @@ import {__} from "@wordpress/i18n";
  * @unreleased
  */
 export default function DonationFormAppErrorFallback({error, resetErrorBoundary}) {
+    const {useFormState, useFormContext} = window.givewp.form.hooks;
+    const {errors} = useFormState();
+    const {getValues} = useFormContext();
+
+    // console log more information about the form for debugging.
+    console.info({donationFormErrors: errors, donationFormValues: getValues()});
+
     return (
         <div role="alert">
             <p>

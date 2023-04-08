@@ -144,10 +144,10 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                     <>
                         {sections.map((section) => {
                             return (
-                                <DonationFormErrorBoundary>
+                                <DonationFormErrorBoundary key={section.name}>
                                     <FormSectionTemplate key={section.name} section={section}>
                                         {section.nodes.map((node) => (
-                                            <DonationFormErrorBoundary>
+                                            <DonationFormErrorBoundary key={node.name}>
                                                 <SectionNode key={node.name} node={node} />
                                             </DonationFormErrorBoundary>
                                         ))}
