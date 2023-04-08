@@ -8,8 +8,7 @@ import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
 import Header from './form/Header';
 import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
-import {ErrorBoundary} from 'react-error-boundary';
-import DonationFormAppErrorFallback from '@givewp/forms/app/errors/DonationFormAppErrorFallback';
+import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -36,20 +35,17 @@ const initialState = {
 
 function App() {
     if (form.goal.isAchieved) {
-        return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />;
+        return (
+            <DonationFormErrorBoundary>
+                <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />
+            </DonationFormErrorBoundary>
+        );
     }
 
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
-            <ErrorBoundary
-                FallbackComponent={DonationFormAppErrorFallback}
-                onReset={() => {
-                    window.location.reload();
-                }}
-            >
-                <Header />
-                <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
-            </ErrorBoundary>
+            <Header />
+            <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
         </GiveDonationFormStoreProvider>
     );
 }

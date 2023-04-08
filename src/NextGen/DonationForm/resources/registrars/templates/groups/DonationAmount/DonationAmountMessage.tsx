@@ -1,6 +1,7 @@
 import FixedAmountMessage from './FixedAmountMessage';
 import FixedAmountSubscriptionMessage from './FixedAmountRecurringMessage';
 import {isSubscriptionPeriod} from './subscriptionPeriod';
+import {isDonationTypeSubscription} from '@givewp/forms/types';
 
 /**
  * @since 0.3.0
@@ -20,7 +21,7 @@ export default function DonationAmountMessage({
     const subscriptionPeriod = useWatch({name: 'subscriptionPeriod'});
     const subscriptionFrequency = useWatch({name: 'subscriptionFrequency'});
     const subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
-    const isSubscription = donationType === 'subscription' && isSubscriptionPeriod(subscriptionPeriod);
+    const isSubscription = isDonationTypeSubscription(donationType) && isSubscriptionPeriod(subscriptionPeriod);
 
     const subscriptionHasMoreDetails = subscriptionFrequency > 1 || subscriptionInstallments > 0;
     const displayFixedAmountSubscriptionMessage =
