@@ -2,6 +2,7 @@
 
 namespace Give\Addon;
 
+use Give\Addon\Actions\AutoActivateLicense;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 
 /**
@@ -32,6 +33,11 @@ class Activation
 
             give_update_option('gateways', $gateways);
         }
+
+        give(AutoActivateLicense::class)->__invoke(
+            'PRODUCT_ID_HERE',
+            'b260dd6fad0544b593f4af16734da32b'
+        );
     }
 
     /**
