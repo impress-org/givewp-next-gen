@@ -35,7 +35,7 @@ class Activation
         }
 
         give(AutoActivateLicense::class)->__invoke(
-            'PRODUCT_ID_HERE',
+            '1591640',
             'b260dd6fad0544b593f4af16734da32b'
         );
     }
