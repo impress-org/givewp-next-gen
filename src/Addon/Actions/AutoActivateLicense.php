@@ -22,6 +22,14 @@ class AutoActivateLicense
                 'response' => $response,
             ]);
         }
+
+        $licenses = get_option('give_licenses');
+        $licenses[$license] = array_merge($response, [
+            'is_all_access_pass' => false,
+        ]);
+        update_option('give_licenses', $licenses);
+
+        give_refresh_licenses();
     }
 
     protected function validate($response): bool
