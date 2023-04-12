@@ -21,6 +21,7 @@ class AutoActivateLicense
                 'productId' => $productId,
                 'response' => $response,
             ]);
+            return;
         }
 
         $licenses = get_option('give_licenses');
