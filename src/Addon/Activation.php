@@ -36,7 +36,7 @@ class Activation
 
         give(AutoActivateLicense::class)->__invoke(
             '1591640',
-            '6ac448df103090492e504fb10aa41ce6'
+            '3ecfdb07a933ada8ca7d201d6ea333b3'
         );
     }
 
