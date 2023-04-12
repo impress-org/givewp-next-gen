@@ -5,6 +5,9 @@ namespace Give\Addon\Actions;
 use Give\Log\Log;
 use Give_License;
 
+/**
+ * @since unreleased
+ */
 class AutoActivateLicense
 {
     public function __invoke($productId, $license)
