@@ -5,12 +5,30 @@ Tags: givewp, donation, donations, donation plugin, wordpress donation plugin, w
 Requires at least: 5.5
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.2.0
-Requires Give: 2.25.0
+Stable tag: 0.3.2
+Requires Give: 2.26.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
+
+= 0.3.2: April 12th, 2023 =
+* Enhancement: Added licensing to receive future updates from givewp.com.
+* Enhancement: Improved error handling when the donation form crashes.
+* Fix: Prevent a crash when the form is fixed recurring and donor choice.
+
+= 0.3.1: April 10th, 2023 =
+* Enhancmenet: Improvements to the welcome banner content.
+* Fix: Prevent a fatal error when activating without GiveWP already active.
+* Fix: Prevent errors from breaking the entire donation form.
+
+= 0.3.0: April 7th, 2023 =
+* New: Added compatability with give-recurring to enable recurring donations.
+* New: Added recurring donation settings to the form builder.
+* New: Added recurring donation UI & processing to the donation form.
+* New: Added give-recurring gateway support for Stripe, PayPal Standard, and PayPal Donations.
+* New: Added visual tour to the form builder.
+* New: Added support for draft donations forms.
 
 = 0.2.0: Feb 28th, 2023 =
 * New: Added amount field settings for fixed, multi-level, and custom amounts.

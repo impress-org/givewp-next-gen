@@ -28,7 +28,7 @@ use Stripe\Plan;
 use Stripe\Subscription as StripeSubscription;
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable,
                                                                                    SubscriptionAmountEditable
@@ -37,7 +37,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     use NextGenStripeRepository;
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws Exception
      * @throws ApiErrorException
@@ -109,7 +109,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @inerhitDoc
      * @throws PaymentGatewayException
@@ -122,6 +122,9 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             $stripeSubscription = StripeSubscription::retrieve($subscription->gatewaySubscriptionId);
 
             $stripeSubscription->cancel();
+
+            $subscription->status = SubscriptionStatus::CANCELLED();
+            $subscription->save();
         } catch (\Exception $exception) {
             throw new PaymentGatewayException(
                 sprintf(
@@ -135,7 +138,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws UnableToCreateStripePlan
      */
@@ -177,7 +180,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws Exception
      * @throws \Exception
@@ -224,7 +227,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      * @throws \Exception
      */
     protected function updateSubscriptionMetaFromStripeSubscription(
@@ -242,7 +245,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @return void
      * @throws Exception
@@ -282,7 +285,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * TODO: This is the start to implementing SubscriptionPaymentMethodEditable but there needs to be a donor dashboard counterpart to this in GiveWP core to work.
      * TODO: This would actually need to use the Payment Element because the payment methods are dynamic.
@@ -333,7 +336,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @inheritDoc
      * @throws PaymentGatewayException
@@ -369,7 +372,7 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {

@@ -2,6 +2,7 @@
 
 namespace Give\Addon;
 
+use Give\Addon\Actions\AutoActivateLicense;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 
 /**
@@ -15,12 +16,17 @@ class Activation
     /**
      * Activate add-on action hook.
      *
-     * @unreleased enable the NextGenTestGateway gateway by default
+     * @since 0.3.2 auto-activate free license key
+     * @since 0.3.0 enable the NextGenTestGateway gateway by default
      * @since 0.1.0
      * @return void
      */
     public static function activateAddon()
     {
+        if (!Environment::isGiveActive()) {
+            return;
+        }
+
         $gateways = give_get_option('gateways');
 
         if (!array_key_exists(NextGenTestGateway::id(), $gateways)) {
@@ -28,6 +34,11 @@ class Activation
 
             give_update_option('gateways', $gateways);
         }
+
+        give(AutoActivateLicense::class)->__invoke(
+            '1591640',
+            '3ecfdb07a933ada8ca7d201d6ea333b3'
+        );
     }
 
     /**

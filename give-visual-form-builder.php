@@ -9,6 +9,7 @@ use Give\NextGen\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
 use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
 use Give\NextGen\FormPage\ServiceProvider as FormPageServiceProvider;
 use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
+use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
 
@@ -16,7 +17,7 @@ use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
  * Plugin Name:         Give - Visual Donation Form Builder
  * Plugin URI:          https://github.com/impress-org/givewp-next-gen
  * Description:         Create the donation form of your dreams using an easy-to-use visual donation form builder.
- * Version:             0.2.0
+ * Version:             0.3.2
  * Requires at least:   5.5
  * Requires PHP:        7.2
  * Author:              GiveWP
@@ -27,11 +28,11 @@ use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
 defined('ABSPATH') or exit;
 
 // Add-on name
-define('GIVE_NEXT_GEN_NAME', 'GiveWP - Visual Donation Form Builder');
+define('GIVE_NEXT_GEN_NAME', 'Visual Form Builder');
 
 // Versions
-define('GIVE_NEXT_GEN_VERSION', '0.2.0');
-define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.25.0');
+define('GIVE_NEXT_GEN_VERSION', '0.3.2');
+define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.26.0');
 
 // Add-on paths
 define('GIVE_NEXT_GEN_FILE', __FILE__);
@@ -53,9 +54,12 @@ register_uninstall_hook(GIVE_NEXT_GEN_FILE, [Activation::class, 'uninstallAddon'
 // Register the add-on service provider with the GiveWP core.
 add_action(
     'before_give_init',
-    function () {
+    static function () {
         // Check Give min required version.
         if (Environment::giveMinRequiredVersionCheck()) {
+            // this needs to load before the LegacyServiceProvider loads in GiveWP.
+            give(LegacyStripeAdapter::class)->addToStripeSupportedPaymentMethodsList();
+
             give()->registerServiceProvider(AddonServiceProvider::class);
             give()->registerServiceProvider(DonationFormServiceProvider::class);
             give()->registerServiceProvider(NextGenServiceProvider::class);

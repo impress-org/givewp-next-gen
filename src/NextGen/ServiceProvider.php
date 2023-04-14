@@ -16,6 +16,7 @@ use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGatewaySubscriptionModule;
 use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceGateway;
+use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
 use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
@@ -75,9 +76,22 @@ class ServiceProvider implements ServiceProviderInterface
 
 
         add_filter("givewp_create_payment_gateway_data_" . PayPalCommerce::id(), function ($gatewayData) {
-            //
             $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
             return $gatewayData;
+        });
+
+        add_filter('give_recurring_modify_donation_data', function($recurringData) {
+            /**
+             * PayPal Donations/Commerce (NextGen)
+             * Optionally account for the period, frequency, and times values being passed via post data.
+             */
+            if(isset($_GET['action']) && 'give_paypal_commerce_create_plan_id' == $_GET['action']) {
+                $recurringData['period'] = $recurringData['period'] ?: $recurringData['post_data']['period'];
+                $recurringData['frequency'] = $recurringData['frequency'] ?: $recurringData['post_data']['frequency'];
+                $recurringData['times'] = $recurringData['times'] ?: $recurringData['post_data']['times'];
+            }
+
+            return $recurringData;
         });
 
         /**
@@ -104,10 +118,16 @@ class ServiceProvider implements ServiceProviderInterface
                     return NextGenTestGatewaySubscriptionModule::class;
                 }
             );
+
+            add_filter(
+                sprintf("givewp_gateway_%s_subscription_module", PayPalCommerce::id()),
+                static function () {
+                    return PayPalCommerceSubscriptionModule::class;
+                }
+            );
         }
 
-        give(LegacyStripeAdapter::class)->addDonationDetails();
-
+        $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
     }
 
@@ -124,7 +144,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     private function addStripeWebhookListeners()
     {
@@ -162,5 +182,17 @@ class ServiceProvider implements ServiceProviderInterface
             'give_recurring_stripe_processing_customer_subscription_deleted',
             CustomerSubscriptionDeleted::class
         );
+    }
+
+    /**
+     * @since 0.3.0
+     */
+    private function addLegacyStripeAdapter()
+    {
+        /** @var LegacyStripeAdapter $legacyStripeAdapter */
+        $legacyStripeAdapter = give(LegacyStripeAdapter::class);
+
+        $legacyStripeAdapter->addDonationDetails();
+        $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
     }
 }

@@ -4,14 +4,63 @@ namespace Give\NextGen\Gateways\Stripe;
 
 use Give\Donations\Models\Donation;
 use Give\Helpers\Gateways\Stripe;
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give_Stripe;
 
 class LegacyStripeAdapter
 {
     /**
+     * Legacy Stripe gates these files by the use of give_stripe_supported_payment_methods.
+     * This makes it possible to load the files without having to enable a legacy stripe gateway.
+     * This also makes it possible to load the files without the use of the give_stripe_supported_payment_methods filter.
+     *
+     * @since 0.3.2 Fix reference to Next Gen gateway when loading Stripe (legacy) code.
+     * @since 0.3.0
+     */
+    public function loadLegacyStripeWebhooksAndFilters()
+    {
+        $settings = give_get_settings();
+        $gatewaysFromSettings = $settings['gateways'] ?? [];
+        $gatewaysFromOption = give_get_option('gateways');
+
+        // for some reason, the gateways from the settings are not always in the gateways from the option.
+        // this might be a service provider race conditions.
+        // for now im merging the two arrays to make sure we're checking both places..
+        $gateways = array_merge(
+            $gatewaysFromOption,
+            $gatewaysFromSettings
+        );
+
+        if (!class_exists('Give_Stripe_Webhooks') && array_key_exists(NextGenStripeGateway::id(), $gateways)) {
+            (new Give_Stripe())->include_frontend_files();
+        }
+    }
+
+    /**
+     * This adds the Next Gen Stripe Gateway to the list of give_stripe_supported_payment_methods.
+     *
+     * If this is not included, then the webhooks will not be registered unless a legacy stripe gateway is enabled.
+     *
+     * @since 0.3.0
+     */
+    public function addToStripeSupportedPaymentMethodsList()
+    {
+        add_filter('give_stripe_supported_payment_methods', static function ($gateways) {
+            $gatewayId = NextGenStripeGateway::id();
+
+            if (!in_array($gatewayId, $gateways, true)) {
+                $gateways[] = $gatewayId;
+            }
+
+            return $gateways;
+        });
+    }
+
+    /**
      * This adds the Stripe details to the donation details page.
      *
-     * @unreleased
+     * @since 0.3.0
      */
     public function addDonationDetails()
     {
