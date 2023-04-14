@@ -14,6 +14,7 @@ import AddButton from './add-button';
 import {CurrencyControl} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
+import PromoContainer from '@givewp/form-builder/promos/container';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
@@ -48,8 +49,10 @@ const Inspector = ({attributes, setAttributes}) => {
         }
     };
 
-    const {gateways} = getFormBuilderData();
-    const isRecurringSupported = gateways.some((gateway) => gateway.supportsSubscriptions);
+    const {gateways, isRecurringEnabled, gatewaySettingsUrl} = getFormBuilderData();
+    const enabledGateways = gateways.filter((gateway) => gateway.enabled);
+    const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
+    const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
 
     return (
@@ -164,7 +167,24 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelBody>
             )}
             <PanelBody title={__('Recurring Donations', 'give')} initialOpen={false}>
-                {!isRecurringSupported && <RecurringDonationsPromo />}
+                {!isRecurringSupported && (
+                    isRecurringEnabled
+                        ? <div style={{
+                            fontSize: '13px',
+                            lineHeight: '1.3em',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px',
+                            padding: '6px 12px 12px 0',
+                        }}>
+                            <div>None of the payment gateways currently enabled support Recurring Donations. To collect recurring donations, enable one of the following payment gateways:</div>
+                            <ul style={{listStyleType: 'inherit', marginLeft: '12px'}}>
+                                {recurringGateways.map((gateway) => <li key={gateway.id}>{gateway.label}</li>)}
+                            </ul>
+                            <a href={gatewaySettingsUrl} target="_blank" rel="noreferrer noopener">Go to Payment Gateway Settings</a>
+                        </div>
+                        : <RecurringDonationsPromo />
+                )}
 
                 {isRecurringSupported && (
                     <PanelRow>

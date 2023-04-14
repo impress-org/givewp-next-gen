@@ -9,6 +9,8 @@ declare global {
         },
         formBuilderData?: {
             gateways: Gateway[];
+            isRecurringEnabled: string;
+            gatewaySettingsUrl: string;
         },
     }
 }
