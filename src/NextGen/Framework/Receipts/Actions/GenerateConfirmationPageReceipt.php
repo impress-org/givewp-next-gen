@@ -157,6 +157,10 @@ class GenerateConfirmationPageReceipt
     {
         if ($receipt->donation->subscriptionId) {
             $subscription = $receipt->donation->subscription;
+            $subscriptionAmountLabel = sprintf(
+                $subscription->period->label($subscription->frequency),
+                $subscription->frequency
+            );
 
             $receipt->subscriptionDetails->addDetails([
                 new ReceiptDetail(
@@ -166,7 +170,7 @@ class GenerateConfirmationPageReceipt
                             sprintf(
                                 '%s / %s',
                                 $subscription->amount->formatToDecimal(),
-                                $subscription->period->getValue()
+                                $subscriptionAmountLabel
                             )
                     ]
                 ),
