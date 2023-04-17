@@ -32,6 +32,7 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
+     * @unreleased conditionally append blocks if block has inner blocks
      * @since 0.1.0
      *
      * @throws TypeNotSupported|NameCollisionException
@@ -45,25 +46,27 @@ class ConvertDonationFormBlocksToFieldsApi
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
             $blockIndex++;
-            $form->append($this->convertTopLevelBlockToSection($block, $blockIndex));
+            $section = $this->convertTopLevelBlockToSection($block, $blockIndex);
+
+            if ($block->innerBlocks) {
+                $section->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
+            }
+
+            $form->append($section);
         }
 
         return $form;
     }
 
     /**
+     * @unreleased remove innerBlock appending
      * @since 0.1.0
-     * @throws NameCollisionException
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
     {
         return Section::make($block->getShortName() . '-' . $blockIndex)
             ->label($block->getAttribute('title'))
-            ->description($block->getAttribute('description'))
-            ->append(
-                ...array_map([$this, 'convertInnerBlockToNode'],
-                    $block->innerBlocks ? $block->innerBlocks->getBlocks() : [])
-            );
+            ->description($block->getAttribute('description'));
     }
 
     /**
