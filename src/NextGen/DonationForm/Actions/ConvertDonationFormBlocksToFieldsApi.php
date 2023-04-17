@@ -61,8 +61,7 @@ class ConvertDonationFormBlocksToFieldsApi
             ->label($block->getAttribute('title'))
             ->description($block->getAttribute('description'))
             ->append(
-                ...
-                array_map([$this, 'convertInnerBlockToNode'],
+                ...array_map([$this, 'convertInnerBlockToNode'],
                     $block->innerBlocks ? $block->innerBlocks->getBlocks() : [])
             );
     }
