@@ -24,9 +24,9 @@ export default function DonationSummary() {
                 return createInterpolateElement(__('Every <period />', 'give'), {
                     period: <span>{`${frequency} ${subscriptionPeriod.label().plural()}`}</span>,
                 });
-            } else {
-                return subscriptionPeriod.label().capitalize().adjective();
             }
+
+            return subscriptionPeriod.label().capitalize().adjective();
         }
 
         return __('One time', 'give');
