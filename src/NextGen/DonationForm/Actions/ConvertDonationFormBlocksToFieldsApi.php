@@ -60,13 +60,17 @@ class ConvertDonationFormBlocksToFieldsApi
         return Section::make($block->getShortName() . '-' . $blockIndex)
             ->label($block->getAttribute('title'))
             ->description($block->getAttribute('description'))
-            ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
+            ->append(
+                ...
+                array_map([$this, 'convertInnerBlockToNode'],
+                    $block->innerBlocks ? $block->innerBlocks->getBlocks() : [])
+            );
     }
 
     /**
      * @since 0.1.0
      *
-     * @throws EmptyNameException
+     * @throws EmptyNameException|NameCollisionException
      */
     protected function convertInnerBlockToNode(BlockModel $block): Node
     {
