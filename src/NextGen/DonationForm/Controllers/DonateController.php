@@ -40,9 +40,9 @@ class DonateController
             $donation->save();
 
             do_action('givewp_donate_controller_donation_created', $formData, $donation);
-            
+
             $gatewayData = apply_filters(
-                "givewp_create_payment_gateway_data_{$donation->gatewayId}",
+                "givewp_create_payment_gateway_data_{$registeredGateway::id()}",
                 (new GetGatewayDataFromRequest)(),
                 $donation
             );
@@ -65,7 +65,7 @@ class DonateController
             do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
             $gatewayData = apply_filters(
-                "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
+                "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
                 (new GetGatewayDataFromRequest)(),
                 $donation,
                 $subscription
