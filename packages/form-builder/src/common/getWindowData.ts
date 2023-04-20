@@ -9,7 +9,9 @@ declare global {
         },
         formBuilderData?: {
             gateways: Gateway[];
-            isRecurringEnabled: string;
+            recurringAddonData?: {
+                isInstalled: boolean;
+            },
             gatewaySettingsUrl: string;
         },
     }

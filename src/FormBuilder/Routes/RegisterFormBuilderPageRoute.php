@@ -115,6 +115,9 @@ class RegisterFormBuilderPageRoute
             ->registerLocalizeData('formBuilderData', [
                 'gateways' => array_values($builderPaymentGatewayData),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
+                'recurringAddonData' => [
+                    'isInstalled' => defined('GIVE_RECURRING_VERSION') ,
+                ],
                 'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
             ])
             ->enqueue();

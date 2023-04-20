@@ -48,7 +48,7 @@ const Inspector = ({attributes, setAttributes}) => {
         }
     };
 
-    const {gateways, isRecurringEnabled, gatewaySettingsUrl} = getFormBuilderData();
+    const {gateways, recurringAddonData, gatewaySettingsUrl} = getFormBuilderData();
     const enabledGateways = gateways.filter((gateway) => gateway.enabled);
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
@@ -167,7 +167,7 @@ const Inspector = ({attributes, setAttributes}) => {
             )}
             <PanelBody title={__('Recurring Donations', 'give')} initialOpen={false}>
                 {!isRecurringSupported && (
-                    isRecurringEnabled
+                    recurringAddonData.isInstalled
                         ? <div style={{
                             fontSize: '13px',
                             lineHeight: '1.3em',
