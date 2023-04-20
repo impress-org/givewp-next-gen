@@ -176,7 +176,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             gap: '12px',
                             padding: '6px 12px 12px 0',
                         }}>
-                            <div>None of the payment gateways currently enabled support Recurring Donations. To collect recurring donations, enable one of the following payment gateways:</div>
+                            <div>{__('None of the payment gateways currently enabled support Recurring Donations. To collect recurring donations, enable one of the following payment gateways:', 'give')}</div>
                             <ul style={{listStyleType: 'inherit', marginLeft: '12px'}}>
                                 {recurringGateways.map((gateway) => <li key={gateway.id}>{gateway.label}</li>)}
                             </ul>
