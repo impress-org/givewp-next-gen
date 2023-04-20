@@ -14,7 +14,6 @@ import AddButton from './add-button';
 import {CurrencyControl} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
-import PromoContainer from '@givewp/form-builder/promos/container';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
