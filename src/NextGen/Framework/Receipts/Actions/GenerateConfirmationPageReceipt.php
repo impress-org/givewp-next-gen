@@ -157,6 +157,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased update subscription amount label with frequency
      * @since 0.1.0
      *
      * @return void
@@ -165,6 +166,10 @@ class GenerateConfirmationPageReceipt
     {
         if ($receipt->donation->subscriptionId) {
             $subscription = $receipt->donation->subscription;
+            $subscriptionAmountLabel = sprintf(
+                $subscription->period->label($subscription->frequency),
+                $subscription->frequency
+            );
 
             $receipt->subscriptionDetails->addDetails([
                 new ReceiptDetail(
@@ -174,7 +179,7 @@ class GenerateConfirmationPageReceipt
                             sprintf(
                                 '%s / %s',
                                 $subscription->amount->formatToDecimal(),
-                                $subscription->period->getValue()
+                                $subscriptionAmountLabel
                             )
                     ]
                 ),
