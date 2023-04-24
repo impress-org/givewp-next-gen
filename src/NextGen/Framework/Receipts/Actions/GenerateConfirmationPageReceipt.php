@@ -46,11 +46,19 @@ class GenerateConfirmationPageReceipt
             return $field->shouldDisplayInReceipt();
         });
 
-        return array_map(static function (Field $field) use ($donation) {
+        return array_filter(array_map(static function (Field $field) use ($donation) {
             /** @var Field|HasLabel|HasName $field */
             if ($field->shouldStoreAsDonorMeta()) {
+                if (!metadata_exists('donor', $donation->donor->id, $field->getName()) ) {
+                    return null;
+                }
+
                 $value = give()->donor_meta->get_meta($donation->donor->id, $field->getName(), true);
             } else {
+                if (!metadata_exists('give_payment', $donation->id, $field->getName()) ) {
+                    return null;
+                }
+
                 $value = give()->payment_meta->get_meta($donation->id, $field->getName(), true);
             }
 
@@ -58,7 +66,7 @@ class GenerateConfirmationPageReceipt
                 $field->getLabel(),
                 $value
             );
-        }, $customFields);
+        }, $customFields));
     }
 
     /**
