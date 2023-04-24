@@ -1,6 +1,7 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
 import {BasicCondition, Field, FieldCondition, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
+import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
 /**
  * @since 0.1.0
@@ -10,51 +11,6 @@ const requiredMessage = sprintf(
     __('%s is required.', 'give`'),
     `{#label}`
 );
-
-const conditionOperatorJoiMap = (key, value) => {
-    if (key === '=') {
-        return Joi.equal(value);
-    }
-
-    if (key === '!=') {
-        return Joi.not(Joi.equal(value));
-    }
-
-    if (key === '>') {
-        return Joi.number().greater(Number(value));
-    }
-
-    if (key === '>=') {
-        return Joi.number().greater(Number(value)).allow(Number(value));
-    }
-
-    if (key === '<') {
-        return Joi.number().less(Number(value));
-    }
-
-    if (key === '<=') {
-        return Joi.number().less(Number(value)).allow(Number(value));
-    }
-
-    if (key === 'contains') {
-        return Joi.string().regex(new RegExp(value));
-    }
-
-    if (key === 'not_contains') {
-        return Joi.string().not(Joi.string().regex(new RegExp(value)));
-    }
-};
-
-const conditionOperatorFunctionMap = {
-    '=': (value, compareValue) => value === compareValue,
-    '!=': (value, compareValue) => value !== compareValue,
-    '>': (value, compareValue) => value > compareValue,
-    '>=': (value, compareValue) => value >= compareValue,
-    '<': (value, compareValue) => value < compareValue,
-    '<=': (value, compareValue) => value <= compareValue,
-    contains: (value, compareValue) => value.includes(compareValue),
-    not_contains: (value, compareValue) => !value.includes(compareValue),
-};
 
 /**
  * @since 0.1.0
@@ -142,7 +98,7 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
                 const formValues = helpers.state.ancestors[0];
 
                 const passesConditions = rules.excludeUnless.every((condition: BasicCondition) => {
-                    return conditionOperatorFunctionMap[condition.comparisonOperator](
+                    return conditionOperatorFunctions[condition.comparisonOperator](
                         formValues[condition.field],
                         condition.value
                     );

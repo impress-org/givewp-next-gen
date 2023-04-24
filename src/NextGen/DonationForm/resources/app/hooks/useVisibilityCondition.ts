@@ -1,19 +1,9 @@
 import {useMemo} from 'react';
 import {useWatch} from 'react-hook-form';
 import {FieldCondition} from '@givewp/forms/types';
+import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
 type WatchedFields = Map<string, any>;
-
-const operators = {
-    '=': (a, b) => a === b,
-    '!=': (a, b) => a !== b,
-    '>': (a, b) => a > b,
-    '>=': (a, b) => a >= b,
-    '<': (a, b) => a < b,
-    '<=': (a, b) => a <= b,
-    contains: (a, b) => String(a).includes(b),
-    not_contains: (a, b) => !String(a).includes(b),
-};
 
 /**
  * Adds visibility conditions to a field. The given conditions are watched and the hook returns true or false based on
@@ -50,7 +40,10 @@ export default function useVisibilityCondition(conditions: FieldCondition[]): bo
             if (condition.type === 'basic') {
                 const value = watchedFields.get(condition.field);
 
-                const conditionPasses = operators[condition.comparisonOperator](value, condition.value);
+                const conditionPasses = conditionOperatorFunctions[condition.comparisonOperator](
+                    value,
+                    condition.value
+                );
 
                 return condition.logicalOperator === 'and' ? passing && conditionPasses : passing || conditionPasses;
             }
