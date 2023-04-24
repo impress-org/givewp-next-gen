@@ -11,7 +11,7 @@ const requiredMessage = sprintf(
     `{#label}`
 );
 
-const conditionOperatorMap = (key, value) => {
+const conditionOperatorJoiMap = (key, value) => {
     if (key === '=') {
         return Joi.equal(value);
     }
@@ -43,6 +43,17 @@ const conditionOperatorMap = (key, value) => {
     if (key === 'not_contains') {
         return Joi.string().not(Joi.string().regex(new RegExp(value)));
     }
+};
+
+const conditionOperatorFunctionMap = {
+    '=': (value, compareValue) => value === compareValue,
+    '!=': (value, compareValue) => value !== compareValue,
+    '>': (value, compareValue) => value > compareValue,
+    '>=': (value, compareValue) => value >= compareValue,
+    '<': (value, compareValue) => value < compareValue,
+    '<=': (value, compareValue) => value <= compareValue,
+    contains: (value, compareValue) => value.includes(compareValue),
+    not_contains: (value, compareValue) => !value.includes(compareValue),
 };
 
 /**
@@ -119,31 +130,35 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         }
     }
 
-    if (rules.hasOwnProperty('excludeUnless')) {
-        /**
-         * This assumes basic conditions only. If we decided in the future to add support for nested conditions then
-         * this will need to be updated.
-         */
-        rules.excludeUnless.forEach((condition: BasicCondition) => {
-            joiRules = joiRules.when(condition.field, {
-                is: conditionOperatorMap(condition.comparisonOperator, condition.value),
-                otherwise: Joi.optional().allow('', null),
-            });
-        });
-
-        const conditionRules = rules.excludeUnless.reduce((rules, condition: BasicCondition) => {
-            rules[condition.field] = conditionOperatorMap(condition.comparisonOperator, condition.value);
-            return rules;
-        }, {});
-
-        joiRules = joiRules.when(Joi.object(conditionRules), {
-            otherwise: joiRules.optional(),
-            break: true,
-        });
-    }
-
     if (rules.required) {
-        joiRules = joiRules.required();
+        if (rules.hasOwnProperty('excludeUnless')) {
+            /**
+             * This applies requirements to a field if the field is not being excluded by its conditions. It only
+             * supports basic conditions at this time, but could be expanded to support more complex conditions.
+             *
+             * Note that this unsets the value if the field conditions are not met.
+             */
+            joiRules = joiRules.custom((value, helpers) => {
+                const formValues = helpers.state.ancestors[0];
+
+                const passesConditions = rules.excludeUnless.every((condition: BasicCondition) => {
+                    return conditionOperatorFunctionMap[condition.comparisonOperator](
+                        formValues[condition.field],
+                        condition.value
+                    );
+                });
+
+                if (passesConditions && (value === '' || value === null)) {
+                    return helpers.error('required');
+                } else if (!passesConditions) {
+                    return undefined;
+                }
+
+                return value;
+            }, 'exclude unless validation');
+        } else {
+            joiRules = joiRules.required();
+        }
     } else {
         joiRules = joiRules.optional().allow('', null);
     }
