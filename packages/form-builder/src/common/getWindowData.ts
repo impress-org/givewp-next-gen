@@ -1,4 +1,4 @@
-import {FormDesign, FormPageSettings, Gateway} from '@givewp/form-builder/types';
+import {FormDesign, FormPageSettings, Gateway, TemplateTag} from '@givewp/form-builder/types';
 
 declare global {
     interface Window {
@@ -13,6 +13,7 @@ declare global {
                 isInstalled: boolean;
             },
             gatewaySettingsUrl: string;
+            templateTags: TemplateTag[];
         },
     }
 }

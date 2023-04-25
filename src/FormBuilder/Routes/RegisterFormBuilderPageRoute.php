@@ -119,6 +119,7 @@ class RegisterFormBuilderPageRoute
                     'isInstalled' => defined('GIVE_RECURRING_VERSION') ,
                 ],
                 'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
+                'templateTags' => array_values(give()->email_tags->get_tags()),
             ])
             ->enqueue();
 

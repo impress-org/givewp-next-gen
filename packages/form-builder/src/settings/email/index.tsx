@@ -1,8 +1,113 @@
 import {__} from "@wordpress/i18n";
-import {Button, Modal, PanelBody, PanelRow, TextControl} from "@wordpress/components";
-import {useState} from "react";
-import {edit} from "@wordpress/icons";
+import {
+    Button,
+    Modal,
+    PanelBody,
+    PanelRow,
+    TextControl,
+    RadioControl, SelectControl,
+} from "@wordpress/components";
+import {useRef, useState} from "react";
+import {edit, copy} from "@wordpress/icons";
 import TabPanel from "@givewp/form-builder/components/sidebar/TabPanel";
+import { Editor } from '@tinymce/tinymce-react';
+import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+import useClipboard from "react-use-clipboard";
+
+const CopyToClipboardButton = ({text}) => {
+    const [isCopied, setCopied] = useClipboard(text, {
+        successDuration: 1000,
+    });
+    const label = isCopied
+        ? __('Copied!', 'givewp')
+        : __('Copy tag', 'givewp');
+    return (
+        <Button
+            variant={'tertiary'}
+            icon={copy}
+            onClick={setCopied}
+        >
+            {label}
+        </Button>
+    )
+}
+
+const EmailTemplateSettings = () => {
+
+    const editorRef = useRef(null);
+
+    return (
+        <div style={{display: 'flex', flexDirection: 'column', gap: 'var(--givewp-spacing-6)'}}>
+            <RadioControl
+                className='radio-control--email-options'
+                label={__('Email options', 'givewp')}
+                hideLabelFromVision={true}
+                help={__('Global options are set in GIveWP settings. You may override them for this form here', 'givewp')}
+                selected={'enabled'}
+                options={[
+                    {label: __('Global option', 'givewp'), value: 'global'},
+                    {label: __('Customize', 'givewp'), value: 'enabled'},
+                    {label: __('Disabled', 'givewp'), value: 'disabled'},
+                ]}
+                onChange={( value ) => null}
+            />
+
+            <TextControl
+                label={__('Email Subject', 'givewp')}
+                help={__('Enter the email subject line', 'givewp')}
+                onChange={() => null}
+                value={''}
+            />
+
+            <TextControl
+                label={__('Email Header', 'givewp')}
+                help={__('Enter the email header that appears at the top of the email', 'givewp')}
+                onChange={() => null}
+                value={''}
+            />
+
+            <Editor
+                onInit={(evt, editor) => editorRef.current = editor}
+                onEditorChange={(content, editor) => {console.log(content)}}
+                initialValue="<p>This is the initial content of the editor.</p>"
+                init={{
+                    height: 300,
+                    menubar: false,
+                    statusbar: false,
+                    // plugins: [
+                    //     'advlist autolink lists link image charmap print preview anchor',
+                    //     'searchreplace visualblocks code fullscreen',
+                    //     'insertdatetime media table paste code help wordcount'
+                    // ],
+                    // toolbar: 'undo redo | formatselect | ' +
+                    //     'bold italic backcolor | alignleft aligncenter ' +
+                    //     'alignright alignjustify | bullist numlist outdent indent | ' +
+                    //     'removeformat | help',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                }}
+            />
+
+            <SelectControl
+                onChange={() => null}
+                label={__('Email content type', 'givewp')}
+                help={__('Choose email type', 'givewp')}
+                value={'html'}
+                options={[
+                    {label: __('HTML', 'givewp'), value: 'html'},
+                    {label: __('Plain', 'givewp'), value: 'plain'},
+                ]}
+            />
+
+            <TextControl
+                label={__('Email', 'givewp')}
+                help={__('This email is automatically sent to the individual fundraiser and the recipient cannot be customized.', 'givewp')}
+                onChange={() => null}
+                value={''}
+            />
+
+        </div>
+    )
+}
 
 const tabs = [
     {
@@ -11,12 +116,7 @@ const tabs = [
         className: 'tab--new-donation',
         content: () => (
             <>
-                <TextControl
-                    label={__('Email Subject', 'givewp')}
-                    help={__('Enter the email subject line', 'givewp')}
-                    onChange={() => null}
-                    value={null}
-                />
+                <EmailTemplateSettings />
             </>
         ),
     },
@@ -40,6 +140,8 @@ const EmailSettings = () => {
 
     const [ selectedTab, setSelectedTab ] = useState<string>();
 
+    const {templateTags} = getFormBuilderData();
+
     return <>
         <PanelBody title={__('Email Settings', 'givewp')} initialOpen={false}>
             <PanelRow>
@@ -53,9 +155,13 @@ const EmailSettings = () => {
                 title={__('Email Settings', 'give')}
                 onRequestClose={closeModal}
                 isDismissible={false}
+                shouldCloseOnClickOutside={false}
                 style={{
-                    width: '90%',
-                    height: '80%',
+                    margin: 'var(--givewp-spacing-10)',
+                    width: '100%',
+                    height: '90%',
+                    maxHeight: '90%',
+                    display: 'flex',
                 }}
             >
                 <Button
@@ -73,7 +179,7 @@ const EmailSettings = () => {
                     {__('Set and close', 'givewp')}
                 </Button>
 
-                <div style={{ display: 'flex', gap: 'var(--givewp-spacing-10)' }}>
+                <div style={{ display: 'flex', gap: 'var(--givewp-spacing-10)', height: '100%', overflow: 'hidden', flex: 1}}>
                     <div style={{ flex: '2'}}>
                         <TabPanel
                             className={'email-settings-modal-tabs'}
@@ -83,7 +189,12 @@ const EmailSettings = () => {
                             state={[selectedTab, setSelectedTab]}
                         >
                             {(tab) => (
-                                <div>
+                                <div style={{
+                                    height: '100%',
+                                    overflowX: 'hidden',
+                                    overflowY: 'scroll',
+                                    padding: '10px', // Adjust for scrollbar
+                                }}>
                                     <h2 style={{margin:0}}>Notification</h2>
                                     <p></p>
                                     <tab.content />
@@ -91,10 +202,40 @@ const EmailSettings = () => {
                             )}
                         </TabPanel>
                     </div>
-                    <div style={{ flex: '1'}}>
-                        <h2 style={{margin: 0}}>{__('Preview email', 'givewp')}</h2>
-                        <p>{__('Specify below the email address you want to send a test email to', 'givewp')}</p>
-                        <Button variant={'secondary'}>{__('Preview email', 'givewp')}</Button>
+                    <div style={{
+                        flex: '1',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 'var(--givewp-spacing-6)',
+                        paddingRight: '10px', // Adjust for overflow
+                    }}>
+                        <div style={{flex:1}}>
+                            <h2 style={{margin: 0}}>{__('Preview email', 'givewp')}</h2>
+                            <p>{__('Specify below the email address you want to send a test email to', 'givewp')}</p>
+                            <Button variant={'secondary'} style={{width:'100%',justifyContent:'center'}}>{__('Preview email', 'givewp')}</Button>
+                        </div>
+                        <div style={{flex:1}}>
+                            <TextControl
+                                label={__('Email address', 'givewp')}
+                                help={__('Specify below the email address you want to send a test email to', 'givewp')}
+                                onChange={() => null}
+                                value={''}
+                            />
+                            <Button variant={'secondary'} style={{width:'100%',justifyContent:'center'}}>{__('Send test email', 'givewp')}</Button>
+                        </div>
+                        <div style={{flex:3}}>
+                            <h2 style={{margin: 0}}>{__('Template tags', 'givewp')}</h2>
+                            <p>{__('Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails', 'givewp')}</p>
+                            <ul className={'email-template-tags'}>
+                                {templateTags.map((tag) => (
+                                    <li key={tag.tag}>
+                                        <strong>{'{' + tag.tag + '}'}</strong>
+                                        <p>{tag.desc}</p>
+                                        <CopyToClipboardButton text={'{' + tag.tag + '}'} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </Modal>
