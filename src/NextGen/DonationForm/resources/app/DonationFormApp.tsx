@@ -9,6 +9,7 @@ import Header from './form/Header';
 import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
+import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -31,7 +32,12 @@ const schema = getJoiRulesForForm(form);
 
 const initialState = {
     gateways: window.givewp.gateways.getAll(),
+    // defaultValues,
+    // sections: form.nodes,
+    // validationSchema: schema,
 };
+
+const isMultiStep = true;
 
 function App() {
     if (form.goal.isAchieved) {
@@ -39,6 +45,15 @@ function App() {
             <DonationFormErrorBoundary>
                 <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />
             </DonationFormErrorBoundary>
+        );
+    }
+
+    if (isMultiStep) {
+        return (
+            <GiveDonationFormStoreProvider initialState={initialState}>
+                <Header />
+                <MultiStepForm defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
+            </GiveDonationFormStoreProvider>
         );
     }
 
