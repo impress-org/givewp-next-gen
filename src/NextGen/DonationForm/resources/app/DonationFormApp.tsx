@@ -1,7 +1,7 @@
 import {createRoot, render} from '@wordpress/element';
 import getDefaultValuesFromSections from './utilities/getDefaultValuesFromSections';
 import Form from './form/Form';
-import {GiveDonationFormStoreProvider} from './store';
+import {DonationFormStateProvider} from './store';
 import getWindowData from './utilities/getWindowData';
 import prepareFormData from './utilities/PrepareFormData';
 import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
@@ -31,10 +31,10 @@ const defaultValues = getDefaultValuesFromSections(form.nodes);
 const schema = getJoiRulesForForm(form);
 
 const initialState = {
+    defaultValues,
     gateways: window.givewp.gateways.getAll(),
-    // defaultValues,
-    // sections: form.nodes,
-    // validationSchema: schema,
+    sections: form.nodes,
+    validationSchema: schema,
 };
 
 const isMultiStep = true;
@@ -50,18 +50,18 @@ function App() {
 
     if (isMultiStep) {
         return (
-            <GiveDonationFormStoreProvider initialState={initialState}>
+            <DonationFormStateProvider initialState={initialState}>
                 <Header />
-                <MultiStepForm defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
-            </GiveDonationFormStoreProvider>
+                <MultiStepForm />
+            </DonationFormStateProvider>
         );
     }
 
     return (
-        <GiveDonationFormStoreProvider initialState={initialState}>
+        <DonationFormStateProvider initialState={initialState}>
             <Header />
             <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
-        </GiveDonationFormStoreProvider>
+        </DonationFormStateProvider>
     );
 }
 

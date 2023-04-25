@@ -2,7 +2,7 @@ import {FormProvider, useForm, useFormState} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 
 import getWindowData from '../utilities/getWindowData';
-import {useGiveDonationFormStore} from '../store';
+import {useDonationFormState} from '../store';
 import {Section} from '@givewp/forms/types';
 import {withTemplateWrapper} from '../templates';
 import {useCallback} from 'react';
@@ -18,7 +18,7 @@ const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
 
 export default function Form({defaultValues, sections, validationSchema}: PropTypes) {
-    const {gateways} = useGiveDonationFormStore();
+    const {gateways} = useDonationFormState();
 
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
 
