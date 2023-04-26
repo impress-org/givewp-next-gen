@@ -7,3 +7,4 @@ export type {FormPageSettings} from './formPageSettings';
 export type {Gateway} from './gateways';
 export type {FormStatus} from './formStatus';
 export type {TemplateTag} from './templateTag';
+export type {EmailNotification, EmailNotificationConfig} from './emailNotification';

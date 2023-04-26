@@ -5,7 +5,7 @@ import {
     PanelBody,
     PanelRow,
     TextControl,
-    RadioControl, SelectControl,
+    RadioControl, SelectControl, Autocomplete,
 } from "@wordpress/components";
 import {useRef, useState} from "react";
 import {edit, copy} from "@wordpress/icons";
@@ -32,12 +32,19 @@ const CopyToClipboardButton = ({text}) => {
     )
 }
 
-const EmailTemplateSettings = () => {
+const EmailTemplateSettings = ({config}) => {
+
+    console.log(config)
 
     const editorRef = useRef(null);
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', gap: 'var(--givewp-spacing-6)'}}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'var(--givewp-spacing-6)',
+            marginBottom: '20px', // Prevent clipping
+        }}>
             <RadioControl
                 className='radio-control--email-options'
                 label={__('Email options', 'givewp')}
@@ -56,20 +63,20 @@ const EmailTemplateSettings = () => {
                 label={__('Email Subject', 'givewp')}
                 help={__('Enter the email subject line', 'givewp')}
                 onChange={() => null}
-                value={''}
+                value={config.default_email_subject}
             />
 
             <TextControl
                 label={__('Email Header', 'givewp')}
                 help={__('Enter the email header that appears at the top of the email', 'givewp')}
                 onChange={() => null}
-                value={''}
+                value={config.default_email_header}
             />
 
             <Editor
                 onInit={(evt, editor) => editorRef.current = editor}
                 onEditorChange={(content, editor) => {console.log(content)}}
-                initialValue="<p>This is the initial content of the editor.</p>"
+                initialValue={config.default_email_message}
                 init={{
                     height: 300,
                     menubar: false,
@@ -109,38 +116,15 @@ const EmailTemplateSettings = () => {
     )
 }
 
-const tabs = [
-    {
-        name: 'new-donation',
-        title: __('New Donation'),
-        className: 'tab--new-donation',
-        content: () => (
-            <>
-                <EmailTemplateSettings />
-            </>
-        ),
-    },
-    {
-        name: 'donation-receipt',
-        title: __('Donation Receipt'),
-        className: 'tab--donation-receipt',
-        content: () => (
-            <>
-                DONATION RECEIPT SETTINGS
-            </>
-        ),
-    },
-]
-
 const EmailSettings = () => {
 
-    const [ isOpen, setOpen ] = useState<boolean>( false );
+    const [ isOpen, setOpen ] = useState<boolean>( true );
     const openModal = () => setOpen( true );
     const closeModal = () => setOpen( false );
 
     const [ selectedTab, setSelectedTab ] = useState<string>();
 
-    const {templateTags} = getFormBuilderData();
+    const {templateTags, emailNotifications, emailNotificationConfigs} = getFormBuilderData();
 
     return <>
         <PanelBody title={__('Email Settings', 'givewp')} initialOpen={false}>
@@ -184,8 +168,18 @@ const EmailSettings = () => {
                         <TabPanel
                             className={'email-settings-modal-tabs'}
                             orientation={'vertical' as 'horizontal' | 'vertical' | 'both'}
-                            tabs={tabs}
-                            initialTabName={tabs[0].name}
+                            tabs={emailNotifications.map((notification) => {
+                                return {
+                                    name: notification.id,
+                                    title: notification.title,
+                                    content: () => (
+                                        <>
+                                            <EmailTemplateSettings config={emailNotificationConfigs.find((n) => n.id === notification.id)} />
+                                        </>
+                                    ),
+                                }
+                            })}
+                            initialTabName={emailNotifications[0].id}
                             state={[selectedTab, setSelectedTab]}
                         >
                             {(tab) => (
@@ -193,7 +187,7 @@ const EmailSettings = () => {
                                     height: '100%',
                                     overflowX: 'hidden',
                                     overflowY: 'scroll',
-                                    padding: '10px', // Adjust for scrollbar
+                                    padding: '20px', // Adjust for scrollbar
                                 }}>
                                     <h2 style={{margin:0}}>Notification</h2>
                                     <p></p>

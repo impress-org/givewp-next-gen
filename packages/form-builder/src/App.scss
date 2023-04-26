@@ -561,7 +561,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 .email-template-tags {
     height: 300px;
     overflow: scroll;
-    border: 1px solid var(--givewp-gray-100);
+    border: 1px solid var(--givewp-grey-100);
 
     scroll-snap-type: y mandatory;
     & > li {
@@ -589,6 +589,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 
     strong {
         font-size: var(--givewp-font-size-headline-sm);
+        background-color: var(--givewp-blue-25);
     }
 
     p {
