@@ -2,7 +2,7 @@ import {FormProvider, useForm, useFormState} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 
 import getWindowData from '../../utilities/getWindowData';
-import {Section} from '@givewp/forms/types';
+import {Field, isField, Section} from '@givewp/forms/types';
 import {withTemplateWrapper} from '../../templates';
 import {useCallback} from 'react';
 import SectionNode from '../../fields/SectionNode';
@@ -20,9 +20,19 @@ window.givewp.form.templates.layouts.form = Form;
 const FormTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.form);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
 
-function StepForm({children, currentStep, isFirstStep, isLastStep}) {
+const getSectionFieldNames = (section: Section) =>
+    section.reduceNodes(
+        (names, field: Field) => {
+            return names.concat(field.name);
+        },
+        [],
+        isField
+    );
+
+function StepForm({section, currentStep, isFirstStep, isLastStep}) {
     const {gateways, defaultValues, validationSchema} = useDonationFormState();
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
+    const sectionFieldNames = getSectionFieldNames(section);
     const dispatch = useDonationFormStoreDispatch();
     const navigate = useNavigate();
 
@@ -32,7 +42,7 @@ function StepForm({children, currentStep, isFirstStep, isLastStep}) {
         reValidateMode: 'onBlur',
     });
 
-    const {handleSubmit, setError, control, getValues} = methods;
+    const {handleSubmit, setError, control, getValues, trigger} = methods;
 
     const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
 
@@ -58,7 +68,15 @@ function StepForm({children, currentStep, isFirstStep, isLastStep}) {
                     formError={formError}
                     hideSubmitButton={!isLastStep}
                 >
-                    {children}
+                    <DonationFormErrorBoundary key={section.name}>
+                        <FormSectionTemplate key={section.name} section={section}>
+                            {section.nodes.map((node) => (
+                                <DonationFormErrorBoundary key={node.name}>
+                                    <SectionNode key={node.name} node={node} />
+                                </DonationFormErrorBoundary>
+                            ))}
+                        </FormSectionTemplate>
+                    </DonationFormErrorBoundary>
 
                     <nav style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         {!isFirstStep ? (
@@ -74,11 +92,14 @@ function StepForm({children, currentStep, isFirstStep, isLastStep}) {
                             <div>
                                 <button
                                     type="button"
-                                    onClick={() => {
-                                        const values = getValues();
+                                    onClick={async () => {
+                                        const valid = await trigger(sectionFieldNames);
 
-                                        dispatch(setFormDefaultValues(values));
-                                        navigate(`/donate/steps/${currentStep + 1}`);
+                                        if (valid) {
+                                            dispatch(setFormDefaultValues(getValues()));
+
+                                            navigate(`/donate/steps/${currentStep + 1}`);
+                                        }
                                     }}
                                 >
                                     Next
@@ -103,19 +124,13 @@ const convertSectionsToRoutes = (sections: Section[]) => {
             index: isFirstStep,
             path: !isFirstStep ? `donate/steps/${index}` : undefined,
             element: (
-                <>
-                    <StepForm key={index} currentStep={index} isFirstStep={isFirstStep} isLastStep={isLastStep}>
-                        <DonationFormErrorBoundary key={section.name}>
-                            <FormSectionTemplate key={section.name} section={section}>
-                                {section.nodes.map((node) => (
-                                    <DonationFormErrorBoundary key={node.name}>
-                                        <SectionNode key={node.name} node={node} />
-                                    </DonationFormErrorBoundary>
-                                ))}
-                            </FormSectionTemplate>
-                        </DonationFormErrorBoundary>
-                    </StepForm>
-                </>
+                <StepForm
+                    key={index}
+                    section={section}
+                    currentStep={index}
+                    isFirstStep={isFirstStep}
+                    isLastStep={isLastStep}
+                />
             ),
         } as RouteObject;
     });
