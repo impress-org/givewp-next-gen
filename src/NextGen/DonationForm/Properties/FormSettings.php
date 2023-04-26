@@ -91,6 +91,14 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $formStatus;
 
+    public $emailTemplateOptions = [
+        'new-donation' => [
+            'id' => 'new-donation',
+            'email_subject' => 'New Donation :) - #{payment_id}',
+            'email_heading' => 'New Donation',
+        ]
+    ];
+
     /**
      * @since 0.1.0
      */
@@ -129,6 +137,7 @@ class FormSettings implements Arrayable, Jsonable
             'give'
         );
         $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus($array['formStatus']) : DonationFormStatus::DRAFT();
+        $self->emailTemplateOptions = $array['$emailTemplateOptions'] ?? $self->emailTemplateOptions;
 
         return $self;
     }

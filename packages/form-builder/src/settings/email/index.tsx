@@ -13,6 +13,7 @@ import TabPanel from "@givewp/form-builder/components/sidebar/TabPanel";
 import { Editor } from '@tinymce/tinymce-react';
 import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 import useClipboard from "react-use-clipboard";
+import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 
 const CopyToClipboardButton = ({text}) => {
     const [isCopied, setCopied] = useClipboard(text, {
@@ -32,11 +33,24 @@ const CopyToClipboardButton = ({text}) => {
     )
 }
 
-const EmailTemplateSettings = ({config}) => {
-
-    console.log(config)
+const EmailTemplateSettings = ({notification}) => {
 
     const editorRef = useRef(null);
+
+    const dispatch = useFormStateDispatch();
+    const {settings: {emailTemplateOptions}} = useFormState();
+
+    const option = emailTemplateOptions[notification] ?? { 'email_subject': '' };
+
+    const updateEmailTemplateOption = (property, value) => {
+        dispatch(setFormSettings({emailTemplateOptions: {
+                ...emailTemplateOptions,
+                [notification]: {
+                    ...option,
+                    [property]: value
+                }
+            }}))
+    }
 
     return (
         <div style={{
@@ -62,21 +76,21 @@ const EmailTemplateSettings = ({config}) => {
             <TextControl
                 label={__('Email Subject', 'givewp')}
                 help={__('Enter the email subject line', 'givewp')}
-                onChange={() => null}
-                value={config.default_email_subject}
+                onChange={(value) => updateEmailTemplateOption('email_subject', value)}
+                value={option.email_subject}
             />
 
             <TextControl
                 label={__('Email Header', 'givewp')}
                 help={__('Enter the email header that appears at the top of the email', 'givewp')}
-                onChange={() => null}
-                value={config.default_email_header}
+                onChange={(value) => updateEmailTemplateOption('email_heading', value)}
+                value={option.email_heading}
             />
 
             <Editor
                 onInit={(evt, editor) => editorRef.current = editor}
-                onEditorChange={(content, editor) => {console.log(content)}}
-                initialValue={config.default_email_message}
+                // onEditorChange={(content, editor) => {console.log(content)}}
+                initialValue={''}
                 init={{
                     height: 300,
                     menubar: false,
@@ -172,11 +186,6 @@ const EmailSettings = () => {
                                 return {
                                     name: notification.id,
                                     title: notification.title,
-                                    content: () => (
-                                        <>
-                                            <EmailTemplateSettings config={emailNotificationConfigs.find((n) => n.id === notification.id)} />
-                                        </>
-                                    ),
                                 }
                             })}
                             initialTabName={emailNotifications[0].id}
@@ -191,7 +200,7 @@ const EmailSettings = () => {
                                 }}>
                                     <h2 style={{margin:0}}>Notification</h2>
                                     <p></p>
-                                    <tab.content />
+                                    <EmailTemplateSettings notification={tab.name} />
                                 </div>
                             )}
                         </TabPanel>
