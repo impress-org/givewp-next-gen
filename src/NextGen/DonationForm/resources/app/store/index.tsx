@@ -33,6 +33,6 @@ const DonationFormStateProvider = ({initialState, children}: PropTypes) => {
 };
 
 const useDonationFormState = () => useContext(StoreContext);
-const useDonationFormStoreDispatch = () => useContext(StoreContextDispatch);
+const useDonationFormStateDispatch = () => useContext(StoreContextDispatch);
 
-export {DonationFormStateProvider, useDonationFormState, useDonationFormStoreDispatch};
+export {DonationFormStateProvider, useDonationFormState, useDonationFormStateDispatch};

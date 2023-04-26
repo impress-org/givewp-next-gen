@@ -8,10 +8,11 @@ import {useCallback} from 'react';
 import SectionNode from '../../fields/SectionNode';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import handleSubmitRequest from '@givewp/forms/app/utilities/handleFormSubmitRequest';
-import {createHashRouter, Link, Outlet, RouteObject, RouterProvider, useNavigate} from 'react-router-dom';
+import {createHashRouter, Outlet, RouteObject, RouterProvider, useNavigate} from 'react-router-dom';
 import Form from './Form';
+import {useDonationFormState, useDonationFormStateDispatch} from '@givewp/forms/app/store';
 import {setFormDefaultValues} from '@givewp/forms/app/store/reducer';
-import {useDonationFormState, useDonationFormStoreDispatch} from '@givewp/forms/app/store';
+import Header from '@givewp/forms/app/form/Header';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -19,6 +20,24 @@ window.givewp.form.templates.layouts.form = Form;
 
 const FormTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.form);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
+
+function HeaderStep() {
+    const navigate = useNavigate();
+
+    return (
+        <div>
+            <Header />
+            <Navigation
+                isFirstStep={true}
+                isLastStep={false}
+                onPreviousClick={undefined}
+                onNextStepClick={async () => {
+                    navigate(`/donate/steps/1`);
+                }}
+            />
+        </div>
+    );
+}
 
 const getSectionFieldNames = (section: Section) =>
     section.reduceNodes(
@@ -29,12 +48,35 @@ const getSectionFieldNames = (section: Section) =>
         isField
     );
 
+function Navigation({isFirstStep, isLastStep, onPreviousClick, onNextStepClick}) {
+    return (
+        <nav style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+            {!isFirstStep ? (
+                <div>
+                    <button type="button" onClick={onPreviousClick}>
+                        Previous
+                    </button>
+                </div>
+            ) : (
+                <div />
+            )}
+            {!isLastStep && (
+                <div>
+                    <button type="button" onClick={onNextStepClick}>
+                        Next
+                    </button>
+                </div>
+            )}
+        </nav>
+    );
+}
+
 function StepForm({section, currentStep, isFirstStep, isLastStep}) {
     const {gateways, defaultValues, validationSchema} = useDonationFormState();
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
-    const sectionFieldNames = getSectionFieldNames(section);
-    const dispatch = useDonationFormStoreDispatch();
+    const dispatch = useDonationFormStateDispatch();
     const navigate = useNavigate();
+    const sectionFieldNames = getSectionFieldNames(section);
 
     const methods = useForm<FormInputs>({
         defaultValues,
@@ -77,57 +119,68 @@ function StepForm({section, currentStep, isFirstStep, isLastStep}) {
                             ))}
                         </FormSectionTemplate>
                     </DonationFormErrorBoundary>
+                    <Navigation
+                        isFirstStep={isFirstStep}
+                        isLastStep={isLastStep}
+                        onPreviousClick={() => {
+                            const previousStep = currentStep - 1;
 
-                    <nav style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                        {!isFirstStep ? (
-                            <div>
-                                <Link to={currentStep === 1 ? '/' : `/donate/steps/${currentStep - 1}`}>
-                                    <button type="button">Previous</button>
-                                </Link>
-                            </div>
-                        ) : (
-                            <div />
-                        )}
-                        {!isLastStep && (
-                            <div>
-                                <button
-                                    type="button"
-                                    onClick={async () => {
-                                        const valid = await trigger(sectionFieldNames);
+                            if (previousStep <= 0) {
+                                navigate(`/`);
+                            } else {
+                                navigate(`/donate/steps/${previousStep}`);
+                            }
+                        }}
+                        onNextStepClick={async () => {
+                            const valid = await trigger(sectionFieldNames);
 
-                                        if (valid) {
-                                            dispatch(setFormDefaultValues(getValues()));
+                            if (valid) {
+                                dispatch(setFormDefaultValues(getValues()));
 
-                                            navigate(`/donate/steps/${currentStep + 1}`);
-                                        }
-                                    }}
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        )}
-                    </nav>
+                                navigate(`/donate/steps/${currentStep + 1}`);
+                            }
+                        }}
+                    />
                 </FormTemplate>
             </DonationFormErrorBoundary>
         </FormProvider>
     );
 }
 
-const convertSectionsToRoutes = (sections: Section[]) => {
+const convertSectionsToRoutes = (sections: Section[], showHeader: boolean) => {
     const totalSteps = sections.length;
 
     return sections.map((section, index) => {
-        const isFirstStep = index === 0;
-        const isLastStep = index === totalSteps - 1;
+        const currentStep = index;
+        const isFirstStep = currentStep === 0;
+        const isLastStep = currentStep === totalSteps - 1;
+
+        if (isFirstStep) {
+            return {
+                index: true,
+                element: showHeader ? (
+                    <div>
+                        <HeaderStep />
+                    </div>
+                ) : (
+                    <StepForm
+                        key={currentStep}
+                        section={section}
+                        currentStep={currentStep}
+                        isFirstStep={isFirstStep}
+                        isLastStep={isLastStep}
+                    />
+                ),
+            };
+        }
 
         return {
-            index: isFirstStep,
-            path: !isFirstStep ? `donate/steps/${index}` : undefined,
+            path: `donate/steps/${currentStep}`,
             element: (
                 <StepForm
-                    key={index}
+                    key={currentStep}
                     section={section}
-                    currentStep={index}
+                    currentStep={currentStep}
                     isFirstStep={isFirstStep}
                     isLastStep={isLastStep}
                 />
@@ -136,23 +189,20 @@ const convertSectionsToRoutes = (sections: Section[]) => {
     });
 };
 
-const Root = () => {
-    return (
-        <div>
-            <Outlet />
-        </div>
-    );
-};
-
 export default function MultiStepForm() {
     const {sections} = useDonationFormState();
-    const routes = convertSectionsToRoutes(sections);
+    const showHeader = true;
+    const routes = convertSectionsToRoutes(sections, showHeader);
 
     //TODO try out browser router
     const router = createHashRouter([
         {
             path: '/',
-            element: <Root />,
+            element: (
+                <div>
+                    <Outlet />
+                </div>
+            ),
             children: routes,
         },
     ]);

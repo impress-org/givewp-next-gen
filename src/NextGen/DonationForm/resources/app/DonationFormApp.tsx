@@ -51,7 +51,6 @@ function App() {
     if (isMultiStep) {
         return (
             <DonationFormStateProvider initialState={initialState}>
-                <Header />
                 <MultiStepForm />
             </DonationFormStateProvider>
         );
