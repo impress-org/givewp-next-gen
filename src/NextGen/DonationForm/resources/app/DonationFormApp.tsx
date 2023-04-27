@@ -48,10 +48,10 @@ function App() {
         );
     }
 
-    if (isMultiStep) {
+    if (form.design?.isMultiStep) {
         return (
             <DonationFormStateProvider initialState={initialState}>
-                <MultiStepForm />
+                <MultiStepForm preview={form.preview} />
             </DonationFormStateProvider>
         );
     }

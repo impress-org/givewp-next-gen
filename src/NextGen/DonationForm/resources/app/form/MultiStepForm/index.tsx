@@ -20,6 +20,10 @@ const formTemplates = window.givewp.form.templates;
 const MultiStepFormTemplate = withTemplateWrapper(formTemplates.layouts.multiStepForm);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
 
+function getNavigateUrl(step: number) {
+    return `/donate/steps/${step}`;
+}
+
 const SubmitButton = ({
     isSubmitting,
     submittingText = __('Submitting…', 'give'),
@@ -40,7 +44,7 @@ function HeaderStep() {
                 <button
                     type="button"
                     onClick={() => {
-                        navigate(`/donate/steps/1`);
+                        navigate(getNavigateUrl(1));
                     }}
                 >
                     {__('Donate Now', 'give')}
@@ -107,7 +111,7 @@ function StepForm({section, currentStep, isFirstStep, isLastStep}) {
                                         if (previousStep <= 0) {
                                             navigate(`/`);
                                         } else {
-                                            navigate(`/donate/steps/${previousStep}`);
+                                            navigate(getNavigateUrl(previousStep));
                                         }
                                     }}
                                 >
@@ -129,7 +133,7 @@ function StepForm({section, currentStep, isFirstStep, isLastStep}) {
                                         if (valid) {
                                             dispatch(setFormDefaultValues(getValues()));
 
-                                            navigate(`/donate/steps/${currentStep + 1}`);
+                                            navigate(getNavigateUrl(currentStep + 1));
                                         }
                                     }}
                                 >
@@ -183,7 +187,8 @@ const convertSectionsToRoutes = (sections: Section[], showHeader: boolean) => {
         }
 
         return {
-            path: `donate/steps/${currentStep}`,
+            id: `step-${currentStep}`,
+            path: getNavigateUrl(currentStep).replace('/', ''),
             element: (
                 <StepForm
                     key={currentStep}
@@ -197,25 +202,31 @@ const convertSectionsToRoutes = (sections: Section[], showHeader: boolean) => {
     });
 };
 
+const Root = () => {
+    return (
+        <div>
+            <Outlet />
+        </div>
+    );
+};
+
 export default function MultiStepForm() {
     const {sections} = useDonationFormState();
     const showHeader = true;
-    const routes = convertSectionsToRoutes(sections, showHeader);
+    const children = convertSectionsToRoutes(sections, showHeader);
 
-    //TODO try out browser router
-    const router = createHashRouter([
+    const routes = [
         {
             path: '/',
-            element: (
-                <div>
-                    <Outlet />
-                </div>
-            ),
-            children: routes,
+            element: <Root />,
+            children,
         },
-    ]);
+    ];
 
-    return <RouterProvider router={router} />;
+    //TODO try out browser router
+    const router = createHashRouter(routes);
+
+    return <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />;
 }
 
 type FormInputs = {
