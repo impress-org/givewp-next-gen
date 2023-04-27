@@ -10,6 +10,7 @@ use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\NextGen\Framework\FormExtensions\Registrars\FormExtensionRegistrar;
 
 use function implode;
 use function wp_enqueue_style;
@@ -221,6 +222,7 @@ class DonationFormViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, Gateways, Block]
      *
+     * @unreleased Add support for custom form extensions
      * @since 0.1.0
      *
      * @return void
@@ -259,6 +261,29 @@ class DonationFormViewModel
                         ['givewp-donation-form-registrars-js'],
                         $design->dependencies()
                     ),
+                    false,
+                    true
+                );
+            }
+        }
+
+        // load extensions
+        /** @var FormExtensionRegistrar $formExtensionRegistrar */
+        $formExtensionRegistrar = give(FormExtensionRegistrar::class);
+        $formExtensionIds = array_keys($formExtensionRegistrar->getExtensions());
+
+        foreach ($formExtensionIds as $formExtensionId) {
+            $extension = $formExtensionRegistrar->getExtension($formExtensionId);
+
+            if ($extension->formViewCss()) {
+                wp_enqueue_style('givewp-form-extension-' . $extension::id(), $extension->formViewCss());
+            }
+
+            if ($extension->formViewJs()) {
+                wp_enqueue_script(
+                    'givewp-form-extension-' . $extension::id(),
+                    $extension->formViewJs(),
+                    $extension->formViewDependencies(),
                     false,
                     true
                 );
