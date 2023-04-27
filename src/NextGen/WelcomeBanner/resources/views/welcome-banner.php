@@ -135,7 +135,7 @@
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8 .666a7.333 7.333 0 1 0 0 14.667A7.333 7.333 0 0 0 8 .666zm0 4a.667.667 0 1 0 0 1.333h.006a.667.667 0 0 0 0-1.333h-.007zm.666 3.333a.667.667 0 0 0-1.333 0v2.667a.667.667 0 1 0 1.333 0V7.999z" fill="#2D802F"/>
                             </svg>
                             <div style="flex:1;">
-                                <?php _e('The Beta plugin is intended only for testing and feedback purposes. Please do not use for live donations.', 'give'); ?>
+                                <?php _e('The Next Gen plugin is intended only for testing and feedback purposes. Please do <strong> not use </strong> for live donations.', 'give'); ?>
                             </div>
                         </div>
                     </div>
