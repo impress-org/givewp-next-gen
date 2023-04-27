@@ -7,7 +7,7 @@ use Give\NextGen\Framework\FormExtensions\Registrars\FormExtensionRegistrar;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased 
+ * @unreleased
  */
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -19,8 +19,8 @@ class ServiceProvider implements ServiceProviderInterface
         give()->singleton(FormExtensionRegistrar::class, function () {
             $registrar = new FormExtensionRegistrar();
 
-            Hooks::doAction('givewp_register_form_design', $registrar);
-            Hooks::doAction('givewp_unregister_form_design', $registrar);
+            Hooks::doAction('givewp_register_form_extension', $registrar);
+            Hooks::doAction('givewp_unregister_form_extension', $registrar);
 
             return $registrar;
         });
