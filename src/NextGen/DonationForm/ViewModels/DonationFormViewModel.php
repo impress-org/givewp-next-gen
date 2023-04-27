@@ -196,7 +196,7 @@ class DonationFormViewModel
         ?>
 
         <script>
-            window.giveNextGenExports = <?= wp_json_encode($this->exports($preview)) ?>;
+            window.giveNextGenExports = <?= wp_json_encode($this->exports()) ?>;
         </script>
 
         <?php
