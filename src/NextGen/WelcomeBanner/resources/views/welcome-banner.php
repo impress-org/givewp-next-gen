@@ -59,8 +59,8 @@
             font-size: 24px;
             font-weight: bold;
             line-height: 1.33;
-        "><?php _e('Welcome to the GiveWP Visual Donation Form Builder Beta!', 'give'); ?></h2>
-            <div style="font-size: 16px;"><?php _e('It\'s the future of GiveWP: building forms using a block-based visual editor. This is the BIG feature of GiveWP 3.0, and represents a monumental shift toward empowering you to create donation forms like never before.', 'give'); ?></div>
+        "><?php _e('Welcome aboard! Help us test the new Visual Donation Form Builder', 'give'); ?></h2>
+            <div style="font-size: 16px;"><?php _e('Create the donation form of your dreams using an easy-to-use visual donation form builder.', 'give'); ?></div>
         </header>
 
 
