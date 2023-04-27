@@ -1,6 +1,5 @@
 import {Section} from '@givewp/forms/types';
 import {useDonationFormState} from '@givewp/forms/app/store';
-import {__} from '@wordpress/i18n';
 import {DonationFormMultiStepStateProvider, useDonationFormMultiStepState,} from './store';
 import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 import StepForm from '@givewp/forms/app/form/MultiStepForm/components/StepForm';
@@ -38,17 +37,32 @@ const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
 
 /**
  * @unreleased
+ *
+ * This loops through the steps and lazy loads them using a waterfall approach.
+ * Only current and previous steps are rendered.  Obviously all previous steps are hidden.
+ * This is necessary so the next step is always updated with the form values.
+ * The other reason is so gateway scripts remain loaded on the page and are not removed by unmounting the step..
+ *
  */
 function Steps({steps}: { steps: StepObject[] }) {
     const {currentStep} = useDonationFormMultiStepState();
+    return steps.map(({id, element}) => {
+        const shouldShowStep = id === currentStep;
+        const shouldRenderElement = currentStep >= id;
 
-    for (const {id, element} of steps) {
-        if (id === currentStep) {
-            return element;
-        }
-    }
-
-    return <p>{__('GiveWP form unable to load.')}</p>;
+        return (
+            <div
+                key={id}
+                id={`givewp-donation-form-step-${id}`}
+                className={`givewp-donation-form-step givewp-donation-form-step-${
+                    shouldShowStep ? 'visible' : 'hidden'
+                }`}
+                style={{display: shouldShowStep ? 'block' : 'none'}}
+            >
+                {shouldRenderElement && element}
+            </div>
+        );
+    });
 }
 
 /**
