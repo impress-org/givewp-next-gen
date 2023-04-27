@@ -81,8 +81,8 @@
 
                     <!-- Join the Journey -->
                     <div>
-                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Join the Journey', 'give'); ?></h3>
-                        <p style="font-size: 12px;"><?php _e('Stay informed about the Visual Donation Form Builder beta as well as GiveWP version 3.0', 'give'); ?></p>
+                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
+                        <p style="font-size: 12px;"><?php _e('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual doantion form builder. Spacing is limited to <strong>eight(8)</strong> participants per session.', 'give'); ?></p>
                         <givewp-welcome-banner-newsletter></givewp-welcome-banner-newsletter>
                         <div id="givewpNextGenNewsletterSuccess" style="
                             visibility: hidden;
