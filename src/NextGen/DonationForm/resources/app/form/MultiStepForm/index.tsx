@@ -8,21 +8,23 @@ import {useCallback} from 'react';
 import SectionNode from '../../fields/SectionNode';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import handleSubmitRequest from '@givewp/forms/app/utilities/handleFormSubmitRequest';
-import {createHashRouter, Outlet, RouteObject, RouterProvider, useNavigate} from 'react-router-dom';
 import {useDonationFormState, useDonationFormStateDispatch} from '@givewp/forms/app/store';
 import {setFormDefaultValues} from '@givewp/forms/app/store/reducer';
 import Header from '@givewp/forms/app/form/Header';
 import {__} from '@wordpress/i18n';
+import {
+    DonationFormMultiStepStateProvider,
+    useDonationFormMultiStepState,
+    useDonationFormMultiStepStateDispatch,
+} from './store';
+import {setCurrentStep} from '@givewp/forms/app/form/MultiStepForm/reducer';
+import {FormInputs, StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
 
 const MultiStepFormTemplate = withTemplateWrapper(formTemplates.layouts.multiStepForm);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
-
-function getNavigateUrl(step: number) {
-    return `/donate/steps/${step}`;
-}
 
 const SubmitButton = ({
     isSubmitting,
@@ -35,7 +37,7 @@ const SubmitButton = ({
 );
 
 function HeaderStep() {
-    const navigate = useNavigate();
+    const dispatchMultiStep = useDonationFormMultiStepStateDispatch();
 
     return (
         <div>
@@ -44,7 +46,7 @@ function HeaderStep() {
                 <button
                     type="button"
                     onClick={() => {
-                        navigate(getNavigateUrl(1));
+                        dispatchMultiStep(setCurrentStep(1));
                     }}
                 >
                     {__('Donate Now', 'give')}
@@ -54,6 +56,9 @@ function HeaderStep() {
     );
 }
 
+/**
+ * @unreleased
+ */
 const getSectionFieldNames = (section: Section) =>
     section.reduceNodes(
         (names, field: Field) => {
@@ -63,12 +68,20 @@ const getSectionFieldNames = (section: Section) =>
         isField
     );
 
-function StepForm({section, currentStep, isFirstStep, isLastStep}) {
+/**
+ * @unreleased
+ */
+function StepForm({section, currentStep, isFirstStep, isLastStep}: {
+    section: Section;
+    currentStep: number;
+    isFirstStep: boolean;
+    isLastStep: boolean
+}) {
     const {gateways, defaultValues, validationSchema} = useDonationFormState();
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
-    const dispatch = useDonationFormStateDispatch();
-    const navigate = useNavigate();
+    const dispatchForm = useDonationFormStateDispatch();
     const sectionFieldNames = getSectionFieldNames(section);
+    const dispatchMultiStep = useDonationFormMultiStepStateDispatch();
 
     const methods = useForm<FormInputs>({
         defaultValues,
@@ -109,9 +122,9 @@ function StepForm({section, currentStep, isFirstStep, isLastStep}) {
                                         const previousStep = currentStep - 1;
 
                                         if (previousStep <= 0) {
-                                            navigate(`/`);
+                                            dispatchMultiStep(setCurrentStep(0));
                                         } else {
-                                            navigate(getNavigateUrl(previousStep));
+                                            dispatchMultiStep(setCurrentStep(previousStep));
                                         }
                                     }}
                                 >
@@ -131,9 +144,9 @@ function StepForm({section, currentStep, isFirstStep, isLastStep}) {
                                         const valid = await trigger(sectionFieldNames);
 
                                         if (valid) {
-                                            dispatch(setFormDefaultValues(getValues()));
+                                            dispatchForm(setFormDefaultValues(getValues()));
 
-                                            navigate(getNavigateUrl(currentStep + 1));
+                                            dispatchMultiStep(setCurrentStep(currentStep + 1));
                                         }
                                     }}
                                 >
@@ -159,37 +172,17 @@ function StepForm({section, currentStep, isFirstStep, isLastStep}) {
     );
 }
 
-const convertSectionsToRoutes = (sections: Section[], showHeader: boolean) => {
+const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
     const totalSteps = sections.length;
 
     return sections.map((section, index) => {
         const currentStep = index;
         const isFirstStep = currentStep === 0;
         const isLastStep = currentStep === totalSteps - 1;
-
-        if (isFirstStep) {
-            return {
-                index: true,
-                element: showHeader ? (
-                    <div>
-                        <HeaderStep />
-                    </div>
-                ) : (
-                    <StepForm
-                        key={currentStep}
-                        section={section}
-                        currentStep={currentStep}
-                        isFirstStep={isFirstStep}
-                        isLastStep={isLastStep}
-                    />
-                ),
-            };
-        }
-
-        return {
-            id: `step-${currentStep}`,
-            path: getNavigateUrl(currentStep).replace('/', ''),
-            element: (
+        const element =
+            showHeader && isFirstStep ? (
+                <HeaderStep />
+            ) : (
                 <StepForm
                     key={currentStep}
                     section={section}
@@ -197,43 +190,41 @@ const convertSectionsToRoutes = (sections: Section[], showHeader: boolean) => {
                     isFirstStep={isFirstStep}
                     isLastStep={isLastStep}
                 />
-            ),
-        } as RouteObject;
+            );
+
+        return {
+            id: currentStep,
+            element,
+        };
     });
 };
 
-const Root = () => {
-    return (
-        <div>
-            <Outlet />
-        </div>
-    );
-};
+/**
+ * @unreleased
+ */
+function Steps({steps}: { steps: StepObject[] }) {
+    const {currentStep} = useDonationFormMultiStepState();
 
+    for (const {id, element} of steps) {
+        if (id === currentStep) {
+            return element;
+        }
+    }
+
+    return <p>{__('GiveWP form unable to load.')}</p>;
+}
+
+/**
+ * @unreleased
+ */
 export default function MultiStepForm() {
     const {sections} = useDonationFormState();
     const showHeader = true;
-    const children = convertSectionsToRoutes(sections, showHeader);
+    const steps: StepObject[] = convertSectionsToSteps(sections, showHeader);
 
-    const routes = [
-        {
-            path: '/',
-            element: <Root />,
-            children,
-        },
-    ];
-
-    //TODO try out browser router
-    const router = createHashRouter(routes);
-
-    return <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />;
+    return (
+        <DonationFormMultiStepStateProvider initialState={{currentStep: 0}}>
+            <Steps steps={steps}/>
+        </DonationFormMultiStepStateProvider>
+    );
 }
-
-type FormInputs = {
-    FORM_ERROR: string;
-    amount: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    gatewayId: string;
-};
