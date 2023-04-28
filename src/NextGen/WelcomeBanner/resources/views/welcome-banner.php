@@ -70,28 +70,22 @@
             gap: 73px;
         ">
             <!-- Next Steps -->
-            <section style="flex:3;">
+            <section style=" flex-basis: 25.313rem;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
                     color: var(--givewp-blue-500);
                 "><?php _e('Next Steps', 'give'); ?></h2>
 
-                <div style="display:flex;flex-direction:column;gap:73px;">
+                <div style="height: calc(100% - 26px); display:flex; flex-direction:column; justify-content: space-between; gap:26px;">
 
                     <!-- Join the Journey -->
-                    <div>
-                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
-                        <p style="font-size: 12px;"><?php _e('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual doantion form builder. Spacing is limited to <strong>eight(8)</strong> participants per session.', 'give'); ?></p>
-                        <givewp-welcome-banner-newsletter></givewp-welcome-banner-newsletter>
-                        <div id="givewpNextGenNewsletterSuccess" style="
-                            visibility: hidden;
-                            margin-top: var(--givewp-spacing-4);
-                        ">
-                            <div style="flex:1;">
-                                <?php _e('Awesome, you’re in! You will be among the first to receive updates.', 'give'); ?>
-                            </div>
-                        </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <h3 style="font-size: 16px; margin: 12px 0;"><?php _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
+                        <p style="font-size: 12px; margin: 0 0 12px 0;"><?php _e('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual donation form builder. Spacing is limited to <strong>eight(8)</strong> participants per session.', 'give'); ?></p>
+                        <a href="https://givewp.com/focus-groups/" target="blank"  style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
+                            <?php _e('Three(3) time slots available - Register now', 'give'); ?>
+                        </a>
                     </div>
 
                     <!-- Create your new donation form -->
@@ -125,8 +119,8 @@
                     justify-content: flex-start;
                     align-items: flex-start;
                     gap: 8px;
-                    margin: 12px 0 4px 0;
-                    padding: 8px 8px 8px 32px;
+                    margin: 12px 0 0 0;
+                    padding: 8px 8px 8px 7px;
                     border-radius: 4px;
                     background-color: var(--givewp-green-25);
                     color: var(--givewp-green-600);
@@ -144,7 +138,7 @@
             </section>
 
             <!-- What's New -->
-            <section style="flex:5;">
+            <section style=" flex-basis: 38.125rem; flex-grow: 1;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
@@ -190,6 +184,14 @@
         </div>
     </div>
 </div>
+
+<style>
+    @media screen and (max-width: 1380px) {
+       section {
+            flex-basis: 100% !important;
+        }
+    }
+</style>
 
 <script>
     jQuery(document).ready(function($) {
