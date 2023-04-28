@@ -14,6 +14,7 @@ import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import SectionNode from '@givewp/forms/app/fields/SectionNode';
 import {__} from '@wordpress/i18n';
 import StepsPagination from '@givewp/forms/app/form/MultiStepForm/components/StepsPagination';
+import usePrevious from '@givewp/forms/app/form/MultiStepForm/hooks/usePreviousValue';
 
 const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.section, 'section');
 
@@ -69,20 +70,21 @@ const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
  */
 function Steps({steps}: { steps: StepObject[] }) {
     const {currentStep} = useDonationFormMultiStepState();
+    const previousStep = usePrevious(currentStep);
 
     return steps.map(({id, element}) => {
         const shouldRenderElement = currentStep >= id;
-        const isCurrentStep = id === currentStep;
-        const isPreviousStep = id === currentStep - 1;
-        const isNextStep = id === currentStep + 1;
         const isFirstStep = id === 0;
+        const isCurrentStep = id === currentStep;
+        const ascending = currentStep > previousStep;
+        const descending = currentStep < previousStep;
 
         const stepClasses = classNames('givewp-donation-form-step', {
             'givewp-donation-form__step--start': isFirstStep,
-            'givewp-donation-form__step--current': isCurrentStep && !isFirstStep,
-            'givewp-donation-form__step--hidden': !isCurrentStep && !isPreviousStep && !isNextStep,
-            'givewp-donation-form__step--previous': isPreviousStep,
-            'givewp-donation-form__step--next': isNextStep,
+            'givewp-donation-form__step--visible': isCurrentStep && !isFirstStep,
+            'givewp-donation-form__step--hidden': !isCurrentStep,
+            'givewp-donation-form__step--ascending': isCurrentStep && ascending,
+            'givewp-donation-form__step--descending': isCurrentStep && descending,
         });
 
         return (

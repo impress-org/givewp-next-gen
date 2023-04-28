@@ -99,20 +99,16 @@
       display: none;
     }
 
-    &--previous {
-      left: 0;
-      position: absolute;
-      animation: forwards 0.3s slideOutLeft;
+    &--visible {
+      visibility: visible;
     }
 
-    &--next {
-      right: 0;
-      position: absolute;
-      animation: forwards 0.3s slideOutRight;
+    &--ascending {
+      animation: forwards 0.3s fadeInRight;
     }
 
-    &--current {
-      animation: forwards 0.3s slideInRight;
+    &--descending {
+      animation: forwards 0.3s fadeInLeft;
     }
   }
 }
