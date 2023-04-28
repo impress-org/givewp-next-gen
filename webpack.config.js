@@ -37,6 +37,7 @@ module.exports = {
         payPalCommerceGateway: srcPath('NextGen/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
         classicFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/css/main.scss'),
         classicFormDesignJs: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/js/main.ts'),
+        multiStepFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/MultiStepFormDesign/css/main.scss'),
         donationConfirmationReceiptApp: srcPath(
             'NextGen/DonationForm/resources/receipt/DonationConfirmationReceiptApp.tsx'
         ),

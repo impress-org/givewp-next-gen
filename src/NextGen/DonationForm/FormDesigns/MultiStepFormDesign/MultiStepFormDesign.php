@@ -26,4 +26,12 @@ class MultiStepFormDesign extends FormDesign
     {
         return __('Multi-Step', 'give');
     }
+
+    /**
+     * @unreleased
+     */
+    public function css(): string
+    {
+        return GIVE_NEXT_GEN_URL . 'build/multiStepFormDesignCss.css';
+    }
 }

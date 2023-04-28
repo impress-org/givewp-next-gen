@@ -1,9 +1,10 @@
 import {Section} from '@givewp/forms/types';
 import {useDonationFormState} from '@givewp/forms/app/store';
-import {DonationFormMultiStepStateProvider, useDonationFormMultiStepState,} from './store';
+import {DonationFormMultiStepStateProvider, useDonationFormMultiStepState} from './store';
 import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 import StepForm from '@givewp/forms/app/form/MultiStepForm/components/StepForm';
-import HeaderStep from "@givewp/forms/app/form/MultiStepForm/components/HeaderStep";
+import HeaderStep from '@givewp/forms/app/form/MultiStepForm/components/HeaderStep';
+import classNames from 'classnames';
 
 /**
  * @unreleased
@@ -47,21 +48,20 @@ const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
 function Steps({steps}: { steps: StepObject[] }) {
     const {currentStep} = useDonationFormMultiStepState();
     return steps.map(({id, element}) => {
-        const shouldShowStep = id === currentStep;
         const shouldRenderElement = currentStep >= id;
+        const isActiveStep = id === currentStep;
+        const isPreviousStep = id === currentStep - 1;
+        const isNextStep = id === currentStep + 1;
+
+        const stepClasses = classNames('givewp-donation-form-step', {
+            'givewp-donation-form-step-visible': isActiveStep,
+            'givewp-donation-form-step-hidden': !isActiveStep,
+            'givewp-donation-form-step-previous': isPreviousStep,
+            'givewp-donation-form-step-next': isNextStep,
+        });
 
         return (
-            <div
-                key={id}
-                id={`givewp-donation-form-step-${id}`}
-                className={`givewp-donation-form-step givewp-donation-form-step-${
-                    shouldShowStep ? 'visible' : 'hidden'
-                }`}
-                style={{
-                    //TODO: add css transition/animation
-                    display: shouldShowStep ? 'block' : 'none',
-                }}
-            >
+            <div key={id} id={`givewp-donation-form-step-${id}`} className={stepClasses}>
                 {shouldRenderElement && element}
             </div>
         );
