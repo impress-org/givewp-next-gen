@@ -4,7 +4,6 @@ import {
     Gateway,
     TemplateTag,
     EmailNotification,
-    EmailNotificationConfig
 } from '@givewp/form-builder/types';
 
 declare global {
@@ -22,7 +21,6 @@ declare global {
             gatewaySettingsUrl: string;
             templateTags: TemplateTag[];
             emailNotifications: EmailNotification[];
-            emailNotificationConfigs: EmailNotificationConfig[];
         },
     }
 }
