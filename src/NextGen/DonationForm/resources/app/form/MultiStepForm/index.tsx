@@ -22,6 +22,12 @@ const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.lay
  * @unreleased
  */
 const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
+    if (showHeader) {
+        // Add a header step to the beginning of the steps array
+        // We just need to add another section to the beginning of the array
+        // We're just going to ignore the section details when looping through so any section will do
+        sections = [sections[0], ...sections];
+    }
     const totalSteps = sections.length;
 
     return sections.map((section, index) => {
