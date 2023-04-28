@@ -3,6 +3,11 @@
     .post-type-give_forms #givewpNextGenWelcomeBanner {
         margin-left: 20px;
     }
+    @media screen and (max-width: 1200px) {
+        section {
+            flex-basis: 100% !important;
+        }
+    }
 </style>
 
 <div
@@ -70,7 +75,7 @@
             gap: 73px;
         ">
             <!-- Next Steps -->
-            <section style=" flex-basis: 25.313rem;">
+            <section style="flex:3;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
@@ -138,7 +143,7 @@
             </section>
 
             <!-- What's New -->
-            <section style=" flex-basis: 38.125rem; flex-grow: 1;">
+            <section style="flex:5;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
@@ -184,14 +189,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    @media screen and (max-width: 1380px) {
-       section {
-            flex-basis: 100% !important;
-        }
-    }
-</style>
 
 <script>
     jQuery(document).ready(function($) {
