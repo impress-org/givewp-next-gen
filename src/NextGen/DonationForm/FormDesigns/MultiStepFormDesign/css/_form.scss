@@ -13,6 +13,8 @@
   position: relative;
 
   &__steps {
+    position: relative;
+
     &--header {
       position: relative;
       display: grid;
@@ -32,6 +34,7 @@
         margin-left: 10%;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+
         p {
           white-space: nowrap;
           overflow: hidden;
@@ -70,10 +73,10 @@
     }
 
     &--body {
-      padding: 2rem;
+      padding: 2rem 2rem 0 2rem;
     }
 
-    &--footer {
+    &--footer-secure {
       display: flex;
       width: 100%;
       height: 50px;
@@ -84,7 +87,8 @@
       justify-content: center;
       column-gap: 0.5rem;
       padding: 1rem;
-      .secure-icon,.secure-text, {
+
+      .secure-icon, .secure-text, {
         font-size: 12px;
       }
     }
@@ -95,8 +99,20 @@
       display: none;
     }
 
-    &--visible {
-      display: block;
+    &--previous {
+      left: 0;
+      position: absolute;
+      animation: forwards 0.3s slideOutLeft;
+    }
+
+    &--next {
+      right: 0;
+      position: absolute;
+      animation: forwards 0.3s slideOutRight;
+    }
+
+    &--current {
+      animation: forwards 0.3s slideInRight;
     }
   }
 }

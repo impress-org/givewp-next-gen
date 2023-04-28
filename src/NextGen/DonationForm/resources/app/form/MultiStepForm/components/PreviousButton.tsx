@@ -4,11 +4,11 @@ import {ReactNode} from 'react';
 
 export default function PreviousButton({children}: {children: ReactNode}) {
     const {currentStep} = useDonationFormMultiStepState();
-    const setPreviousStep = usePreviousStep(currentStep);
+    const setPreviousStep = usePreviousStep();
 
     return (
         currentStep > 0 && (
-            <button type="button" onClick={() => setPreviousStep()}>
+            <button type="button" onClick={() => setPreviousStep(currentStep)}>
                 {children}
             </button>
         )

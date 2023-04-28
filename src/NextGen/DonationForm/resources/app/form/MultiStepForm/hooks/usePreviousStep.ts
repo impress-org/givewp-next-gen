@@ -1,11 +1,12 @@
 import {useDonationFormMultiStepStateDispatch} from '@givewp/forms/app/form/MultiStepForm/store';
 import {setCurrentStep} from '@givewp/forms/app/form/MultiStepForm/store/reducer';
 
-export default function usePreviousStep(currentStep) {
+export default function usePreviousStep() {
     const dispatchMultiStep = useDonationFormMultiStepStateDispatch();
-    const previousStep = currentStep - 1;
 
-    return () => {
+    return (currentStep: number) => {
+        const previousStep = currentStep - 1;
+
         if (previousStep <= 0) {
             dispatchMultiStep(setCurrentStep(0));
         } else {

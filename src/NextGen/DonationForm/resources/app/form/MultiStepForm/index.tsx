@@ -13,6 +13,7 @@ import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/Donat
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import SectionNode from '@givewp/forms/app/fields/SectionNode';
 import {__} from '@wordpress/i18n';
+import StepsPagination from '@givewp/forms/app/form/MultiStepForm/components/StepsPagination';
 
 const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.section, 'section');
 
@@ -71,13 +72,15 @@ function Steps({steps}: { steps: StepObject[] }) {
 
     return steps.map(({id, element}) => {
         const shouldRenderElement = currentStep >= id;
-        const isActiveStep = id === currentStep;
+        const isCurrentStep = id === currentStep;
         const isPreviousStep = id === currentStep - 1;
         const isNextStep = id === currentStep + 1;
+        const isFirstStep = id === 0;
 
         const stepClasses = classNames('givewp-donation-form-step', {
-            'givewp-donation-form__step--visible': isActiveStep,
-            'givewp-donation-form__step--hidden': !isActiveStep,
+            'givewp-donation-form__step--start': isFirstStep,
+            'givewp-donation-form__step--current': isCurrentStep && !isFirstStep,
+            'givewp-donation-form__step--hidden': !isCurrentStep && !isPreviousStep && !isNextStep,
             'givewp-donation-form__step--previous': isPreviousStep,
             'givewp-donation-form__step--next': isNextStep,
         });
@@ -103,13 +106,18 @@ function StepsContainer({children}: { children: ReactNode }) {
                     </PreviousButton>
                 </div>
                 <div className="givewp-donation-form__steps--header-title">
-                    <StepHeader/>
+                    <StepHeader />
                 </div>
             </div>
             <div className="givewp-donation-form__steps--body">{children}</div>
             <div className="givewp-donation-form__steps--footer">
-                <i className="fas fa-lock secure-icon"></i>
-                <small className="secure-text">{__('Secure Donation', 'give')}</small>
+                <div className="givewp-donation-form__steps--footer-pagination">
+                    <StepsPagination />
+                </div>
+                <div className="givewp-donation-form__steps--footer-secure">
+                    <i className="fas fa-lock secure-icon"></i>
+                    <small className="secure-text">{__('Secure Donation', 'give')}</small>
+                </div>
             </div>
         </div>
     );
