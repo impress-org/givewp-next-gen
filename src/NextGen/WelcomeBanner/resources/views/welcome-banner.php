@@ -13,7 +13,8 @@
         display: flex;
         flex-direction: column;
         gap: 44px;
-        margin-top: 14px;
+        margin-top: 36px;
+        margin-right: 20px;
         margin-bottom: 24px;
         padding: 24px 48px 36px;
         border-radius: 8px;
@@ -69,7 +70,7 @@
             gap: 73px;
         ">
             <!-- Next Steps -->
-            <section style="flex:3;">
+            <section style=" flex-basis: 25.313rem;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
@@ -137,7 +138,7 @@
             </section>
 
             <!-- What's New -->
-            <section style="flex:5;">
+            <section style=" flex-basis: 38.125rem; flex-grow: 1;">
                 <h2 style="
                     margin: 0;
                     font-size: 18px;
@@ -184,6 +185,14 @@
     </div>
 </div>
 
+<style>
+    @media screen and (max-width: 1380px) {
+       section {
+            flex-basis: 100% !important;
+        }
+    }
+</style>
+
 <script>
     jQuery(document).ready(function($) {
 
@@ -195,9 +204,6 @@
                 'nonce': '<?php echo $nonce; ?>',
             });
         });
-
-        // Render welcome banner under Plugin header
-        document.querySelector('.wp-header-end').insertAdjacentElement('afterend', document.querySelector('#givewpNextGenWelcomeBanner'));
     });
 </script>
 
