@@ -6,7 +6,7 @@ import {__} from '@wordpress/i18n';
 export default function NextButton() {
     const {steps, currentStep} = useDonationFormMultiStepState();
     const {trigger, getValues} = useFormContext();
-    const setNextStep = useNextStep(currentStep);
+    const setNextStep = useNextStep();
     const isLastStep = currentStep === steps.length - 1;
     const fieldNames = steps.find(({id}) => id === currentStep)?.fields ?? [];
 
@@ -19,7 +19,7 @@ export default function NextButton() {
                         const valid = await trigger(fieldNames);
 
                         if (valid) {
-                            setNextStep(getValues());
+                            setNextStep(currentStep, getValues());
                         }
                     }}
                 >
