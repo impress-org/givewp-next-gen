@@ -7,12 +7,11 @@ import handleSubmitRequest from '@givewp/forms/app/utilities/handleFormSubmitReq
 import {useDonationFormState} from '@givewp/forms/app/store';
 import {FormInputs} from '@givewp/forms/app/form/MultiStepForm/types';
 import SubmitButton from '@givewp/forms/app/form/MultiStepForm/components/SubmitButton';
-import getSectionFieldNames from '@givewp/forms/app/form/MultiStepForm/utilities/convertSectionsToSteps';
-import usePreviousStep from '@givewp/forms/app/form/MultiStepForm/hooks/usePreviousStep';
-import useNextStep from '@givewp/forms/app/form/MultiStepForm/hooks/useNextStep';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import SectionNode from '@givewp/forms/app/fields/SectionNode';
+import PreviousButton from '@givewp/forms/app/form/MultiStepForm/components/PreviousButton';
+import NextButton from '@givewp/forms/app/form/MultiStepForm/components/NextButton';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -22,17 +21,19 @@ const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, '
 /**
  * @unreleased
  */
-export default function StepForm({section, currentStep, isFirstStep, isLastStep}: {
+export default function StepForm({
+    section,
+    currentStep,
+    isFirstStep,
+    isLastStep,
+}: {
     section: Section;
     currentStep: number;
     isFirstStep: boolean;
-    isLastStep: boolean
+    isLastStep: boolean;
 }) {
     const {gateways, defaultValues, validationSchema} = useDonationFormState();
     const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
-    const sectionFieldNames = getSectionFieldNames(section);
-    const setPreviousStep = usePreviousStep(currentStep);
-    const setNextStep = useNextStep(currentStep);
 
     const methods = useForm<FormInputs>({
         defaultValues,
@@ -67,27 +68,14 @@ export default function StepForm({section, currentStep, isFirstStep, isLastStep}
                     previousButton={
                         !isFirstStep && (
                             <div>
-                                <button type="button" onClick={() => setPreviousStep()}>
-                                    Previous
-                                </button>
+                                <PreviousButton />
                             </div>
                         )
                     }
                     nextButton={
                         !isLastStep && (
                             <div>
-                                <button
-                                    type="button"
-                                    onClick={async () => {
-                                        const valid = await trigger(sectionFieldNames);
-
-                                        if (valid) {
-                                            setNextStep(getValues());
-                                        }
-                                    }}
-                                >
-                                    Next
-                                </button>
+                                <NextButton />
                             </div>
                         )
                     }

@@ -1,5 +1,6 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
 import reducer from './reducer';
+import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'DonationFormMultiStepState';
@@ -9,6 +10,7 @@ StoreContextDispatch.displayName = 'DonationFormMultiStepStateDispatch';
 
 type PropTypes = {
     initialState: {
+        steps: StepObject[];
         currentStep: number;
     };
     children: ReactNode;

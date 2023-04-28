@@ -5,6 +5,8 @@ import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 import StepForm from '@givewp/forms/app/form/MultiStepForm/components/StepForm';
 import HeaderStep from '@givewp/forms/app/form/MultiStepForm/components/HeaderStep';
 import classNames from 'classnames';
+import PreviousButton from '@givewp/forms/app/form/MultiStepForm/components/PreviousButton';
+import getSectionFieldNames from '@givewp/forms/app/form/MultiStepForm/utilities/convertSectionsToSteps';
 
 /**
  * @unreleased
@@ -32,6 +34,7 @@ const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
         return {
             id: currentStep,
             element,
+            fields: getSectionFieldNames(section),
         };
     });
 };
@@ -47,6 +50,7 @@ const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
  */
 function Steps({steps}: { steps: StepObject[] }) {
     const {currentStep} = useDonationFormMultiStepState();
+
     return steps.map(({id, element}) => {
         const shouldRenderElement = currentStep >= id;
         const isActiveStep = id === currentStep;
@@ -77,8 +81,11 @@ export default function MultiStepForm() {
     const steps: StepObject[] = convertSectionsToSteps(sections, showHeader);
 
     return (
-        <DonationFormMultiStepStateProvider initialState={{currentStep: 0}}>
-            <Steps steps={steps}/>
+        <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0}}>
+            <div>
+                <PreviousButton />
+                <Steps steps={steps} />
+            </div>
         </DonationFormMultiStepStateProvider>
     );
 }
