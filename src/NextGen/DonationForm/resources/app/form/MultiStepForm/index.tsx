@@ -57,7 +57,10 @@ function Steps({steps}: { steps: StepObject[] }) {
                 className={`givewp-donation-form-step givewp-donation-form-step-${
                     shouldShowStep ? 'visible' : 'hidden'
                 }`}
-                style={{display: shouldShowStep ? 'block' : 'none'}}
+                style={{
+                    //TODO: add css transition/animation
+                    display: shouldShowStep ? 'block' : 'none',
+                }}
             >
                 {shouldRenderElement && element}
             </div>
