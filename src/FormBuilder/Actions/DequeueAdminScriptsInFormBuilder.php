@@ -22,7 +22,7 @@ class DequeueAdminScriptsInFormBuilder
         if ($this->isFormBuilderRoute()) {
             $wpScripts = wp_scripts();
 
-            $wpScriptsRegistered = array_column($wpScripts->registered, 'handle');
+            $wpScriptsRegistered = []; //array_column($wpScripts->registered, 'handle');
 
             $legacyGiveScripts = [
                 'give',
@@ -36,9 +36,9 @@ class DequeueAdminScriptsInFormBuilder
                 array_merge($wpScriptsRegistered, $legacyGiveScripts)
             );
 
-            foreach(['admin_notices', 'admin_footer', 'admin_head'] as $hook){
-                remove_all_actions($hook);
-            }
+//            foreach(['admin_notices', 'admin_footer', 'admin_head'] as $hook){
+//                remove_all_actions($hook);
+//            }
         }
     }
 

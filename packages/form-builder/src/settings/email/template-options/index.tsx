@@ -19,7 +19,7 @@ export default () => {
 
     return (
         <>
-            <Button icon={edit} onClick={ openModal } variant={'primary'}>
+            <Button icon={edit} onClick={ openModal } variant={'secondary'} style={{width:'100%', justifyContent:'center'}}>
                 { __( 'Customize email templates', 'givewp' ) }
             </Button>
             {isOpen && (

@@ -8,6 +8,8 @@ import {
 
 declare global {
     interface Window {
+
+        wp?: any;
         storageData?: {
             formDesigns: FormDesign[];
             formPage: FormPageSettings;

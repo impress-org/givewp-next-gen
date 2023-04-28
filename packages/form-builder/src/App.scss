@@ -596,3 +596,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
         margin: 0; // Override the default margin.
     }
 }
+
+[id^='__wp-uploader'] {
+    z-index: 9999999999;
+}
