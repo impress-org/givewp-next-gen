@@ -6,7 +6,15 @@ import StepForm from '@givewp/forms/app/form/MultiStepForm/components/StepForm';
 import HeaderStep from '@givewp/forms/app/form/MultiStepForm/components/HeaderStep';
 import classNames from 'classnames';
 import PreviousButton from '@givewp/forms/app/form/MultiStepForm/components/PreviousButton';
-import getSectionFieldNames from '@givewp/forms/app/form/MultiStepForm/utilities/convertSectionsToSteps';
+import getSectionFieldNames from '@givewp/forms/app/form/MultiStepForm/utilities/getSectionFieldNames';
+import {ReactNode} from 'react';
+import StepHeader from '@givewp/forms/app/form/MultiStepForm/components/StepHeader';
+import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
+import {withTemplateWrapper} from '@givewp/forms/app/templates';
+import SectionNode from '@givewp/forms/app/fields/SectionNode';
+import {__} from '@wordpress/i18n';
+
+const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.section, 'section');
 
 /**
  * @unreleased
@@ -18,24 +26,34 @@ const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
         const currentStep = index;
         const isFirstStep = currentStep === 0;
         const isLastStep = currentStep === totalSteps - 1;
+        const fields = getSectionFieldNames(section);
+        const title = section?.label;
+        const description = section?.description;
+
         const element =
             showHeader && isFirstStep ? (
                 <HeaderStep />
             ) : (
-                <StepForm
-                    key={currentStep}
-                    section={section}
-                    currentStep={currentStep}
-                    isFirstStep={isFirstStep}
-                    isLastStep={isLastStep}
-                />
+                <StepForm key={currentStep} currentStep={currentStep} isFirstStep={isFirstStep} isLastStep={isLastStep}>
+                    <DonationFormErrorBoundary key={section.name}>
+                        <FormSectionTemplate key={section.name} section={section}>
+                            {section.nodes.map((node) => (
+                                <DonationFormErrorBoundary key={node.name}>
+                                    <SectionNode key={node.name} node={node} />
+                                </DonationFormErrorBoundary>
+                            ))}
+                        </FormSectionTemplate>
+                    </DonationFormErrorBoundary>
+                </StepForm>
             );
 
         return {
             id: currentStep,
+            title,
+            description,
             element,
-            fields: getSectionFieldNames(section),
-        };
+            fields,
+        } as StepObject;
     });
 };
 
@@ -58,10 +76,10 @@ function Steps({steps}: { steps: StepObject[] }) {
         const isNextStep = id === currentStep + 1;
 
         const stepClasses = classNames('givewp-donation-form-step', {
-            'givewp-donation-form-step-visible': isActiveStep,
-            'givewp-donation-form-step-hidden': !isActiveStep,
-            'givewp-donation-form-step-previous': isPreviousStep,
-            'givewp-donation-form-step-next': isNextStep,
+            'givewp-donation-form__step--visible': isActiveStep,
+            'givewp-donation-form__step--hidden': !isActiveStep,
+            'givewp-donation-form__step--previous': isPreviousStep,
+            'givewp-donation-form__step--next': isNextStep,
         });
 
         return (
@@ -75,6 +93,31 @@ function Steps({steps}: { steps: StepObject[] }) {
 /**
  * @unreleased
  */
+function StepsContainer({children}: { children: ReactNode }) {
+    return (
+        <div className="givewp-donation-form__steps">
+            <div className="givewp-donation-form__steps--header">
+                <div className="givewp-donation-form__steps--header-previous">
+                    <PreviousButton>
+                        <i className="fas fa-chevron-left"></i>
+                    </PreviousButton>
+                </div>
+                <div className="givewp-donation-form__steps--header-title">
+                    <StepHeader/>
+                </div>
+            </div>
+            <div className="givewp-donation-form__steps--body">{children}</div>
+            <div className="givewp-donation-form__steps--footer">
+                <i className="fas fa-lock secure-icon"></i>
+                <small className="secure-text">{__('Secure Donation', 'give')}</small>
+            </div>
+        </div>
+    );
+}
+
+/**
+ * @unreleased
+ */
 export default function MultiStepForm() {
     const {sections} = useDonationFormState();
     const showHeader = true;
@@ -82,10 +125,9 @@ export default function MultiStepForm() {
 
     return (
         <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0}}>
-            <div>
-                <PreviousButton />
+            <StepsContainer>
                 <Steps steps={steps} />
-            </div>
+            </StepsContainer>
         </DonationFormMultiStepStateProvider>
     );
 }

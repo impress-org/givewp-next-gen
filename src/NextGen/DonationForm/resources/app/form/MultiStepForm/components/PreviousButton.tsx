@@ -1,15 +1,15 @@
 import usePreviousStep from '@givewp/forms/app/form/MultiStepForm/hooks/usePreviousStep';
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';
-import {__} from '@wordpress/i18n';
+import {ReactNode} from 'react';
 
-export default function PreviousButton() {
+export default function PreviousButton({children}: {children: ReactNode}) {
     const {currentStep} = useDonationFormMultiStepState();
     const setPreviousStep = usePreviousStep(currentStep);
 
     return (
         currentStep > 0 && (
             <button type="button" onClick={() => setPreviousStep()}>
-                {__('Previous', 'give')}
+                {children}
             </button>
         )
     );

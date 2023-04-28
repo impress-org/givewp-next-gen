@@ -1,9 +1,3 @@
-.givewp-donation-form-step {
-  &-hidden {
-    display: none;
-  }
-
-  &-visible {
-    display: block;
-  }
-}
+@import 'form';
+@import 'sections';
+@import 'header';

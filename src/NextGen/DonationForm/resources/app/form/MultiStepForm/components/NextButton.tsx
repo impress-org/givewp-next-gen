@@ -1,6 +1,7 @@
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';
 import useNextStep from '@givewp/forms/app/form/MultiStepForm/hooks/useNextStep';
 import {useFormContext} from 'react-hook-form';
+import {__} from '@wordpress/i18n';
 
 export default function NextButton() {
     const {steps, currentStep} = useDonationFormMultiStepState();
@@ -22,7 +23,7 @@ export default function NextButton() {
                         }
                     }}
                 >
-                    Next
+                    {__('Continue')}
                 </button>
             </div>
         )

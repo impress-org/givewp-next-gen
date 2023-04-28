@@ -11,5 +11,8 @@ export type FormInputs = {
 
 export type StepObject = {
     id: number;
+    title: string;
+    description: string;
     element: ReactElement;
+    fields: string[];
 };
