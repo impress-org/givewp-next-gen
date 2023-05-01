@@ -33,11 +33,8 @@ const schema = getJoiRulesForForm(form);
 const initialState = {
     defaultValues,
     gateways: window.givewp.gateways.getAll(),
-    sections: form.nodes,
     validationSchema: schema,
 };
-
-const isMultiStep = true;
 
 function App() {
     if (form.goal.isAchieved) {
@@ -51,7 +48,7 @@ function App() {
     if (form.design?.isMultiStep) {
         return (
             <DonationFormStateProvider initialState={initialState}>
-                <MultiStepForm />
+                <MultiStepForm sections={form.nodes} showHeader />
             </DonationFormStateProvider>
         );
     }

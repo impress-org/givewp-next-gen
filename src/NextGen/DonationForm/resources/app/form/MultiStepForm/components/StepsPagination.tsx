@@ -12,7 +12,7 @@ export default function StepsPagination() {
     const {steps, currentStep} = useDonationFormMultiStepState();
     const dispatchMultiStep = useDonationFormMultiStepStateDispatch();
 
-    const navigation = steps.map?.(({id}) => {
+    const navigation = steps?.map?.(({id}) => {
         const isNextStep = currentStep <= id;
 
         return (
