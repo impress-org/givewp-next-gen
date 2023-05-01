@@ -44,7 +44,7 @@ const convertSectionsToSteps = (sections: Section[], showHeader: boolean) => {
             ) : (
                 <StepForm key={currentStep} currentStep={currentStep} isFirstStep={isFirstStep} isLastStep={isLastStep}>
                     <DonationFormErrorBoundary key={section.name}>
-                        <FormSectionTemplate key={section.name} section={section}>
+                        <FormSectionTemplate key={section.name} section={section} hideLabel>
                             {section.nodes.map((node) => (
                                 <DonationFormErrorBoundary key={node.name}>
                                     <SectionNode key={node.name} node={node} />
