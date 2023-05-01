@@ -8,11 +8,10 @@ import _ from 'lodash'
 import {Button, TextControl} from "@wordpress/components";
 import {upload} from "@wordpress/icons";
 import {__} from "@wordpress/i18n";
-export default () => {
-    _.noConflict()
-    let frame
 
-    const [logoUrl, setLogoUrl] = useState('')
+export default ({value, onChange}) => {
+    _.noConflict();
+    let frame;
 
     const openMediaLibrary = (event) => {
         event.preventDefault()
@@ -35,7 +34,7 @@ export default () => {
             // Get media attachment details from the frame state
             var attachment = frame.state().get('selection').first().toJSON();
 
-            setLogoUrl(attachment.url)
+            onChange(attachment.url);
         });
 
         // Finally, open the modal on click
@@ -48,8 +47,8 @@ export default () => {
                 <TextControl
                     type={'url'}
                     label={__('Logo URL', 'givewp')}
-                    value={logoUrl}
-                    onChange={(value) => setLogoUrl(value)}
+                    value={value}
+                    onChange={onChange}
                 />
             </div>
             <Button icon={upload} variant={'secondary'} onClick={openMediaLibrary} style={{width:'100%', justifyContent:'center'}}>

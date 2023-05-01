@@ -1,20 +1,20 @@
 import {__} from "@wordpress/i18n";
 import {
-    Button,
     PanelBody,
-    PanelRow, SelectControl, TextControl,
+    PanelRow,
+    SelectControl,
+    TextControl,
 } from "@wordpress/components";
-import { MediaPlaceholder } from '@wordpress/block-editor';
 import EmailTemplateOptions from './template-options';
-import { useState } from "react";
 import LogoUpload from "./logo-upload";
+import {useFormState, useFormStateDispatch, setFormSettings} from "@givewp/form-builder/stores/form-state";
 
 export default () => {
 
-    const [status, setStatus] = useState('enabled');
-    const [template, setTemplate] = useState('default');
-    const [fromName, setFromName] = useState('');
-    const [fromEmail, setFromEmail] = useState('');
+    const {
+        settings: {emailOptionsStatus, emailTemplate, emailLogo, emailFromName, emailFromEmail},
+    } = useFormState();
+    const dispatch = useFormStateDispatch();
 
     return <>
         <PanelBody title={__('Email Settings', 'givewp')} initialOpen={false}>
@@ -22,10 +22,11 @@ export default () => {
                 <SelectControl
                     label={__('Email Options', 'givewp')}
                     options={[
+                        {label: __('Global', 'givewp'), value: 'global'},
                         {label: __('Customize', 'givewp'), value: 'enabled'},
                     ]}
-                    value={status}
-                    onChange={(value) => setStatus(value)}
+                    value={emailOptionsStatus}
+                    onChange={(emailOptionsStatus) => dispatch(setFormSettings({emailOptionsStatus}))}
                     />
             </PanelRow>
             <PanelRow>
@@ -36,27 +37,30 @@ export default () => {
                         {label: __('Default template', 'givewp'), value: 'default'},
                         {label: __('No template, plain text only', 'givewp'), value: 'none'},
                     ]}
-                    value={template}
-                    onChange={(value) => setTemplate(value)}
+                    value={emailTemplate}
+                    onChange={(emailTemplate) => dispatch(setFormSettings({emailTemplate}))}
                 />
             </PanelRow>
             <PanelRow>
-                <LogoUpload />
+                <LogoUpload
+                    value={emailLogo}
+                    onChange={(emailLogo) => dispatch(setFormSettings({emailLogo}))}
+                />
             </PanelRow>
             <PanelRow>
                 <TextControl
                     label={__('From Name', 'givewp')}
                     help={__('The name which appears in the "From" field in all GiveWP donation emails.', 'givewp')}
-                    value={fromName}
-                    onChange={(value) => setFromName(value)}
+                    value={emailFromName}
+                    onChange={(emailFromName) => dispatch(setFormSettings({emailFromName}))}
                 />
             </PanelRow>
             <PanelRow>
                 <TextControl
                     label={__('From Email', 'givewp')}
                     help={__('Email address from which all GiveWP emails are sent from. This will act as the "from" and "reply-to" email address.', 'givewp')}
-                    value={fromEmail}
-                    onChange={(value) => setFromEmail(value)}
+                    value={emailFromEmail}
+                    onChange={(emailFromEmail) => dispatch(setFormSettings({emailFromEmail}))}
                 />
             </PanelRow>
             <PanelRow>

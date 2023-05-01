@@ -91,7 +91,36 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $formStatus;
 
-    public $emailTemplateOptions = [];
+    /**
+     * @var array
+     */
+    public $emailTemplateOptions;
+
+    /**
+     * @var string
+     * @todo Extract to a value object.
+     */
+    public $emailOptionsStatus;
+
+    /**
+     * @var string
+     */
+    public $emailTemplate;
+
+    /**
+     * @var string
+     */
+    public $emailLogo;
+
+    /**
+     * @var string
+     */
+    public $emailFromName;
+
+    /**
+     * @var string
+     */
+    public $emailFromEmail;
 
     /**
      * @since 0.1.0
@@ -132,6 +161,17 @@ class FormSettings implements Arrayable, Jsonable
         );
         $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus($array['formStatus']) : DonationFormStatus::DRAFT();
         $self->emailTemplateOptions = $array['emailTemplateOptions'] ?? [];
+
+
+        $self->emailOptionsStatus = $array['emailOptionsStatus'] ?? 'global';
+
+        $self->emailTemplate = $array['emailTemplate'] ?? 'default';
+
+        $self->emailFromName = $array['emailFromName'] ?? '';
+
+        $self->emailFromEmail = $array['emailFromEmail'] ?? '';
+
+        $self->emailLogo = $array['emailLogo'] ?? '';
 
         return $self;
     }
