@@ -55,17 +55,23 @@
             background-color: var(--givewp-orange-400);
         ">
                 <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3.209 1.667a.583.583 0 1 0-1.167 0v.875h-.875a.583.583 0 1 0 0 1.167h.875v.875a.583.583 0 1 0 1.167 0v-.875h.875a.583.583 0 1 0 0-1.167h-.875v-.875zM3.209 10.417a.583.583 0 0 0-1.167 0v.875h-.875a.583.583 0 0 0 0 1.167h.875v.875a.583.583 0 1 0 1.167 0v-.875h.875a.583.583 0 0 0 0-1.167h-.875v-.875zM8.128 2.041a.583.583 0 0 0-1.088 0l-1.012 2.63c-.175.456-.23.587-.306.693-.075.107-.168.2-.274.275-.106.075-.238.13-.693.306l-2.63 1.011a.583.583 0 0 0 0 1.09l2.63 1.01c.455.176.587.231.693.306.106.076.199.169.274.275.076.106.13.237.306.693l1.012 2.63a.583.583 0 0 0 1.088 0l1.012-2.63c.175-.456.23-.587.306-.693.075-.106.168-.2.274-.275.106-.075.238-.13.693-.305l2.63-1.012a.583.583 0 0 0 0-1.089l-2.63-1.011c-.455-.176-.587-.23-.693-.306a1.167 1.167 0 0 1-.274-.275c-.076-.106-.13-.237-.306-.693l-1.012-2.63z" fill="#FFFDF2"/>
+                    <path
+                        d="M3.209 1.667a.583.583 0 1 0-1.167 0v.875h-.875a.583.583 0 1 0 0 1.167h.875v.875a.583.583 0 1 0 1.167 0v-.875h.875a.583.583 0 1 0 0-1.167h-.875v-.875zM3.209 10.417a.583.583 0 0 0-1.167 0v.875h-.875a.583.583 0 0 0 0 1.167h.875v.875a.583.583 0 1 0 1.167 0v-.875h.875a.583.583 0 0 0 0-1.167h-.875v-.875zM8.128 2.041a.583.583 0 0 0-1.088 0l-1.012 2.63c-.175.456-.23.587-.306.693-.075.107-.168.2-.274.275-.106.075-.238.13-.693.306l-2.63 1.011a.583.583 0 0 0 0 1.09l2.63 1.01c.455.176.587.231.693.306.106.076.199.169.274.275.076.106.13.237.306.693l1.012 2.63a.583.583 0 0 0 1.088 0l1.012-2.63c.175-.456.23-.587.306-.693.075-.106.168-.2.274-.275.106-.075.238-.13.693-.305l2.63-1.012a.583.583 0 0 0 0-1.089l-2.63-1.011c-.455-.176-.587-.23-.693-.306a1.167 1.167 0 0 1-.274-.275c-.076-.106-.13-.237-.306-.693l-1.012-2.63z"
+                        fill="#FFFDF2" />
                 </svg>
-                <?php _e('Beta', 'give' ); ?>
+                <?php
+                _e('Beta', 'give'); ?>
             </div>
             <h2 style="
             margin: 6px 0 8px;
             font-size: 24px;
             font-weight: bold;
             line-height: 1.33;
-        "><?php _e('Welcome aboard! Help us test the new Visual Donation Form Builder', 'give'); ?></h2>
-            <div style="font-size: 16px;"><?php _e('Create the donation form of your dreams using an easy-to-use visual donation form builder.', 'give'); ?></div>
+        "><?php
+                _e('Welcome aboard! Help us test the new Visual Donation Form Builder', 'give'); ?></h2>
+            <div style="font-size: 16px;"><?php
+                _e('Create the donation form of your dreams using an easy-to-use visual donation form builder',
+                    'give'); ?></div>
         </header>
 
 
@@ -80,25 +86,35 @@
                     margin: 0;
                     font-size: 18px;
                     color: var(--givewp-blue-500);
-                "><?php _e('Next Steps', 'give'); ?></h2>
+                "><?php
+                    _e('Next Steps', 'give'); ?></h2>
 
-                <div style="height: calc(100% - 26px); display:flex; flex-direction:column; justify-content: space-between; gap:26px;">
+                <div
+                    style="height: calc(100% - 26px); display:flex; flex-direction:column; justify-content: space-between; gap:26px;">
 
                     <!-- Join the Journey -->
                     <div style="display: flex; flex-direction: column;">
-                        <h3 style="font-size: 16px; margin: 12px 0;"><?php _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
-                        <p style="font-size: 12px; margin: 0 0 12px 0;"><?php _e('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual donation form builder. Spacing is limited to <strong>eight(8)</strong> participants per session.', 'give'); ?></p>
-                        <a href="https://givewp.com/focus-groups/" target="blank"  style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
-                            <?php _e('Three(3) time slots available - Register now', 'give'); ?>
+                        <h3 style="font-size: 16px; margin: 12px 0;"><?php
+                            _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
+                        <p style="font-size: 12px; margin: 0 0 12px 0;"><?php
+                            _e('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual donation form builder. Spacing is limited to <strong>eight(8)</strong> participants per session.',
+                                'give'); ?></p>
+                        <a href="https://givewp.com/focus-groups/" target="blank"
+                           style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
+                            <?php
+                            _e('Three(3) time slots available - Register now', 'give'); ?>
                         </a>
                     </div>
 
                     <!-- Create your new donation form -->
                     <div>
-                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Create a New Donation Form', 'give'); ?></h3>
-                        <p><?php _e('Go directly to the new form builder and get started exploring!', 'give'); ?></p>
+                        <h3 style="font-size: 16px;margin: 12px 0;"><?php
+                            _e('Create your new donation form', 'give'); ?></h3>
+                        <p><?php
+                            _e('The Visual donation form building experience is one click away', 'give'); ?></p>
                         <a
-                            href="<?php echo admin_url('edit.php?post_type=give_forms&page=form-builder-next-gen'); ?>"
+                            href="<?php
+                            echo admin_url('edit.php?post_type=give_forms&page=form-builder-next-gen'); ?>"
                             style="
                         display: flex;
                         flex-direction: row;
@@ -166,9 +182,14 @@
                         border: solid 1px var(--givewp-blue-500);
                         background-color: var(--givewp-blue-25);
                     ">
-                        <img style="width: 100%;" src="<?php esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/design-mode.min.png'); ?>" alt="">
-                        <h3><?php _e('Design Mode', 'give'); ?></h3>
-                        <div><?php _e('See exactly what your form looks like for potential donors using the "Design" tab of the builder. Changes are visible immediately.', 'give'); ?></div>
+                        <img style="width: 100%;" src="<?php
+                        esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/design-mode.min.png'); ?>"
+                             alt="">
+                        <h3><?php
+                            _e('Design Mode', 'give'); ?></h3>
+                        <div><?php
+                            _e('Toggle the “Design” tab and customize the colors and features of your form based on the Form Design you choose.',
+                                'give'); ?></div>
                     </div>
 
                     <!-- Custom fields -->
@@ -180,9 +201,14 @@
                         border: solid 1px var(--givewp-blue-500);
                         background-color: var(--givewp-blue-25);
                     ">
-                        <img style="width: 100%;" src="<?php esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/custom-fields.min.png'); ?>" alt="">
-                        <h3><?php _e('Custom Fields and Sections', 'give'); ?></h3>
-                        <div><?php _e('Add custom input fields, custom paragraphs/content, and even entire sections to forms. No code required!', 'give'); ?></div>
+                        <img style="width: 100%;" src="<?php
+                        esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/custom-fields.min.png'); ?>"
+                             alt="">
+                        <h3><?php
+                            _e('Custom Fields and Sections', 'give'); ?></h3>
+                        <div><?php
+                            _e('Add custom fields to your form. Drag and drop them where you need, to any section. Even add new drag-and-droppable sections!',
+                                'give'); ?></div>
                     </div>
                 </div>
             </section>
@@ -191,10 +217,10 @@
 </div>
 
 <script>
-    jQuery(document).ready(function($) {
+    jQuery(document).ready(function ($) {
 
         // Banner Dismiss
-        $('#givewpNextGenWelcomeBannerDismiss').click(function() {
+        $('#givewpNextGenWelcomeBannerDismiss').click(function () {
             $('#givewpNextGenWelcomeBanner').remove();
             $.post(ajaxurl, {
                 'action': '<?php echo $action; ?>',
