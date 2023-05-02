@@ -129,10 +129,14 @@
                         color: var(--givewp-green-600);
                     "
                         >
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 4.166v11.667M4.165 9.999h11.667" stroke="#2D802F" stroke-width="1.667" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 4.166v11.667M4.165 9.999h11.667" stroke="#2D802F" stroke-width="1.667"
+                                      stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <?php _e('Create a next visual donation form', 'give'); ?>
+                            <?php
+                            _e('Create a form using the new visual builder', 'give'); ?>
+                            ?>
                         </a>
                         <div style="
                     display: flex;
