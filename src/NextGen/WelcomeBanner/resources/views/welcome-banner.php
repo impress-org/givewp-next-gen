@@ -102,7 +102,7 @@
                         <a href="https://givewp.com/focus-groups/" target="blank"
                            style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
                             <?php
-                            _e('Three(3) time slots available - Register now', 'give'); ?>
+                            _e('Three (3) time slots available - Register now', 'give'); ?>
                         </a>
                     </div>
 
