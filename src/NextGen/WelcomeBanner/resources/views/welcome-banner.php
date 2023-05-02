@@ -183,7 +183,7 @@
                         background-color: var(--givewp-blue-25);
                     ">
                         <img style="width: 100%;" src="<?php
-                        esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/design-mode.min.png'); ?>"
+                        esc_attr(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/design-mode.min.png'); ?>"
                              alt="">
                         <h3><?php
                             _e('Design Mode', 'give'); ?></h3>
