@@ -98,7 +98,7 @@
                             _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
                         <p style="font-size: 12px; margin: 0 0 12px 0;"><?php
                             printf(__('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual donation form builder. Spacing is limited to %s participants per session.',
-                                '<strong>eight(8)</strong>'), 'give'); ?></p>
+                                '<strong>eight (8)</strong>'), 'give'); ?></p>
                         <a href="https://givewp.com/focus-groups/" target="blank"
                            style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
                             <?php
