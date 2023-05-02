@@ -14,7 +14,7 @@ class ShowEmailPreview
 
         $emailNotification = $this->getEmailNotificationByType($emailType);
 
-        $emailHeader = $request->get_param('email_header') ?: $emailNotification->get_email_header( $formId );
+        $emailHeader = $request->get_param('email_heading') ?: $emailNotification->get_email_header( $formId );
         $emailMessage = $request->get_param('email_message') ?: $emailNotification->get_email_message( $formId );
         $emailTemplate = $request->get_param('email_template') ?: $emailNotification->get_email_template( $formId );
         $contentType = $request->get_param('content_type') ?: $emailNotification->get_email_content_type( $formId );
@@ -30,9 +30,11 @@ class ShowEmailPreview
             )
         );
 
-        header('Content-Type: text/html; charset=UTF-8');
         add_filter('give_preview_email_receipt_header', '__return_false'); // Disable hard-coded preview switcher.
         do_action( "give_{$emailType}_email_preview", $emailNotification );
+
+        ob_clean();
+        header('Content-Type: text/html; charset=UTF-8');
         echo apply_filters( "give_{$emailType}_email_preview_message",
             $emailHtml,
             $email_preview_data = apply_filters( "give_{$emailType}_email_preview_data", array() ),

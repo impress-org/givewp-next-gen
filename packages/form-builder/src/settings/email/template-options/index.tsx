@@ -1,11 +1,12 @@
 import {Button, Modal, TextControl} from "@wordpress/components";
 import {edit} from "@wordpress/icons";
 import {__} from "@wordpress/i18n";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import TabPanel from "@givewp/form-builder/components/sidebar/TabPanel";
 import EmailTemplateSettings from "./settings";
 import CopyToClipboardButton from "./components/copy-to-clipboard-button";
 import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+import {useFormState} from "@givewp/form-builder/stores/form-state";
 
 export default () => {
 
@@ -20,15 +21,39 @@ export default () => {
     const {templateTags, emailNotifications} = getFormBuilderData();
 
     const EmailPreviewContent = ({emailType}) => {
-        // @ts-ignore
-        const url = new URL(window.formBuilderData.emailPreviewURL);
-        url.searchParams.set('email_type', emailType);
-        // @ts-ignore
-        url.searchParams.set('_wpnonce', window.storageData.nonce);
+
+        const [ previewHtml, setPreviewHtml ] = useState<string>(null);
+
+        const {settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail}} = useFormState();
+
+        useEffect(() => {
+
+            // @ts-ignore
+            jQuery
+                .post({
+                    // @ts-ignore
+                    url: window.formBuilderData.emailPreviewURL,
+                    headers: {
+                        // @ts-ignore
+                        'X-WP-Nonce': window.storageData.nonce,
+                    },
+                    data: {
+                        email_type: emailType,
+                        email_template: emailTemplate,
+                        email_logo: emailLogo,
+                        email_from_name: emailFromName,
+                        email_from_email: emailFromEmail,
+                        ...emailTemplateOptions[emailType]
+                    },
+                })
+                .then((response) => {
+                    setPreviewHtml(response)
+                });
+        });
 
         return (
             <iframe
-                src={url.toString()} // '/?give_action=preview_email&email_type=' + emailType + '&_wpnonce=8ea590940c'
+                srcDoc={previewHtml}
                 style={{width:'100%',height:'100%',border:'none'}}
             />
         )
