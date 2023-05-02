@@ -97,8 +97,8 @@
                         <h3 style="font-size: 16px; margin: 12px 0;"><?php
                             _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
                         <p style="font-size: 12px; margin: 0 0 12px 0;"><?php
-                            _e('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual donation form builder. Spacing is limited to <strong>eight(8)</strong> participants per session.',
-                                'give'); ?></p>
+                            printf(__('Join us on <strong>11 May 2023</strong> to provide focused feedback about our new visual donation form builder. Spacing is limited to %s participants per session.',
+                                '<strong>eight(8)</strong>'), 'give'); ?></p>
                         <a href="https://givewp.com/focus-groups/" target="blank"
                            style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
                             <?php
@@ -146,11 +146,16 @@
                     background-color: var(--givewp-green-25);
                     color: var(--givewp-green-600);
                 ">
-                            <svg style="margin-top: 2px;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 .666a7.333 7.333 0 1 0 0 14.667A7.333 7.333 0 0 0 8 .666zm0 4a.667.667 0 1 0 0 1.333h.006a.667.667 0 0 0 0-1.333h-.007zm.666 3.333a.667.667 0 0 0-1.333 0v2.667a.667.667 0 1 0 1.333 0V7.999z" fill="#2D802F"/>
+                            <svg style="margin-top: 2px;" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M8 .666a7.333 7.333 0 1 0 0 14.667A7.333 7.333 0 0 0 8 .666zm0 4a.667.667 0 1 0 0 1.333h.006a.667.667 0 0 0 0-1.333h-.007zm.666 3.333a.667.667 0 0 0-1.333 0v2.667a.667.667 0 1 0 1.333 0V7.999z"
+                                      fill="#2D802F" />
                             </svg>
                             <div style="flex:1;">
-                                <?php _e('The Next Gen plugin is intended only for testing and feedback purposes. Please do <strong> not use </strong> for live donations.', 'give'); ?>
+                                <?php
+                                printf(__('The Next Gen plugin is intended only for testing and feedback purposes.
+                                Please do %s for live donations.', 'give'), '<strong>not use</strong>'); ?>
                             </div>
                         </div>
                     </div>
