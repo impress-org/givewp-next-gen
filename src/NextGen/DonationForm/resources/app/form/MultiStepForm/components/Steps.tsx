@@ -25,7 +25,7 @@ export default function Steps({steps}: { steps: StepObject[] }) {
 
         const stepClasses = classNames('givewp-donation-form-step', {
             'givewp-donation-form__step--start': isFirstStep,
-            'givewp-donation-form__step--visible': isCurrentStep && !isFirstStep,
+            'givewp-donation-form__step--visible': isCurrentStep,
             'givewp-donation-form__step--hidden': !isCurrentStep,
             'givewp-donation-form__step--ascending': isCurrentStep && ascending,
             'givewp-donation-form__step--descending': isCurrentStep && descending,

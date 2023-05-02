@@ -34,4 +34,22 @@ class MultiStepFormDesign extends FormDesign
     {
         return GIVE_NEXT_GEN_URL . 'build/multiStepFormDesignCss.css';
     }
+
+    /**
+     * @unreleased
+     */
+    public function js(): string
+    {
+        return GIVE_NEXT_GEN_URL . 'build/multiStepFormDesignJs.js';
+    }
+
+    /**
+     * @unreleased
+     */
+    public function dependencies(): array
+    {
+        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/multiStepFormDesignJs.asset.php';
+
+        return $scriptAsset['dependencies'];
+    }
 }
