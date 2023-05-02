@@ -20,10 +20,16 @@ export default () => {
     const {templateTags, emailNotifications} = getFormBuilderData();
 
     const EmailPreviewContent = ({emailType}) => {
+        // @ts-ignore
+        const url = new URL(window.formBuilderData.emailPreviewURL);
+        url.searchParams.set('email_type', emailType);
+        // @ts-ignore
+        url.searchParams.set('_wpnonce', window.storageData.nonce);
+
         return (
             <iframe
-                src={'/?give_action=preview_email&email_type=' + emailType + '&_wpnonce=8ea590940c'}
-                style={{zIndex: '9999999999',width:'100%',height:'100%',border:'none'}}
+                src={url.toString()} // '/?give_action=preview_email&email_type=' + emailType + '&_wpnonce=8ea590940c'
+                style={{width:'100%',height:'100%',border:'none'}}
             />
         )
     }
