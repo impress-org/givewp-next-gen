@@ -40,6 +40,24 @@ class ServiceProvider implements ServiceProviderInterface
                     ],
                 ],
             ]);
+
+            register_rest_route('givewp/next-gen', 'email-preview', [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [give(ShowEmailPreview::class), '__invoke'],
+                'permission_callback' => function () {
+                    return current_user_can('manage_options');
+                },
+                'args' => [
+                    'email_type' => [
+                        'type' => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'form_id' => [
+                        'type' => 'string',
+                        'sanitize_callback' => 'absint',
+                    ],
+                ],
+            ]);
         });
     }
 }
