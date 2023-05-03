@@ -87,7 +87,7 @@
                     font-size: 18px;
                     color: var(--givewp-blue-500);
                 "><?php
-                    _e('Next Steps', 'give'); ?></h2>
+                    _e('Next steps', 'give'); ?></h2>
 
                 <div
                     style="height: calc(100% - 26px); display:flex; flex-direction:column; justify-content: space-between; gap:26px;">
@@ -95,10 +95,10 @@
                     <!-- Join the Journey -->
                     <div style="display: flex; flex-direction: column;">
                         <h3 style="font-size: 16px; margin: 12px 0;"><?php
-                            _e('Participate in a Beta Focus Group And Get a $25 Amazon Gift Card', 'give'); ?></h3>
+                            _e('Participate in a Beta Focus Group and get a $25 Amazon Gift Card', 'give'); ?></h3>
                         <p style="font-size: 12px; margin: 0 0 12px 0;"><?php
                             printf(__('Join us on %s to provide focused feedback about our new visual donation form builder. Spacing is limited to %s participants per session.',
-                                'give'), '<strong>11 May 2023</strong>', '<strong>eight(8)</strong>'); ?></p>
+                                'give'), '<strong>11 May 2023</strong>', '<strong>eight (8)</strong>'); ?></p>
                         <a href="https://givewp.com/focus-groups/" target="blank"
                            style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
                             <?php
@@ -172,7 +172,8 @@
                     margin: 0;
                     font-size: 18px;
                     color: var(--givewp-blue-500);
-                "><?php _e('What\'s New', 'give'); ?></h2>
+                "><?php
+                    _e('What\'s new', 'give'); ?></h2>
 
                 <div style="
                     margin-top: 8px;
@@ -194,7 +195,7 @@
                         echo esc_attr(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/design-mode.min.png'); ?>"
                              alt="">
                         <h3><?php
-                            _e('Design Mode', 'give'); ?></h3>
+                            _e('Design mode', 'give'); ?></h3>
                         <div><?php
                             _e('Toggle the “Design” tab and customize the colors and features of your form based on the Form Design you choose.',
                                 'give'); ?></div>
@@ -213,7 +214,7 @@
                         esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/custom-fields.min.png'); ?>"
                              alt="">
                         <h3><?php
-                            _e('Custom Fields and Sections', 'give'); ?></h3>
+                            _e('Custom field support', 'give'); ?></h3>
                         <div><?php
                             _e('Add custom fields to your form. Drag and drop them where you need, to any section. Even add new drag-and-droppable sections!',
                                 'give'); ?></div>
