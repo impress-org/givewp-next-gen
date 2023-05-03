@@ -38,7 +38,8 @@
                     "lock": {
                         "remove": true
                     }
-                }
+                },
+                "innerBlocks": []
             }
         ]
     },
@@ -70,7 +71,8 @@
                     "lastNameLabel": "Last name",
                     "lastNamePlaceholder": "Last name",
                     "requireLastName": false
-                }
+                },
+                "innerBlocks": []
             },
             {
                 "clientId": "6f0af86f-703d-400d-9cf9-322d5691307b",
@@ -79,7 +81,8 @@
                 "attributes": {
                     "label": "Email Address",
                     "isRequired": true
-                }
+                },
+                "innerBlocks": []
             }
         ]
     },
@@ -100,7 +103,8 @@
                     "lock": {
                         "remove": true
                     }
-                }
+                },
+                "innerBlocks": []
             },
             {
                 "name": "custom-block-editor/paragraph",
@@ -108,13 +112,15 @@
                 "isValid": true,
                 "attributes": {
                     "content": "Please review your donation details below."
-                }
+                },
+                "innerBlocks": []
             },
             {
                 "name": "custom-block-editor/donation-summary",
                 "clientId": "b7114360-8542-4043-8296-26d2ae995d24",
                 "isValid": true,
-                "attributes": []
+                "attributes": [],
+                "innerBlocks": []
             }
         ]
     }
