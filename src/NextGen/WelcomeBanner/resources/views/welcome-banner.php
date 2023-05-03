@@ -136,7 +136,6 @@
                             </svg>
                             <?php
                             _e('Create a form using the new visual builder', 'give'); ?>
-                            ?>
                         </a>
                         <div style="
                     display: flex;
