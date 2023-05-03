@@ -14,6 +14,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\NextGen\DonationForm\Rules\GatewayRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 
@@ -107,6 +108,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "custom-block-editor/payment-gateways":
                 return PaymentGateways::make('gatewayId')
+                    ->rules(new GatewayRule())
                     ->required();
 
             case "custom-block-editor/donation-summary":

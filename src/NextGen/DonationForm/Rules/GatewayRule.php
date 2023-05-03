@@ -3,7 +3,6 @@ namespace Give\NextGen\DonationForm\Rules;
 
 use Closure;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Vendors\StellarWP\Validation\Contracts\Sanitizer;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
@@ -67,9 +66,10 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     /**
      * @unreleased
      */
-    public function sanitize($value): PaymentGateway
+    public function sanitize($value): string
     {
-        return give(PaymentGatewayRegister::class)->getPaymentGateway($value);
+        return $value;
+        //return give(PaymentGatewayRegister::class)->getPaymentGateway($value);
     }
 
     /**
