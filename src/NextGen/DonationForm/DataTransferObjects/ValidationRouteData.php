@@ -45,7 +45,7 @@ class ValidationRouteData implements Arrayable
      *
      * @throws DonationFormFieldErrorsException
      */
-    public function validated(): array
+    public function validate(): bool
     {
         $request = $this->getRequestData();
 
@@ -64,9 +64,9 @@ class ValidationRouteData implements Arrayable
 
         if ($validator->fails()) {
             $this->throwDonationFormFieldErrorsException($validator->errors());
+        } else {
+            return true;
         }
-
-        return $validator->validated();
     }
 
     /**

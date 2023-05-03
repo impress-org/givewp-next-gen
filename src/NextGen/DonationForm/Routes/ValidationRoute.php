@@ -21,7 +21,7 @@ class ValidationRoute
     /**
      * @unreleased
      */
-    public function __invoke(array $request): array
+    public function __invoke(array $request): bool
     {
         // create DTO from GET request
         $routeData = DonateRouteData::fromRequest(give_clean($_GET));
@@ -33,7 +33,7 @@ class ValidationRoute
         $formData = ValidationRouteData::fromRequest($request);
 
         try {
-            $data = $formData->validated();
+            return $formData->validate();
         } catch (DonationFormFieldErrorsException $exception) {
             $type = 'validation_error';
             $this->logError($type, $exception->getMessage(), $formData);

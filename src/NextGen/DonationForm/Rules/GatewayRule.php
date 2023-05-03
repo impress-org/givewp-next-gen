@@ -4,11 +4,10 @@ namespace Give\NextGen\DonationForm\Rules;
 use Closure;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Vendors\StellarWP\Validation\Contracts\Sanitizer;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
-class GatewayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
+class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
 {
 
     /**
@@ -61,15 +60,6 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
                 )
             );
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function sanitize($value): string
-    {
-        return $value;
-        //return give(PaymentGatewayRegister::class)->getPaymentGateway($value);
     }
 
     /**
