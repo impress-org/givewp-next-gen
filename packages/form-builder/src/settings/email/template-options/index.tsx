@@ -47,11 +47,9 @@ export default () => {
                     },
                 })
                 .then((response) => {
-                    console.log(response)
                     setPreviewHtml(response)
                 })
                 .fail((error) => {
-                    console.log(error);
                     setPreviewHtml('Error loading preview.')
                 });
         }, []);
