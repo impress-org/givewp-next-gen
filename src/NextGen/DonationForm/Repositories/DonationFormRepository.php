@@ -382,6 +382,7 @@ class DonationFormRepository
     }
 
     /**
+     * @unreleased append formId to first section instead of last with multistep in mind.
      * @since 0.1.0
      */
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form
@@ -391,10 +392,10 @@ class DonationFormRepository
             $formNodes = $form->all();
 
             /** @var Section $lastSection */
-            $lastSection = $form->count() ? end($formNodes) : null;
+            $firstSection = $form->count() ? $formNodes[0] : null;
 
-            if ($lastSection) {
-                $lastSection->append(
+            if ($firstSection) {
+                $firstSection->append(
                     Hidden::make('formId')
                         ->defaultValue($formId)
                         ->rules(

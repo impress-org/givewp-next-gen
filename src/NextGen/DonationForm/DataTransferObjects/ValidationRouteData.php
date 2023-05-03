@@ -14,10 +14,6 @@ use WP_Error;
 class ValidationRouteData implements Arrayable
 {
     /**
-     * @var string
-     */
-    public $gatewayId;
-    /**
      * @var array
      */
     private $requestData;
@@ -35,7 +31,6 @@ class ValidationRouteData implements Arrayable
     {
         $self = new static();
         $self->formId = (int)$requestData['formId'];
-        $self->gatewayId = $requestData['gatewayId'];
         $self->requestData = $requestData;
 
         return $self;
