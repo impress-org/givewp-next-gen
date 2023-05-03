@@ -47,16 +47,29 @@ export default () => {
                     },
                 })
                 .then((response) => {
+                    console.log(response)
                     setPreviewHtml(response)
+                })
+                .fail((error) => {
+                    console.log(error);
+                    setPreviewHtml('Error loading preview.')
                 });
-        });
+        }, []);
 
-        return (
-            <iframe
+        return previewHtml
+            ? <iframe
                 srcDoc={previewHtml}
                 style={{width:'100%',height:'100%',border:'none'}}
             />
-        )
+            : <div style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                {__('Generating preview...', 'give')}
+            </div>;
     }
 
     const CloseButton = ({label, onClick}) => {

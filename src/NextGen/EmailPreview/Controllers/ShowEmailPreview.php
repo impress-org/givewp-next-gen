@@ -4,15 +4,16 @@ namespace Give\NextGen\EmailPreview\Controllers;
 
 class ShowEmailPreview
 {
-    /**
-     * @throws \Exception
-     */
     public function __invoke(\WP_REST_Request $request)
     {
         $formId = $request->get_param('form_id');
         $emailType = $request->get_param('email_type');
 
-        $emailNotification = $this->getEmailNotificationByType($emailType);
+        try {
+            $emailNotification = $this->getEmailNotificationByType($emailType);
+        } catch (\Exception $e) {
+            return new \WP_REST_Response($e->getMessage(), 400);
+        }
 
         $emailHeader = $request->get_param('email_heading') ?: $emailNotification->get_email_header( $formId );
         $emailMessage = $request->get_param('email_message') ?: $emailNotification->get_email_message( $formId );
@@ -58,8 +59,6 @@ class ShowEmailPreview
             }
         }
 
-        if(!isset($emailNotification)) {
-            throw new \Exception("Email notification not found for '$type'");
-        }
+        throw new \Exception("Email notification not found for '$type'");
     }
 }
