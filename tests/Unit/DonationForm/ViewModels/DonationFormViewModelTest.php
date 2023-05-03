@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\DonationForm\VieModels;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\NextGen\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
@@ -29,6 +30,7 @@ class DonationFormViewModelTest extends TestCase
         $totalRevenue = $donationFormRepository->getTotalRevenue($donationForm->id);
         $goalType = $donationForm->settings->goalType ?? GoalType::AMOUNT();
         $donateUrl = (new GenerateDonateRouteUrl())();
+        $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
         $formDataGateways = $donationFormRepository->getFormDataGateways($donationForm->id);
         $formApi = $donationFormRepository->getFormSchemaFromBlocks(
             $donationForm->id,
@@ -39,6 +41,7 @@ class DonationFormViewModelTest extends TestCase
 
         $this->assertEquals($viewModel->exports(), [
             'donateUrl' => $donateUrl,
+            'validateUrl' => $validateUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],
