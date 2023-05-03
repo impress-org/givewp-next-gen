@@ -38,8 +38,7 @@
                     "lock": {
                         "remove": true
                     }
-                },
-                "innerBlocks": []
+                }
             }
         ]
     },
@@ -71,8 +70,7 @@
                     "lastNameLabel": "Last name",
                     "lastNamePlaceholder": "Last name",
                     "requireLastName": false
-                },
-                "innerBlocks": []
+                }
             },
             {
                 "clientId": "6f0af86f-703d-400d-9cf9-322d5691307b",
@@ -81,8 +79,7 @@
                 "attributes": {
                     "label": "Email Address",
                     "isRequired": true
-                },
-                "innerBlocks": []
+                }
             }
         ]
     },
@@ -103,30 +100,21 @@
                     "lock": {
                         "remove": true
                     }
-                },
-                "innerBlocks": []
-            }
-        ]
-    },
-    {
-        "clientId": "c1f1f1f1-1f1f-1f1f-1f1f-1f1f1f1f1f1f",
-        "name": "custom-block-editor/section",
-        "isValid": true,
-        "attributes": {
-            "title": "Donation Summary",
-            "description": "Please review your donation details below."
-        },
-        "innerBlocks": [
+                }
+            },
             {
-                "clientId": "d1f1f1f1-1f1f-1f1f-1f1f-1f1f1f1f1f1f",
-                "name": "custom-block-editor/donation-summary",
+                "name": "custom-block-editor/paragraph",
+                "clientId": "c2010041-2c98-4893-9362-ecc06dc8aae6",
                 "isValid": true,
                 "attributes": {
-                    "lock": {
-                        "remove": true
-                    }
-                },
-                "innerBlocks": []
+                    "content": "Please review your donation details below."
+                }
+            },
+            {
+                "name": "custom-block-editor/donation-summary",
+                "clientId": "b7114360-8542-4043-8296-26d2ae995d24",
+                "isValid": true,
+                "attributes": []
             }
         ]
     }
