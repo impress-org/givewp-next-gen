@@ -1,5 +1,5 @@
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';
-import useNextStep from '@givewp/forms/app/form/MultiStepForm/hooks/useNextStep';
+import useSetNextStep from '@givewp/forms/app/form/MultiStepForm/hooks/useSetNextStep';
 import {useFormContext} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 
@@ -9,7 +9,7 @@ import {__} from '@wordpress/i18n';
 export default function NextButton() {
     const {steps, currentStep} = useDonationFormMultiStepState();
     const {trigger, getValues} = useFormContext();
-    const setNextStep = useNextStep();
+    const setNextStep = useSetNextStep();
     const isLastStep = currentStep === steps.length - 1;
     const fieldNames = steps.find(({id}) => id === currentStep)?.fields ?? [];
 
