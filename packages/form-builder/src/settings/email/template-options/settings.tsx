@@ -14,9 +14,11 @@ const EmailTemplateSettings = ({notification}) => {
 
     useEffect(() => {
         const mediaToolbarButton = document.querySelector('.ql-wpmedia')
-        mediaToolbarButton.addEventListener('click', openMediaLibrary);
-        return () => {
-            mediaToolbarButton.removeEventListener('click', openMediaLibrary);
+        if(mediaToolbarButton) {
+            mediaToolbarButton.addEventListener('click', openMediaLibrary);
+            return () => {
+                mediaToolbarButton.removeEventListener('click', openMediaLibrary);
+            }
         }
     }, []);
 
