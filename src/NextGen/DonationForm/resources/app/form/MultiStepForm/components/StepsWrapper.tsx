@@ -19,22 +19,22 @@ function StepsWrapperTitle() {
 export default function StepsWrapper({children}: { children: ReactNode }) {
     return (
         <div className="givewp-donation-form__steps">
-            <div className="givewp-donation-form__steps--header">
-                <div className="givewp-donation-form__steps--header-previous">
+            <div className="givewp-donation-form__steps-header">
+                <div className="givewp-donation-form__steps-header-previous">
                     <PreviousButton>
                         <i className="fas fa-chevron-left"></i>
                     </PreviousButton>
                 </div>
-                <div className="givewp-donation-form__steps--header-title">
+                <div className="givewp-donation-form__steps-header-title">
                     <StepsWrapperTitle />
                 </div>
             </div>
-            <div className="givewp-donation-form__steps--body">{children}</div>
-            <div className="givewp-donation-form__steps--footer">
-                <div className="givewp-donation-form__steps--footer-pagination">
+            <div className="givewp-donation-form__steps-body">{children}</div>
+            <div className="givewp-donation-form__steps-footer">
+                <div className="givewp-donation-form__steps-footer-pagination">
                     <StepsPagination />
                 </div>
-                <div className="givewp-donation-form__steps--footer-secure">
+                <div className="givewp-donation-form__steps-footer-secure">
                     <i className="fas fa-lock secure-icon"></i>
                     <small className="secure-text">{__('Secure Donation', 'give')}</small>
                 </div>

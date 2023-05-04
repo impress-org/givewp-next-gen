@@ -23,7 +23,7 @@ export default function Steps({steps}: { steps: StepObject[] }) {
         const ascending = currentStep > previousStep;
         const descending = currentStep < previousStep;
 
-        const stepClasses = classNames('givewp-donation-form-step', {
+        const stepClasses = classNames('givewp-donation-form__step', {
             'givewp-donation-form__step--start': isFirstStep,
             'givewp-donation-form__step--visible': isCurrentStep,
             'givewp-donation-form__step--hidden': !isCurrentStep,
