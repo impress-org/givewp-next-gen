@@ -1,8 +1,12 @@
 import paragraph from './paragraph';
+import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
 
 const ElementBlocks = [paragraph];
 
 const blockNames = ElementBlocks.map((block) => block.name);
 
-export default ElementBlocks;
+ElementBlocks.forEach((block) => {
+    blockRegistrar.register(block);
+});
+
 export {blockNames};

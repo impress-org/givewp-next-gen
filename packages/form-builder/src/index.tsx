@@ -5,10 +5,11 @@ import {BlockSupports, registerBlockType} from '@wordpress/blocks';
 import App from './App';
 
 import sectionBlocks, {sectionBlockNames} from './blocks/section';
-import fieldBlocks from './blocks/fields';
-import elementBlocks from './blocks/elements';
+import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
 import {FieldBlock} from '@givewp/form-builder/types';
-import {applyFilters} from '@wordpress/hooks';
+
+import './blocks/fields';
+import './blocks/elements';
 
 const supportOverrides: BlockSupports = {
     customClassName: false,
@@ -25,12 +26,7 @@ sectionBlocks.map(({name, settings}: FieldBlock) =>
     })
 );
 
-const registeredBlocks = applyFilters('givewp.formBuilder.registeredBlocks', [
-    ...fieldBlocks,
-    ...elementBlocks,
-]) as FieldBlock[];
-
-registeredBlocks.map(({name, settings}: FieldBlock) =>
+blockRegistrar.getAll().map(({name, settings}: FieldBlock) =>
     registerBlockType(name, {
         ...settings,
         parent: sectionBlockNames,
@@ -46,6 +42,6 @@ const root = createRoot(container!);
 
 root.render(
     <React.StrictMode>
-        <App/>
+        <App />
     </React.StrictMode>
 );
