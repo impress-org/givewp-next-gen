@@ -18,7 +18,9 @@ export default function StepsPagination() {
         return (
             <button
                 key={id}
-                className={classNames({'current-step': currentStep === id})}
+                className={classNames('givewp-donation-form__steps-pagination-button', {
+                    'givewp-donation-form__steps-pagination-button--current': currentStep === id,
+                })}
                 type="button"
                 disabled={isNextStep}
                 onClick={() => !isNextStep && dispatchMultiStep(setCurrentStep(id))}
@@ -26,5 +28,5 @@ export default function StepsPagination() {
         );
     });
 
-    return <div className="givewp-donation-form__steps--pagination">{navigation}</div>;
+    return <div className="givewp-donation-form__steps-pagination">{navigation}</div>;
 }

@@ -11,7 +11,11 @@ export default function PreviousButton({children}: {children: ReactNode}) {
 
     return (
         currentStep > 0 && (
-            <button type="button" onClick={() => setPreviousStep(currentStep)}>
+            <button
+                className="givewp-donation-form__steps-header-previous-button"
+                type="button"
+                onClick={() => setPreviousStep(currentStep)}
+            >
                 {children}
             </button>
         )

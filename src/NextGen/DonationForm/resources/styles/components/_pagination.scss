@@ -1,10 +1,10 @@
-.givewp-donation-form__steps--pagination {
+.givewp-donation-form__steps-pagination {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
 
-  button  {
+  &-button {
     background-color: #e4e4e4;
     border-radius: 50%;
     overflow: hidden;
@@ -21,9 +21,8 @@
       box-shadow: none;
     }
 
-    &.current-step {
+    &--current {
       background-color: #747474;
     }
   }
-
 }

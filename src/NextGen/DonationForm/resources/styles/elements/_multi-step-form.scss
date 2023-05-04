@@ -1,13 +1,29 @@
 .givewp-donation-form {
   &__steps {
     padding: 0;
-    max-width: 552px;
-    width: 100%;
-    margin: 1rem auto;
     border-radius: 6px;
     color: #696969;
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    &-header {
+      position: relative;
+      display: grid;
+      align-items: center;
+      grid-template-columns: 10% 1fr 10%;
+      width: 100%;
+      background: #fbfbfb;
+      border-bottom: 1px solid #f2f2f2;
+      z-index: 99;
+
+      button, p {
+        margin-bottom: 0;
+      }
+    }
 
     &-header-title {
       position: absolute;
@@ -48,16 +64,6 @@
       }
     }
 
-    &-header {
-      background: #fbfbfb;
-      border-bottom: 1px solid #f2f2f2;
-      z-index: 99;
-
-      button, p {
-        margin-bottom: 0;
-      }
-    }
-
     &-body {
       padding: 2rem 2rem 0 2rem;
     }
@@ -81,12 +87,12 @@
   }
 
   &__step {
-    &--ascending {
-      animation: forwards 0.3s fadeInRight;
+    &--hidden {
+      display: none;
     }
 
-    &--descending {
-      animation: forwards 0.3s fadeInLeft;
+    &--visible {
+      visibility: visible;
     }
   }
 }
