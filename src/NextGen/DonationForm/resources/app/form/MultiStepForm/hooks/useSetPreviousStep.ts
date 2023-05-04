@@ -1,13 +1,14 @@
 import {useDonationFormMultiStepStateDispatch} from '@givewp/forms/app/form/MultiStepForm/store';
 import {setCurrentStep} from '@givewp/forms/app/form/MultiStepForm/store/reducer';
+import {useCallback} from 'react';
 
 /**
  * @unreleased
  */
-export default function usePreviousStep() {
+export default function useSetPreviousStep() {
     const dispatchMultiStep = useDonationFormMultiStepStateDispatch();
 
-    return (currentStep: number) => {
+    return useCallback((currentStep: number) => {
         const previousStep = currentStep - 1;
 
         if (previousStep <= 0) {
@@ -15,5 +16,5 @@ export default function usePreviousStep() {
         } else {
             dispatchMultiStep(setCurrentStep(previousStep));
         }
-    };
+    }, [dispatchMultiStep]);
 }
