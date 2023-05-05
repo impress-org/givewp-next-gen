@@ -2,7 +2,7 @@ import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepFor
 import useSetNextStep from '@givewp/forms/app/form/MultiStepForm/hooks/useSetNextStep';
 import {useFormContext} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
-import {useMemo} from 'react';
+import {useMemo, useState} from 'react';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import useGetGatewayById from '@givewp/forms/app/form/MultiStepForm/hooks/useGetGatewayById';
@@ -19,16 +19,22 @@ export default function NextButton() {
     const {trigger, getValues, setError} = useFormContext();
     const setNextStep = useSetNextStep();
     const isLastStep = currentStep === steps.length - 1;
+    const [isValidating, setIsValidating] = useState<boolean>(false);
 
     return (
         !isLastStep && (
             <div>
                 <button
                     type="button"
+                    disabled={isValidating}
+                    aria-busy={isValidating}
                     onClick={async () => {
+                        setIsValidating(true);
                         const isClientValid = await trigger(fieldNames);
 
                         if (!isClientValid) {
+                            setIsValidating(false);
+
                             return;
                         }
 
@@ -40,6 +46,8 @@ export default function NextButton() {
                             setError,
                             getGateway(values?.gatewayId)
                         );
+
+                        setIsValidating(false);
 
                         if (isServerValid) {
                             setNextStep(currentStep, values);
