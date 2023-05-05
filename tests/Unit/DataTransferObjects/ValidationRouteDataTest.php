@@ -4,6 +4,7 @@ namespace TestsNextGen\Unit\DataTransferObjects;
 
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\NextGen\DonationForm\DataTransferObjects\ValidationRouteData;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -25,7 +26,7 @@ class ValidationRouteDataTest extends TestCase
      * @unreleased
      * @throws DonationFormFieldErrorsException
      */
-    public function testValidateShouldReturnTrue()
+    public function testValidateShouldReturnValidJsonResponse()
     {
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
@@ -48,7 +49,7 @@ class ValidationRouteDataTest extends TestCase
 
         $formData = ValidationRouteData::fromRequest($request);
 
-        $this->assertTrue($formData->validate());
+        $this->assertEquals($formData->validate(), new JsonResponse(['valid' => true]));
     }
 
     /**
@@ -91,7 +92,7 @@ class ValidationRouteDataTest extends TestCase
 
         $formData = ValidationRouteData::fromRequest($request);
 
-        $this->assertTrue($formData->validate());
+        $this->assertEquals($formData->validate(), new JsonResponse(['valid' => true]));
     }
 
     /**
@@ -204,6 +205,6 @@ class ValidationRouteDataTest extends TestCase
 
         $formData = ValidationRouteData::fromRequest($request);
 
-        $this->assertTrue($formData->validate());
+        $this->assertEquals($formData->validate(), new JsonResponse(['valid' => true]));
     }
 }
