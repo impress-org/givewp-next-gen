@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromFormFields;
+use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -45,7 +46,7 @@ class ValidationRouteData implements Arrayable
      *
      * @throws DonationFormFieldErrorsException
      */
-    public function validate(): bool
+    public function validate(): JsonResponse
     {
         $request = $this->getRequestData();
 
@@ -65,7 +66,7 @@ class ValidationRouteData implements Arrayable
         if ($validator->fails()) {
             $this->throwDonationFormFieldErrorsException($validator->errors());
         } else {
-            return true;
+            return new JsonResponse(['valid' => true]);
         }
     }
 
