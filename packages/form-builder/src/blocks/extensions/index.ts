@@ -11,7 +11,7 @@ declare global {
     }
 }
 
-const ExtensionBlocks = window?.givewp?.form?.blocks;
+const ExtensionBlocks = window?.givewp?.form?.blocks || [];
 
 ExtensionBlocks.forEach((block) => {
     blockRegistrar.register(block);
