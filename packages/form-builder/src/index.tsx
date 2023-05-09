@@ -1,4 +1,4 @@
-import {render} from '@wordpress/element';
+import {createRoot, render} from '@wordpress/element';
 
 import App from './App';
 
@@ -51,12 +51,19 @@ if (initialBlocks instanceof Error) {
     console.error(initialBlocks);
 }
 
-const container = document.getElementById('root');
-//const root = createRoot(container!);
+const root = document.getElementById('root');
 
-render(
-    <FormStateProvider initialState={initialState}>
-        <App />
-    </FormStateProvider>,
-    container
-);
+if (createRoot) {
+    createRoot(root).render(
+        <FormStateProvider initialState={initialState}>
+            <App />
+        </FormStateProvider>
+    );
+} else {
+    render(
+        <FormStateProvider initialState={initialState}>
+            <App />
+        </FormStateProvider>,
+        root
+    );
+}

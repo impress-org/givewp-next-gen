@@ -1,3 +1,8 @@
+
 @import '~@automattic/isolated-block-editor/build-browser/core.css';
 @import '~@automattic/isolated-block-editor/build-browser/isolated-block-editor.css';
 @import './styles';
+
+//@import '~@wordpress/components/build-style/style.css';
+//@import '~@wordpress/block-editor/build-style/style.css';
+@import './styles/onboarding.scss';

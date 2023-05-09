@@ -317,13 +317,18 @@ class DonationFormRepository
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             $gatewayId = $gateway::id();
+            $settings = $this->getGatewayFormSettings($formId, $gateway);
+            $label = give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel();
 
-            $formDataGateways[$gatewayId] = array_merge(
-                [
-                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel(),
-                ],
-                method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
-            );
+            /*
+             * TODO: Make gateway arrayable
+             */
+            $formDataGateways[] = [
+                'id' => $gatewayId,
+                'label' => $label,
+                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
+                'settings' => $settings
+            ];
         }
 
         return $formDataGateways;
@@ -419,5 +424,30 @@ class DonationFormRepository
         $form = DB::table('posts')->select(['post_content', 'data'])->where('ID', $formId)->get();
 
         return empty($form->data);
+    }
+
+    /**
+     * Get gateway form settings and handle any exceptions.
+     *
+     * @since 0.2.0
+     */
+    private function getGatewayFormSettings(int $formId, PaymentGateway $gateway): array
+    {
+        if (!method_exists($gateway, 'formSettings')) {
+            return [];
+        }
+
+        try {
+            return $gateway->formSettings($formId);
+        } catch (\Exception $exception) {
+            $gatewayName = $gateway->getName();
+            Log::error("Failed getting gateway ($gatewayName) form settings", [
+                'formId' => $formId,
+                'gateway' => $gatewayName,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return [];
+        }
     }
 }

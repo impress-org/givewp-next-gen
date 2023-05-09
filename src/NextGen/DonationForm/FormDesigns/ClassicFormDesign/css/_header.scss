@@ -2,12 +2,11 @@
 
 .givewp-layouts {
     &-header {
+        width: 100%;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
         box-shadow: rgb(0 0 0 / 30%) 0 0.125rem 0.3125rem;
         background-color: var(--givewp-primary-color);
-        max-width: min(100%, 51.5rem);
-        margin: 0 auto;
         display: grid;
         justify-items: center;
         row-gap: 1.5rem;
@@ -32,6 +31,7 @@
         font-weight: 600;
         line-height: 1.2;
         text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+        color: currentColor;
 
         &::after {
             position: absolute;
@@ -52,6 +52,7 @@
         line-height: 1.45;
         margin: 0 auto;
         max-inline-size: 42ch;
+        color: currentColor;
     }
 }
 

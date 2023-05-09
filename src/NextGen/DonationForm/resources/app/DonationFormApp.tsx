@@ -1,13 +1,15 @@
-import {render} from '@wordpress/element';
+import {createRoot, render} from '@wordpress/element';
 import getDefaultValuesFromSections from './utilities/getDefaultValuesFromSections';
 import Form from './form/Form';
-import {GiveDonationFormStoreProvider} from './store';
+import {DonationFormStateProvider} from './store';
 import getWindowData from './utilities/getWindowData';
 import prepareFormData from './utilities/PrepareFormData';
 import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
 import Header from './form/Header';
 import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
+import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
+import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -29,22 +31,40 @@ const defaultValues = getDefaultValuesFromSections(form.nodes);
 const schema = getJoiRulesForForm(form);
 
 const initialState = {
+    defaultValues,
     gateways: window.givewp.gateways.getAll(),
+    validationSchema: schema,
 };
 
 function App() {
     if (form.goal.isAchieved) {
-        return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage}/>;
+        return (
+            <DonationFormErrorBoundary>
+                <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />
+            </DonationFormErrorBoundary>
+        );
+    }
+
+    if (form.design?.isMultiStep) {
+        return (
+            <DonationFormStateProvider initialState={initialState}>
+                <MultiStepForm sections={form.nodes} showHeader />
+            </DonationFormStateProvider>
+        );
     }
 
     return (
-        <GiveDonationFormStoreProvider initialState={initialState}>
-            <>
-                <Header />
-                <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
-            </>
-        </GiveDonationFormStoreProvider>
+        <DonationFormStateProvider initialState={initialState}>
+            <Header />
+            <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
+        </DonationFormStateProvider>
     );
 }
 
-render(<App />, document.getElementById('root-givewp-donation-form'));
+const root = document.getElementById('root-givewp-donation-form');
+
+if (createRoot) {
+    createRoot(root).render(<App />);
+} else {
+    render(<App />, root);
+}

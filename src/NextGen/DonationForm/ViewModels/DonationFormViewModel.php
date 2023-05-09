@@ -9,8 +9,10 @@ use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
+use Give\NextGen\Framework\FormDesigns\FormDesign;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
+use function implode;
 use function wp_enqueue_style;
 use function wp_print_styles;
 
@@ -80,8 +82,6 @@ class DonationFormViewModel
      */
     public function enqueueGlobalStyles()
     {
-        wp_enqueue_global_styles();
-        
         wp_register_style(
             'givewp-global-form-styles',
             GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/styles/global.css'
@@ -91,11 +91,16 @@ class DonationFormViewModel
             'givewp-global-form-styles',
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
-            --givewp-secondary-color:{$this->secondaryColor()}; 
+            --givewp-secondary-color:{$this->secondaryColor()};
             }"
         );
 
         wp_enqueue_style('givewp-global-form-styles');
+
+        wp_enqueue_style(
+            'givewp-base-form-styles',
+            GIVE_NEXT_GEN_URL . 'build/baseFormDesignCss.css'
+        );
     }
 
     /**
@@ -140,17 +145,24 @@ class DonationFormViewModel
             $this->formBlocks
         )->jsonSerialize();
 
+        $formDesign = $this->getFormDesign($this->designId());
+
         return [
             'donateUrl' => $donateUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],
-            'gatewaySettings' => $formDataGateways,
+            'registeredGateways' => $formDataGateways,
             'form' => array_merge($formApi, [
                 'settings' => $this->formSettings,
                 'currency' => give_get_currency(),
                 'goal' => $donationFormGoalData->toArray(),
-                'stats' => $this->formStatsData()
+                'stats' => $this->formStatsData(),
+                'design' => $formDesign ? [
+                    'id' => $formDesign::id(),
+                    'name' => $formDesign::name(),
+                    'isMultiStep' => $formDesign->isMultiStep(),
+                ] : null,
             ]),
         ];
     }
@@ -169,7 +181,7 @@ class DonationFormViewModel
      *
      * @since 0.1.0
      */
-    public function render(): string
+    public function render(bool $preview = false): string
     {
         $this->enqueueGlobalStyles();
 
@@ -194,7 +206,17 @@ class DonationFormViewModel
         <?php
         endif; ?>
 
-        <div id="root-givewp-donation-form" class="givewp-donation-form"></div>
+        <?php
+        $classNames = ['givewp-donation-form'];
+
+        if ($preview) {
+            $classNames[] = 'givewp-donation-form--preview';
+        }
+        ?>
+
+        <div data-theme="light" id="root-givewp-donation-form"
+             data-iframe-height
+             class="<?= implode(' ', $classNames) ?>"></div>
 
         <?php
         wp_print_footer_scripts();
@@ -225,14 +247,10 @@ class DonationFormViewModel
             'give'
         ))->loadInFooter()->enqueue();
 
-        // load template
-        /** @var FormDesignRegistrar $formDesignRegistrar */
-        $formDesignRegistrar = give(FormDesignRegistrar::class);
+        $design = $this->getFormDesign($formDesignId);
 
         // silently fail if design is missing for some reason
-        if ($formDesignRegistrar->hasDesign($formDesignId)) {
-            $design = $formDesignRegistrar->getDesign($formDesignId);
-
+        if ($design) {
             if ($design->css()) {
                 wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
             }
@@ -284,5 +302,18 @@ class DonationFormViewModel
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return FormDesign|null
+     */
+    protected function getFormDesign(string $designId)
+    {
+        /** @var FormDesignRegistrar $formDesignRegistrar */
+        $formDesignRegistrar = give(FormDesignRegistrar::class);
+
+        return $formDesignRegistrar->hasDesign($this->designId()) ? $formDesignRegistrar->getDesign($designId) : null;
     }
 }
