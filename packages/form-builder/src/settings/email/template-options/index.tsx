@@ -7,6 +7,7 @@ import EmailTemplateSettings from "./settings";
 import CopyToClipboardButton from "./components/copy-to-clipboard-button";
 import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 import {useFormState} from "@givewp/form-builder/stores/form-state";
+import SendPreviewEmail from "@givewp/form-builder/settings/email/template-options/components/send-preview-email";
 
 export default () => {
 
@@ -32,7 +33,7 @@ export default () => {
             jQuery
                 .post({
                     // @ts-ignore
-                    url: window.formBuilderData.emailPreviewURL,
+                    url: window.formBuilderData.emailPreviewURL + '/show?query', // Query param added to prevent an undefined index warning in the legacy code.
                     headers: {
                         // @ts-ignore
                         'X-WP-Nonce': window.storageData.nonce,
@@ -174,13 +175,7 @@ export default () => {
                                         </Button>
                                     </div>
                                     <div style={{flex:1}}>
-                                        <TextControl
-                                            label={__('Email address', 'givewp')}
-                                            help={__('Specify below the email address you want to send a test email to', 'givewp')}
-                                            onChange={() => null}
-                                            value={''}
-                                        />
-                                        <Button variant={'secondary'} style={{width:'100%',justifyContent:'center'}}>{__('Send test email', 'givewp')}</Button>
+                                        <SendPreviewEmail emailType={selectedTab} />
                                     </div>
                                     <div style={{flex:3}}>
                                         <h2 style={{margin: 0}}>{__('Template tags', 'givewp')}</h2>

@@ -2,9 +2,7 @@
 
 namespace Give\NextGen\EmailPreview;
 
-use Give\NextGen\EmailPreview\Controllers\ShowEmailPreview;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
-use WP_REST_Server;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -21,43 +19,13 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        add_action('rest_api_init', function() {
+        add_action('rest_api_init', [$this, 'registerRoutes']);
+    }
 
-            register_rest_route('givewp/next-gen', 'email-preview', [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [give(ShowEmailPreview::class), '__invoke'],
-                'permission_callback' => function () {
-                    return current_user_can('manage_options');
-                },
-                'args' => [
-                    'email_type' => [
-                        'type' => 'string',
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'form_id' => [
-                        'type' => 'string',
-                        'sanitize_callback' => 'absint',
-                    ],
-                ],
-            ]);
-
-//            register_rest_route('givewp/next-gen', 'email-preview', [
-//                'methods' => WP_REST_Server::CREATABLE,
-//                'callback' => [give(ShowEmailPreview::class), '__invoke'],
-//                'permission_callback' => function () {
-//                    return current_user_can('manage_options');
-//                },
-//                'args' => [
-//                    'email_type' => [
-//                        'type' => 'string',
-//                        'sanitize_callback' => 'sanitize_text_field',
-//                    ],
-//                    'form_id' => [
-//                        'type' => 'string',
-//                        'sanitize_callback' => 'absint',
-//                    ],
-//                ],
-//            ]);
-        });
+    public function registerRoutes()
+    {
+        foreach(include __DIR__ . '/routes.php' as $route => $args) {
+            register_rest_route('givewp/next-gen/email-preview', $route, $args);
+        }
     }
 }
