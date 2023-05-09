@@ -8,9 +8,9 @@ import sectionBlocks, {sectionBlockNames} from './blocks/section';
 import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
 import {FieldBlock} from '@givewp/form-builder/types';
 
-import './blocks/fields';
-import './blocks/elements';
-import './blocks/extensions';
+import fieldBlocks from './blocks/fields';
+import elementBlocks from './blocks/elements';
+import extensionBlocks from './blocks/extensions';
 
 const supportOverrides: BlockSupports = {
     customClassName: false,
@@ -27,7 +27,11 @@ sectionBlocks.map(({name, settings}: FieldBlock) =>
     })
 );
 
-blockRegistrar.getAll().map(({name, settings}: FieldBlock) =>
+[...fieldBlocks, ...elementBlocks, ...extensionBlocks].map((block: FieldBlock) => {
+    const {name, settings} = block;
+
+    blockRegistrar.register(block);
+
     registerBlockType(name, {
         ...settings,
         parent: sectionBlockNames,
@@ -35,8 +39,8 @@ blockRegistrar.getAll().map(({name, settings}: FieldBlock) =>
             ...settings.supports,
             ...supportOverrides,
         },
-    })
-);
+    });
+});
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

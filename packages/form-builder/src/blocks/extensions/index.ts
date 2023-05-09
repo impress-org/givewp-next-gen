@@ -1,4 +1,3 @@
-import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
 import {FieldBlock} from '@givewp/form-builder/types';
 
 declare global {
@@ -13,6 +12,4 @@ declare global {
 
 const ExtensionBlocks = window?.givewp?.form?.blocks || [];
 
-ExtensionBlocks.forEach((block) => {
-    blockRegistrar.register(block);
-});
+export default ExtensionBlocks;
