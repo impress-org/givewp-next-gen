@@ -1,46 +1,18 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
-import {BlockSupports, registerBlockType} from '@wordpress/blocks';
-
-import App from './App';
 
 import sectionBlocks, {sectionBlockNames} from './blocks/section';
-import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
-import {FieldBlock} from '@givewp/form-builder/types';
-
 import fieldBlocks from './blocks/fields';
 import elementBlocks from './blocks/elements';
 import extensionBlocks from './blocks/extensions';
+import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
 
-const supportOverrides: BlockSupports = {
-    customClassName: false,
-    html: false,
-};
+import App from './App';
 
-sectionBlocks.map(({name, settings}: FieldBlock) =>
-    registerBlockType(name, {
-        ...settings,
-        supports: {
-            ...settings.supports,
-            ...supportOverrides,
-        },
-    })
-);
-
-[...fieldBlocks, ...elementBlocks, ...extensionBlocks].map((block: FieldBlock) => {
-    const {name, settings} = block;
-
-    blockRegistrar.register(block);
-
-    registerBlockType(name, {
-        ...settings,
-        parent: sectionBlockNames,
-        supports: {
-            ...settings.supports,
-            ...supportOverrides,
-        },
-    });
-});
+blockRegistrar.register(sectionBlocks);
+blockRegistrar.register(fieldBlocks, sectionBlockNames);
+blockRegistrar.register(elementBlocks, sectionBlockNames);
+blockRegistrar.register(extensionBlocks, sectionBlockNames);
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
