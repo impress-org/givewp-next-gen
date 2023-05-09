@@ -110,7 +110,7 @@ const isoSettings: IsoSettings = {
     toolbar: {
         inserter: true,
         inspector: true,
-        undo: true,
+        undo: false,
         navigation: true,
         documentInspector: 'Form',
         selectorTool: true,
@@ -174,7 +174,6 @@ function App() {
             onSaveContent={(html) => console.log(html)}
             onSaveBlocks={dispatchFormBlocks}
             onError={() => document.location.reload()}
-            editorMode={'code'}
             renderMoreMenu={(settings, onClose) => {
                 return <GuidedTourButton onClose={onClose} />;
             }}
