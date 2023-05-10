@@ -24,8 +24,9 @@ setCategories([
         title: __('Content & Media', 'give'),
     },
     {
+        // layout seems to be a core category slug
         slug: 'section',
-        title: __('Sections', 'give'),
+        title: __('Layout', 'give'),
     },
     {
         slug: 'custom',
