@@ -391,7 +391,7 @@ class DonationFormRepository
             $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
             $formNodes = $form->all();
 
-            /** @var Section $lastSection */
+            /** @var Section $firstSection */
             $firstSection = $form->count() ? $formNodes[0] : null;
 
             if ($firstSection) {
