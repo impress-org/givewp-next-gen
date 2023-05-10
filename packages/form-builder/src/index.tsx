@@ -1,5 +1,5 @@
 import React, {createRoot, render} from '@wordpress/element';
-import {BlockSupports, registerBlockType} from '@wordpress/blocks';
+import {BlockSupports, registerBlockType, setCategories} from '@wordpress/blocks';
 
 import App from './App';
 
@@ -7,11 +7,31 @@ import sectionBlocks, {sectionBlockNames} from './blocks/section';
 import fieldBlocks from './blocks/fields';
 import elementBlocks from './blocks/elements';
 import {FieldBlock} from '@givewp/form-builder/types';
+import {__} from '@wordpress/i18n';
 
 const supportOverrides: BlockSupports = {
     customClassName: false,
     html: false,
 };
+
+setCategories([
+    {
+        slug: 'input',
+        title: __('Input Fields', 'give'),
+    },
+    {
+        slug: 'content',
+        title: __('Content & Media', 'give'),
+    },
+    {
+        slug: 'section',
+        title: __('Sections', 'give'),
+    },
+    {
+        slug: 'custom',
+        title: __('Custom Fields', 'give'),
+    },
+]);
 
 sectionBlocks.map(({name, settings}: FieldBlock) =>
     registerBlockType(name, {
