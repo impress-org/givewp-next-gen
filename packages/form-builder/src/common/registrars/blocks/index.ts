@@ -12,20 +12,28 @@ const supportOverrides: BlockSupports = {
 /**
  * @unreleased
  */
-interface Registrar {
-    register(blocks: FieldBlock | FieldBlock[], parent?: string[]): void;
-
-    getAll(type: 'parent' | 'child'): FieldBlock[];
-
-    get(id: string): FieldBlock | undefined;
+enum BlockListTypes {
+    Parent = 'parent',
+    Child = 'child',
 }
 
 /**
  * @unreleased
  */
 interface BlocksList {
-    parent: SectionBlock[];
-    child: FieldBlock[];
+    [BlockListTypes.Parent]: SectionBlock[];
+    [BlockListTypes.Child]: FieldBlock[];
+}
+
+/**
+ * @unreleased
+ */
+interface Registrar {
+    register(blocks: FieldBlock | FieldBlock[], parent?: string[]): void;
+
+    getAll(type: BlockListTypes): FieldBlock[];
+
+    get(id: string): FieldBlock | undefined;
 }
 
 /**
@@ -36,8 +44,8 @@ class BlockRegistrar implements Registrar {
      * @unreleased
      */
     private blocks: BlocksList = {
-        parent: [],
-        child: [],
+        [BlockListTypes.Parent]: [],
+        [BlockListTypes.Child]: [],
     };
 
     /**
@@ -50,7 +58,11 @@ class BlockRegistrar implements Registrar {
     /**
      * @unreleased
      */
-    public getAll(type: 'parent' | 'child' = 'child'): FieldBlock[] {
+    public getAll(type: BlockListTypes = BlockListTypes.Child): FieldBlock[] {
+        if (!this.blocks.hasOwnProperty(type)) {
+            type = BlockListTypes.Child;
+        }
+
         return this.blocks[type];
     }
 
