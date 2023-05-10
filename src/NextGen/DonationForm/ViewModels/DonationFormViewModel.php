@@ -4,11 +4,13 @@ namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\NextGen\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
+use Give\NextGen\Framework\FormDesigns\FormDesign;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Framework\FormExtensions\Registrars\FormExtensionRegistrar;
 
@@ -137,6 +139,7 @@ class DonationFormViewModel
     public function exports(): array
     {
         $donateUrl = (new GenerateDonateRouteUrl())();
+        $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
         $donationFormGoalData = new DonationFormGoalData($this->donationFormId, $this->formSettings);
 
         $formDataGateways = $this->donationFormRepository->getFormDataGateways($this->donationFormId);
@@ -145,8 +148,11 @@ class DonationFormViewModel
             $this->formBlocks
         )->jsonSerialize();
 
+        $formDesign = $this->getFormDesign($this->designId());
+
         return [
             'donateUrl' => $donateUrl,
+            'validateUrl' => $validateUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],
@@ -155,7 +161,12 @@ class DonationFormViewModel
                 'settings' => $this->formSettings,
                 'currency' => give_get_currency(),
                 'goal' => $donationFormGoalData->toArray(),
-                'stats' => $this->formStatsData()
+                'stats' => $this->formStatsData(),
+                'design' => $formDesign ? [
+                    'id' => $formDesign::id(),
+                    'name' => $formDesign::name(),
+                    'isMultiStep' => $formDesign->isMultiStep(),
+                ] : null,
             ]),
         ];
     }
@@ -241,14 +252,10 @@ class DonationFormViewModel
             'give'
         ))->loadInFooter()->enqueue();
 
-        // load template
-        /** @var FormDesignRegistrar $formDesignRegistrar */
-        $formDesignRegistrar = give(FormDesignRegistrar::class);
+        $design = $this->getFormDesign($formDesignId);
 
         // silently fail if design is missing for some reason
-        if ($formDesignRegistrar->hasDesign($formDesignId)) {
-            $design = $formDesignRegistrar->getDesign($formDesignId);
-
+        if ($design) {
             if ($design->css()) {
                 wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
             }
@@ -323,5 +330,18 @@ class DonationFormViewModel
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return FormDesign|null
+     */
+    protected function getFormDesign(string $designId)
+    {
+        /** @var FormDesignRegistrar $formDesignRegistrar */
+        $formDesignRegistrar = give(FormDesignRegistrar::class);
+
+        return $formDesignRegistrar->hasDesign($this->designId()) ? $formDesignRegistrar->getDesign($designId) : null;
     }
 }

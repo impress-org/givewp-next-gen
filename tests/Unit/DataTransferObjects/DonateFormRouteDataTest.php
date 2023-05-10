@@ -8,11 +8,9 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
-
-use function json_decode;
 
 /**
  * @since 0.1.0
@@ -52,7 +50,7 @@ class DonateFormRouteDataTest extends TestCase
 
         $data = new DonateControllerData();
 
-        $data->gatewayId = TestGateway::id();
+        $data->gatewayId = NextGenTestGateway::id();
         $data->amount = 100;
         $data->currency = "USD";
         $data->firstName = "Bill";
@@ -170,7 +168,7 @@ class DonateFormRouteDataTest extends TestCase
 
         $data = new DonateControllerData();
 
-        $data->gatewayId = TestGateway::id();
+        $data->gatewayId = NextGenTestGateway::id();
         $data->amount = 100;
         $data->currency = "USD";
         $data->firstName = "Bill";

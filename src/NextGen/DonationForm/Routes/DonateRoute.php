@@ -5,8 +5,6 @@ namespace Give\NextGen\DonationForm\Routes;
 
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
-use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
 use Give\NextGen\DonationForm\Controllers\DonateController;
@@ -23,10 +21,6 @@ class DonateRoute
     use HandleHttpResponses;
 
     /**
-     * @var PaymentGatewayRegister
-     */
-    private $paymentGatewayRegister;
-    /**
      * @var DonateController
      */
     private $donateController;
@@ -34,12 +28,10 @@ class DonateRoute
     /**
      * @since 0.1.0
      *
-     * @param  PaymentGatewayRegister  $paymentGatewayRegister
      * @param  DonateController  $donateController
      */
-    public function __construct(PaymentGatewayRegister $paymentGatewayRegister, DonateController $donateController)
+    public function __construct(DonateController $donateController)
     {
-        $this->paymentGatewayRegister = $paymentGatewayRegister;
         $this->donateController = $donateController;
     }
 
@@ -47,8 +39,6 @@ class DonateRoute
      * @since 0.1.0
      *
      * @return void
-     *
-     * @throws PaymentGatewayException
      */
     public function __invoke(array $request)
     {
@@ -61,33 +51,21 @@ class DonateRoute
         // create DTO from POST request
         $formData = DonateFormRouteData::fromRequest($request);
 
-        // get all registered gateways
-        $paymentGateways = $this->paymentGatewayRegister->getPaymentGateways();
-
-        // get all registered gateway ids
-        $gatewayIds = array_keys($paymentGateways);
-
-        // make sure gateway is valid
-        $this->validateGateway($formData->gatewayId, $gatewayIds);
-
-        /** @var PaymentGateway $gateway */
-        $gateway = give($paymentGateways[$formData->gatewayId]);
-
         try {
             $data = $formData->validated();
 
-            $this->donateController->donate($data, $gateway);
+            $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
             $type = 'validation_error';
-            $this->logError($type, $exception->getMessage(), $formData, $gateway);
+            $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, $exception->getError());
         } catch (PaymentGatewayException $exception) {
             $type = 'gateway_error';
-            $this->logError($type, $exception->getMessage(), $formData, $gateway);
+            $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         } catch (\Exception $exception) {
             $type = 'unknown_error';
-            $this->logError($type, $exception->getMessage(), $formData, $gateway);
+            $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         }
 
@@ -124,26 +102,12 @@ class DonateRoute
     }
 
     /**
-     * @since 0.1.0
-     *
-     * @return void
-     * @throws PaymentGatewayException
-     */
-    private function validateGateway(string $paymentGateway, array $gatewayIds)
-    {
-        if (!in_array($paymentGateway, $gatewayIds, true)) {
-            throw new PaymentGatewayException('This gateway is not valid.');
-        }
-    }
-
-    /**
      * @since 0.3.0
      */
     private function logError(
         string $type,
         string $exceptionMessage,
-        DonateFormRouteData $formData,
-        PaymentGateway $gateway
+        DonateFormRouteData $formData
     ) {
         Log::error(
             "Donation Route Error: $type",
@@ -151,7 +115,6 @@ class DonateRoute
                 'error_type' => $type,
                 'exceptionMessage' => $exceptionMessage,
                 'formData' => $formData->toArray(),
-                'gateway' => $gateway,
             ]
         );
     }

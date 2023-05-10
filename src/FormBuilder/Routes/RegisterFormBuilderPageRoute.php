@@ -19,6 +19,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @unreleased enqueue form builder styles
      * @since 0.1.0
      *
      * @return void
@@ -43,6 +44,15 @@ class RegisterFormBuilderPageRoute
 
         add_action("admin_print_styles", static function () {
             if (FormBuilderRouteBuilder::isRoute()) {
+                wp_enqueue_style(
+                    '@givewp/form-builder/style-wordpress',
+                    GIVE_NEXT_GEN_URL . 'build/style-formBuilderApp.css'
+                );
+                wp_enqueue_style(
+                    '@givewp/form-builder/style-app',
+                    GIVE_NEXT_GEN_URL . 'build/formBuilderApp.css'
+                );
+
                 wp_enqueue_style(
                     'givewp-form-builder-admin-styles',
                     GIVE_NEXT_GEN_URL . 'src/FormBuilder/resources/css/admin-form-builder.css'
@@ -130,7 +140,7 @@ class RegisterFormBuilderPageRoute
 
         (new EnqueueScript(
             '@givewp/form-builder/script',
-            $formBuilderViewModel->jsPathFromRoot(),
+            $formBuilderViewModel->jsPathFromPluginRoot(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'

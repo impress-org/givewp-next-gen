@@ -4,8 +4,11 @@ namespace Give\Tests\Unit\DonationForm\VieModels;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\NextGen\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
+use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
@@ -21,14 +24,20 @@ class DonationFormViewModelTest extends TestCase
      */
     public function testExportsShouldReturnExpectedArrayOfData()
     {
+        $formDesign = new ClassicFormDesign();
+        
         /** @var DonationForm $donationForm */
-        $donationForm = DonationForm::factory()->create();
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray(['designId' => $formDesign::id()]),
+        ]);
+
         $donationFormRepository = new DonationFormRepository((new PaymentGatewayRegister));
 
         $donationFormGoalData = new DonationFormGoalData($donationForm->id, $donationForm->settings);
         $totalRevenue = $donationFormRepository->getTotalRevenue($donationForm->id);
         $goalType = $donationForm->settings->goalType ?? GoalType::AMOUNT();
         $donateUrl = (new GenerateDonateRouteUrl())();
+        $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
         $formDataGateways = $donationFormRepository->getFormDataGateways($donationForm->id);
         $formApi = $donationFormRepository->getFormSchemaFromBlocks(
             $donationForm->id,
@@ -39,6 +48,7 @@ class DonationFormViewModelTest extends TestCase
 
         $this->assertEquals($viewModel->exports(), [
             'donateUrl' => $donateUrl,
+            'validateUrl' => $validateUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],
@@ -56,6 +66,11 @@ class DonationFormViewModelTest extends TestCase
                         'donations',
                         'give'
                     ),
+                ],
+                'design' => [
+                    'id' => $formDesign::id(),
+                    'name' => $formDesign::name(),
+                    'isMultiStep' => $formDesign->isMultiStep(),
                 ],
             ]),
         ]);

@@ -14,6 +14,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\NextGen\DonationForm\Rules\GatewayRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 
@@ -32,7 +33,8 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
-     * @unreleased conditionally append blocks if block has inner blocks
+     * @unreleased conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
+     * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0
      *
      * @throws TypeNotSupported|NameCollisionException
@@ -49,7 +51,10 @@ class ConvertDonationFormBlocksToFieldsApi
             $section = $this->convertTopLevelBlockToSection($block, $blockIndex);
 
             if ($block->innerBlocks) {
-                $section->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
+                $innerBlocks = $block->innerBlocks->getBlocks();
+                $section->append(
+                    ...array_map([$this, 'convertInnerBlockToNode'], $innerBlocks, array_keys($innerBlocks))
+                );
             }
 
             $form->append($section);
@@ -59,7 +64,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased remove innerBlock appending
+     * @since 0.3.3 remove innerBlock appending
      * @since 0.1.0
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
@@ -74,20 +79,21 @@ class ConvertDonationFormBlocksToFieldsApi
      *
      * @throws EmptyNameException|NameCollisionException
      */
-    protected function convertInnerBlockToNode(BlockModel $block): Node
+    protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex): Node
     {
-        $node = $this->createNodeFromBlockWithUniqueAttributes($block);
+        $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
         return $this->mapGenericBlockAttributesToNode($node, $block);
     }
 
     /**
+     * @unreleased add blockIndex for unique field names
      * @since 0.1.0
      *
      * @throws EmptyNameException
      * @throws NameCollisionException
      */
-    protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block): Node
+    protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex): Node
     {
         switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
@@ -97,7 +103,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 return $this->createNodeFromDonorNameBlock($block);
 
             case "custom-block-editor/paragraph":
-                return Paragraph::make(substr(md5(mt_rand()), 0, 7))
+                return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
 
             case "custom-block-editor/email-field":
@@ -107,6 +113,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "custom-block-editor/payment-gateways":
                 return PaymentGateways::make('gatewayId')
+                    ->rules(new GatewayRule())
                     ->required();
 
             case "custom-block-editor/donation-summary":
@@ -119,7 +126,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Text::make(
                     $block->hasAttribute('fieldName') ?
                         $block->getAttribute('fieldName') :
-                        $block->clientId
+                        $block->getShortName() . '-' . $blockIndex
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
