@@ -37,6 +37,7 @@ const EmailTemplateSettings = ({notification}) => {
             }}))
     }
 
+    // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
 
@@ -50,9 +51,9 @@ const EmailTemplateSettings = ({notification}) => {
         }
 
         frame = window.wp.media({
-            title: 'Add or upload file',
+            title: __('Add or upload file', 'givewp'),
             button: {
-                text: 'Use this media',
+                text: __('Use this media', 'givewp'),
             },
             multiple: false, // Set to true to allow multiple files to be selected
         })

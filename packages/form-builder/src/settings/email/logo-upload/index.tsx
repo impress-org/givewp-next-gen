@@ -10,6 +10,8 @@ import {upload} from "@wordpress/icons";
 import {__} from "@wordpress/i18n";
 
 export default ({value, onChange}) => {
+
+    // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
 
@@ -22,9 +24,9 @@ export default ({value, onChange}) => {
         }
 
         frame = window.wp.media({
-            title: 'Add or upload file',
+            title: __('Add or upload file', 'givewp'),
             button: {
-                text: 'Use this media',
+                text: __('Use this media', 'givewp'),
             },
             multiple: false, // Set to true to allow multiple files to be selected
         })
@@ -42,7 +44,6 @@ export default ({value, onChange}) => {
     }
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '8px'}}>
-            {/*{logoUrl && <img src={logoUrl} style={{width: '100%'}} />}*/}
             <div> {/* Wrapping the TextControl solves a spacing issue */}
                 <TextControl
                     type={'url'}
