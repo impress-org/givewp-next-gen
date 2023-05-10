@@ -1,10 +1,11 @@
 import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
-import {PanelColorSettings} from '@wordpress/block-editor';
+import {PanelColorSettings, SETTINGS_DEFAULTS} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
 import {getWindowData} from '@givewp/form-builder/common';
 import debounce from 'lodash.debounce';
-import { SETTINGS_DEFAULTS } from '@wordpress/block-editor';
+import BlockCard from '@givewp/form-builder/components/forks/BlockCard';
+import {brush} from '@wordpress/icons';
 
 const {formDesigns} = getWindowData();
 
@@ -18,7 +19,12 @@ const FormDesignSettings = () => {
 
     return (
         <>
-            <PanelBody title={__('Donation Form', 'give')} initialOpen={true}>
+            <BlockCard
+                icon={brush}
+                title="Form Design"
+                description={__('These settings affect the appearance of your form.', 'give')}
+            />
+            <PanelBody title={__('Design Settings', 'give')} initialOpen={true}>
                 <PanelRow>
                     <SelectControl
                         label={__('Form design', 'give')}
@@ -55,27 +61,27 @@ const FormDesignSettings = () => {
                         onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
                     />
                 </PanelRow>
+                <PanelColorSettings
+                    title={__('Colors', 'give')}
+                    initialOpen={false}
+                    colorSettings={[
+                        {
+                            value: primaryColor,
+                            onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
+                            label: __('Primary Color', 'give'),
+                            disableCustomColors: false,
+                            colors: SETTINGS_DEFAULTS.colors,
+                        },
+                        {
+                            value: secondaryColor,
+                            onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
+                            label: __('Secondary Color', 'give'),
+                            disableCustomColors: false,
+                            colors: SETTINGS_DEFAULTS.colors,
+                        },
+                    ]}
+                />
             </PanelBody>
-            <PanelColorSettings
-                title={__('Colors', 'give')}
-                initialOpen={false}
-                colorSettings={[
-                    {
-                        value: primaryColor,
-                        onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
-                        label: __('Primary Color', 'give'),
-                        disableCustomColors: false,
-                        colors: SETTINGS_DEFAULTS.colors,
-                    },
-                    {
-                        value: secondaryColor,
-                        onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
-                        label: __('Secondary Color', 'give'),
-                        disableCustomColors: false,
-                        colors: SETTINGS_DEFAULTS.colors,
-                    },
-                ]}
-            />
         </>
     );
 };

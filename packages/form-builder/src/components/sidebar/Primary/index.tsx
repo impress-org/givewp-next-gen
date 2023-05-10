@@ -13,10 +13,29 @@ import {
 import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
 import useSelectedBlocks from '../../../hooks/useSelectedBlocks';
-import BlockCard from '@wordpress/block-editor/build/components/block-card';
+import BlockCard from '@givewp/form-builder/components/forks/BlockCard';
 import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
+
+const FormTab = () => (
+    <>
+        <BlockCard
+            icon={settings}
+            title="Form Settings"
+            description={__(
+                'These settings affect how your form functions and is presented, as well as the form page.',
+                'give'
+            )}
+        />
+        <FormSummarySettings />
+        <DonationGoalSettings />
+        <ReceiptSettings />
+        {/*The settings below have not been implemented yet.*/}
+        {/*<OfflineDonationsSettings/>*/}
+        {/*<FormFields />*/}
+    </>
+);
 
 const tabs = [
     {
@@ -111,3 +130,5 @@ function Sidebar({selectedTab, setSelectedTab}) {
 Sidebar.InspectorFill = InspectorFill;
 
 export default Sidebar;
+export {FormTab};
+

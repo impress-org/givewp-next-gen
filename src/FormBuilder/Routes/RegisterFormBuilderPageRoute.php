@@ -1,6 +1,7 @@
 <?php
 
 namespace Give\FormBuilder\Routes;
+
 use Give\Addon\View;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
@@ -86,6 +87,13 @@ class RegisterFormBuilderPageRoute
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
+
+        wp_enqueue_style(
+            'givewp-form-builder-styles',
+            GIVE_NEXT_GEN_URL . 'packages/form-builder/build/givewp-form-builder.css'
+        );
+
+
         $enabledGateways = array_keys(give_get_option('gateways'));
 
         $supportedGateways = array_filter(
@@ -105,6 +113,7 @@ class RegisterFormBuilderPageRoute
             ];
         }, $supportedGateways);
 
+
         (new EnqueueScript(
             '@givewp/form-builder/script',
             $formBuilderViewModel->jsPathFromRoot(),
@@ -116,13 +125,13 @@ class RegisterFormBuilderPageRoute
                 'gateways' => array_values($builderPaymentGatewayData),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
                 'recurringAddonData' => [
-                    'isInstalled' => defined('GIVE_RECURRING_VERSION') ,
+                    'isInstalled' => defined('GIVE_RECURRING_VERSION'),
                 ],
                 'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
             ])
             ->enqueue();
 
-        wp_localize_script( '@givewp/form-builder/script', 'onboardingTourData', [
+        wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
             'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
         ]);
