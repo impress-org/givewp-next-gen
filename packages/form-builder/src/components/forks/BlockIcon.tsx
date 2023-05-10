@@ -17,6 +17,7 @@ function BlockIcon({icon, showColors = false, className, context}) {
         };
     }
 
+    // @ts-ignore
     const renderedIcon = <Icon icon={icon && icon.src ? icon.src : icon} context={context} />;
     const style = showColors
         ? {
