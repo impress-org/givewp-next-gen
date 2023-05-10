@@ -31,6 +31,7 @@ class FormBuilderViewModelTest extends TestCase
 
         $this->assertSame(
             [
+                'formId' => $formId,
                 'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
                 'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($formId),
                 'nonce' => wp_create_nonce('wp_rest'),
