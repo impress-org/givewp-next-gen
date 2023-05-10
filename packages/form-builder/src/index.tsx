@@ -1,5 +1,5 @@
 import React, {createRoot, render} from '@wordpress/element';
-import {BlockSupports, registerBlockType, setCategories} from '@wordpress/blocks';
+import {BlockSupports, getCategories, registerBlockType, setCategories} from '@wordpress/blocks';
 
 import App from './App';
 
@@ -15,6 +15,7 @@ const supportOverrides: BlockSupports = {
 };
 
 setCategories([
+    ...getCategories(),
     {
         slug: 'input',
         title: __('Input Fields', 'give'),
