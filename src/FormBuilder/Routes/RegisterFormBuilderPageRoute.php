@@ -18,6 +18,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @unreleased enqueue form builder styles
      * @since 0.1.0
      *
      * @return void
@@ -42,7 +43,6 @@ class RegisterFormBuilderPageRoute
 
         add_action("admin_print_styles", static function () {
             if (FormBuilderRouteBuilder::isRoute()) {
-                //wp_enqueue_style('wp-edit-blocks');
                 wp_enqueue_style(
                     '@givewp/form-builder/style-wordpress',
                     GIVE_NEXT_GEN_URL . 'build/style-formBuilderApp.css'
@@ -63,6 +63,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @unreleased enqueue form builder scripts from plugin root
      * @since 0.1.0
      *
      * @return void
