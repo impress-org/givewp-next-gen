@@ -8,4 +8,4 @@ export type {Gateway} from './gateways';
 export type {FormStatus} from './formStatus';
 export type {TemplateTag} from './templateTag';
 export type {EmailNotification} from './emailNotification';
-export type {EmailTemplateOptions} from './emailTemplateOptions';
+export type {EmailTemplateOption} from './emailTemplateOption';
