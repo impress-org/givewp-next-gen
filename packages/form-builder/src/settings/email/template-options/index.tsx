@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import TabPanel from "@givewp/form-builder/components/sidebar/TabPanel";
 import EmailTemplateSettings from "./settings";
 import CopyToClipboardButton from "./components/copy-to-clipboard-button";
-import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+import {getFormBuilderData, getStorageData} from "@givewp/form-builder/common/getWindowData";
 import {useFormState} from "@givewp/form-builder/stores/form-state";
 import SendPreviewEmail from "@givewp/form-builder/settings/email/template-options/components/send-preview-email";
 
@@ -27,6 +27,8 @@ export default () => {
 
         const {settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail}} = useFormState();
 
+        const {formId} = getStorageData()
+
         useEffect(() => {
 
             // @ts-ignore
@@ -39,6 +41,7 @@ export default () => {
                         'X-WP-Nonce': window.storageData.nonce,
                     },
                     data: {
+                        form_id: formId,
                         email_type: emailType,
                         email_template: emailTemplate,
                         email_logo: emailLogo,

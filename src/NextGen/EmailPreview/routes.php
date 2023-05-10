@@ -20,10 +20,12 @@ return [
         },
         'args' => [
             'email_type' => [
+                'required' => true,
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
             ],
             'form_id' => [
+                'required' => true,
                 'type' => 'string',
                 'sanitize_callback' => 'absint',
             ],

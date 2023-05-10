@@ -11,6 +11,7 @@ declare global {
 
         wp?: any;
         storageData?: {
+            formId: number;
             formDesigns: FormDesign[];
             formPage: FormPageSettings;
             currency: string;

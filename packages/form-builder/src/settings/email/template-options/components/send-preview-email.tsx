@@ -2,12 +2,15 @@ import {useState} from "react";
 import {useFormState} from "@givewp/form-builder/stores/form-state";
 import {Button, TextControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
+import {getStorageData} from "@givewp/form-builder/common/getWindowData";
 
 export default ({emailType}) => {
 
     const [emailAddress, setEmailAddress] = useState<string>('');
 
     const {settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail}} = useFormState();
+
+    const {formId} = getStorageData()
 
     const sendTestEmail = () => {
 
@@ -21,6 +24,7 @@ export default ({emailType}) => {
                     'X-WP-Nonce': window.storageData.nonce,
                 },
                 data: {
+                    form_id: formId,
                     email_address: emailAddress,
                     email_type: emailType,
                     email_template: emailTemplate,
