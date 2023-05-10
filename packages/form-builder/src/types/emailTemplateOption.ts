@@ -3,4 +3,6 @@ export type EmailTemplateOption = {
     status: string;
     email_subject: string;
     email_heading: string;
+    email_message: string;
+    content_type: string;
 }
