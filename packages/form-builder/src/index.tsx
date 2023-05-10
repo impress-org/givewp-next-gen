@@ -1,5 +1,4 @@
-import React from 'react';
-import {createRoot} from 'react-dom/client';
+import React, {createRoot, render} from '@wordpress/element';
 import {BlockSupports, registerBlockType} from '@wordpress/blocks';
 
 import App from './App';
@@ -35,11 +34,15 @@ sectionBlocks.map(({name, settings}: FieldBlock) =>
     })
 );
 
-const container = document.getElementById('root');
-const root = createRoot(container!);
+const root = document.getElementById('root');
 
-root.render(
-    <React.StrictMode>
-        <App/>
-    </React.StrictMode>
-);
+if (createRoot) {
+    createRoot(root).render(<App />);
+} else {
+    render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>,
+        root
+    );
+}
