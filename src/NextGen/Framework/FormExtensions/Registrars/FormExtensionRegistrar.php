@@ -8,7 +8,7 @@ use Give\NextGen\Framework\FormExtensions\Exceptions\OverflowException;
 use Give\NextGen\Framework\FormExtensions\FormExtension;
 
 /**
- * @unreleased 
+ * @unreleased
  */
 class FormExtensionRegistrar
 {
@@ -18,7 +18,7 @@ class FormExtensionRegistrar
     protected $extensions = [];
 
     /**
-     * @unreleased 
+     * @unreleased
      */
     public function getExtensions(): array
     {
@@ -26,7 +26,7 @@ class FormExtensionRegistrar
     }
 
     /**
-     * @unreleased 
+     * @unreleased
      *
      * @throws InvalidArgumentException
      */
@@ -43,7 +43,7 @@ class FormExtensionRegistrar
     }
 
     /**
-     * @unreleased 
+     * @unreleased
      */
     public function hasExtension(string $id): bool
     {
@@ -51,7 +51,7 @@ class FormExtensionRegistrar
     }
 
     /**
-     * @unreleased 
+     * @unreleased
      */
     public function registerExtension(string $extensionClass)
     {
@@ -67,17 +67,17 @@ class FormExtensionRegistrar
     }
 
     /**
-     * @unreleased 
+     * @unreleased
      */
     public function unregisterExtension(string $extensionId)
     {
-        if (isset($this->extensions[$extensionId])) {
+        if ($this->hasExtension($extensionId)) {
             unset($this->extensions[$extensionId]);
         }
     }
 
     /**
-     * @unreleased 
+     * @unreleased
      *
      * @return void
      *
