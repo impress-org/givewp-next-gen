@@ -4,5 +4,5 @@ export type EmailTemplateOption = {
     email_subject: string;
     email_heading: string;
     email_message: string;
-    content_type: string;
+    email_content_type: string;
 }

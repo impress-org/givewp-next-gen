@@ -20,7 +20,7 @@ const EmailTemplateSettings = ({notification}) => {
         'email_subject': '',
         'email_heading': '',
         'email_message': '',
-        'content_type': '',
+        'email_content_type': '',
     };
 
     const updateEmailTemplateOption = (property, value) => {
@@ -76,10 +76,10 @@ const EmailTemplateSettings = ({notification}) => {
                     />
 
                     <SelectControl
-                        onChange={(value) => updateEmailTemplateOption('content_type', value)}
+                        onChange={(value) => updateEmailTemplateOption('email_content_type', value)}
                         label={__('Email content type', 'givewp')}
                         help={__('Choose email type', 'givewp')}
-                        value={option.content_type || 'html'}
+                        value={option.email_content_type || 'html'}
                         options={[
                             {label: __('HTML', 'givewp'), value: 'html'},
                             {label: __('Plain', 'givewp'), value: 'plain'},

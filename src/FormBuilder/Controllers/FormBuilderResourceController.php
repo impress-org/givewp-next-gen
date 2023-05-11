@@ -78,7 +78,6 @@ class FormBuilderResourceController
         give(UpdateEmailSettingsMeta::class)->__invoke($form);
         give(UpdateEmailTemplateMeta::class)->__invoke($form);
 
-
         $form->status = $updatedSettings->formStatus;
         $form->save();
 
