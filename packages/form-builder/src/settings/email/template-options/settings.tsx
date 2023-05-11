@@ -43,7 +43,7 @@ const EmailTemplateSettings = ({notification}) => {
                 label={__('Email options', 'givewp')}
                 hideLabelFromVision={true}
                 help={__('Global options are set in GiveWP settings. You may override them for this form here', 'givewp')}
-                selected={option.status || 'global'}
+                selected={option.status ?? 'global'}
                 options={config.statusOptions}
                 onChange={(value) => updateEmailTemplateOption('status', value)}
             />
