@@ -41,6 +41,7 @@ export default function Edit(props: BlockEditProps<any>) {
                             value={title}
                             onChange={(val) => setAttributes({title: val})}
                             style={{margin: '0', fontSize: '22px', fontWeight: 700}}
+                            allowedFormats={[]}
                         />
                     )}
                     {description.length > 0 && (
@@ -49,6 +50,7 @@ export default function Edit(props: BlockEditProps<any>) {
                             value={description}
                             onChange={(val) => setAttributes({description: val})}
                             style={{fontSize: '16px', fontWeight: 500}}
+                            allowedFormats={[]}
                         />
                     )}
                 </header>
