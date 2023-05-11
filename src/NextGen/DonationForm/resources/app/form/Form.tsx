@@ -29,6 +29,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
         defaultValues,
         resolver: joiResolver(validationSchema),
         reValidateMode: 'onBlur',
+        shouldUnregister: true,
     });
 
     const {handleSubmit, setError, control} = methods;

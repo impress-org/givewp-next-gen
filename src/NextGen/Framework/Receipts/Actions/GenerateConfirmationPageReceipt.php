@@ -57,7 +57,7 @@ class GenerateConfirmationPageReceipt
 
                 $value = give()->donor_meta->get_meta($donation->donor->id, $field->getName(), true);
             } else {
-                if (!metadata_exists('give_payment', $donation->id, $field->getName()) ) {
+                if (!metadata_exists('donation', $donation->id, $field->getName()) ) {
                     continue;
                 }
 
