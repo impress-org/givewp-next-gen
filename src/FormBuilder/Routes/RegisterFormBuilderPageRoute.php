@@ -39,14 +39,12 @@ class RegisterFormBuilderPageRoute
             1
         );
 
-        wp_enqueue_style('givewp-design-system-foundation');
-
-        add_action("admin_print_styles", static function () {
+        add_action("admin_print_styles", function () {
             if (FormBuilderRouteBuilder::isRoute()) {
-                wp_enqueue_style(
-                    '@givewp/form-builder/style-wordpress',
-                    GIVE_NEXT_GEN_URL . 'build/style-formBuilderApp.css'
-                );
+                wp_enqueue_style('givewp-design-system-foundation');
+
+                $this->loadGutenbergScripts();
+
                 wp_enqueue_style(
                     '@givewp/form-builder/style-app',
                     GIVE_NEXT_GEN_URL . 'build/formBuilderApp.css'
@@ -137,5 +135,35 @@ class RegisterFormBuilderPageRoute
         ]);
 
         View::render('FormBuilder.admin-form-builder');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function loadGutenbergScripts()
+    {
+        // Gutenberg scripts
+        wp_enqueue_script('wp-block-library');
+        wp_enqueue_script('wp-format-library');
+        wp_enqueue_script('wp-editor');
+
+        // Gutenberg styles
+        wp_enqueue_style('wp-edit-post');
+        wp_enqueue_style('wp-format-library');
+
+        // Keep Jetpack out of things
+        add_filter(
+            'jetpack_blocks_variation',
+            function () {
+                return 'no-post-editor';
+            }
+        );
+
+        //wp_tinymce_inline_scripts();
+        //wp_enqueue_editor();
+
+        //do_action('enqueue_block_editor_assets');
+
+        //add_action('wp_print_footer_scripts', array('_WP_Editors', 'print_default_editor_scripts'), 45);
     }
 }
