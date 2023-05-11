@@ -7,8 +7,7 @@ use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\Framework\FormExtensions\Registrars\FormExtensionRegistrar;
-
+use Give\Helpers\Hooks;
 use function wp_enqueue_style;
 
 /**
@@ -114,29 +113,8 @@ class RegisterFormBuilderPageRoute
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
             ];
         }, $supportedGateways);
-
-        // load extensions
-        /** @var FormExtensionRegistrar $formExtensionRegistrar */
-        $formExtensionRegistrar = give(FormExtensionRegistrar::class);
-        $formExtensionIds = array_keys($formExtensionRegistrar->getExtensions());
-
-        foreach ($formExtensionIds as $formExtensionId) {
-            $extension = $formExtensionRegistrar->getExtension($formExtensionId);
-
-            if ($extension->formBuilderCss()) {
-                wp_enqueue_style('givewp-form-extension-' . $extension::id(), $extension->formBuilderCss());
-            }
-
-            if ($extension->formBuilderJs()) {
-                wp_enqueue_script(
-                    'givewp-form-extension-' . $extension::id(),
-                    $extension->formBuilderJs(),
-                    $extension->formBuilderDependencies(),
-                    false,
-                    true
-                );
-            }
-        }
+        
+        Hooks::doAction('givewp_form_builder_enqueue_scripts');
 
         (new EnqueueScript(
             '@givewp/form-builder/script',

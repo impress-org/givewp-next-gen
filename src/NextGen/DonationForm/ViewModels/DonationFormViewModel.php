@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\Framework\EnqueueScript;
+use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
@@ -12,8 +13,6 @@ use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\FormDesigns\FormDesign;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
-use Give\NextGen\Framework\FormExtensions\Registrars\FormExtensionRegistrar;
-
 use function implode;
 use function wp_enqueue_style;
 use function wp_print_styles;
@@ -274,28 +273,7 @@ class DonationFormViewModel
             }
         }
 
-        // load extensions
-        /** @var FormExtensionRegistrar $formExtensionRegistrar */
-        $formExtensionRegistrar = give(FormExtensionRegistrar::class);
-        $formExtensionIds = array_keys($formExtensionRegistrar->getExtensions());
-
-        foreach ($formExtensionIds as $formExtensionId) {
-            $extension = $formExtensionRegistrar->getExtension($formExtensionId);
-
-            if ($extension->formViewCss()) {
-                wp_enqueue_style('givewp-form-extension-' . $extension::id(), $extension->formViewCss());
-            }
-
-            if ($extension->formViewJs()) {
-                wp_enqueue_script(
-                    'givewp-form-extension-' . $extension::id(),
-                    $extension->formViewJs(),
-                    $extension->formViewDependencies(),
-                    false,
-                    true
-                );
-            }
-        }
+        Hooks::doAction('givewp_form_view_enqueue_scripts');
 
         // load gateways
         foreach ($donationFormRepository->getEnabledPaymentGateways($formId) as $gateway) {
