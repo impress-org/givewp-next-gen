@@ -29,6 +29,10 @@ setCategories([
         slug: 'custom',
         title: __('Custom Fields', 'give'),
     },
+    {
+        slug: 'addons',
+        title: __('Add-ons', 'give'),
+    },
 ]);
 
 blockRegistrar.register(sectionBlocks);
