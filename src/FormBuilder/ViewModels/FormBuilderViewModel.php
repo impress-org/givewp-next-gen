@@ -57,4 +57,14 @@ class FormBuilderViewModel
     {
         return 'build/formBuilderApp.js';
     }
+
+    /**
+     * @unreleased
+     */
+    public function jsDependencies(): array
+    {
+        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/formBuilderApp.asset.php';
+
+        return $scriptAsset['dependencies'];
+    }
 }

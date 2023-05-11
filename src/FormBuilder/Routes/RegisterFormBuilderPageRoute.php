@@ -7,6 +7,7 @@ use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Log\Log;
 
 use function wp_enqueue_style;
 
@@ -112,22 +113,26 @@ class RegisterFormBuilderPageRoute
             ];
         }, $supportedGateways);
 
-        (new EnqueueScript(
+        $formBuilderJsDependencies = $this->getRegisteredFormBuilderJsDependencies(
+            $formBuilderViewModel->jsDependencies()
+        );
+
+        wp_enqueue_script(
             '@givewp/form-builder/script',
-            $formBuilderViewModel->jsPathFromPluginRoot(),
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->loadInFooter()
-            ->registerLocalizeData('formBuilderData', [
-                'gateways' => array_values($builderPaymentGatewayData),
-                'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-                'recurringAddonData' => [
-                    'isInstalled' => defined('GIVE_RECURRING_VERSION') ,
-                ],
-                'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
-            ])
-            ->enqueue();
+            GIVE_NEXT_GEN_URL . $formBuilderViewModel->jsPathFromPluginRoot(),
+            $formBuilderJsDependencies,
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
+
+        wp_localize_script('@givewp/form-builder/script', 'formBuilderData', [
+            'gateways' => array_values($builderPaymentGatewayData),
+            'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
+            'recurringAddonData' => [
+                'isInstalled' => defined('GIVE_RECURRING_VERSION'),
+            ],
+            'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
+        ]);
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
@@ -165,5 +170,26 @@ class RegisterFormBuilderPageRoute
         //do_action('enqueue_block_editor_assets');
 
         //add_action('wp_print_footer_scripts', array('_WP_Editors', 'print_default_editor_scripts'), 45);
+    }
+
+    protected function getRegisteredFormBuilderJsDependencies(array $formBuilderJsDependencies): array
+    {
+        Log::debug('Form builder dependencies', $formBuilderJsDependencies);
+        $scripts = wp_scripts();
+
+        return array_filter($formBuilderJsDependencies, static function ($dependency) use ($scripts) {
+            $isRegistered = $scripts->query($dependency, 'registered');
+
+            if (!$isRegistered) {
+                Log::error(
+                    sprintf(
+                        'Script %s is not registered. Please check the script dependencies.',
+                        $dependency
+                    )
+                );
+            }
+
+            return $isRegistered;
+        });
     }
 }
