@@ -2,7 +2,8 @@
 
 namespace Give\FormBuilder\Controllers;
 
-use Give\FormBuilder\Actions\UpdateEmailTemplateOptions;
+use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
+use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Form;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -74,7 +75,9 @@ class FormBuilderResourceController
         $form->title = $updatedSettings->formTitle;
         $form->blocks = $blocks;
 
-        give(UpdateEmailTemplateOptions::class)->__invoke($form->id, $form->settings->emailTemplateOptions);
+        give(UpdateEmailSettingsMeta::class)->__invoke($form);
+        give(UpdateEmailTemplateMeta::class)->__invoke($form);
+
 
         $form->status = $updatedSettings->formStatus;
         $form->save();
