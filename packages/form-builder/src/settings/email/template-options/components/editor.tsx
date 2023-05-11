@@ -3,6 +3,8 @@ import {useEffect, useRef} from "react";
 import _ from "lodash";
 import {__} from "@wordpress/i18n";
 
+import 'react-quill/dist/quill.snow.css';
+
 /**
  * https://github.com/zenoamaro/react-quill
  *

@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder\Routes;
 use Give\Addon\View;
+use Give\FormBuilder\Actions\ConvertNotificationToDTO;
+use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
@@ -120,7 +122,9 @@ class RegisterFormBuilderPageRoute
                 ],
                 'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
                 'templateTags' => array_values(give()->email_tags->get_tags()),
-                'emailNotifications' => apply_filters( 'give_email_notification_options_metabox_fields', array(), $donationFormId ),
+                'emailNotifications' => array_map(static function ($notification) {
+                    return EmailNotificationData::fromLegacyNotification($notification);
+                }, apply_filters( 'give_email_notification_options_metabox_fields', array(), $donationFormId )),
                 'emailPreviewURL' => rest_url('givewp/next-gen/email-preview'),
             ])
             ->enqueue();
