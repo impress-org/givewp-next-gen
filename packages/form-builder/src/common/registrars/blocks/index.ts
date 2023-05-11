@@ -75,7 +75,7 @@ class BlockRegistrar implements Registrar {
         }
 
         blocks.forEach((block: FieldBlock) => {
-            this.blocks[parent.length ? 'child' : 'parent'].push(block);
+            this.blocks[parent.length ? BlockListTypes.Child : BlockListTypes.Parent].push(block);
             this.registerIntoEditor(block, parent);
         });
     }
