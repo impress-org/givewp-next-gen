@@ -8,6 +8,7 @@ export type EmailNotification = {
         email_message: string;
         email_content_type: 'text/html'|'text/plain';
     };
+    supportsRecipients: boolean;
 }
 
 type StatusOption = {

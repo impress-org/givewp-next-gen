@@ -1,9 +1,11 @@
 import {useEffect, useRef} from "react";
 import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
-import {Button, RadioControl, SelectControl, TextControl} from "@wordpress/components";
+import {BaseControl, Button, RadioControl, SelectControl, TextControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import Editor from "./components/editor";
 import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+import {CurrencyControl} from "@givewp/form-builder/common/currency";
+import DeleteButton from "@givewp/form-builder/blocks/fields/amount/inspector/delete-button";
 
 const EmailTemplateSettings = ({notification}) => {
 
@@ -19,7 +21,10 @@ const EmailTemplateSettings = ({notification}) => {
         'email_header': '',
         'email_message': '',
         'email_content_type': '',
+        'recipient': [],
     };
+
+    const recipients = option.recipient ?? ['']
 
     const updateEmailTemplateOption = (property, value) => {
         dispatch(setFormSettings({emailTemplateOptions: {
@@ -81,12 +86,54 @@ const EmailTemplateSettings = ({notification}) => {
                         ]}
                     />
 
-                    <TextControl
-                        label={__('Email', 'givewp')}
-                        help={__('This email is automatically sent to the individual fundraiser and the recipient cannot be customized.', 'givewp')}
-                        onChange={() => null}
-                        value={''}
-                    />
+                    {config.supportsRecipients && <>
+                        <BaseControl
+                            id={'give-email-template-recipient'}
+                            label={__('Email', 'givewp')}
+                            help={__('Enter the email address that should receive a notification.', 'givewp')}
+                        >
+                            {recipients.map((recipientEmail, index) => {
+                                return (
+                                    <li
+                                        key={'level-option-inspector-' + index}
+                                        style={{
+                                            display: 'flex',
+                                            gap: '16px',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'flex-end',
+                                        }}
+                                        className={'givewp-donation-level-control'}
+                                    >
+                                        <TextControl
+                                            label={__('Donation amount level', 'give')}
+                                            hideLabelFromVision
+                                            value={recipientEmail}
+                                            onChange={(value) => {
+                                                const newRecipients = [...recipients];
+                                                newRecipients[index] = value;
+                                                updateEmailTemplateOption('recipient', newRecipients)
+                                            }}
+                                        />
+                                        <DeleteButton
+                                            onClick={() => {
+                                                recipients.splice(index, 1);
+                                                updateEmailTemplateOption('recipient', recipients.slice())
+                                            }}
+                                        />
+                                    </li>
+                                );
+                            })}
+                            <Button variant={'tertiary'} onClick={() => updateEmailTemplateOption('recipient', [...recipients, ''])}>Add email</Button>
+                        </BaseControl>
+                    </>}
+                    {!config.supportsRecipients && (
+                        <TextControl
+                            label={__('Email', 'givewp')}
+                            help={__('This email is automatically sent to the individual fundraiser and the recipient cannot be customized.', 'givewp')}
+                            onChange={() => null}
+                            value='{donor_email}'
+                        />
+                    )}
                 </>
             )}
 

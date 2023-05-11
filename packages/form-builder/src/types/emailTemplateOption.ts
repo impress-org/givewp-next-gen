@@ -5,4 +5,5 @@ export type EmailTemplateOption = {
     email_heading: string;
     email_message: string;
     email_content_type: string;
+    recipient: string[];
 }

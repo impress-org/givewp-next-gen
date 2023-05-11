@@ -14,9 +14,20 @@ class UpdateEmailTemplateMeta
             $templateOptions['notification'] = $templateOptions['status'];
             unset($templateOptions['status']);
 
+            if(isset($templateOptions['recipient'])) {
+                $templateOptions['recipient'] = $this->formatRecipientEmails($templateOptions['recipient']);
+            }
+
             foreach($templateOptions as $key => $value) {
                 give()->form_meta->update_meta($form->id, "_give_{$emailType}_{$key}", $value);
             }
         }
+    }
+
+    protected function formatRecipientEmails($emails)
+    {
+        return array_map(function($email) {
+            return ['email' => $email];
+        }, $emails);
     }
 }
