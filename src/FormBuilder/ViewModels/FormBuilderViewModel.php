@@ -50,4 +50,12 @@ class FormBuilderViewModel
     {
         return 'packages/form-builder/build/givewp-form-builder.js';
     }
+
+    /**
+     * @unreleased
+     */
+    public function jsPathFromPluginRoot(): string
+    {
+        return 'build/formBuilderApp.js';
+    }
 }
