@@ -5,8 +5,6 @@ use Give\Addon\View;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Log\Log;
 
 use function wp_enqueue_style;
@@ -87,46 +85,27 @@ class RegisterFormBuilderPageRoute
             'give'
         ));
 
-        $formBuilderStorage->dependencies(['jquery'])->registerLocalizeData(
-            'storageData',
-            $formBuilderViewModel->storageData($donationFormId)
-        );
-
-        $formBuilderStorage->loadInFooter()->enqueue();
-
-        $enabledGateways = array_keys(give_get_option('gateways'));
-
-        $supportedGateways = array_filter(
-            give(PaymentGatewayRegister::class)->getPaymentGateways(),
-            static function ($gateway) {
-                return is_a($gateway, NextGenPaymentGatewayInterface::class, true);
-            }
-        );
-
-        $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
-            $gateway = give($gatewayClass);
-            return [
-                'id' => $gateway::id(),
-                'enabled' => in_array($gateway::id(), $enabledGateways, true),
-                'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
-                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
-            ];
-        }, $supportedGateways);
-
-        $formBuilderJsDependencies = $this->getRegisteredFormBuilderJsDependencies(
-            $formBuilderViewModel->jsDependencies()
-        );
+        $formBuilderStorage
+            ->dependencies(['jquery'])
+            ->registerLocalizeData(
+                'storageData',
+                $formBuilderViewModel->storageData($donationFormId)
+            )
+            ->loadInFooter()
+            ->enqueue();
 
         wp_enqueue_script(
             '@givewp/form-builder/script',
-            GIVE_NEXT_GEN_URL . $formBuilderViewModel->jsPathFromPluginRoot(),
-            $formBuilderJsDependencies,
+            $formBuilderViewModel->jsPathFromPluginRoot(),
+            $this->getRegisteredFormBuilderJsDependencies(
+                $formBuilderViewModel->jsDependencies()
+            ),
             GIVE_NEXT_GEN_VERSION,
             true
         );
 
         wp_localize_script('@givewp/form-builder/script', 'formBuilderData', [
-            'gateways' => array_values($builderPaymentGatewayData),
+            'gateways' => $formBuilderViewModel->getGateways(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             'recurringAddonData' => [
                 'isInstalled' => defined('GIVE_RECURRING_VERSION'),
@@ -143,6 +122,10 @@ class RegisterFormBuilderPageRoute
     }
 
     /**
+     * Load Gutenberg scripts and styles from core.
+     *
+     * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
+     *
      * @unreleased
      */
     public function loadGutenbergScripts()
@@ -155,23 +138,13 @@ class RegisterFormBuilderPageRoute
         // Gutenberg styles
         wp_enqueue_style('wp-edit-post');
         wp_enqueue_style('wp-format-library');
-
-        // Keep Jetpack out of things
-        add_filter(
-            'jetpack_blocks_variation',
-            function () {
-                return 'no-post-editor';
-            }
-        );
-
-        //wp_tinymce_inline_scripts();
-        //wp_enqueue_editor();
-
-        //do_action('enqueue_block_editor_assets');
-
-        //add_action('wp_print_footer_scripts', array('_WP_Editors', 'print_default_editor_scripts'), 45);
     }
 
+    /**
+     * Loop through the form builder js dependencies and check if they are registered before adding to enqueue_script.
+     *
+     * @unreleased
+     */
     protected function getRegisteredFormBuilderJsDependencies(array $formBuilderJsDependencies): array
     {
         $scripts = wp_scripts();
