@@ -75,6 +75,10 @@ class FormBuilderResourceController
         $form->title = $updatedSettings->formTitle;
         $form->blocks = $blocks;
 
+        if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
+            return rest_ensure_response($requiredFieldsError);
+        }
+
         give(UpdateEmailSettingsMeta::class)->__invoke($form);
         give(UpdateEmailTemplateMeta::class)->__invoke($form);
 
