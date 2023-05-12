@@ -19,12 +19,21 @@
     background-color: var(--givewp-gray-10);
 }
 
+.interface-interface-skeleton__secondary-sidebar {
+    position: relative;
+}
+
+
 .interface-interface-skeleton__content {
     width: 720px;
-    margin: auto;
-    padding: 120px 0; /* Leave room for toolbar above first block. */
+    margin: 0 auto;
+    padding: 100px 0; /* Leave room for toolbar above first block. */
     flex-grow: unset;
     box-sizing: border-box;
+
+    @media screen and (max-width: 782px) {
+        padding: 1rem 0;
+    }
 
     *,
     *:before,
@@ -164,6 +173,10 @@
     gap: 2rem;
 
     .block-editor-block-list__block {
+        &:not([contenteditable]):focus::after {
+            box-shadow: none;
+        }
+
         &.is-highlighted {
             box-shadow: none;
 

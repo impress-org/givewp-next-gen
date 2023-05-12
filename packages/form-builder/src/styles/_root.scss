@@ -7,6 +7,10 @@
     // Layout
     --givewp-sidebar-width: 284px;
 
+    @media screen and (max-width: 782px) {
+        --givewp-sidebar-width: 100%;
+    }
+
     // Primary
     --givewp-primary-200: #e6ffe6;
     --givewp-primary-300: #c2f2c3;
