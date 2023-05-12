@@ -174,7 +174,6 @@ class RegisterFormBuilderPageRoute
 
     protected function getRegisteredFormBuilderJsDependencies(array $formBuilderJsDependencies): array
     {
-        Log::debug('Form builder dependencies', $formBuilderJsDependencies);
         $scripts = wp_scripts();
 
         return array_filter($formBuilderJsDependencies, static function ($dependency) use ($scripts) {

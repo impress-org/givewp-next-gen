@@ -1,6 +1,6 @@
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import BlockEditorContainer from './containers/BlockEditorContainer';
-import {FormStateProvider} from './stores/form-state/index';
+import {FormStateProvider} from './stores/form-state';
 import {Storage} from './common';
 import defaultBlocks from './blocks.json';
 import Feedback from '@givewp/form-builder/feedback';
