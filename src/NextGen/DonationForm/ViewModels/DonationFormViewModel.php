@@ -251,6 +251,8 @@ class DonationFormViewModel
             'give'
         ))->loadInFooter()->enqueue();
 
+        Hooks::doAction('givewp_form_view_enqueue_scripts');
+
         $design = $this->getFormDesign($formDesignId);
 
         // silently fail if design is missing for some reason
@@ -272,8 +274,6 @@ class DonationFormViewModel
                 );
             }
         }
-
-        Hooks::doAction('givewp_form_view_enqueue_scripts');
 
         // load gateways
         foreach ($donationFormRepository->getEnabledPaymentGateways($formId) as $gateway) {
