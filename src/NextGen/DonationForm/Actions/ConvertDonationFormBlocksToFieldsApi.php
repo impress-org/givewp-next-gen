@@ -8,6 +8,7 @@ use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
@@ -124,8 +125,8 @@ class ConvertDonationFormBlocksToFieldsApi
             case "company-field":
                 return Text::make('company');
 
-            default:
-                $field = Text::make(
+            case "field":
+                return Text::make(
                     $block->hasAttribute('fieldName') ?
                         $block->getAttribute('fieldName') :
                         $block->getShortName() . '-' . $blockIndex
@@ -133,11 +134,21 @@ class ConvertDonationFormBlocksToFieldsApi
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
 
-                return apply_filters(
+            default:
+                $customField = apply_filters(
                     "givewp_donation_form_block_{$blockName}",
-                    $field,
                     $block,
                     $blockIndex
+                );
+
+                if ($customField instanceof Field) {
+                    return $customField;
+                }
+
+                return Text::make(
+                    $block->hasAttribute('fieldName') ?
+                        $block->getAttribute('fieldName') :
+                        $block->getShortName() . '-' . $blockIndex
                 );
         }
     }

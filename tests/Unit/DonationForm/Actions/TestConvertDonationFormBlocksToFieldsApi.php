@@ -90,9 +90,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
                     'name' => 'custom-block-editor/givewp-custom-block',
                     'isValid' => true,
                     'attributes' => [
-                        'fieldName' => 'givewp-custom-field-name',
-                        'label' => 'GiveWP Custom Block',
-                        'storeAsDonorMeta' => true,
+                        'label' => 'GiveWP Custom Block'
                     ],
                 ],
             ],
@@ -105,19 +103,17 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 
         $block = $section->innerBlocks->getBlocks()[0];
 
-        $customField = Email::make($block->getAttribute('fieldName'))
-            ->label($block->getAttribute('label'))
-            ->storeAsDonorMeta($block->getAttribute('storeAsDonorMeta'));
+        $customField = Email::make('givewp-custom-block')
+            ->label($block->getAttribute('label'));
 
         add_filter(
             'givewp_donation_form_block_givewp-custom-block',
-            static function (Text $field, BlockModel $block, int $blockIndex) {
-                return Email::make($block->getAttribute('fieldName'))
-                    ->label($block->getAttribute('label'))
-                    ->storeAsDonorMeta($block->getAttribute('storeAsDonorMeta'));
+            static function (BlockModel $block, int $blockIndex) {
+                return Email::make('givewp-custom-block')
+                    ->label($block->getAttribute('label'));
             },
             10,
-            3
+            2
         );
 
         $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
