@@ -48,7 +48,7 @@ function App() {
     if (form.design?.isMultiStep) {
         return (
             <DonationFormStateProvider initialState={initialState}>
-                <MultiStepForm sections={form.nodes} showHeader />
+                <MultiStepForm sections={form.nodes} showHeader={form.settings?.showHeader} />
             </DonationFormStateProvider>
         );
     }
