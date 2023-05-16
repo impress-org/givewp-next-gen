@@ -76,7 +76,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
      */
     public function testShouldReturnFormSchemaUsingFilter()
     {
-        $block = BlockModel::make([
+        $section = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
             'name' => 'custom-block-editor/section',
             'isValid' => true,
@@ -92,6 +92,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
                     'attributes' => [
                         'fieldName' => 'givewp-custom-field-name',
                         'label' => 'GiveWP Custom Block',
+                        'storeAsDonorMeta' => true,
                     ],
                 ],
             ],
@@ -100,15 +101,24 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
         $blockIndex = 1;
         $formId = 1;
 
-        $blocks = BlockCollection::make([$block]);
+        $blocks = BlockCollection::make([$section]);
 
-        $customField = Email::make('givewp-custom-field-name')
-                        ->label('GiveWP Custom Block')
-                        ->storeAsDonorMeta(true);
+        $block = $section->innerBlocks->getBlocks()[0];
 
-        add_filter('givewp_donation_form_block_givewp-custom-block', static function () use ($customField) {
-            return $customField;
-        });
+        $customField = Email::make($block->getAttribute('fieldName'))
+            ->label($block->getAttribute('label'))
+            ->storeAsDonorMeta($block->getAttribute('storeAsDonorMeta'));
+
+        add_filter(
+            'givewp_donation_form_block_givewp-custom-block',
+            static function (Text $field, BlockModel $block, int $blockIndex) {
+                return Email::make($block->getAttribute('fieldName'))
+                    ->label($block->getAttribute('label'))
+                    ->storeAsDonorMeta($block->getAttribute('storeAsDonorMeta'));
+            },
+            10,
+            3
+        );
 
         $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 

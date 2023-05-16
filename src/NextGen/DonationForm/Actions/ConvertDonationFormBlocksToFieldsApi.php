@@ -87,7 +87,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased add blockIndex for unique field names
+     * @unreleased add blockIndex for unique field names, add filter `givewp_donation_form_block_{$blockName}`
      * @since 0.1.0
      *
      * @throws EmptyNameException
@@ -96,6 +96,7 @@ class ConvertDonationFormBlocksToFieldsApi
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex): Node
     {
         $blockName = str_replace("custom-block-editor/", '', $block->name);
+
         switch ($blockName) {
             case "donation-amount-levels":
                 return $this->createNodeFromAmountBlock($block);
@@ -124,15 +125,17 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Text::make('company');
 
             default:
+                $field = Text::make(
+                    $block->hasAttribute('fieldName') ?
+                        $block->getAttribute('fieldName') :
+                        $block->getShortName() . '-' . $blockIndex
+                )->storeAsDonorMeta(
+                    $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
+                );
+
                 return apply_filters(
                     "givewp_donation_form_block_{$blockName}",
-                    Text::make(
-                        $block->hasAttribute('fieldName') ?
-                            $block->getAttribute('fieldName') :
-                            $block->getShortName() . '-' . $blockIndex
-                    )->storeAsDonorMeta(
-                        $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
-                    ),
+                    $field,
                     $block,
                     $blockIndex
                 );
