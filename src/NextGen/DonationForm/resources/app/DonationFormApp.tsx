@@ -55,7 +55,7 @@ function App() {
 
     return (
         <DonationFormStateProvider initialState={initialState}>
-            <Header />
+            {form.settings?.showHeader && <Header />}
             <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
         </DonationFormStateProvider>
     );

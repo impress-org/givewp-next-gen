@@ -27,40 +27,38 @@ const formatGoalAmount = (amount: number) => {
 export default function Header() {
     return (
         <DonationFormErrorBoundary>
-            {form.settings?.showHeader && (
-                <HeaderTemplate
-                    Title={() => form.settings?.showHeading && <HeaderTitleTemplate text={form.settings.heading} />}
-                    Description={() =>
-                        form.settings?.showDescription && <HeaderDescriptionTemplate text={form.settings.description} />
-                    }
-                    Goal={() =>
-                        form.goal?.show && (
-                            <GoalTemplate
-                                currency={form.currency}
-                                type={form.goal.type as GoalType}
-                                goalLabel={form.goal.label}
-                                progressPercentage={form.goal.progressPercentage}
-                                currentAmount={form.goal.currentAmount}
-                                currentAmountFormatted={
-                                    form.goal.typeIsMoney
-                                        ? formatGoalAmount(form.goal.currentAmount)
-                                        : form.goal.currentAmount.toString()
-                                }
-                                targetAmount={form.goal.targetAmount}
-                                targetAmountFormatted={
-                                    form.goal.typeIsMoney
-                                        ? formatGoalAmount(form.goal.targetAmount)
-                                        : form.goal.targetAmount.toString()
-                                }
-                                totalRevenue={form.stats.totalRevenue}
-                                totalRevenueFormatted={formatGoalAmount(form.stats.totalRevenue)}
-                                totalCountValue={form.stats.totalCountValue}
-                                totalCountLabel={form.stats.totalCountLabel}
-                            />
-                        )
-                    }
-                />
-            )}
+            <HeaderTemplate
+                Title={() => form.settings?.showHeading && <HeaderTitleTemplate text={form.settings.heading} />}
+                Description={() =>
+                    form.settings?.showDescription && <HeaderDescriptionTemplate text={form.settings.description} />
+                }
+                Goal={() =>
+                    form.goal?.show && (
+                        <GoalTemplate
+                            currency={form.currency}
+                            type={form.goal.type as GoalType}
+                            goalLabel={form.goal.label}
+                            progressPercentage={form.goal.progressPercentage}
+                            currentAmount={form.goal.currentAmount}
+                            currentAmountFormatted={
+                                form.goal.typeIsMoney
+                                    ? formatGoalAmount(form.goal.currentAmount)
+                                    : form.goal.currentAmount.toString()
+                            }
+                            targetAmount={form.goal.targetAmount}
+                            targetAmountFormatted={
+                                form.goal.typeIsMoney
+                                    ? formatGoalAmount(form.goal.targetAmount)
+                                    : form.goal.targetAmount.toString()
+                            }
+                            totalRevenue={form.stats.totalRevenue}
+                            totalRevenueFormatted={formatGoalAmount(form.stats.totalRevenue)}
+                            totalCountValue={form.stats.totalCountValue}
+                            totalCountLabel={form.stats.totalCountLabel}
+                        />
+                    )
+                }
+            />
         </DonationFormErrorBoundary>
     );
 }
