@@ -123,12 +123,17 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Text::make('company');
 
             default:
-                return Text::make(
-                    $block->hasAttribute('fieldName') ?
-                        $block->getAttribute('fieldName') :
-                        $block->getShortName() . '-' . $blockIndex
-                )->storeAsDonorMeta(
-                    $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
+                return apply_filters(
+                    "givewp_donation_form_block_{$block->name}",
+                    Text::make(
+                        $block->hasAttribute('fieldName') ?
+                            $block->getAttribute('fieldName') :
+                            $block->getShortName() . '-' . $blockIndex
+                    )->storeAsDonorMeta(
+                        $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
+                    ),
+                    $block,
+                    $blockIndex
                 );
         }
     }
