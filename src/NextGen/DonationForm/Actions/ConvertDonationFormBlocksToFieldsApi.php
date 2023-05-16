@@ -95,36 +95,37 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex): Node
     {
-        switch ($block->name) {
-            case "custom-block-editor/donation-amount-levels":
+        $blockName = str_replace("custom-block-editor/", '', $block->name);
+        switch ($blockName) {
+            case "donation-amount-levels":
                 return $this->createNodeFromAmountBlock($block);
 
-            case "custom-block-editor/donor-name":
+            case "donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
 
-            case "custom-block-editor/paragraph":
+            case "paragraph":
                 return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
 
-            case "custom-block-editor/email-field":
+            case "email-field":
                 return Email::make('email')
                     ->emailTag('email')
                     ->rules('required', 'email');
 
-            case "custom-block-editor/payment-gateways":
+            case "payment-gateways":
                 return PaymentGateways::make('gatewayId')
                     ->rules(new GatewayRule())
                     ->required();
 
-            case "custom-block-editor/donation-summary":
+            case "donation-summary":
                 return DonationSummary::make('donation-summary');
 
-            case "custom-block-editor/company-field":
+            case "company-field":
                 return Text::make('company');
 
             default:
                 return apply_filters(
-                    "givewp_donation_form_block_{$block->name}",
+                    "givewp_donation_form_block_{$blockName}",
                     Text::make(
                         $block->hasAttribute('fieldName') ?
                             $block->getAttribute('fieldName') :

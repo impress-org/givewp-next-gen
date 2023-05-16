@@ -106,7 +106,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
                         ->label('GiveWP Custom Block')
                         ->storeAsDonorMeta(true);
 
-        add_filter('givewp_donation_form_block_custom-block-editor/givewp-custom-block', static function() use ($customField) {
+        add_filter('givewp_donation_form_block_givewp-custom-block', static function () use ($customField) {
             return $customField;
         });
 
