@@ -2,8 +2,10 @@
 
 @import './styles/block-editor';
 @import './styles/form-builder';
+@import './styles/email-settings';
 @import './styles/components';
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     // Gutenberg color mappings
     --wp-admin-border-width-focus: 2px;
@@ -603,3 +605,6 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 =======
 @import './styles/onboarding';
 >>>>>>> 7fa7258fdcfd27e372b2609dbeb81c8998dd8149
+=======
+@import './styles/onboarding';
+>>>>>>> 53300035c5dd2e00a098066de95473232bff5229
