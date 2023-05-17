@@ -8,7 +8,6 @@ use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
@@ -156,7 +155,7 @@ class ConvertDonationFormBlocksToFieldsApi
                     $blockIndex
                 );
 
-                if ($customField instanceof Field) {
+                if ($customField instanceof Node) {
                     return $customField;
                 }
 
