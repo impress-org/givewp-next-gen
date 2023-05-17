@@ -2,7 +2,7 @@
 
 namespace Give\FormBuilder\DataTransferObjects;
 
-use Give\FormBuilder\Actions\ConvertNotificationToDTO;
+use Give\FormBuilder\Actions\ConvertLegacyNotificationToEmailNotificationData;
 
 /**
  * @since 0.1.0
@@ -26,6 +26,6 @@ class EmailNotificationData
 
     public static function fromLegacyNotification($notification): EmailNotificationData
     {
-        return (new ConvertNotificationToDTO($notification))->toDto();
+        return (new ConvertLegacyNotificationToEmailNotificationData($notification))->__invoke();
     }
 }

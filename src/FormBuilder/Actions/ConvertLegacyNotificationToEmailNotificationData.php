@@ -9,7 +9,7 @@ use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
  *
  * @unreleased
  */
-class ConvertNotificationToDTO
+class ConvertLegacyNotificationToEmailNotificationData
 {
     /** @var string */
     protected $id;
@@ -27,7 +27,7 @@ class ConvertNotificationToDTO
         $this->fields = $notification['fields'];
     }
 
-    public function toDto(): EmailNotificationData
+    public function __invoke(): EmailNotificationData
     {
         $dto = new EmailNotificationData;
 

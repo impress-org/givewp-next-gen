@@ -2,7 +2,6 @@
 
 namespace Give\FormBuilder\Routes;
 use Give\Addon\View;
-use Give\FormBuilder\Actions\ConvertNotificationToDTO;
 use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
