@@ -19,7 +19,7 @@ export default () => {
 
     const [ showPreview, setShowPreview ] = useState<boolean>( false );
 
-    const {templateTags, emailNotifications} = getFormBuilderData();
+    const {emailTemplateTags, emailNotifications} = getFormBuilderData();
 
     const EmailPreviewContent = ({emailType}) => {
 
@@ -184,7 +184,7 @@ export default () => {
                                         <h2 style={{margin: 0}}>{__('Template tags', 'givewp')}</h2>
                                         <p>{__('Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails', 'givewp')}</p>
                                         <ul className={'email-template-tags'}>
-                                            {templateTags.map((tag) => (
+                                            {emailTemplateTags.map((tag) => (
                                                 <li key={tag.tag}>
                                                     <strong>{'{' + tag.tag + '}'}</strong>
                                                     <p>{tag.desc}</p>

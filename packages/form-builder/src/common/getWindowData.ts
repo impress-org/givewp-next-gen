@@ -22,7 +22,7 @@ declare global {
                 isInstalled: boolean;
             },
             gatewaySettingsUrl: string;
-            templateTags: TemplateTag[];
+            emailTemplateTags: TemplateTag[];
             emailNotifications: EmailNotification[];
         },
     }
