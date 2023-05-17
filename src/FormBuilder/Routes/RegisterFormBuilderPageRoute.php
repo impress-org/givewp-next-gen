@@ -9,7 +9,6 @@ use Give\Framework\EnqueueScript;
 
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 
 use function wp_enqueue_style;
 
