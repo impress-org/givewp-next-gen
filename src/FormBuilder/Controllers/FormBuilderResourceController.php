@@ -79,8 +79,7 @@ class FormBuilderResourceController
             return rest_ensure_response($requiredFieldsError);
         }
 
-        give(UpdateEmailSettingsMeta::class)->__invoke($form);
-        give(UpdateEmailTemplateMeta::class)->__invoke($form);
+        do_action('givewp_form_builder_updated', $form);
 
         $form->status = $updatedSettings->formStatus;
         $form->save();

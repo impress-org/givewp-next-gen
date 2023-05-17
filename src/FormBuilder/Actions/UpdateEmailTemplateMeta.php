@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder\Actions;
 
+use Give\NextGen\DonationForm\Models\DonationForm;
+
 /**
  * Update email template options on backwards compatible form meta.
  *
@@ -13,7 +15,7 @@ class UpdateEmailTemplateMeta
      * @unreleased
      * @param DonationForm $form
      */
-    public function __invoke($form): void
+    public function __invoke(DonationForm $form): void
     {
         foreach($form->settings->emailTemplateOptions as $emailType => $templateOptions) {
 

@@ -4,11 +4,14 @@ namespace Give\FormBuilder;
 
 use Give\FormBuilder\Actions\DequeueAdminScriptsInFormBuilder;
 use Give\FormBuilder\Actions\DequeueAdminStylesInFormBuilder;
+use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
+use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
 use Give\FormBuilder\Routes\CreateFormRoute;
 use Give\FormBuilder\Routes\EditFormRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderPageRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderRestRoutes;
 use Give\Helpers\Hooks;
+use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -45,6 +48,11 @@ class ServiceProvider implements ServiceProviderInterface
             wp_localize_script('give-admin-donation-forms', 'GiveNextGen', [
                 'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
             ]);
+        });
+
+        add_action('givewp_form_builder_updated', static function(DonationForm $form) {
+            give(UpdateEmailSettingsMeta::class)->__invoke($form);
+            give(UpdateEmailTemplateMeta::class)->__invoke($form);
         });
 
         $this->setupOnboardingTour();
