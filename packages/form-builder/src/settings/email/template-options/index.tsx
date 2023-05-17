@@ -1,13 +1,13 @@
 import {Button, Modal, TextControl} from "@wordpress/components";
 import {edit} from "@wordpress/icons";
 import {__} from "@wordpress/i18n";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import TabPanel from "@givewp/form-builder/components/sidebar/TabPanel";
 import EmailTemplateSettings from "./settings";
 import CopyToClipboardButton from "./components/copy-to-clipboard-button";
-import {getFormBuilderData, getStorageData} from "@givewp/form-builder/common/getWindowData";
-import {useFormState} from "@givewp/form-builder/stores/form-state";
-import SendPreviewEmail from "@givewp/form-builder/settings/email/template-options/components/send-preview-email";
+import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+import SendPreviewEmail from "./components/send-preview-email";
+import EmailPreviewContent   from "./components/email-preview-content";
 
 export default () => {
 
@@ -20,59 +20,6 @@ export default () => {
     const [ showPreview, setShowPreview ] = useState<boolean>( false );
 
     const {emailTemplateTags, emailNotifications} = getFormBuilderData();
-
-    const EmailPreviewContent = ({emailType}) => {
-
-        const [ previewHtml, setPreviewHtml ] = useState<string>(null);
-
-        const {settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail}} = useFormState();
-
-        const {formId} = getStorageData()
-
-        useEffect(() => {
-
-            // @ts-ignore
-            jQuery
-                .post({
-                    // @ts-ignore
-                    url: window.formBuilderData.emailPreviewURL + '/show?query', // Query param added to prevent an undefined index warning in the legacy code.
-                    headers: {
-                        // @ts-ignore
-                        'X-WP-Nonce': window.storageData.nonce,
-                    },
-                    data: {
-                        form_id: formId,
-                        email_type: emailType,
-                        email_template: emailTemplate,
-                        email_logo: emailLogo,
-                        email_from_name: emailFromName,
-                        email_from_email: emailFromEmail,
-                        ...emailTemplateOptions[emailType]
-                    },
-                })
-                .then((response) => {
-                    setPreviewHtml(response)
-                })
-                .fail((error) => {
-                    setPreviewHtml('Error loading preview.')
-                });
-        }, []);
-
-        return previewHtml
-            ? <iframe
-                srcDoc={previewHtml}
-                style={{width:'100%',height:'100%',border:'none'}}
-            />
-            : <div style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-                {__('Generating preview...', 'give')}
-            </div>;
-    }
 
     const CloseButton = ({label, onClick}) => {
         return (
