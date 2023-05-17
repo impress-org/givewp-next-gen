@@ -5,7 +5,7 @@ namespace Give\FormBuilder\DataTransferObjects;
 use Give\FormBuilder\Actions\ConvertLegacyNotificationToEmailNotificationData;
 
 /**
- * @since 0.1.0
+ * @unreleased
  */
 class EmailNotificationData
 {

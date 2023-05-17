@@ -22,6 +22,9 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('rest_api_init', [$this, 'registerRoutes']);
     }
 
+    /**
+     * @unreleased
+     */
     public function registerRoutes()
     {
         foreach(include __DIR__ . '/routes.php' as $route => $args) {
