@@ -2,9 +2,19 @@
 
 namespace Give\NextGen\EmailPreview\Actions;
 
+/**
+ * Apply preview template tags to email message.
+ *
+ * @unreleased
+ */
 class ApplyPreviewTemplateTags
 {
-    public function __invoke($message)
+    /**
+     * @unreleased
+     * @param string $message
+     * @return string
+     */
+    public function __invoke($message): string
     {
         $parsedMessage = array_reduce( array_keys( $this->getTags() ), function ( $message, $preview_tag ) {
             return str_replace( "{{$preview_tag}}", $this->getTags()[ $preview_tag ], $message );
@@ -13,7 +23,11 @@ class ApplyPreviewTemplateTags
         return apply_filters( 'give_email_preview_template_tags', $parsedMessage );
     }
 
-    protected function getTags()
+    /**
+     * @unreleased
+     * @return array
+     */
+    protected function getTags(): array
     {
         $user = wp_get_current_user();
 
@@ -49,7 +63,11 @@ class ApplyPreviewTemplateTags
             ];
     }
 
-    protected function getEmailAccessLink()
+    /**
+     * @unreleased
+     * @return string
+     */
+    protected function getEmailAccessLink(): string
     {
         return sprintf(
             '<a href="%1$s">%2$s</a>',
@@ -58,7 +76,11 @@ class ApplyPreviewTemplateTags
         );
     }
 
-    protected function getDonationHistoryLink()
+    /**
+     * @unreleased
+     * @return string
+     */
+    protected function getDonationHistoryLink(): string
     {
         return sprintf(
             '<a href="%1$s">%2$s</a>',
@@ -67,7 +89,11 @@ class ApplyPreviewTemplateTags
         );
     }
 
-    protected function getSiteUrlLink()
+    /**
+     * @unreleased
+     * @return string
+     */
+    protected function getSiteUrlLink(): string
     {
         return sprintf(
             '<a href="%1$s">%2$s</a>',

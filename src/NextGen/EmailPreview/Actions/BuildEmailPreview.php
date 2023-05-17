@@ -2,13 +2,25 @@
 
 namespace Give\NextGen\EmailPreview\Actions;
 
+/**
+ * Build email preview.
+ *
+ * @unreleased
+ */
 class BuildEmailPreview
 {
+    /**
+     * @param ApplyPreviewTemplateTags $applyPreviewTemplateTagsAction
+     */
     public function __construct(ApplyPreviewTemplateTags $applyPreviewTemplateTagsAction)
     {
         $this->applyPreviewTemplateTagsAction = $applyPreviewTemplateTagsAction;
     }
 
+    /**
+     * @param string $emailHeader
+     * @return string
+     */
     public function __invoke($request)
     {
         $formId = $request->get_param('form_id');
@@ -43,7 +55,12 @@ class BuildEmailPreview
         );
     }
 
-    protected function applyPreviewTemplateTags($emailHeader)
+    /**
+     * @param $emailHeader
+     *
+     * @return string
+     */
+    protected function applyPreviewTemplateTags($emailHeader): string
     {
         return $this->applyPreviewTemplateTagsAction->__invoke($emailHeader);
     }

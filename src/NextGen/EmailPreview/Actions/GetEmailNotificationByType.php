@@ -2,9 +2,16 @@
 
 namespace Give\NextGen\EmailPreview\Actions;
 
+/**
+ * Apply preview template tags to email message.
+ *
+ * @unreleased
+ */
 class GetEmailNotificationByType
 {
     /**
+     * @unreleased
+     *
      * @param $type
      *
      * @return \Give_Email_Notification|void

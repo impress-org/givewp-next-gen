@@ -4,10 +4,16 @@ namespace Give\FormBuilder\Actions;
 
 /**
  * Update email template options on backwards compatible form meta.
+ *
+ * @unreleased
  */
 class UpdateEmailTemplateMeta
 {
-    public function __invoke($form)
+    /**
+     * @unreleased
+     * @param DonationForm $form
+     */
+    public function __invoke($form): void
     {
         foreach($form->settings->emailTemplateOptions as $emailType => $templateOptions) {
 
@@ -24,7 +30,12 @@ class UpdateEmailTemplateMeta
         }
     }
 
-    protected function formatRecipientEmails($emails)
+    /**
+     * @unreleased
+     * @param array $emails
+     * @return array
+     */
+    protected function formatRecipientEmails($emails): array
     {
         return array_map(function($email) {
             return ['email' => $email];

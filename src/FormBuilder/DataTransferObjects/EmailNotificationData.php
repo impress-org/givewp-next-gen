@@ -24,6 +24,11 @@ class EmailNotificationData
     /** @var array */
     public $defaultValues;
 
+    /**
+     * @unreleased
+     * @param array $notification
+     * @return EmailNotificationData
+     */
     public static function fromLegacyNotification($notification): EmailNotificationData
     {
         return (new ConvertLegacyNotificationToEmailNotificationData($notification))->__invoke();

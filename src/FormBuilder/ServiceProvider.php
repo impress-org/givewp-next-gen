@@ -36,7 +36,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('admin_menu', RegisterFormBuilderPageRoute::class);
 
-        Hooks::addAction('admin_print_scripts', DequeueAdminScriptsInFormBuilder::class);
+//        Hooks::addAction('admin_print_scripts', DequeueAdminScriptsInFormBuilder::class);
 
         Hooks::addAction('admin_print_styles', DequeueAdminStylesInFormBuilder::class);
 

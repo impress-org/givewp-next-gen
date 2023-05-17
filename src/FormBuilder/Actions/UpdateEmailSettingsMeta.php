@@ -6,9 +6,15 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
  * Update email settings on backwards compatible form meta.
+ *
+ * @unreleased
  */
 class UpdateEmailSettingsMeta
 {
+    /**
+     * @unreleased
+     * @param DonationForm $form
+     */
     public function __invoke(DonationForm $form)
     {
         give()->form_meta->update_meta($form->id, "_give_email_options", $form->settings->emailOptionsStatus);

@@ -30,6 +30,7 @@ export interface FormServerExports {
     form: Form;
     attributes: object;
     donateUrl: string;
+    validateUrl: string;
     inlineRedirectRoutes: string[];
 }
 
@@ -188,6 +189,11 @@ export interface Form extends Group {
         targetAmount: number;
         progressPercentage: number;
         isAchieved: boolean;
+    };
+    design?: {
+        id: string;
+        name: string;
+        isMultiStep: boolean;
     };
     nodes: Section[];
 }

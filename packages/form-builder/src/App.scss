@@ -1,10 +1,10 @@
-@import '~@wordpress/components/build-style/style.css';
-@import '~@wordpress/block-editor/build-style/style.css';
-@import './styles/onboarding.scss';
+@import './styles/root';
 
-#root {
-    --wp-blue-blue-50: #2271b1;
+@import './styles/block-editor';
+@import './styles/form-builder';
+@import './styles/components';
 
+<<<<<<< HEAD
     // Gutenberg color mappings
     --wp-admin-border-width-focus: 2px;
 
@@ -600,3 +600,6 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 [id^='__wp-uploader'] {
     z-index: 9999999999;
 }
+=======
+@import './styles/onboarding';
+>>>>>>> 7fa7258fdcfd27e372b2609dbeb81c8998dd8149

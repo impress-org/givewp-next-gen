@@ -4,9 +4,8 @@ import {Popover, SlotFillProvider} from '@wordpress/components';
 import {Sidebar} from '../components';
 
 import {setFormBlocks, useFormState, useFormStateDispatch} from '../stores/form-state';
-import BlockEditorInterfaceSkeletonContainer
-    from "@givewp/form-builder/containers/BlockEditorInterfaceSkeletonContainer";
-import Onboarding from "@givewp/form-builder/components/onboarding";
+import BlockEditorInterfaceSkeletonContainer from '@givewp/form-builder/containers/BlockEditorInterfaceSkeletonContainer';
+import Onboarding from '@givewp/form-builder/components/onboarding';
 
 /**
  * @since 0.1.0
@@ -20,13 +19,14 @@ export default function BlockEditorContainer() {
 
     return (
         <BlockEditorProvider value={blocks} onInput={dispatchFormBlocks} onChange={dispatchFormBlocks}>
-            <Onboarding/>
+            <Onboarding />
             <SlotFillProvider>
                 <Sidebar.InspectorFill>
-                    <BlockInspector/>
+                    <BlockInspector />
                 </Sidebar.InspectorFill>
-                <BlockEditorInterfaceSkeletonContainer/>
-                <Popover.Slot/>
+                <BlockEditorInterfaceSkeletonContainer />
+                {/*@ts-ignore*/}
+                <Popover.Slot />
             </SlotFillProvider>
         </BlockEditorProvider>
     );

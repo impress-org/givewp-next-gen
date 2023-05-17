@@ -18,8 +18,8 @@ use Give\NextGen\EmailPreview\ServiceProvider as EmailPreviewServiceProvider;
  * Plugin Name:         Give - Visual Donation Form Builder
  * Plugin URI:          https://github.com/impress-org/givewp-next-gen
  * Description:         Create the donation form of your dreams using an easy-to-use visual donation form builder.
- * Version:             0.3.2
- * Requires at least:   5.5
+ * Version:             0.3.3
+ * Requires at least:   5.9
  * Requires PHP:        7.2
  * Author:              GiveWP
  * Author URI:          https://givewp.com/
@@ -32,8 +32,8 @@ defined('ABSPATH') or exit;
 define('GIVE_NEXT_GEN_NAME', 'Visual Form Builder');
 
 // Versions
-define('GIVE_NEXT_GEN_VERSION', '0.3.2');
-define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.26.0');
+define('GIVE_NEXT_GEN_VERSION', '0.3.3');
+define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.27.0');
 
 // Add-on paths
 define('GIVE_NEXT_GEN_FILE', __FILE__);
