@@ -32,7 +32,7 @@ class StoreCustomFieldsTest extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'custom-block-editor/text-field',
                     'attributes' => [
                         'fieldName' => 'custom_text_block_meta',
                         'storeAsDonorMeta' => true,
@@ -81,7 +81,7 @@ class StoreCustomFieldsTest extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'custom-block-editor/text-field',
                     'attributes' => [
                         'fieldName' => 'custom_text_block_meta',
                         'storeAsDonorMeta' => false,

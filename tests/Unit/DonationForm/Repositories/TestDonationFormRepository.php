@@ -268,7 +268,7 @@ final class TestDonationFormRepository extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'custom-block-editor/givewp-custom-block',
+                    'name' => 'custom-block-editor/text-field',
                     'isValid' => true,
                     'attributes' => [
                         'fieldName' => 'givewp-custom-field-name',

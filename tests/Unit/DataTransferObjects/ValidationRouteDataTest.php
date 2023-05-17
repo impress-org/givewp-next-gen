@@ -68,7 +68,7 @@ class ValidationRouteDataTest extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'custom-block-editor/text-field',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
@@ -110,7 +110,7 @@ class ValidationRouteDataTest extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'custom-block-editor/text-field',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
