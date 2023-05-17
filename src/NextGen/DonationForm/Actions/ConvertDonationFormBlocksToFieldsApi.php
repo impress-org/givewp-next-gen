@@ -149,6 +149,8 @@ class ConvertDonationFormBlocksToFieldsApi
                     $block->hasAttribute('fieldName') ?
                         $block->getAttribute('fieldName') :
                         $block->getShortName() . '-' . $blockIndex
+                )->storeAsDonorMeta(
+                    $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
         }
     }
