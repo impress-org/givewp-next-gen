@@ -14,8 +14,9 @@ class UpdateEmailSettingsMeta
     /**
      * @unreleased
      * @param DonationForm $form
+     * @return void
      */
-    public function __invoke(DonationForm $form)
+    public function __invoke(DonationForm $form): void
     {
         give()->form_meta->update_meta($form->id, "_give_email_options", $form->settings->emailOptionsStatus);
         give()->form_meta->update_meta($form->id, "_give_email_template", $form->settings->emailTemplate);

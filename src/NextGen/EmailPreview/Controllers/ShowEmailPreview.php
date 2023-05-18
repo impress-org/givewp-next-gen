@@ -12,7 +12,7 @@ class ShowEmailPreview
 
         ob_clean();
         header('Content-Type: text/html; charset=UTF-8');
-        echo (new BuildEmailPreview())($request);
+        echo give(BuildEmailPreview::class)->__invoke($request);
         exit;
     }
 }

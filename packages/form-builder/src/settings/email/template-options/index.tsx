@@ -1,4 +1,4 @@
-import {Button, Modal, TextControl} from "@wordpress/components";
+import {Button, Modal} from "@wordpress/components";
 import {edit} from "@wordpress/icons";
 import {__} from "@wordpress/i18n";
 import {useState} from "react";

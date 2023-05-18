@@ -2,6 +2,7 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -42,15 +43,18 @@ class FormBuilderViewModel
                 'permalink' => add_query_arg(['p' => $donationFormId], site_url('?post_type=give_forms')),
                 'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
             ],
+            'gateways' => $this->getGateways(),
+            'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
+            'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
+            'recurringAddonData' => [
+                'isInstalled' => defined('GIVE_RECURRING_VERSION'),
+            ],
+            'emailTemplateTags' => array_values(give()->email_tags->get_tags()),
+            'emailNotifications' => array_map(static function ($notification) {
+                return EmailNotificationData::fromLegacyNotification($notification);
+            }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
+            'emailPreviewURL' => rest_url('givewp/next-gen/email-preview'),
         ];
-    }
-
-    /**
-     * @since 0.1.0
-     */
-    public function jsPathFromRoot(): string
-    {
-        return GIVE_NEXT_GEN_URL . 'packages/form-builder/build/givewp-form-builder.js';
     }
 
     /**
@@ -58,7 +62,7 @@ class FormBuilderViewModel
      */
     public function jsPathFromPluginRoot(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/formBuilderApp.js';
+        return 'build/formBuilderApp.js';
     }
 
     /**

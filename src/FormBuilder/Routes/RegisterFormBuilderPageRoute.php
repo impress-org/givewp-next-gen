@@ -80,85 +80,32 @@ class RegisterFormBuilderPageRoute
             wp_die(__('Donation form does not exist.'));
         }
 
-        $formBuilderStorage = (new EnqueueScript(
+        (new EnqueueScript(
             '@givewp/form-builder/storage',
             'src/FormBuilder/resources/js/storage.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        ));
-        
-        $formBuilderStorage->dependencies(['jquery'])->registerLocalizeData(
-            'storageData',
-            $formBuilderViewModel->storageData($donationFormId)
-        );
-
-        $formBuilderStorage->loadInFooter()->enqueue();
-
-        $enabledGateways = array_keys(give_get_option('gateways'));
-
-        $supportedGateways = array_filter(
-            give(PaymentGatewayRegister::class)->getPaymentGateways(),
-            static function ($gateway) {
-                return is_a($gateway, NextGenPaymentGatewayInterface::class, true);
-            }
-        );
-
-        $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
-            $gateway = give($gatewayClass);
-            return [
-                'id' => $gateway::id(),
-                'enabled' => in_array($gateway::id(), $enabledGateways, true),
-                'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
-                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
-            ];
-        }, $supportedGateways);
+        ))
+            ->dependencies(['jquery'])
+            ->registerLocalizeData('storageData', $formBuilderViewModel->storageData($donationFormId))
+            ->loadInFooter()
+            ->enqueue();
 
         (new EnqueueScript(
             '@givewp/form-builder/script',
-            $formBuilderViewModel->jsPathFromRoot(),
+            $formBuilderViewModel->jsPathFromPluginRoot(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        ))->loadInFooter()
-            ->registerLocalizeData('formBuilderData', [
-                'gateways' => array_values($builderPaymentGatewayData),
-                'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-                'recurringAddonData' => [
-                    'isInstalled' => defined('GIVE_RECURRING_VERSION') ,
-                ],
-                'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
-                'templateTags' => array_values(give()->email_tags->get_tags()),
-                'emailNotifications' => array_map(static function ($notification) {
-                    return EmailNotificationData::fromLegacyNotification($notification);
-                }, apply_filters( 'give_email_notification_options_metabox_fields', array(), $donationFormId )),
-                'emailPreviewURL' => rest_url('givewp/next-gen/email-preview'),
-            ])
+        ))
+            ->dependencies(
+                $this->getRegisteredFormBuilderJsDependencies(
+                    $formBuilderViewModel->jsDependencies()
+                )
+            )
+            ->loadInFooter()
             ->enqueue();
-
-        wp_enqueue_script(
-            '@givewp/form-builder/script',
-            $formBuilderViewModel->jsPathFromPluginRoot(),
-            $this->getRegisteredFormBuilderJsDependencies(
-                $formBuilderViewModel->jsDependencies()
-            ),
-            GIVE_NEXT_GEN_VERSION,
-            true
-        );
-
-        wp_localize_script('@givewp/form-builder/script', 'formBuilderData', [
-            'gateways' => $formBuilderViewModel->getGateways(),
-            'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-            'recurringAddonData' => [
-                'isInstalled' => defined('GIVE_RECURRING_VERSION'),
-            ],
-            'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
-            'templateTags' => array_values(give()->email_tags->get_tags()),
-            'emailNotifications' => array_map(static function ($notification) {
-                return EmailNotificationData::fromLegacyNotification($notification);
-            }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
-            'emailPreviewURL' => rest_url('givewp/next-gen/email-preview'),
-        ]);
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),

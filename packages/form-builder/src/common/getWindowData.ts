@@ -12,16 +12,16 @@ declare global {
         wp?: any;
         storageData?: {
             formId: number;
+            nonce: string;
             formDesigns: FormDesign[];
             formPage: FormPageSettings;
             currency: string;
-        },
-        formBuilderData?: {
             gateways: Gateway[];
             recurringAddonData?: {
                 isInstalled: boolean;
             },
             gatewaySettingsUrl: string;
+            emailPreviewURL: string;
             emailTemplateTags: TemplateTag[];
             emailNotifications: EmailNotification[];
         },
@@ -37,5 +37,5 @@ export function getStorageData() {
 }
 
 export function getFormBuilderData() {
-    return window.formBuilderData;
+    return window.storageData;
 }

@@ -9,7 +9,7 @@ const EmailPreviewContent = ({emailType}) => {
 
     const {settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail}} = useFormState();
 
-    const {formId} = getStorageData()
+    const {formId, nonce, emailPreviewURL} = getStorageData()
 
     useEffect(() => {
 
@@ -17,10 +17,10 @@ const EmailPreviewContent = ({emailType}) => {
         jQuery
             .post({
                 // @ts-ignore
-                url: window.formBuilderData.emailPreviewURL + '/show?query', // Query param added to prevent an undefined index warning in the legacy code.
+                url: emailPreviewURL + '/show?query', // Query param added to prevent an undefined index warning in the legacy code.
                 headers: {
                     // @ts-ignore
-                    'X-WP-Nonce': window.storageData.nonce,
+                    'X-WP-Nonce': nonce,
                 },
                 data: {
                     form_id: formId,

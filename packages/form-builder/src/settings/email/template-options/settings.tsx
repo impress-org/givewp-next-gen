@@ -1,10 +1,8 @@
-import {useEffect, useRef} from "react";
 import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 import {BaseControl, Button, RadioControl, SelectControl, TextControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import Editor from "./components/editor";
 import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
-import {CurrencyControl} from "@givewp/form-builder/common/currency";
 import DeleteButton from "@givewp/form-builder/blocks/fields/amount/inspector/delete-button";
 
 const EmailTemplateSettings = ({notification}) => {
