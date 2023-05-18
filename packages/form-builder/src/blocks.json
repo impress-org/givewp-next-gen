@@ -83,6 +83,16 @@
                     "isRequired": true
                 },
                 "innerBlocks": []
+            },
+            {
+                "clientId": "6f0af86f-703d-400d-9cf9-322d5691307b",
+                "name": "givewp-fee-recovery/fee-amount-field",
+                "isValid": true,
+                "attributes": {
+                    "label": "Fee amount",
+                    "isRequired": true
+                },
+                "innerBlocks": []
             }
         ]
     },
