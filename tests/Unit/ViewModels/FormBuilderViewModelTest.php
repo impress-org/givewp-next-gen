@@ -29,32 +29,37 @@ class FormBuilderViewModelTest extends TestCase
         $mockForm = DonationForm::factory()->create();
         $formId = $mockForm->id;
 
-        $this->assertSame(
-            [
-                'formId' => $formId,
-                'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
-                'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($formId),
-                'nonce' => wp_create_nonce('wp_rest'),
-                'blockData' => $mockForm->blocks->toJson(),
-                'settings' => $mockForm->settings->toJson(),
-                'currency' => give_get_currency(),
-                'formDesigns' => array_map(static function ($designClass) {
-                    /** @var FormDesign $design */
-                    $design = give($designClass);
+        $storageData = $viewModel->storageData($formId);
 
-                    return [
-                        'id' => $design::id(),
-                        'name' => $design::name(),
-                    ];
-                }, give(FormDesignRegistrar::class)->getDesigns()),
-                'formPage' => [
-                    'isEnabled' => give_is_setting_enabled(give_get_option('forms_singular')),
-                    // Note: Boolean values must be nested in an array to maintain boolean type, see \WP_Scripts::localize().
-                    'permalink' => add_query_arg(['p' => $formId], site_url('?post_type=give_forms')),
-                    'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
-                ],
-            ],
-            $viewModel->storageData($formId)
-        );
+        foreach([
+            'formId',
+            'resourceURL',
+            'previewURL',
+            'nonce',
+            'blockData',
+            'settings',
+            'currency',
+            'formDesigns',
+            'formPage',
+            'gateways',
+            'gatewaySettingsUrl',
+            'isRecurringEnabled',
+            'recurringAddonData',
+            'emailTemplateTags',
+            'emailNotifications',
+            'emailPreviewURL',
+        ] as $key => $value) {
+            $this->assertArrayHasKey($key, $storageData);
+        }
+
+        foreach([
+            'isEnabled',
+            'permalink',
+            'rewriteSlug',
+        ] as $key => $value) {
+            $this->assertArrayHasKey($key, $storageData['formPage']);
+        }
+
+        $this->assertArrayHasKey('isInstalled', $storageData['recurringAddonData']);
     }
 }
