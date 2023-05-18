@@ -15,7 +15,7 @@ class UpdateEmailTemplateMeta
      * @unreleased
      * @param DonationForm $form
      */
-    public function __invoke(DonationForm $form): void
+    public function __invoke(DonationForm $form)
     {
         foreach($form->settings->emailTemplateOptions as $emailType => $templateOptions) {
 
