@@ -4,6 +4,7 @@
 @import './styles/form-builder';
 @import './styles/email-settings';
 @import './styles/components';
+@import './styles/onboarding';
 
 #root {
     // Gutenberg color mappings
@@ -601,9 +602,3 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 [id^='__wp-uploader'] {
     z-index: 9999999999;
 }
-=======
-@import './styles/onboarding';
->>>>>>> 7fa7258fdcfd27e372b2609dbeb81c8998dd8149
-=======
-@import './styles/onboarding';
->>>>>>> 53300035c5dd2e00a098066de95473232bff5229
