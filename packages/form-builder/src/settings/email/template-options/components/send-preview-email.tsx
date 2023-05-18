@@ -10,7 +10,7 @@ export default ({emailType}) => {
 
     const {settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail}} = useFormState();
 
-    const {formId} = getStorageData()
+    const {formId, emailPreviewURL} = getStorageData()
 
     const sendTestEmail = () => {
 
@@ -18,7 +18,7 @@ export default ({emailType}) => {
         jQuery
             .post({
                 // @ts-ignore
-                url: window.formBuilderData.emailPreviewURL + '/send',
+                url: emailPreviewURL + '/send',
                 headers: {
                     // @ts-ignore
                     'X-WP-Nonce': window.storageData.nonce,

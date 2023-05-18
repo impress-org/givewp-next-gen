@@ -39,11 +39,16 @@ class BuildEmailPreview
         $emailHeader = apply_filters("give_{$emailType}_get_email_header", $request->get_param('email_heading'), $emailNotification, $formId);
         $emailMessage = apply_filters("give_{$emailType}_get_email_message", $request->get_param('email_message'), $emailNotification, $formId);
         $emailTemplate = apply_filters("give_{$emailType}_get_email_template", $request->get_param('email_template'), $emailNotification, $formId);
-        $contentType = apply_filters("give_{$emailType}_get_email_content_type", $request->get_param('content_type'), $emailNotification, $formId);
+        $contentType = apply_filters("give_{$emailType}_get_email_content_type", $request->get_param('email_content_type'), $emailNotification, $formId);
 
+        Give()->emails->__set('html', 'text/html' === $contentType);
         Give()->emails->__set('content_type', $contentType);
         Give()->emails->__set('heading', $this->applyPreviewTemplateTags($emailHeader));
-        Give()->emails->__set('template', 'text/plain' !== $contentType ? $emailTemplate : 'none');
+        Give()->emails->__set('template', 'text/html' === $contentType ? $emailTemplate : 'none');
+
+        if('text/plain' === $contentType) {
+            $emailMessage = wpautop($emailMessage);
+        }
 
         add_filter('give_preview_email_receipt_header', '__return_false'); // Disable hard-coded preview switcher.
         do_action( "give_{$emailType}_email_preview", $emailNotification );
