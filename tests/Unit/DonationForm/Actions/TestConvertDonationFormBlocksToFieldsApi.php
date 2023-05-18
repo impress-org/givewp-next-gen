@@ -27,7 +27,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     {
         $block = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'isValid' => true,
             'attributes' => [
                 'title' => 'custom section title',
@@ -36,7 +36,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'custom-block-editor/text-field',
+                    'name' => 'givewp/text-field',
                     'isValid' => true,
                     'attributes' => [
                         'fieldName' => 'givewp-custom-field-name',
@@ -78,7 +78,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     {
         $section = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'isValid' => true,
             'attributes' => [
                 'title' => 'custom section title',
@@ -87,7 +87,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'custom-block-editor/givewp-custom-block',
+                    'name' => 'givewp/givewp-custom-block',
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'GiveWP Custom Block'
@@ -107,10 +107,9 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
             ->label($block->getAttribute('label'));
 
         add_filter(
-            'givewp_donation_form_block_render_givewp-custom-block',
+            'givewp_donation_form_block_render_givewp/givewp-custom-block',
             static function (BlockModel $block, int $blockIndex) {
-                return Email::make('givewp-custom-block')
-                    ->label($block->getAttribute('label'));
+                return Email::make('givewp-custom-block');
             },
             10,
             2

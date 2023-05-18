@@ -3,7 +3,7 @@ import settings from './settings';
 import {FieldBlock} from '@givewp/form-builder/types';
 
 const field: FieldBlock = {
-    name: 'givewp/text-field',
+    name: 'givewp-fee-recovery/fee-field',
     settings,
 };
 

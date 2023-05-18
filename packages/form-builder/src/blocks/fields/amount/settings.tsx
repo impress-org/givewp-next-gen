@@ -18,7 +18,7 @@ const {
     setPrice,
     priceOption,
     levels,
-} = getDefaultBlockAttributes('custom-block-editor/donation-amount-levels');
+} = getDefaultBlockAttributes('givewp/donation-amount-field');
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,

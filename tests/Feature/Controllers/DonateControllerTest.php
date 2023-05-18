@@ -33,11 +33,11 @@ class DonateControllerTest extends TestCase
         $form = DonationForm::factory()->create();
 
         $customFieldBlockModel = BlockModel::make([
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/text-field',
+                    'name' => 'givewp/text-field',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',

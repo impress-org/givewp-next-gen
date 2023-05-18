@@ -259,7 +259,7 @@ final class TestDonationFormRepository extends TestCase
     {
         $block = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'isValid' => true,
             'attributes' => [
                 'title' => 'custom section title',
@@ -268,7 +268,7 @@ final class TestDonationFormRepository extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'custom-block-editor/text-field',
+                    'name' => 'givewp/text-field',
                     'isValid' => true,
                     'attributes' => [
                         'fieldName' => 'givewp-custom-field-name',

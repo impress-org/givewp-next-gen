@@ -110,36 +110,36 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex)
     {
-        $blockName = str_replace("custom-block-editor/", '', $block->name);
+        $blockName = $block->name;
 
         switch ($blockName) {
-            case "donation-amount-levels":
+            case "givewp/donation-amount-field":
                 return $this->createNodeFromAmountBlock($block);
 
-            case "donor-name":
+            case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
 
-            case "paragraph":
+            case "givewp/paragraph":
                 return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
 
-            case "email-field":
+            case "givewp/email-field":
                 return Email::make('email')
                     ->emailTag('email')
                     ->rules('required', 'email');
 
-            case "payment-gateways":
+            case "givewp/payment-gateways":
                 return PaymentGateways::make('gatewayId')
                     ->rules(new GatewayRule())
                     ->required();
 
-            case "donation-summary":
+            case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
 
-            case "company-field":
+            case "givewp/company-field":
                 return Text::make('company');
 
-            case "text-field":
+            case "givewp/text-field":
                 return Text::make(
                     $block->hasAttribute('fieldName') ?
                         $block->getAttribute('fieldName') :
