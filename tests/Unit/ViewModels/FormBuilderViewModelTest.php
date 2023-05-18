@@ -48,7 +48,7 @@ class FormBuilderViewModelTest extends TestCase
             'emailTemplateTags',
             'emailNotifications',
             'emailPreviewURL',
-        ] as $key => $value) {
+        ] as $key) {
             $this->assertArrayHasKey($key, $storageData);
         }
 
@@ -56,7 +56,7 @@ class FormBuilderViewModelTest extends TestCase
             'isEnabled',
             'permalink',
             'rewriteSlug',
-        ] as $key => $value) {
+        ] as $key) {
             $this->assertArrayHasKey($key, $storageData['formPage']);
         }
 
