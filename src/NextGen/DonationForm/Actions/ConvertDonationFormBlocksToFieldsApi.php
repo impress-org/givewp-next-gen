@@ -100,7 +100,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased add blockIndex for unique field names, add filter `givewp_donation_form_block_{$blockName}`
+     * @unreleased add blockIndex for unique field names, add filter `givewp_donation_form_block_render_{$blockName}`
      * @since 0.1.0
      *
      * @throws EmptyNameException
@@ -150,7 +150,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             default:
                 $customField = apply_filters(
-                    "givewp_donation_form_block_{$blockName}",
+                    "givewp_donation_form_block_render_{$blockName}",
                     $block,
                     $blockIndex
                 );

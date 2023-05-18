@@ -107,7 +107,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
             ->label($block->getAttribute('label'));
 
         add_filter(
-            'givewp_donation_form_block_givewp-custom-block',
+            'givewp_donation_form_block_render_givewp-custom-block',
             static function (BlockModel $block, int $blockIndex) {
                 return Email::make('givewp-custom-block')
                     ->label($block->getAttribute('label'));
