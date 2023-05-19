@@ -46,7 +46,7 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
             element,
             fields,
             visibilityConditions: section.visibilityConditions,
-            isVisible: true,
+            isVisible: !section.visibilityConditions.length,
         } as StepObject;
     });
 };
