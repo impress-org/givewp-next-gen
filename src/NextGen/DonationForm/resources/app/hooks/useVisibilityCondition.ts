@@ -24,6 +24,7 @@ export default function useVisibilityCondition(conditions: FieldCondition[]): bo
         name: watchedFieldNames,
     });
 
+    // useWatch returns a numeric array of values, so we need to map them to the field names.
     const watchedFields = useMemo<WatchedFields>(() => {
         return watchedFieldNames.reduce((fields, name, index) => {
             fields.set(name, fieldValues[index]);
@@ -36,25 +37,35 @@ export default function useVisibilityCondition(conditions: FieldCondition[]): bo
             return true;
         }
 
-        function conditionPassReducer(passing: boolean, condition: FieldCondition) {
-            if (condition.type === 'basic') {
-                const value = watchedFields.get(condition.field);
+        return visibliityConditionsPass(conditions, watchedFields);
+    }, [watchedFields]);
+}
 
-                const conditionPasses = conditionOperatorFunctions[condition.comparisonOperator](
-                    value,
-                    condition.value
-                );
+/**
+ * Returns true or false based on whether the conditions are met.
+ *
+ * @unreleased
+ */
+export function visibliityConditionsPass(conditions: FieldCondition[], watchedFields: WatchedFields): boolean {
+    if (!conditions.length) {
+        return true;
+    }
 
-                return condition.logicalOperator === 'and' ? passing && conditionPasses : passing || conditionPasses;
-            }
+    function conditionPassReducer(passing: boolean, condition: FieldCondition) {
+        if (condition.type === 'basic') {
+            const value = watchedFields.get(condition.field);
 
-            return condition.boolean === 'and'
-                ? passing && condition.conditions.reduce(conditionPassReducer, true)
-                : passing || condition.conditions.reduce(conditionPassReducer, true);
+            const conditionPasses = conditionOperatorFunctions[condition.comparisonOperator](value, condition.value);
+
+            return condition.logicalOperator === 'and' ? passing && conditionPasses : passing || conditionPasses;
         }
 
-        return conditions.reduce(conditionPassReducer, true);
-    }, [watchedFields]);
+        return condition.boolean === 'and'
+            ? passing && condition.conditions.reduce(conditionPassReducer, true)
+            : passing || condition.conditions.reduce(conditionPassReducer, true);
+    }
+
+    return conditions.reduce(conditionPassReducer, true);
 }
 
 /**

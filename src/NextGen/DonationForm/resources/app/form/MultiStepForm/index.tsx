@@ -45,6 +45,8 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
             description,
             element,
             fields,
+            visibilityConditions: section.visibilityConditions,
+            isVisible: true,
         } as StepObject;
     });
 };
@@ -52,7 +54,7 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
 /**
  * @unreleased
  */
-export default function MultiStepForm({sections, showHeader}: { sections: Section[], showHeader?: boolean }) {
+export default function MultiStepForm({sections, showHeader}: {sections: Section[]; showHeader?: boolean}) {
     const steps = convertSectionsToSteps(sections, showHeader);
 
     if (showHeader) {
@@ -60,14 +62,16 @@ export default function MultiStepForm({sections, showHeader}: { sections: Sectio
             id: 0,
             title: null,
             description: null,
-            element: <HeaderStep/>,
+            element: <HeaderStep />,
             fields: [],
-        })
+            visibilityConditions: [],
+            isVisible: true,
+        });
     }
 
     return (
         <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0}}>
-            <Steps steps={steps}/>
+            <Steps steps={steps} />
         </DonationFormMultiStepStateProvider>
     );
 }
