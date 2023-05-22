@@ -23,7 +23,7 @@ function TourEffectsAndEvents() {
 
     useEffect(() => {
         const selectAmountBlockCallback = () => {
-            const amountBlock = document.querySelector('[data-type="custom-block-editor/donation-amount-field"]');
+            const amountBlock = document.querySelector('[data-type="custom-block-editor/donation-amount"]');
             const amountBlockId = amountBlock.getAttribute('data-block');
             selectBlock(amountBlockId).then(() => console.log('Amount block selected'));
         }

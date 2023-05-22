@@ -113,7 +113,7 @@ class ConvertDonationFormBlocksToFieldsApi
         $blockName = $block->name;
 
         switch ($blockName) {
-            case "givewp/donation-amount-field":
+            case "givewp/donation-amount":
                 return $this->createNodeFromAmountBlock($block);
 
             case "givewp/donor-name":
@@ -123,7 +123,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
 
-            case "givewp/email-field":
+            case "givewp/email":
                 return Email::make('email')
                     ->emailTag('email')
                     ->rules('required', 'email');
@@ -136,10 +136,10 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
 
-            case "givewp/company-field":
+            case "givewp/company":
                 return Text::make('company');
 
-            case "givewp/text-field":
+            case "givewp/text":
                 return Text::make(
                     $block->hasAttribute('fieldName') ?
                         $block->getAttribute('fieldName') :

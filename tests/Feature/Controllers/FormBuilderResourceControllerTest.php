@@ -135,7 +135,7 @@ class FormBuilderResourceControllerTest extends TestCase
                 'name' => 'givewp/section',
                 'attributes' => ['title' => '', 'description' => ''],
                 'innerBlocks' => [
-                    /* @note The `donation-amount-field` block is intentionally omitted for this test. */
+                    /* @note The `donation-amount` block is intentionally omitted for this test. */
                     [
                         'name' => 'givewp/donor-name',
                         'attributes' => [
@@ -146,7 +146,7 @@ class FormBuilderResourceControllerTest extends TestCase
                             'requireLastName' => true,
                         ]
                     ],
-                    ['name' => 'givewp/email-field'],
+                    ['name' => 'givewp/email'],
                     ['name' => 'givewp/payment-gateways'],
                 ]
             ]),
@@ -188,7 +188,7 @@ class FormBuilderResourceControllerTest extends TestCase
                 'name' => 'givewp/section',
                 'attributes' => ['title' => '', 'description' => ''],
                 'innerBlocks' => [
-                    /* @note The `donation-amount-field` block is intentionally omitted for this test. */
+                    /* @note The `donation-amount` block is intentionally omitted for this test. */
                     [
                         'name' => 'givewp/donor-name',
                         'attributes' => [
@@ -199,7 +199,7 @@ class FormBuilderResourceControllerTest extends TestCase
                             'requireLastName' => true,
                         ]
                     ],
-                    ['name' => 'givewp/email-field'],
+                    ['name' => 'givewp/email'],
                     ['name' => 'givewp/payment-gateways'],
                 ]
             ]),

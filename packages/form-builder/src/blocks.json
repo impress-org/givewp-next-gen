@@ -10,7 +10,7 @@
         "innerBlocks": [
             {
                 "clientId": "bddaa0ea-29bf-4143-b62d-aae3396e9b0f",
-                "name": "givewp/donation-amount-field",
+                "name": "givewp/donation-amount",
                 "isValid": true,
                 "attributes": {
                     "label": "Donation Amount",
@@ -76,20 +76,10 @@
             },
             {
                 "clientId": "6f0af86f-703d-400d-9cf9-322d5691307b",
-                "name": "givewp/email-field",
+                "name": "givewp/email",
                 "isValid": true,
                 "attributes": {
                     "label": "Email Address",
-                    "isRequired": true
-                },
-                "innerBlocks": []
-            },
-            {
-                "clientId": "6f0af86f-703d-400d-9cf9-322d5691307b",
-                "name": "givewp-fee-recovery/fee-amount-field",
-                "isValid": true,
-                "attributes": {
-                    "label": "Fee amount",
                     "isRequired": true
                 },
                 "innerBlocks": []

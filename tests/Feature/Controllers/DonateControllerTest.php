@@ -37,7 +37,7 @@ class DonateControllerTest extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'givewp/text-field',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',

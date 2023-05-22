@@ -25,7 +25,7 @@ class TestDonationDetailsView extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'givewp/text-field',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'custom_text_block_meta',
                         'storeAsDonorMeta' => false,

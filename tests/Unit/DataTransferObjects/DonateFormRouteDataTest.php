@@ -31,7 +31,7 @@ class DonateFormRouteDataTest extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'givewp/text-field',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
@@ -90,7 +90,7 @@ class DonateFormRouteDataTest extends TestCase
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'givewp/text-field',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
@@ -113,7 +113,7 @@ class DonateFormRouteDataTest extends TestCase
                   "innerBlocks": [
                     {
                       "clientId": "bddaa0ea-29bf-4143-b62d-aae3396e9b0f",
-                      "name": "givewp/donation-amount-field",
+                      "name": "givewp/donation-amount",
                       "isValid": true,
                       "attributes": {
                         "label": "Donation Amount",

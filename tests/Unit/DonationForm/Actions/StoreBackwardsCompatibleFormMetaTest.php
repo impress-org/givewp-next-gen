@@ -78,7 +78,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'givewp/donation-amount-field',
+                    'name' => 'givewp/donation-amount',
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'Donation Amount',
@@ -128,7 +128,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'givewp/donation-amount-field',
+                    'name' => 'givewp/donation-amount',
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'Donation Amount',
