@@ -35,20 +35,29 @@ const FormDesignSettings = () => {
                         options={designOptions}
                     />
                 </PanelRow>
-                <PanelRow>
-                    <TextControl
-                        label={__('Heading', 'give')}
-                        value={heading}
-                        onChange={(heading) => dispatch(setFormSettings({heading}))}
-                    />
-                </PanelRow>
-                <PanelRow>
-                    <TextareaControl
-                        label={__('Description', 'give')}
-                        value={description}
-                        onChange={(description) => dispatch(setFormSettings({description}))}
-                    />
-                </PanelRow>
+
+                <PanelColorSettings
+                    title={__('Colors', 'give')}
+                    initialOpen={false}
+                    colorSettings={[
+                        {
+                            value: primaryColor,
+                            onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
+                            label: __('Primary Color', 'give'),
+                            disableCustomColors: false,
+                            colors: SETTINGS_DEFAULTS.colors,
+                        },
+                        {
+                            value: secondaryColor,
+                            onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
+                            label: __('Secondary Color', 'give'),
+                            disableCustomColors: false,
+                            colors: SETTINGS_DEFAULTS.colors,
+                        },
+                    ]}
+                />
+            </PanelBody>
+            <PanelBody title={__('Header', 'give')} initialOpen={true}>
                 <PanelRow>
                     <ToggleControl
                         label={__('Show Header', 'give')}
@@ -56,41 +65,39 @@ const FormDesignSettings = () => {
                         onChange={() => dispatch(setFormSettings({showHeader: !showHeader}))}
                     />
                 </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-                        label={__('Show Heading', 'give')}
-                        checked={showHeading}
-                        onChange={() => dispatch(setFormSettings({showHeading: !showHeading}))}
-                    />
-                </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-                        label={__('Show Description', 'give')}
-                        checked={showDescription}
-                        onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
-                    />
-                </PanelRow>
+                {showHeader && (
+                    <>
+                        <PanelRow>
+                            <TextControl
+                                label={__('Heading', 'give')}
+                                value={heading}
+                                onChange={(heading) => dispatch(setFormSettings({heading}))}
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <TextareaControl
+                                label={__('Description', 'give')}
+                                value={description}
+                                onChange={(description) => dispatch(setFormSettings({description}))}
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <ToggleControl
+                                label={__('Show Heading', 'give')}
+                                checked={showHeading}
+                                onChange={() => dispatch(setFormSettings({showHeading: !showHeading}))}
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <ToggleControl
+                                label={__('Show Description', 'give')}
+                                checked={showDescription}
+                                onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
+                            />
+                        </PanelRow>
+                    </>
+                )}
             </PanelBody>
-            <PanelColorSettings
-                title={__('Colors', 'give')}
-                initialOpen={false}
-                colorSettings={[
-                    {
-                        value: primaryColor,
-                        onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
-                        label: __('Primary Color', 'give'),
-                        disableCustomColors: false,
-                        colors: SETTINGS_DEFAULTS.colors,
-                    },
-                    {
-                        value: secondaryColor,
-                        onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
-                        label: __('Secondary Color', 'give'),
-                        disableCustomColors: false,
-                        colors: SETTINGS_DEFAULTS.colors,
-                    },
-                ]}
-            />
         </>
     );
 };
