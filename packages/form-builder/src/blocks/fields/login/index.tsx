@@ -46,7 +46,7 @@ const login: FieldBlock = {
                                 />
                             </div>
                             <div style={{display: 'flex', flexDirection: 'row-reverse', gap: '15px', justifyContent: 'space-between'}}>
-                                <Button variant={'primary'}>Login</Button>
+                                <Button variant={'primary'}>{__('Log In', 'givewp')}</Button>
                                 <Button variant={'link'}>{__('Reset Password', 'givewp')}</Button>
                             </div>
                         </div>
@@ -60,7 +60,7 @@ const login: FieldBlock = {
                             <button
                                 style={{backgroundColor: 'transparent', border: 0, color: 'var(--wp-admin-theme-color)'}}
                             >
-                                {__('Login', 'givewp')}
+                                {__('Log In', 'givewp')}
                             </button>
                         </div>
                     )}
@@ -69,7 +69,7 @@ const login: FieldBlock = {
                         <PanelBody title={__('Settings', 'give')} initialOpen={true}>
                             <PanelRow>
                                 <ToggleControl
-                                    label={__('Require User Login', 'give')}
+                                    label={__('Require donor login', 'give')}
                                     checked={required}
                                     onChange={() => setAttributes({required: !required})}
                                 />
