@@ -33,7 +33,7 @@ const login: FieldBlock = {
                         <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
                             <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>
                                 <TextControl
-                                    label={__('Username', 'givewp')}
+                                    label={__('Login', 'givewp')}
                                     onChange={() => null}
                                     value={''}
                                     placeholder={__('Username or Email Address', 'givewp')}
