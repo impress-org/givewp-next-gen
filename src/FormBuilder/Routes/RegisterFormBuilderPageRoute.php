@@ -95,28 +95,7 @@ class RegisterFormBuilderPageRoute
             ->loadInFooter()
             ->enqueue();
 
-        // load extensions
-        /** @var FormExtensionRegistrar $formExtensionRegistrar */
-        $formExtensionRegistrar = give(FormExtensionRegistrar::class);
-        $formExtensionIds = array_keys($formExtensionRegistrar->getExtensions());
-
-        foreach ($formExtensionIds as $formExtensionId) {
-            $extension = $formExtensionRegistrar->getExtension($formExtensionId);
-
-            if ($extension->formBuilderCss()) {
-                wp_enqueue_style('givewp-form-extension-' . $extension::id(), $extension->formBuilderCss());
-            }
-
-            if ($extension->formBuilderJs()) {
-                wp_enqueue_script(
-                    'givewp-form-extension-' . $extension::id(),
-                    $extension->formBuilderJs(),
-                    $extension->formBuilderDependencies(),
-                    false,
-                    true
-                );
-            }
-        }
+        Hooks::doAction('givewp_form_builder_enqueue_scripts');
 
         wp_enqueue_script(
             '@givewp/form-builder/script',

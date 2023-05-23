@@ -9,7 +9,6 @@ use Give\NextGen\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
 use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
 use Give\NextGen\FormPage\ServiceProvider as FormPageServiceProvider;
 use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
-use Give\NextGen\Framework\FormExtensions\ServiceProvider as FormExtensionServiceProvider;
 use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
@@ -66,7 +65,6 @@ add_action(
             give()->registerServiceProvider(NextGenServiceProvider::class);
             give()->registerServiceProvider(FormBuilder\ServiceProvider::class);
             give()->registerServiceProvider(FormDesignServiceProvider::class);
-            give()->registerServiceProvider(FormExtensionServiceProvider::class);
             give()->registerServiceProvider(CustomFieldsServiceProvider::class);
             give()->registerServiceProvider(FormPageServiceProvider::class);
             give()->registerServiceProvider(WelcomeBannerServiceProvider::class);
