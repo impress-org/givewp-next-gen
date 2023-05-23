@@ -5,12 +5,13 @@ import {Icon} from "@wordpress/icons";
 import {Button, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {BlockEditProps} from "@wordpress/blocks";
+import {useState} from "react";
 
-const loginRegistration: FieldBlock = {
+const login: FieldBlock = {
     name: 'custom-block-editor/login-registration',
     settings: {
         ...defaultSettings,
-        title: __('Login and Registration', 'custom-block-editor'),
+        title: __('User Login', 'custom-block-editor'),
         description: __('...', 'give'),
         supports: {
             multiple: false,
@@ -19,32 +20,48 @@ const loginRegistration: FieldBlock = {
             lock: {remove: true},
             required: {
                 type: 'boolean',
-                default: true,
+                default: false,
             },
         },
         edit: ({attributes, setAttributes}: BlockEditProps<any>) => {
-            const {enableLogin, enableRegistration} = attributes;
+            const {required} = attributes;
 
             return (
                 <>
-                    <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
-                        <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>
-                            <TextControl
-                                label={__('Username or Email Address', 'givewp')}
-                                onChange={() => null}
-                                value={''}
-                            />
-                            <TextControl
-                                label={__('Password', 'givewp')}
-                                onChange={() => null}
-                                value={''}
-                            />
+
+                    {!!required && (
+                        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+                            <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>
+                                <TextControl
+                                    label={__('Username or Email Address', 'givewp')}
+                                    onChange={() => null}
+                                    value={''}
+                                />
+                                <TextControl
+                                    label={__('Password', 'givewp')}
+                                    onChange={() => null}
+                                    value={''}
+                                />
+                            </div>
+                            <div style={{display: 'flex', flexDirection: 'row-reverse', gap: '15px', justifyContent: 'space-between'}}>
+                                <Button variant={'primary'}>Login</Button>
+                                <Button variant={'link'}>{__('Reset Password', 'givewp')}</Button>
+                            </div>
                         </div>
-                        <div style={{display: 'flex', flexDirection: 'row-reverse', gap: '15px', justifyContent: 'space-between'}}>
-                            <Button variant={'primary'}>Login</Button>
-                            <Button variant={'link'}>{__('Reset Password', 'givewp')}</Button>
+                    )}
+
+                    {!required && (
+                        <div style={{display: 'flex', flexDirection: 'row', gap: '7px', justifyContent: 'flex-end'}}>
+                        <span>
+                            {__('Already have an account?', 'givewp')}
+                        </span>
+                            <button
+                                style={{backgroundColor: 'transparent', border: 0, color: 'var(--wp-admin-theme-color)'}}
+                            >
+                                {__('Login', 'givewp')}
+                            </button>
                         </div>
-                    </div>
+                    )}
 
                     <InspectorControls>
                         <PanelBody title={__('Settings', 'give')} initialOpen={true}>
@@ -75,4 +92,4 @@ const loginRegistration: FieldBlock = {
     }
 };
 
-export default loginRegistration;
+export default login;
