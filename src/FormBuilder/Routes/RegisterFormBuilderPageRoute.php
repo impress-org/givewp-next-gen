@@ -93,9 +93,11 @@ class RegisterFormBuilderPageRoute
             ->enqueue();
 
         /**
+         * @unreleased
          * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
-         * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file.
-         * If you specify any dependencies beyond that it tries to merge them together.
+         * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file,
+         * which might include dependencies that are not supported in some version of WordPress.
+         * @link https://github.com/impress-org/givewp-next-gen/pull/181#discussion_r1202686731
          */
         wp_enqueue_script(
             '@givewp/form-builder/script',
