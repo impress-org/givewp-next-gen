@@ -12,7 +12,7 @@ const RegistrationSettings = () => {
         <PanelBody title={__('User Registration', 'give')} initialOpen={false}>
             <PanelRow>
                 <ToggleControl
-                    label={__('New user account notification', 'give')}
+                    label={__('Send new account notifications', 'give')}
                     checked={registrationNotification}
                     onChange={() => dispatch(setFormSettings({registrationNotification: !registrationNotification}))}
                 />
