@@ -1,5 +1,5 @@
-import React, {createRoot, render} from '@wordpress/element';
-import {getCategories, setCategories} from '@wordpress/blocks';
+import {createRoot, render, StrictMode} from '@wordpress/element';
+import {BlockSupports, getCategories, registerBlockType, setCategories} from '@wordpress/blocks';
 import {__} from '@wordpress/i18n';
 
 import sectionBlocks, {sectionBlockNames} from './blocks/section';
@@ -42,13 +42,14 @@ blockRegistrar.register(extensionBlocks, sectionBlockNames);
 
 const root = document.getElementById('root');
 
+const RenderApp = () => (
+    <StrictMode>
+        <App />
+    </StrictMode>
+);
+
 if (createRoot) {
-    createRoot(root).render(<App />);
+    createRoot(root).render(<RenderApp />);
 } else {
-    render(
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>,
-        root
-    );
+    render(<RenderApp />, root);
 }
