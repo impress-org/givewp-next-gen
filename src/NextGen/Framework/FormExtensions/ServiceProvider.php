@@ -16,9 +16,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton(FormExtensionRegistrar::class, function () {
-            return new FormExtensionRegistrar();
-        });
+        give()->singleton(FormExtensionRegistrar::class);
     }
 
     /**
@@ -27,7 +25,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $registrar = give()->make(FormExtensionRegistrar::class);
-        
+
         Hooks::doAction('givewp_register_form_extension', $registrar);
         Hooks::doAction('givewp_unregister_form_extension', $registrar);
     }
