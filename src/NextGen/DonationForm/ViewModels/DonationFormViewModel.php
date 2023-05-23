@@ -251,7 +251,7 @@ class DonationFormViewModel
             'give'
         ))->loadInFooter()->enqueue();
 
-        Hooks::doAction('givewp_form_view_enqueue_scripts');
+        Hooks::doAction('givewp_donation_form_enqueue_scripts');
 
         $design = $this->getFormDesign($formDesignId);
 
