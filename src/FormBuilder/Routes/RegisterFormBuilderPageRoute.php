@@ -92,20 +92,20 @@ class RegisterFormBuilderPageRoute
             ->loadInFooter()
             ->enqueue();
 
-        (new EnqueueScript(
+        /**
+         * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
+         * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file.
+         * If you specify any dependencies beyond that it tries to merge them together.
+         */
+        wp_enqueue_script(
             '@givewp/form-builder/script',
             $formBuilderViewModel->jsPathFromPluginRoot(),
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))
-            ->dependencies(
-                $this->getRegisteredFormBuilderJsDependencies(
-                    $formBuilderViewModel->jsDependencies()
-                )
-            )
-            ->loadInFooter()
-            ->enqueue();
+            $this->getRegisteredFormBuilderJsDependencies(
+                $formBuilderViewModel->jsDependencies()
+            ),
+            GIVE_NEXT_GEN_VERSION,
+            true
+        ));
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
