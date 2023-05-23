@@ -10,6 +10,6 @@ declare global {
     }
 }
 
-const ExtensionBlocks = window?.givewp?.form?.blocks || [];
+const ExtensionBlocks: FieldBlock[] = window?.givewp?.form?.blocks || [];
 
 export default ExtensionBlocks;
