@@ -99,13 +99,13 @@ class RegisterFormBuilderPageRoute
          */
         wp_enqueue_script(
             '@givewp/form-builder/script',
-            $formBuilderViewModel->jsPathFromPluginRoot(),
+            GIVE_NEXT_GEN_URL . $formBuilderViewModel->jsPathFromPluginRoot(),
             $this->getRegisteredFormBuilderJsDependencies(
                 $formBuilderViewModel->jsDependencies()
             ),
             GIVE_NEXT_GEN_VERSION,
             true
-        ));
+        );
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
