@@ -22,8 +22,6 @@ class DequeueAdminScriptsInFormBuilder
         if ($this->isFormBuilderRoute()) {
             $wpScripts = wp_scripts();
 
-            $wpScriptsRegistered = array_column($wpScripts->registered, 'handle');
-
             $legacyGiveScripts = [
                 'give',
                 'give-admin-scripts',
