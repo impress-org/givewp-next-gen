@@ -79,6 +79,14 @@ class RegisterFormBuilderPageRoute
             wp_die(__('Donation form does not exist.'));
         }
 
+        wp_enqueue_script(
+            '@givewp/form-builder/registrars',
+            $formBuilderViewModel->jsPathToRegistrars(),
+            [],
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
+
         $formBuilderStorage = (new EnqueueScript(
             '@givewp/form-builder/storage',
             'src/FormBuilder/resources/js/storage.js',
