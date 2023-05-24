@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Actions;
 
+use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
@@ -147,6 +148,10 @@ class ConvertDonationFormBlocksToFieldsApi
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
+
+            case "givewp/login":
+                return Authentication::make('login')
+                    ->required($block->getAttribute('required'));
 
             default:
                 $customField = apply_filters(

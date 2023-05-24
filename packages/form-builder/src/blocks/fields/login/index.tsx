@@ -8,7 +8,7 @@ import {BlockEditProps} from "@wordpress/blocks";
 import {useState} from "react";
 
 const login: FieldBlock = {
-    name: 'custom-block-editor/login-registration',
+    name: 'givewp/login',
     settings: {
         ...defaultSettings,
         title: __('User Login', 'custom-block-editor'),
