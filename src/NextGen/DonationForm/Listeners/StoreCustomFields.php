@@ -27,7 +27,7 @@ class StoreCustomFields
 
                 $value = $customFields[$field->getName()];
 
-                if ($field->shouldStoreAsDonorMeta()) {
+                if (method_exists($field, 'shouldStoreAsDonorMeta') && $field->shouldStoreAsDonorMeta()) {
                     // save as donor meta
                     give()->donor_meta->update_meta($donation->donorId, $field->getName(), $value);
                 } else {
