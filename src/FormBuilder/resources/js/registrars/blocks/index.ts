@@ -65,17 +65,14 @@ export default class BlockRegistrar implements Registrar {
      * @unreleased
      */
     public registerAllBlocksIntoEditor(): void {
-        console.log({blocks: this.getAll()});
         const [sectionBlock] = this.getAll();
-
-        console.log({sectionBlock});
 
         this.getAll().forEach(({name, settings}) => {
             // TODO: circle back to parent flexibility
             const parent = name !== sectionBlock.name ? [sectionBlock.name] : undefined;
 
             // @ts-ignore
-             registerBlockType(name, {
+            registerBlockType(name, {
                 ...settings,
                 parent,
                 supports: {
