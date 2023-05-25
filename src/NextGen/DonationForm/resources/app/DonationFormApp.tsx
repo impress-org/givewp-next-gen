@@ -34,6 +34,7 @@ const initialState = {
     defaultValues,
     gateways: window.givewp.gateways.getAll(),
     validationSchema: schema,
+    donationSummary: [],
 };
 
 function App() {
