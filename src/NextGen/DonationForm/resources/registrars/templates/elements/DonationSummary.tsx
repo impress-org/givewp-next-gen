@@ -42,13 +42,23 @@ export default function DonationSummary() {
 }
 
 /**
+ * @unreleased
+ */
+type DonationSummaryLineItem = {
+    label: string;
+    value: string | ReactElement;
+    description?: string | ReactElement;
+};
+
+/**
  * @since 0.1.0
  */
-const LineItem = ({label, value}: { label: string; value: string | ReactElement }) => {
+const LineItem = ({label, value, description}: DonationSummaryLineItem) => {
     return (
         <li className="givewp-elements-donationSummary__list-item">
-            <div>{label}</div>
-            <div>{value}</div>
+            <div className="givewp-elements-donationSummary__list-item-label">{label}</div>
+            <div className="givewp-elements-donationSummary__list-item-value">{value}</div>
+            <div className="givewp-elements-donationSummary__list-item-description">{description}</div>
         </li>
     );
 };
