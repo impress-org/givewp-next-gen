@@ -4,6 +4,7 @@ import ElementNode from './ElementNode';
 import GroupNode from './GroupNode';
 import GatewayFieldNode from '@givewp/forms/app/fields/GatewayFieldNode';
 import {elementTemplateExists, fieldTemplateExists, groupTemplateExists} from '@givewp/forms/app/templates';
+import DonationSummaryElementNode from '@givewp/forms/app/fields/DonationSummaryElementNode';
 
 const formTemplates = window.givewp.form.templates;
 
@@ -19,6 +20,9 @@ export default function SectionNode({node}: {node: Node}) {
         }
         return <FieldNode node={node} />;
     } else if (isElement(node) && elementTemplateExists(node)) {
+        if (node.type === 'donationSummary') {
+            return <DonationSummaryElementNode node={node} />;
+        }
         return <ElementNode node={node} />;
     } else if (isGroup(node) && groupTemplateExists(node)) {
         return <GroupNode node={node} />;

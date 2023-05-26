@@ -2,7 +2,6 @@ import {createContext, ReactNode, useContext, useReducer} from 'react';
 import type {Gateway} from '@givewp/forms/types';
 import reducer from '@givewp/forms/app/store/reducer';
 import {ObjectSchema} from 'joi';
-import {DonationSummaryLineItem} from '../../registrars/templates/elements/DonationSummary';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'DonationFormState';
@@ -15,7 +14,6 @@ type PropTypes = {
         gateways: Gateway[];
         defaultValues: object;
         validationSchema: ObjectSchema;
-        donationSummary: DonationSummaryLineItem[];
     };
     children: ReactNode;
 };

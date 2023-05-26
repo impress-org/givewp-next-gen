@@ -1,21 +1,28 @@
-import {useDonationFormState, useDonationFormStateDispatch} from '@givewp/forms/app/store';
+import {useDonationSummaryContext, useDonationSummaryDispatch} from '@givewp/forms/app/store/donation-summary';
 import {
-    addDonationSummaryItem,
-    addDonationSummaryItems,
-    removeDonationSummaryItem
-} from '@givewp/forms/app/store/reducer';
+    addAmountToTotal,
+    addItem,
+    addItems,
+    removeAmountFromTotal,
+    removeItem,
+    updateItem,
+} from '@givewp/forms/app/store/donation-summary/reducer';
 
 /**
  * @unreleased
  */
 export default function useDonationSummary() {
-    const {donationSummary} = useDonationFormState();
-    const dispatch = useDonationFormStateDispatch();
+    const {items, totals} = useDonationSummaryContext();
+    const dispatch = useDonationSummaryDispatch();
 
     return {
-        donationSummary,
-        addDonationSummaryItems: (items) => dispatch(addDonationSummaryItems(items)),
-        addDonationSummaryItem: (item) => dispatch(addDonationSummaryItem(item)),
-        removeDonationSummaryItem: (itemId) => dispatch(removeDonationSummaryItem(itemId))
-    }
+        items,
+        totals,
+        addItems: (items) => dispatch(addItems(items)),
+        addItem: (item) => dispatch(addItem(item)),
+        addToTotal: (itemId, amount) => dispatch(addAmountToTotal(itemId, amount)),
+        removeFromTotal: (itemId) => dispatch(removeAmountFromTotal(itemId)),
+        removeItem: (itemId) => dispatch(removeItem(itemId)),
+        updateItem: (itemId, item) => dispatch(updateItem(itemId, item)),
+    };
 }

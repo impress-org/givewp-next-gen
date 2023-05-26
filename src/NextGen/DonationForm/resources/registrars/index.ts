@@ -3,7 +3,7 @@ import type {DonationConfirmationReceiptServerExports, FormServerExports} from '
 import type {useFormContext, useFormState, useWatch} from 'react-hook-form';
 import defaultFormTemplates from './templates';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
-import {setDonationSummary} from '@givewp/forms/app/store/reducer';
+import useDonationSummary from '@givewp/forms/app/hooks/useDonationSummary';
 
 declare global {
     interface Window {
@@ -18,7 +18,7 @@ declare global {
                     useWatch: typeof useWatch;
                     useFormState: typeof useFormState;
                     useCurrencyFormatter: typeof useCurrencyFormatter;
-                    setDonationSummary: typeof setDonationSummary;
+                    useDonationSummary: typeof useDonationSummary;
                 };
             };
         };
