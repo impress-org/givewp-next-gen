@@ -12,9 +12,9 @@ StoreContextDispatch.displayName = 'DonationSummaryDispatch';
 type Totals = {[key: string]: number}
 
 type PropTypes = {
-    initialState: {
+    initialState?: {
         items: DonationSummaryLineItem[];
-        totals: Totals
+        totals: Totals;
     };
     children: ReactNode;
 };
@@ -22,7 +22,7 @@ type PropTypes = {
 /**
  * @unreleased
  */
-const DonationSummaryProvider = ({initialState, children}: PropTypes) => {
+const DonationSummaryProvider = ({initialState = {items: [], totals: {}}, children}: PropTypes) => {
     const [state, dispatch] = useImmerReducer(reducer, initialState);
 
     return (

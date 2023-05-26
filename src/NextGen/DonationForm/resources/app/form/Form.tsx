@@ -38,7 +38,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
     return (
         <FormProvider {...methods}>
             <DonationFormErrorBoundary>
-                <DonationSummaryProvider initialState={{items: [], totals: {}}}>
+                <DonationSummaryProvider>
                     <FormTemplate
                         formProps={{
                             id: 'give-next-gen',
