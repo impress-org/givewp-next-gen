@@ -14,6 +14,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\NextGen\DonationForm\DefaultValues\GatewayDefaultValue;
 use Give\NextGen\DonationForm\Rules\GatewayRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
@@ -129,9 +130,11 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->rules('required', 'email');
 
             case "givewp/payment-gateways":
+                $gatewayDefaultValue = new GatewayDefaultValue();
                 return PaymentGateways::make('gatewayId')
                     ->rules(new GatewayRule())
-                    ->required();
+                    ->required()
+                    ->defaultValue($gatewayDefaultValue());
 
             case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
