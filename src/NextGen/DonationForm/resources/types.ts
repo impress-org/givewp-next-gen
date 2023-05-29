@@ -216,6 +216,11 @@ export interface SelectOption {
     disabled?: boolean;
 }
 
+export interface CheckboxOption {
+    label: string;
+    value: string;
+}
+
 export interface RadioOption {
     label: string;
     value: string;

@@ -1,4 +1,5 @@
 import {
+    CheckboxOption,
     Element,
     Field,
     Gateway,
@@ -29,6 +30,10 @@ export type GatewayOptionProps = {
 
 export interface SelectFieldProps extends FieldProps {
     options: Array<SelectOption>;
+}
+
+export interface CheckboxFieldProps extends FieldProps {
+    options: Array<CheckboxOption>;
 }
 
 export interface RadioFieldProps extends FieldProps {
