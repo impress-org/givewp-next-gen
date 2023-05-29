@@ -45,6 +45,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
+ * @unreelased do not validate fields with no rules
  * @since 0.1.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
