@@ -1,23 +1,12 @@
-import type {CheckboxFieldProps} from '@givewp/forms/propTypes';
+import type {FieldProps} from '@givewp/forms/propTypes';
 
-export default function Checkbox({Label, ErrorMessage, options, inputProps}: CheckboxFieldProps) {
+export default function Checkbox({Label, ErrorMessage, fieldError, inputProps}: FieldProps) {
     return (
-        options.length > 0 && (
-            <fieldset>
-                <legend>
-                    <Label />
-                </legend>
-                <div className="givewp-fields-checkbox__options">
-                    {options.map(({value, label}, index) => (
-                        <div key={index} className="givewp-fields-checkbox__option--container">
-                            <input type="checkbox" name={inputProps.name} value={value} {...inputProps} />
-                            <label htmlFor={inputProps.name}>{label}</label>
-                        </div>
-                    ))}
-                </div>
+        <label>
+            <input type="checkbox" aria-invalid={fieldError ? 'true' : 'false'} {...inputProps} />
+            <Label />
 
-                <ErrorMessage />
-            </fieldset>
-        )
+            <ErrorMessage />
+        </label>
     );
 }
