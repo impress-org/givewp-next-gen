@@ -2,7 +2,7 @@
 namespace Give\NextGen\DonationForm\Rules;
 
 use Closure;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
@@ -30,8 +30,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        /** @var PaymentGatewayRegister $paymentGatewayRegistrar */
-        $paymentGatewayRegistrar = give(PaymentGatewayRegister::class);
+        $supportedGateways = give(DonationFormRepository::class)->getEnabledPaymentGateways($values['formId']);
 
         // get all the supported gateway ids
         $gatewayIds = array_keys($paymentGatewayRegistrar->getNextGenPaymentGateways());
@@ -43,7 +42,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
                     '{field}',
                     implode(
                         ', ',
-                        $supportedGateways
+                        $gatewayIds
                     )
                 )
             );
