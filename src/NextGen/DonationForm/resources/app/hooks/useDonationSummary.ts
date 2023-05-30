@@ -1,4 +1,8 @@
-import {useDonationSummaryContext, useDonationSummaryDispatch} from '@givewp/forms/app/store/donation-summary';
+import {
+    DonationSummaryLineItem,
+    useDonationSummaryContext,
+    useDonationSummaryDispatch,
+} from '@givewp/forms/app/store/donation-summary';
 import {
     addAmountToTotal,
     addItem,
@@ -16,9 +20,9 @@ export default function useDonationSummary() {
     return {
         items,
         totals,
-        addItem: (item) => dispatch(addItem(item)),
-        removeItem: (itemId) => dispatch(removeItem(itemId)),
-        addToTotal: (itemId, amount) => dispatch(addAmountToTotal(itemId, amount)),
-        removeFromTotal: (itemId) => dispatch(removeAmountFromTotal(itemId)),
+        addItem: (item: DonationSummaryLineItem) => dispatch(addItem(item)),
+        removeItem: (itemId: string) => dispatch(removeItem(itemId)),
+        addToTotal: (itemId: string, amount: number) => dispatch(addAmountToTotal(itemId, amount)),
+        removeFromTotal: (itemId: string) => dispatch(removeAmountFromTotal(itemId)),
     };
 }
