@@ -84,7 +84,7 @@ class GenerateConfirmationPageReceipt
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
-                    ['amount' => $receipt->donation->intendedAmount()->formatToDecimal()]
+                    ['amount' => $receipt->donation->amount->formatToDecimal()]
                 ),
             ]
         );
@@ -98,10 +98,14 @@ class GenerateConfirmationPageReceipt
             );
         }
 
+        $total = $receipt->donation->feeAmountRecovered === null ? $receipt->donation->amount : $receipt->donation->amount->add(
+            $receipt->donation->feeAmountRecovered
+        );
+
         $receipt->donationDetails->addDetail(
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                ['amount' => $receipt->donation->amount->formatToDecimal()]
+                ['amount' => $total->formatToDecimal()]
             )
         );
     }
