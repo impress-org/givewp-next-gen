@@ -1,5 +1,4 @@
 import {createContext, ReactElement, ReactNode, useContext} from 'react';
-import {DonationSummaryLineItem} from '../../../registrars/templates/elements/DonationSummary';
 import {useImmerReducer} from 'use-immer';
 import reducer from './reducer';
 
@@ -9,7 +8,8 @@ StoreContext.displayName = 'DonationSummaryProvider';
 const StoreContextDispatch = createContext(null);
 StoreContextDispatch.displayName = 'DonationSummaryDispatch';
 
-export type DonationTotals = { [key: string]: number }
+export type DonationTotals = {[key: string]: number};
+export type DonationSummaryItems = {[key: string]: DonationSummaryLineItem};
 
 /**
  * @unreleased
@@ -23,7 +23,7 @@ export type DonationSummaryLineItem = {
 
 type PropTypes = {
     initialState?: {
-        items: DonationSummaryLineItem[];
+        items: DonationSummaryItems;
         totals: DonationTotals;
     };
     children: ReactNode;
@@ -32,7 +32,7 @@ type PropTypes = {
 /**
  * @unreleased
  */
-const DonationSummaryProvider = ({initialState = {items: [], totals: {}}, children}: PropTypes) => {
+const DonationSummaryProvider = ({initialState = {items: {}, totals: {}}, children}: PropTypes) => {
     const [state, dispatch] = useImmerReducer(reducer, initialState);
 
     return (

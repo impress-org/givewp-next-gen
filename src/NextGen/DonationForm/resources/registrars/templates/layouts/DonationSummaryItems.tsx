@@ -16,21 +16,16 @@ export type LineItem = {
  */
 const LineItem = ({id, label, value, description}: LineItem) => {
     return (
-        <li className="givewp-elements-donationSummary__list-item">
-            <div id={id} className="givewp-elements-donationSummary__list-item-label">
-                {label}
-            </div>
-            <div id={id} className="givewp-elements-donationSummary__list-item-value">
-                {value}
-            </div>
-            <div id={id} className="givewp-elements-donationSummary__list-item-description">
-                {description}
-            </div>
+        <li id={id} className="givewp-elements-donationSummary__list-item">
+            <div className="givewp-elements-donationSummary__list-item-label">{label}</div>
+            <div className="givewp-elements-donationSummary__list-item-value">{value}</div>
+            <div className="givewp-elements-donationSummary__list-item-description">{description}</div>
         </li>
     );
 };
 
 export default function DonationSummaryItems({items, total}) {
+    console.log({items, total});
     return (
         <ul className="givewp-elements-donationSummary__list">
             {items.map(({id, label, value, description}, index) => {

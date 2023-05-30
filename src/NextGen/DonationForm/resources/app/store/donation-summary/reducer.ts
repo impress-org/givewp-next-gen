@@ -1,11 +1,9 @@
 import {DonationSummaryLineItem} from '@givewp/forms/app/store/donation-summary/index';
 
-const ADD_ITEMS = 'add_items';
 const ADD_ITEM = 'add_item';
 const REMOVE_ITEM = 'remove_item';
-const UPDATE_ITEM = 'update_item';
 const ADD_AMOUNT_TO_TOTAL = 'add_amount_to_total';
-const SUBTRACT_AMOUNT_FROM_TOTAL = 'subtract_amount_from_total';
+const REMOVE_AMOUNT_FROM_TOTAL = 'remove_amount_from_total';
 
 /**
  * @unreleased
@@ -13,42 +11,23 @@ const SUBTRACT_AMOUNT_FROM_TOTAL = 'subtract_amount_from_total';
 export default function reducer(draft, action) {
     switch (action.type) {
         case ADD_ITEM:
-            const addItemIndex = draft.items.findIndex((item) => item.id === action.item.id);
-            if (addItemIndex !== -1) draft.items.splice(addItemIndex, 1);
+            draft.items[action.item.id] = action.item;
+            break;
 
-            draft.items.push(action.item);
+        case REMOVE_ITEM:
+            delete draft.items[action.itemId];
             break;
 
         case ADD_AMOUNT_TO_TOTAL:
             draft.totals[action.itemId] = action.amount;
             break;
-        case SUBTRACT_AMOUNT_FROM_TOTAL:
-            delete draft.totals[action.itemId];
-            break;
-        case REMOVE_ITEM:
-            const removeItemIndex = draft.items.findIndex((item) => item.id === action.itemId);
-            if (removeItemIndex !== -1) draft.items.splice(removeItemIndex, 1);
-            break;
 
-        case UPDATE_ITEM:
-            const updateItemIndex = draft.items.findIndex((item) => item.id === action.itemId);
-            if (updateItemIndex !== -1){
-                draft.items[updateItemIndex] = {...draft.items[updateItemIndex], ...action.item};
-            }
+        case REMOVE_AMOUNT_FROM_TOTAL:
+            delete draft.totals[action.itemId];
             break;
         default:
             break;
     }
-}
-
-/**
- * @unreleased
- */
-export function addItems(items: DonationSummaryLineItem[]) {
-    return {
-        type: ADD_ITEMS,
-        items,
-    };
 }
 
 /**
@@ -77,7 +56,7 @@ export function addAmountToTotal(itemId: string, amount: number) {
  */
 export function removeAmountFromTotal(itemId: string) {
     return {
-        type: SUBTRACT_AMOUNT_FROM_TOTAL,
+        type: REMOVE_AMOUNT_FROM_TOTAL,
         itemId,
     };
 }
@@ -89,16 +68,5 @@ export function removeItem(itemId: string) {
     return {
         type: REMOVE_ITEM,
         itemId,
-    };
-}
-
-/**
- * @unreleased
- */
-export function updateItem(itemId: string, item: Partial<DonationSummaryLineItem>) {
-    return {
-        type: UPDATE_ITEM,
-        itemId,
-        item,
     };
 }
