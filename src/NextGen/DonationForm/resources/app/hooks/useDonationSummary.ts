@@ -9,6 +9,7 @@ import {
     removeAmountFromTotal,
     removeItem,
 } from '@givewp/forms/app/store/donation-summary/reducer';
+import {useCallback} from '@wordpress/element';
 
 /**
  * @unreleased
@@ -20,9 +21,12 @@ export default function useDonationSummary() {
     return {
         items,
         totals,
-        addItem: (item: DonationSummaryLineItem) => dispatch(addItem(item)),
-        removeItem: (itemId: string) => dispatch(removeItem(itemId)),
-        addToTotal: (itemId: string, amount: number) => dispatch(addAmountToTotal(itemId, amount)),
-        removeFromTotal: (itemId: string) => dispatch(removeAmountFromTotal(itemId)),
+        addItem: useCallback((item: DonationSummaryLineItem) => dispatch(addItem(item)), [dispatch]),
+        removeItem: useCallback((itemId: string) => dispatch(removeItem(itemId)), [dispatch]),
+        addToTotal: useCallback(
+            (itemId: string, amount: number) => dispatch(addAmountToTotal(itemId, amount)),
+            [dispatch]
+        ),
+        removeFromTotal: useCallback((itemId: string) => dispatch(removeAmountFromTotal(itemId)), [dispatch]),
     };
 }
