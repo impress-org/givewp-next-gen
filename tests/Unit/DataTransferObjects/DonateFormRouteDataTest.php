@@ -8,11 +8,9 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
-
-use function json_decode;
 
 /**
  * @since 0.1.0
@@ -29,11 +27,11 @@ class DonateFormRouteDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         $customFieldBlockModel = BlockModel::make([
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
@@ -52,7 +50,7 @@ class DonateFormRouteDataTest extends TestCase
 
         $data = new DonateControllerData();
 
-        $data->gatewayId = TestGateway::id();
+        $data->gatewayId = NextGenTestGateway::id();
         $data->amount = 100;
         $data->currency = "USD";
         $data->firstName = "Bill";
@@ -88,11 +86,11 @@ class DonateFormRouteDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         $customFieldBlockModel = BlockModel::make([
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
@@ -106,7 +104,7 @@ class DonateFormRouteDataTest extends TestCase
         $amountBlockDataWithRecurringEnabled = json_decode(
             '{
                   "clientId": "8371d4c7-0e8d-4aff-a1a1-b4520f008132",
-                  "name": "custom-block-editor/section",
+                  "name": "givewp/section",
                   "isValid": true,
                   "attributes": {
                     "title": "How much would you like to donate today?",
@@ -115,7 +113,7 @@ class DonateFormRouteDataTest extends TestCase
                   "innerBlocks": [
                     {
                       "clientId": "bddaa0ea-29bf-4143-b62d-aae3396e9b0f",
-                      "name": "custom-block-editor/donation-amount-levels",
+                      "name": "givewp/donation-amount",
                       "isValid": true,
                       "attributes": {
                         "label": "Donation Amount",
@@ -170,7 +168,7 @@ class DonateFormRouteDataTest extends TestCase
 
         $data = new DonateControllerData();
 
-        $data->gatewayId = TestGateway::id();
+        $data->gatewayId = NextGenTestGateway::id();
         $data->amount = 100;
         $data->currency = "USD";
         $data->firstName = "Bill";

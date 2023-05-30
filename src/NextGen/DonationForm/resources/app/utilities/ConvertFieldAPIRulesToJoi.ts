@@ -46,11 +46,15 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
- * @unreleased add support for excludeUnless rule with basic conditions
+ * @unreleased add support for excludeUnless rule with basic conditions; do not validate fields with no rules
  * @since 0.1.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
+
+    if (Object.keys(rules).length === 0) {
+        return Joi.any();
+    }
 
     if (rules.hasOwnProperty('numeric') || rules.hasOwnProperty('integer')) {
         joiRules = Joi.number();

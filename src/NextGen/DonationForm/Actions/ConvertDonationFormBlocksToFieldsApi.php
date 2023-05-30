@@ -14,6 +14,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\NextGen\DonationForm\Rules\GatewayRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 
@@ -32,6 +33,7 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
+     * @unreleased conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0
      *
@@ -49,7 +51,17 @@ class ConvertDonationFormBlocksToFieldsApi
             $section = $this->convertTopLevelBlockToSection($block, $blockIndex);
 
             if ($block->innerBlocks) {
-                $section->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
+                $innerBlocks = $block->innerBlocks->getBlocks();
+                $nodes = array_filter(
+                    array_map([$this, 'convertInnerBlockToNode'], $innerBlocks, array_keys($innerBlocks)),
+                    static function ($node) {
+                        return $node instanceof Node;
+                    }
+                );
+
+                $section->append(
+                    ...$nodes
+                );
             }
 
             $form->append($section);
@@ -73,56 +85,81 @@ class ConvertDonationFormBlocksToFieldsApi
      * @since 0.1.0
      *
      * @throws EmptyNameException|NameCollisionException
+     *
+     * @return Node|null
      */
-    protected function convertInnerBlockToNode(BlockModel $block): Node
+    protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex)
     {
-        $node = $this->createNodeFromBlockWithUniqueAttributes($block);
+        $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
-        return $this->mapGenericBlockAttributesToNode($node, $block);
+        if ($node instanceof Node) {
+            return $this->mapGenericBlockAttributesToNode($node, $block);
+        }
+
+        return null;
     }
 
     /**
+     * @unreleased add blockIndex for unique field names, add filter `givewp_donation_form_block_render_{$blockName}`
      * @since 0.1.0
      *
      * @throws EmptyNameException
      * @throws NameCollisionException
+     *
+     * @return Node|null
      */
-    protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block): Node
+    protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex)
     {
-        switch ($block->name) {
-            case "custom-block-editor/donation-amount-levels":
+        $blockName = $block->name;
+
+        switch ($blockName) {
+            case "givewp/donation-amount":
                 return $this->createNodeFromAmountBlock($block);
 
-            case "custom-block-editor/donor-name":
+            case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
 
-            case "custom-block-editor/paragraph":
-                return Paragraph::make(substr(md5(mt_rand()), 0, 7))
+            case "givewp/paragraph":
+                return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
 
-            case "custom-block-editor/email-field":
+            case "givewp/email":
                 return Email::make('email')
                     ->emailTag('email')
                     ->rules('required', 'email');
 
-            case "custom-block-editor/payment-gateways":
+            case "givewp/payment-gateways":
                 return PaymentGateways::make('gatewayId')
+                    ->rules(new GatewayRule())
                     ->required();
 
-            case "custom-block-editor/donation-summary":
+            case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
 
-            case "custom-block-editor/company-field":
+            case "givewp/company":
                 return Text::make('company');
 
-            default:
+            case "givewp/text":
                 return Text::make(
                     $block->hasAttribute('fieldName') ?
                         $block->getAttribute('fieldName') :
-                        $block->clientId
+                        $block->getShortName() . '-' . $blockIndex
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
+
+            default:
+                $customField = apply_filters(
+                    "givewp_donation_form_block_render_{$blockName}",
+                    $block,
+                    $blockIndex
+                );
+
+                if ($customField instanceof Node) {
+                    return $customField;
+                }
+
+                return null;
         }
     }
 
