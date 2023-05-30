@@ -25,7 +25,6 @@ const LineItem = ({id, label, value, description}: LineItem) => {
 };
 
 export default function DonationSummaryItems({items, total}) {
-    console.log({items, total});
     return (
         <ul className="givewp-elements-donationSummary__list">
             {items.map(({id, label, value, description}, index) => {
