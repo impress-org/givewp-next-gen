@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\ViewModels;
 
+use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\EnqueueScript;
 use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
@@ -83,6 +84,9 @@ class DonationFormViewModel
      */
     public function enqueueGlobalStyles()
     {
+        (new RegisterDesignSystemStyles())();
+        wp_enqueue_style('givewp-design-system-foundation');
+
         wp_register_style(
             'givewp-global-form-styles',
             GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/styles/global.css'
