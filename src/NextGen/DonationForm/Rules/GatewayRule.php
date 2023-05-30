@@ -33,7 +33,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
         $supportedGateways = give(DonationFormRepository::class)->getEnabledPaymentGateways($values['formId']);
 
         // get all the supported gateway ids
-        $gatewayIds = array_keys($paymentGatewayRegistrar->getNextGenPaymentGateways());
+        $gatewayIds = array_keys($supportedGateways);
 
         if (!in_array($value, $gatewayIds, true)) {
             $fail(
