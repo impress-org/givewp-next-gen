@@ -1,4 +1,4 @@
-import {BlockConfiguration, BlockSupports, registerBlockType} from '@wordpress/blocks';
+import {BlockConfiguration} from '@wordpress/blocks';
 
 /**
  * @unreleased
@@ -7,14 +7,6 @@ export interface Block {
     name: string;
     settings: BlockConfiguration;
 }
-
-/**
- * @unreleased
- */
-const supportOverrides: BlockSupports = {
-    customClassName: false,
-    html: false,
-};
 
 /**
  * @unreleased
@@ -59,27 +51,5 @@ export default class BlockRegistrar implements Registrar {
         }
 
         this.blocks.push({name, settings});
-    }
-
-    /**
-     * @unreleased
-     */
-    public registerAllBlocksIntoEditor(): void {
-        const [sectionBlock] = this.getAll();
-
-        this.getAll().forEach(({name, settings}) => {
-            // TODO: circle back to parent flexibility
-            const parent = name !== sectionBlock.name ? [sectionBlock.name] : undefined;
-
-            // @ts-ignore
-            registerBlockType(name, {
-                ...settings,
-                parent,
-                supports: {
-                    ...settings.supports,
-                    ...supportOverrides,
-                },
-            });
-        });
     }
 }

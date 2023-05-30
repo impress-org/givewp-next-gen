@@ -1,5 +1,6 @@
 import {createRoot, render, StrictMode} from '@wordpress/element';
 import {getCategories, setCategories} from '@wordpress/blocks';
+import registerBlocks from './common/registerBlocks';
 import {__} from '@wordpress/i18n';
 
 import App from './App';
@@ -29,9 +30,7 @@ setCategories([
     },
 ]);
 
-// TODO update window types
-// @ts-ignore
-window.givewp.form.blocks.registerAllBlocksIntoEditor();
+registerBlocks();
 
 const root = document.getElementById('root');
 
