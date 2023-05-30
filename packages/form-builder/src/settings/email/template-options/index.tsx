@@ -8,6 +8,7 @@ import CopyToClipboardButton from "./components/copy-to-clipboard-button";
 import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 import SendPreviewEmail from "./components/send-preview-email";
 import EmailPreviewContent   from "./components/email-preview-content";
+import {useFormState} from "@givewp/form-builder/stores/form-state";
 
 export default () => {
 
@@ -16,6 +17,8 @@ export default () => {
     const closeModal = () => setOpen( false );
 
     const [ selectedTab, setSelectedTab ] = useState<string>();
+    const {settings: {emailTemplateOptions}} = useFormState();
+    const selectedNotificationStatus = emailTemplateOptions[selectedTab]?.status ?? 'global';
 
     const [ showPreview, setShowPreview ] = useState<boolean>( false );
 
@@ -112,6 +115,7 @@ export default () => {
                                     flexDirection: 'column',
                                     gap: 'var(--givewp-spacing-6)',
                                     paddingRight: '10px', // Adjust for overflow
+                                    visibility: 'enabled' === selectedNotificationStatus ? 'visible' : 'hidden',
                                 }}>
                                     <div style={{flex:1}}>
                                         <h2 style={{margin: 0}}>{__('Preview email', 'givewp')}</h2>
