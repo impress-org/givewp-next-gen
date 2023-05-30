@@ -1,4 +1,4 @@
-import type {DonationSummaryLineItem} from '../../../registrars/templates/elements/DonationSummary';
+import {DonationSummaryLineItem} from '@givewp/forms/app/store/donation-summary/index';
 
 const ADD_ITEMS = 'add_items';
 const ADD_ITEM = 'add_item';

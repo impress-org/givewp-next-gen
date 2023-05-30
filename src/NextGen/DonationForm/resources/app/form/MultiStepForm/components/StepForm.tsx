@@ -10,7 +10,6 @@ import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import NextButton from '@givewp/forms/app/form/MultiStepForm/components/NextButton';
 import useGetGatewayById from '@givewp/forms/app/form/MultiStepForm/hooks/useGetGatewayById';
-import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -48,35 +47,33 @@ export default function StepForm({
     return (
         <FormProvider {...methods}>
             <DonationFormErrorBoundary>
-                <DonationSummaryProvider>
-                    <MultiStepFormTemplate
-                        formProps={{
-                            id: 'givewp-donation-form',
-                            onSubmit: handleSubmit((values) =>
-                                handleSubmitRequest(
-                                    values,
-                                    setError,
-                                    getGateway(values.gatewayId),
-                                    donateUrl,
-                                    inlineRedirectRoutes
-                                )
-                            ),
-                        }}
-                        isSubmitting={isSubmitting || isSubmitSuccessful}
-                        formError={formError}
-                        previousButton={null}
-                        nextButton={
-                            !isLastStep && (
-                                <div>
-                                    <NextButton />
-                                </div>
+                <MultiStepFormTemplate
+                    formProps={{
+                        id: 'givewp-donation-form',
+                        onSubmit: handleSubmit((values) =>
+                            handleSubmitRequest(
+                                values,
+                                setError,
+                                getGateway(values.gatewayId),
+                                donateUrl,
+                                inlineRedirectRoutes
                             )
-                        }
-                        submitButton={isLastStep && <SubmitButton isSubmitting={isSubmitting || isSubmitSuccessful} />}
-                    >
-                        {children}
-                    </MultiStepFormTemplate>
-                </DonationSummaryProvider>
+                        ),
+                    }}
+                    isSubmitting={isSubmitting || isSubmitSuccessful}
+                    formError={formError}
+                    previousButton={null}
+                    nextButton={
+                        !isLastStep && (
+                            <div>
+                                <NextButton />
+                            </div>
+                        )
+                    }
+                    submitButton={isLastStep && <SubmitButton isSubmitting={isSubmitting || isSubmitSuccessful} />}
+                >
+                    {children}
+                </MultiStepFormTemplate>
             </DonationFormErrorBoundary>
         </FormProvider>
     );

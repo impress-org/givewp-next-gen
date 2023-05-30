@@ -23,6 +23,7 @@ import GoalAchieved from './layouts/GoalAchieved';
 import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
+import DonationSummaryItems from './layouts/DonationSummaryItems';
 
 const defaultFormTemplates = {
     fields: {
@@ -57,6 +58,7 @@ const defaultFormTemplates = {
         goal: Goal,
         goalAchieved: GoalAchieved,
         receipt: DonationReceipt,
+        donationSummaryItems: DonationSummaryItems,
     },
 };
 
