@@ -18,17 +18,15 @@ export default function DonationSummary() {
     const period = useWatch({name: 'subscriptionPeriod'});
     const frequency = useWatch({name: 'subscriptionFrequency'});
 
-    useEffect(() => addToTotal('amount', Number(amount)), [amount]);
+    useEffect(() => {
+        addItem({
+            id: 'amount',
+            label: __('Payment Amount', 'give'),
+            value: formatter.format(Number(amount)),
+        });
 
-    useEffect(
-        () =>
-            addItem({
-                id: 'amount',
-                label: __('Payment Amount', 'give'),
-                value: formatter.format(Number(amount)),
-            }),
-        [amount]
-    );
+        addToTotal('amount', Number(amount));
+    }, [amount]);
 
     useEffect(
         () =>
