@@ -3,6 +3,7 @@ export type EmailNotification = {
     title: string;
     statusOptions: StatusOption[];
     defaultValues: {
+        notification: string;
         email_subject: string;
         email_header: string;
         email_message: string;

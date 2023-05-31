@@ -54,6 +54,7 @@ class FormBuilderViewModel
                 return EmailNotificationData::fromLegacyNotification($notification);
             }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
             'emailPreviewURL' => rest_url('givewp/next-gen/email-preview'),
+            'emailDefaultAddress' => get_option('admin_email'),
         ];
     }
 

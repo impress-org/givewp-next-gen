@@ -24,6 +24,7 @@ declare global {
             emailPreviewURL: string;
             emailTemplateTags: TemplateTag[];
             emailNotifications: EmailNotification[];
+            emailDefaultAddress: string;
         },
     }
 }

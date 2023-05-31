@@ -10,16 +10,17 @@ const EmailTemplateSettings = ({notification}) => {
     const dispatch = useFormStateDispatch();
     const {settings: {emailTemplateOptions}} = useFormState();
 
-    const {emailNotifications} = getFormBuilderData();
+    const {emailNotifications, emailDefaultAddress} = getFormBuilderData();
     const config = emailNotifications.find((config) => config.id === notification);
 
-    const option = emailTemplateOptions[notification] ?? {
-        'status': 'global',
-        'email_subject': '',
-        'email_header': '',
-        'email_message': '',
-        'email_content_type': '',
-        'recipient': [],
+    const option =  {
+        'status': config.defaultValues.notification ?? 'global',
+        'email_subject': config.defaultValues.email_subject,
+        'email_header': config.defaultValues.email_header,
+        'email_message': config.defaultValues.email_message,
+        'email_content_type': config.defaultValues.email_content_type,
+        'recipient': [emailDefaultAddress],
+        ...emailTemplateOptions[notification],
     };
 
     const recipients = option.recipient ?? ['']
@@ -69,7 +70,7 @@ const EmailTemplateSettings = ({notification}) => {
                     />
 
                     <Editor
-                        value={option?.email_message || config.defaultValues.email_message}
+                        value={option?.email_message.replace(/\n/g, "<br />") || config.defaultValues.email_message}
                         onChange={(value) => updateEmailTemplateOption('email_message', value)}
                     />
 
@@ -126,6 +127,7 @@ const EmailTemplateSettings = ({notification}) => {
                     </>}
                     {!config.supportsRecipients && (
                         <TextControl
+                            disabled={true}
                             label={__('Email', 'givewp')}
                             help={__('This email is automatically sent to the individual fundraiser and the recipient cannot be customized.', 'givewp')}
                             onChange={() => null}
