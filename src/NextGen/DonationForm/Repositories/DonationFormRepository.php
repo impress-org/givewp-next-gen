@@ -315,6 +315,16 @@ class DonationFormRepository
     }
 
     /**
+     * @unreleased
+     */
+    public function getDefaultEnabledGatewayId(int $formId): string
+    {
+        $gateways = $this->getEnabledPaymentGateways($formId);
+
+        return !empty($gateways) ? current($gateways)::id() : '';
+    }
+
+    /**
      * @since 0.1.0
      */
     public function getFormDataGateways(int $formId): array

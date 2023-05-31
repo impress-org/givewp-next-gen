@@ -130,11 +130,12 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->rules('required', 'email');
 
             case "givewp/payment-gateways":
-                $supportedGateways = give(DonationFormRepository::class)->getEnabledPaymentGateways($this->formId);
+                $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
+
                 return PaymentGateways::make('gatewayId')
                     ->rules(new GatewayRule())
                     ->required()
-                    ->defaultValue(current($supportedGateways)::id());
+                    ->defaultValue($defaultGatewayId);
 
             case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
