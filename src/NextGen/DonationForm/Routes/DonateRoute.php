@@ -62,6 +62,8 @@ class DonateRoute
                 ]);
                 if(!is_wp_error($authUser)) {
                     $data->wpUserId = $authUser->ID;
+                } else {
+                    $this->sendJsonError('authentication_error', $authUser);
                 }
             }
 
