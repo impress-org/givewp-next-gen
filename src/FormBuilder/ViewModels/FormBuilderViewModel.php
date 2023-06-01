@@ -63,7 +63,15 @@ class FormBuilderViewModel
      */
     public function jsPathFromPluginRoot(): string
     {
-        return 'build/formBuilderApp.js';
+        return GIVE_NEXT_GEN_URL . 'build/formBuilderApp.js';
+    }
+
+    /**
+     * @unreleased
+     */
+    public function jsPathToRegistrars(): string
+    {
+        return GIVE_NEXT_GEN_URL . 'build/formBuilderRegistrars.js';
     }
 
     /**
@@ -73,7 +81,7 @@ class FormBuilderViewModel
     {
         $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/formBuilderApp.asset.php';
 
-        return $scriptAsset['dependencies'];
+        return array_merge($scriptAsset['dependencies'], ['@givewp/form-builder/registrars']);
     }
 
     /**

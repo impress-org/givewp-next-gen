@@ -1,13 +1,12 @@
 <?php
 
 namespace Give\FormBuilder\Routes;
+
 use Give\Addon\View;
-use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 use function wp_enqueue_style;
@@ -63,7 +62,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @unreleased enqueue form builder scripts from plugin root
+     * @unreleased Add support for custom form extensions
      * @since 0.1.0
      *
      * @return void
@@ -79,6 +78,14 @@ class RegisterFormBuilderPageRoute
         if (!get_post($donationFormId)) {
             wp_die(__('Donation form does not exist.'));
         }
+
+        wp_enqueue_script(
+            '@givewp/form-builder/registrars',
+            $formBuilderViewModel->jsPathToRegistrars(),
+            [],
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
 
         (new EnqueueScript(
             '@givewp/form-builder/storage',
@@ -99,9 +106,11 @@ class RegisterFormBuilderPageRoute
          * which might include dependencies that are not supported in some version of WordPress.
          * @link https://github.com/impress-org/givewp-next-gen/pull/181#discussion_r1202686731
          */
+        Hooks::doAction('givewp_form_builder_enqueue_scripts');
+
         wp_enqueue_script(
             '@givewp/form-builder/script',
-            GIVE_NEXT_GEN_URL . $formBuilderViewModel->jsPathFromPluginRoot(),
+            $formBuilderViewModel->jsPathFromPluginRoot(),
             $this->getRegisteredFormBuilderJsDependencies(
                 $formBuilderViewModel->jsDependencies()
             ),

@@ -26,7 +26,13 @@
 
 // remove the green checkbox in inputs
 input[aria-invalid="false"] {
-  background-image: none;
+  &:not([type="checkbox"]) {
+    background-image: none;
+  }
+}
+
+input, select, textarea {
+  margin-bottom: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {

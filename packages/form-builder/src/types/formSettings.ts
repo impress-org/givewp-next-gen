@@ -5,6 +5,7 @@ import {EmailTemplateOption} from "@givewp/form-builder/types/emailTemplateOptio
  * @since 0.1.0
  */
 export type FormSettings = {
+    showHeader: boolean;
     showHeading: boolean;
     showDescription: boolean;
     formTitle: string;

@@ -2,6 +2,7 @@ import TextField from './fields/Text';
 import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
+import CheckboxField from './fields/Checkbox';
 import RadioField from './fields/Radio';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
@@ -23,6 +24,7 @@ import GoalAchieved from './layouts/GoalAchieved';
 import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
+import DonationSummaryItems from './layouts/DonationSummaryItems';
 
 const defaultFormTemplates = {
     fields: {
@@ -33,6 +35,7 @@ const defaultFormTemplates = {
         hidden: HiddenField,
         gateways: Gateways,
         select: SelectField,
+        checkbox: CheckboxField,
         radio: RadioField,
     },
     elements: {
@@ -57,6 +60,7 @@ const defaultFormTemplates = {
         goal: Goal,
         goalAchieved: GoalAchieved,
         receipt: DonationReceipt,
+        donationSummaryItems: DonationSummaryItems,
     },
 };
 

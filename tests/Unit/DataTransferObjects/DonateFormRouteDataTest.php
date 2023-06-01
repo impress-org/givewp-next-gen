@@ -26,12 +26,20 @@ class DonateFormRouteDataTest extends TestCase
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
 
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return NextGenTestGateway::id();
+        });
+
         $customFieldBlockModel = BlockModel::make([
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
@@ -85,12 +93,20 @@ class DonateFormRouteDataTest extends TestCase
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
 
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return NextGenTestGateway::id();
+        });
+
         $customFieldBlockModel = BlockModel::make([
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'text_block_meta',
                         'title' => 'Custom Text Field',
@@ -104,7 +120,7 @@ class DonateFormRouteDataTest extends TestCase
         $amountBlockDataWithRecurringEnabled = json_decode(
             '{
                   "clientId": "8371d4c7-0e8d-4aff-a1a1-b4520f008132",
-                  "name": "custom-block-editor/section",
+                  "name": "givewp/section",
                   "isValid": true,
                   "attributes": {
                     "title": "How much would you like to donate today?",
@@ -113,7 +129,7 @@ class DonateFormRouteDataTest extends TestCase
                   "innerBlocks": [
                     {
                       "clientId": "bddaa0ea-29bf-4143-b62d-aae3396e9b0f",
-                      "name": "custom-block-editor/donation-amount-levels",
+                      "name": "givewp/donation-amount",
                       "isValid": true,
                       "attributes": {
                         "label": "Donation Amount",

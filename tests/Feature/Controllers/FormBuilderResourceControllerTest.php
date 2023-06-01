@@ -5,7 +5,9 @@ namespace Give\Tests\Feature\Controllers;
 use Exception;
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\Database\DB;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
@@ -79,7 +81,13 @@ class FormBuilderResourceControllerTest extends TestCase
             'form' => $mockForm->id,
         ]);
 
-        $this->assertSame($updatedSettings->toJson(), get_post_meta($mockForm->id, 'formBuilderSettings', true));
+        $query = DB::table('give_formmeta')
+            ->select('meta_value as formBuilderSettings')
+            ->where('form_id', $mockForm->id)
+            ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
+            ->get();
+
+        $this->assertSame($updatedSettings->toJson(), $query->formBuilderSettings);
     }
 
     /**
@@ -132,19 +140,22 @@ class FormBuilderResourceControllerTest extends TestCase
     {
         $blockCollectionWithoutAmountField = BlockCollection::make([
             BlockModel::make([
-                'name' => 'custom-block-editor/section',
-                'attributes' => [ 'title' => '', 'description' => '' ],
+                'name' => 'givewp/section',
+                'attributes' => ['title' => '', 'description' => ''],
                 'innerBlocks' => [
-                    /* @note The `donation-amount-levels` block is intentionally omitted for this test. */
-                    [ 'name' => 'custom-block-editor/donor-name', 'attributes' => [
-                        'firstNameLabel' => 'First Name',
-                        'firstNamePlaceholder' => '',
-                        'lastNameLabel' => 'Last Name',
-                        'lastNamePlaceholder' => '',
-                        'requireLastName' => true,
-                    ] ],
-                    [ 'name' => 'custom-block-editor/email-field' ],
-                    [ 'name' => 'custom-block-editor/payment-gateways' ],
+                    /* @note The `donation-amount` block is intentionally omitted for this test. */
+                    [
+                        'name' => 'givewp/donor-name',
+                        'attributes' => [
+                            'firstNameLabel' => 'First Name',
+                            'firstNamePlaceholder' => '',
+                            'lastNameLabel' => 'Last Name',
+                            'lastNamePlaceholder' => '',
+                            'requireLastName' => true,
+                        ]
+                    ],
+                    ['name' => 'givewp/email'],
+                    ['name' => 'givewp/payment-gateways'],
                 ]
             ]),
         ]);
@@ -182,12 +193,12 @@ class FormBuilderResourceControllerTest extends TestCase
     {
         $blockCollectionWithoutAmountField = BlockCollection::make([
             BlockModel::make([
-                'name' => 'custom-block-editor/section',
+                'name' => 'givewp/section',
                 'attributes' => ['title' => '', 'description' => ''],
                 'innerBlocks' => [
-                    /* @note The `donation-amount-levels` block is intentionally omitted for this test. */
+                    /* @note The `donation-amount` block is intentionally omitted for this test. */
                     [
-                        'name' => 'custom-block-editor/donor-name',
+                        'name' => 'givewp/donor-name',
                         'attributes' => [
                             'firstNameLabel' => 'First Name',
                             'firstNamePlaceholder' => '',
@@ -196,8 +207,8 @@ class FormBuilderResourceControllerTest extends TestCase
                             'requireLastName' => true,
                         ]
                     ],
-                    ['name' => 'custom-block-editor/email-field'],
-                    ['name' => 'custom-block-editor/payment-gateways'],
+                    ['name' => 'givewp/email'],
+                    ['name' => 'givewp/payment-gateways'],
                 ]
             ]),
         ]);
