@@ -1,16 +1,17 @@
 import {FieldBlock} from '@givewp/form-builder/types';
 import defaultSettings from '../settings';
 import {__} from "@wordpress/i18n";
-import {Icon} from "@wordpress/icons";
+import BlockIcon from "./icon";
 import {Button, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {BlockEditProps} from "@wordpress/blocks";
-import {useState} from "react";
+import {Icon, external} from "@wordpress/icons";
 
 const login: FieldBlock = {
     name: 'givewp/login',
     settings: {
         ...defaultSettings,
+        icon: BlockIcon,
         title: __('User Login', 'custom-block-editor'),
         description: __('...', 'give'),
         supports: {
@@ -22,9 +23,21 @@ const login: FieldBlock = {
                 type: 'boolean',
                 default: false,
             },
+            loginRedirect: {
+                type: 'boolean',
+                default: false,
+            },
+            loginNotice: {
+                type: 'string',
+                default: __('Already have an account?', 'givewp'),
+            },
+            loginConfirmation: {
+                type: 'string',
+                default: __('Thank you for your continued support.', 'give'),
+            }
         },
         edit: ({attributes, setAttributes}: BlockEditProps<any>) => {
-            const {required} = attributes;
+            const {required, loginRedirect, loginNotice, loginConfirmation} = attributes;
 
             return (
                 <>
@@ -53,15 +66,15 @@ const login: FieldBlock = {
                     )}
 
                     {!required && (
-                        <div style={{display: 'flex', flexDirection: 'row', gap: '7px', justifyContent: 'flex-end'}}>
-                        <span>
-                            {__('Already have an account?', 'givewp')}
-                        </span>
-                            <button
-                                style={{backgroundColor: 'transparent', border: 0, color: 'var(--wp-admin-theme-color)'}}
+                        <div style={{display: 'flex', flexDirection: "row-reverse"}}>
+                            <Button
+                                variant={'link'}
+                                icon={!!loginRedirect ? <Icon icon={external} /> : undefined}
+                                // iconPosition={'right' as 'left' | 'right'} // The icon position does not seem to be working.
+                                style={{flexDirection: 'row-reverse'}}
                             >
-                                {__('Log In', 'givewp')}
-                            </button>
+                                {loginNotice}
+                            </Button>
                         </div>
                     )}
 
@@ -74,23 +87,32 @@ const login: FieldBlock = {
                                     onChange={() => setAttributes({required: !required})}
                                 />
                             </PanelRow>
+                            <PanelRow>
+                                <ToggleControl
+                                    label={__('Redirect to login page', 'give')}
+                                    checked={loginRedirect}
+                                    onChange={(loginRedirect) => setAttributes({loginRedirect})}
+                                />
+                            </PanelRow>
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Login Notice', 'give')}
+                                    value={loginNotice}
+                                    onChange={(loginNotice) => setAttributes({loginNotice})}
+                                />
+                            </PanelRow>
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Login Confirmation', 'give')}
+                                    value={loginConfirmation}
+                                    onChange={(loginConfirmation) => setAttributes({loginConfirmation})}
+                                />
+                            </PanelRow>
                         </PanelBody>
                     </InspectorControls>
                 </>
             )
         },
-        icon: () => (
-            <Icon
-                icon={
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M14.2736 13.4026C14.1721 13.3682 13.5308 13.0689 13.9315 11.8076H13.9258C14.9704 10.6936 15.7686 8.90101 15.7686 7.13619C15.7686 4.42256 14.026 3 12.0006 3C9.97402 3 8.24093 4.4219 8.24093 7.13619C8.24093 8.90827 9.03473 10.7081 10.0857 11.8195C10.4954 12.9321 9.76281 13.3451 9.60966 13.4032C7.48861 14.1974 5 15.6451 5 17.0743V17.6101C5 19.5573 8.64613 20 12.0204 20C15.3998 20 19 19.5573 19 17.6101V17.0743C19 15.6022 16.4993 14.1657 14.2736 13.4026Z"
-                            fill="#000C00"
-                        />
-                    </svg>
-                }
-            />
-        ),
     }
 };
 

@@ -2,12 +2,20 @@ import {useState} from "react";
 import {__} from "@wordpress/i18n";
 import type {FieldProps} from '@givewp/forms/propTypes';
 import {useFormState} from "react-hook-form";
+import login from "@givewp/form-builder/src/blocks/fields/login";
 
 interface AuthFieldProps extends FieldProps {
     required: boolean;
+    loginRedirect: boolean
+    loginRedirectUrl: string;
+    loginNotice:  string;
+    loginConfirmation: string;
 }
 
-export default function Authentication({Label, ErrorMessage, placeholder, fieldError, inputProps, required }: AuthFieldProps) {
+export default function Authentication({
+   Label, ErrorMessage, placeholder, fieldError, inputProps,
+   required, loginRedirect, loginRedirectUrl, loginNotice, loginConfirmation,
+}: AuthFieldProps) {
 
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [showLogin, setShowLogin] = useState<boolean>(required);
@@ -17,7 +25,7 @@ export default function Authentication({Label, ErrorMessage, placeholder, fieldE
         <>
             {isAuth && (
                 <p style={{textAlign: 'center'}}>
-                    <em>{__('Thank you for your continued support.', 'give')}</em>
+                    <em>{loginConfirmation}</em>
                 </p>
             )}
             {!isAuth && showLogin && (
@@ -26,7 +34,12 @@ export default function Authentication({Label, ErrorMessage, placeholder, fieldE
                 }} />
             )}
             {!isAuth && !showLogin && (
-                <LoginNotice onClick={toggleShowLogin} />
+                <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                    {loginRedirect
+                        ? <a href={loginRedirectUrl}>{loginNotice}</a>
+                        : <LoginNotice onClick={toggleShowLogin}>{loginNotice}</LoginNotice>
+                    }
+                </div>
             )}
         </>
     );
@@ -69,18 +82,13 @@ const LoginForm = ({onLogin}) => {
     )
 }
 
-const LoginNotice = ({onClick}) => {
+const LoginNotice = ({children, onClick}) => {
     return (
-        <div style={{display: 'flex', flexDirection: 'row', gap: '7px', justifyContent: 'flex-end', alignItems: 'baseline'}}>
-                <span>
-                    {__('Already have an account?', 'givewp')}
-                </span>
-            <button
-                onClick={onClick}
-                style={{width: 'auto', backgroundColor: 'transparent', border: 0, color: 'var(--wp-admin-theme-color)'}}
-            >
-                {__('Log In', 'givewp')}
-            </button>
-        </div>
+        <button
+            onClick={onClick}
+            style={{width: 'auto', backgroundColor: 'transparent', border: 0, color: 'var(--wp-admin-theme-color)'}}
+        >
+            {children}
+        </button>
     )
 }

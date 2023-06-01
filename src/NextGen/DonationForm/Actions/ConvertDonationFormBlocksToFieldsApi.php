@@ -151,7 +151,11 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "givewp/login":
                 return Authentication::make('login')
-                    ->required($block->getAttribute('required'));
+                    ->required($block->getAttribute('required'))
+                    ->loginRedirect($block->getAttribute('loginRedirect'))
+                    ->loginRedirectUrl(wp_login_url()) // @todo set redirect parameter back to donation form.
+                    ->loginNotice($block->getAttribute('loginNotice'))
+                    ->loginConfirmation($block->getAttribute('loginConfirmation'));
 
             default:
                 $customField = apply_filters(
