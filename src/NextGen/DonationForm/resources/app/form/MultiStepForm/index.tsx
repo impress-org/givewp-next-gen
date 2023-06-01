@@ -8,6 +8,7 @@ import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import SectionNode from '@givewp/forms/app/fields/SectionNode';
 import Steps from '@givewp/forms/app/form/MultiStepForm/components/Steps';
 import HeaderStep from '@givewp/forms/app/form/MultiStepForm/components/HeaderStep';
+import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary';
 
 const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.section, 'section');
 
@@ -71,7 +72,9 @@ export default function MultiStepForm({sections, showHeader}: {sections: Section
 
     return (
         <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0}}>
-            <Steps steps={steps} />
+            <DonationSummaryProvider>
+                <Steps steps={steps} />
+            </DonationSummaryProvider>
         </DonationFormMultiStepStateProvider>
     );
 }
