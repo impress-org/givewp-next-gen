@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\Framework\EnqueueScript;
+use Give\NextGen\DonationForm\Actions\GenerateAuthUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
@@ -139,6 +140,7 @@ class DonationFormViewModel
     {
         $donateUrl = (new GenerateDonateRouteUrl())();
         $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
+        $authUrl = (new GenerateAuthUrl())();
         $donationFormGoalData = new DonationFormGoalData($this->donationFormId, $this->formSettings);
 
         $formDataGateways = $this->donationFormRepository->getFormDataGateways($this->donationFormId);
@@ -152,6 +154,7 @@ class DonationFormViewModel
         return [
             'donateUrl' => $donateUrl,
             'validateUrl' => $validateUrl,
+            'authUrl' => $authUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],

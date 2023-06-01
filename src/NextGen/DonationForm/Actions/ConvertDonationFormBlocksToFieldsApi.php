@@ -127,7 +127,13 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/email":
                 return Email::make('email')
                     ->emailTag('email')
-                    ->rules('required', 'email');
+                    ->rules('required', 'email')
+                    ->tap(function ($email) use ($block) {
+                        if(is_user_logged_in()) {
+                            $email->defaultValue(wp_get_current_user()->user_email);
+                        }
+                        return $email;
+                    });
 
             case "givewp/payment-gateways":
                 return PaymentGateways::make('gatewayId')
@@ -152,6 +158,7 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/login":
                 return Authentication::make('login')
                     ->required($block->getAttribute('required'))
+                    ->isAuthenticated(is_user_logged_in())
                     ->loginRedirect($block->getAttribute('loginRedirect'))
                     ->loginRedirectUrl(wp_login_url()) // @todo set redirect parameter back to donation form.
                     ->loginNotice($block->getAttribute('loginNotice'))
@@ -188,6 +195,13 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->placeholder($block->getAttribute('lastNamePlaceholder'))
                 ->required($block->getAttribute('requireLastName'))
                 ->rules('max:255');
+
+            if(is_user_logged_in()) {
+                $user = wp_get_current_user();
+                $group->getNodeByName('firstName')->defaultValue($user->first_name);
+                $group->getNodeByName('lastName')->defaultValue($user->last_name);
+            }
+
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')

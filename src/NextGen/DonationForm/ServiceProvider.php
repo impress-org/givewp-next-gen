@@ -12,6 +12,7 @@ use Give\NextGen\DonationForm\Controllers\DonationFormViewController;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
+use Give\NextGen\DonationForm\Routes\AuthenticationRoute;
 use Give\NextGen\DonationForm\Routes\DonateRoute;
 use Give\NextGen\DonationForm\Routes\ValidationRoute;
 use Give\NextGen\Framework\Routes\Route;
@@ -59,6 +60,8 @@ class ServiceProvider implements ServiceProviderInterface
          * @unreleased
          */
         Route::post('validate', ValidationRoute::class);
+
+        Route::post('authenticate', AuthenticationRoute::class);
 
         /**
          * @since 0.1.0

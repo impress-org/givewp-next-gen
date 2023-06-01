@@ -54,6 +54,17 @@ class DonateRoute
         try {
             $data = $formData->validated();
 
+            // (Maybe?) authenticate user.
+            if(isset($request['login']) && isset($request['password'])) {
+                $authUser = wp_signon([
+                    'user_login' => $request['login'],
+                    'user_password' => $request['password'],
+                ]);
+                if(!is_wp_error($authUser)) {
+                    $data->wpUserId = $authUser->ID;
+                }
+            }
+
             $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
             $type = 'validation_error';
