@@ -20,16 +20,16 @@
         ],
         "paths": {
             "@givewp/forms/types": [
-                "./src/DonationForm/resources/types.ts"
+                "./src/DonationForms/resources/types.ts"
             ],
             "@givewp/forms/propTypes": [
-                "./src/DonationForm/resources/propTypes.ts"
+                "./src/DonationForms/resources/propTypes.ts"
             ],
             "@givewp/forms/app/*": [
-                "./src/DonationForm/resources/app/*"
+                "./src/DonationForms/resources/app/*"
             ],
             "@givewp/form-builder/*": [
-                "./packages/form-builder/src/*"
+                "./src/FormBuilder/resources/js/form-builder/src/*"
             ]
         }
     },
