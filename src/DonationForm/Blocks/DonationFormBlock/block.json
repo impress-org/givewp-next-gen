@@ -6,7 +6,7 @@
     "title": "Donation Form (v3)",
     "category": "give",
     "icon": "superhero",
-    "description": "A whole new world.",
+    "description": "The GiveWP Donation Form (v3) block inserts an existing v3 donation form into the page.",
     "supports": {
         "html": false
     },
