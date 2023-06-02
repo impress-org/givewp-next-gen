@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
@@ -13,7 +13,7 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardL
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripeGatewayData;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
@@ -30,11 +30,11 @@ use Stripe\Subscription as StripeSubscription;
 /**
  * @since 0.3.0
  */
-class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable,
-                                                                                   SubscriptionAmountEditable
+class StripePaymentElementGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable,
+                                                                                          SubscriptionAmountEditable
 {
     use CanSetupStripeApp;
-    use NextGenStripeRepository;
+    use StripePaymentElementRepository;
 
     /**
      * @since 0.3.0

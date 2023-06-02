@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners;
 
 use Exception;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;

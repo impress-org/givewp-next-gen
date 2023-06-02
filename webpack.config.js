@@ -30,7 +30,9 @@ module.exports = {
         donationFormRegistrars: srcPath('DonationForm/resources/registrars/index.ts'),
         donationFormEmbed: srcPath('DonationForm/resources/embed.ts'),
         donationFormEmbedInside: srcPath('DonationForm/resources/embedInside.ts'),
-        nextGenStripeGateway: srcPath('PaymentGateways/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'),
+        stripePaymentElementGateway: srcPath(
+            'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
+        ),
         nextGenTestGateway: srcPath('PaymentGateways/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
         payPalStandardGateway: srcPath(
             'PaymentGateways/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.tsx'

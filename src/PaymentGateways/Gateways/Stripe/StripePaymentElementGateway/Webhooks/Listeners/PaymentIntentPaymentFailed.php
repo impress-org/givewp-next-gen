@@ -1,26 +1,26 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners;
 
 use Exception;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
-use Stripe\Charge;
 use Stripe\Event;
+use Stripe\PaymentIntent;
 
 /**
  * @since 0.3.0
  */
-class ChargeRefunded
+class PaymentIntentPaymentFailed
 {
     use StripeWebhookListenerRepository;
 
     /**
-     * Processes charge.refunded event.
+     * Processes payment_intent.payment_failed event.
      *
-     * Occurs whenever a charge is refunded, including partial refunds.
+     * Occurs when a PaymentIntent has failed the attempt to create a payment method or a payment.
      *
-     * @see https://stripe.com/docs/api/events/types#event_types-charge.refunded
+     * @see https://stripe.com/docs/api/events/types#event_types-payment_intent.payment_failed
      *
      * @since 0.3.0
      *
@@ -40,27 +40,25 @@ class ChargeRefunded
 
     /**
      * @since 0.3.0
-     *
-     * @throws Exception
      */
     public function processEvent(Event $event)
     {
-        /* @var Charge $stripeCharge */
-        $stripeCharge = $event->data->object;
+        /* @var PaymentIntent $paymentIntent */
+        $paymentIntent = $event->data->object;
 
-        $donation = give()->donations->getByGatewayTransactionId($stripeCharge->payment_intent);
+        $donation = give()->donations->getByGatewayTransactionId($paymentIntent->id);
 
         if (!$donation || !$this->shouldProcessDonation($donation)) {
             return;
         }
 
-        if ($stripeCharge->refunded && !$donation->status->isRefunded()) {
-            $donation->status = DonationStatus::REFUNDED();
+        if ($donation->type->isSingle() && !$donation->status->isFailed()) {
+            $donation->status = DonationStatus::FAILED();
             $donation->save();
 
             DonationNote::create([
                 'donationId' => $donation->id,
-                'content' => __('Payment refunded in Stripe.', 'give'),
+                'content' => __('Payment failed in Stripe.', 'give'),
             ]);
         }
     }

@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\Gateways\Stripe;
 
 use Give\Donations\Models\Donation;
 use Give\Helpers\Gateways\Stripe;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Stripe;
 
 class LegacyStripeAdapter
@@ -31,7 +31,7 @@ class LegacyStripeAdapter
             $gatewaysFromSettings
         );
 
-        if (!class_exists('Give_Stripe_Webhooks') && array_key_exists(NextGenStripeGateway::id(), $gateways)) {
+        if (!class_exists('Give_Stripe_Webhooks') && array_key_exists(StripePaymentElementGateway::id(), $gateways)) {
             (new Give_Stripe())->include_frontend_files();
         }
     }
@@ -46,7 +46,7 @@ class LegacyStripeAdapter
     public function addToStripeSupportedPaymentMethodsList()
     {
         add_filter('give_stripe_supported_payment_methods', static function ($gateways) {
-            $gatewayId = NextGenStripeGateway::id();
+            $gatewayId = StripePaymentElementGateway::id();
 
             if (!in_array($gatewayId, $gateways, true)) {
                 $gateways[] = $gatewayId;
@@ -67,7 +67,7 @@ class LegacyStripeAdapter
          * Transaction ID link in donation details
          */
         add_filter(
-            sprintf('give_payment_details_transaction_id-%s', NextGenStripeGateway::id()),
+            sprintf('give_payment_details_transaction_id-%s', StripePaymentElementGateway::id()),
             'give_stripe_link_transaction_id',
             10,
             2
@@ -80,7 +80,7 @@ class LegacyStripeAdapter
             /** @var Donation $donation */
             $donation = Donation::find($donationId);
 
-            if ($donation->gatewayId === NextGenStripeGateway::id()) {
+            if ($donation->gatewayId === StripePaymentElementGateway::id()) {
                 $stripeAccounts = give_stripe_get_all_accounts();
                 $accountId = give_get_meta($donationId, '_give_stripe_account_slug', true);
                 $accountDetail = $stripeAccounts[$accountId] ?? [];
@@ -107,7 +107,7 @@ class LegacyStripeAdapter
             /** @var Donation $donation */
             $donation = Donation::find($donationId);
 
-            if ($donation->gatewayId === NextGenStripeGateway::id()) {
+            if ($donation->gatewayId === StripePaymentElementGateway::id()) {
                 Stripe::addAccountDetail($donationId, $donation->formId);
             }
         });

@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Log\Log;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\Subscriptions\Models\Subscription;
 use Stripe\Event;
 
@@ -16,7 +16,7 @@ trait StripeWebhookListenerRepository
      */
     protected function shouldProcessSubscription(Subscription $subscription): bool
     {
-        return $subscription->gatewayId === NextGenStripeGateway::id();
+        return $subscription->gatewayId === StripePaymentElementGateway::id();
     }
 
     /**
@@ -24,7 +24,7 @@ trait StripeWebhookListenerRepository
      */
     protected function shouldProcessDonation(Donation $donation): bool
     {
-        return $donation->gatewayId === NextGenStripeGateway::id();
+        return $donation->gatewayId === StripePaymentElementGateway::id();
     }
 
     /**

@@ -16,15 +16,15 @@ use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\ChargeRefunded;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\CustomerSubscriptionDeleted;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentFailed;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentSucceeded;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGatewaySubscriptionModule;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionDeleted;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentFailed;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -62,7 +62,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         add_action('givewp_register_payment_gateway', static function (PaymentGatewayRegister $registrar) {
             $registrar->registerGateway(NextGenTestGateway::class);
-            $registrar->registerGateway(NextGenStripeGateway::class);
+            $registrar->registerGateway(StripePaymentElementGateway::class);
             $registrar->registerGateway(NextGenTestGatewayOffsite::class);
             $registrar->unregisterGateway(PayPalStandard::id());
             $registrar->registerGateway(PayPalStandardGateway::class);
@@ -96,9 +96,9 @@ class ServiceProvider implements ServiceProviderInterface
          */
         if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
             add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", NextGenStripeGateway::id()),
+                sprintf("givewp_gateway_%s_subscription_module", StripePaymentElementGateway::id()),
                 static function () {
-                    return NextGenStripeGatewaySubscriptionModule::class;
+                    return StripePaymentElementGatewaySubscriptionModule::class;
                 }
             );
 

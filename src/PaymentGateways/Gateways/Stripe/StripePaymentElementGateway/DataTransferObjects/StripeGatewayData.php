@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects;
 
 class StripeGatewayData
 {

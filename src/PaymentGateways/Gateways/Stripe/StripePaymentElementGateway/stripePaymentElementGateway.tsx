@@ -73,7 +73,7 @@ interface StripeGateway extends Gateway {
     settings?: StripeSettings;
 }
 
-const stripeGateway: StripeGateway = {
+const stripePaymentElementGateway: StripeGateway = {
     id: 'stripe_payment_element',
     initialize() {
         const {stripeKey, stripeConnectedAccountId} = this.settings;
@@ -155,10 +155,10 @@ const stripeGateway: StripeGateway = {
 
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
-                <StripeFields gateway={stripeGateway} />
+                <StripeFields gateway={stripePaymentElementGateway} />
             </Elements>
         );
     },
 };
 
-window.givewp.gateways.register(stripeGateway);
+window.givewp.gateways.register(stripePaymentElementGateway);

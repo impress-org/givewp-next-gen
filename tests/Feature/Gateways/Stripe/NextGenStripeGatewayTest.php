@@ -10,8 +10,8 @@ use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripePaymentIntentData;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripePaymentIntentData;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use PHPUnit_Framework_MockObject_MockBuilder;
@@ -46,7 +46,7 @@ class NextGenStripeGatewayTest extends TestCase
         $mockGateway->method('getStripeConnectedAccountKey')
             ->willReturn($stripeConnectedAccountKey);
 
-        /** @var NextGenStripeGateway $mockGateway */
+        /** @var StripePaymentElementGateway $mockGateway */
         $settings = $mockGateway->formSettings($form->id);
 
         $this->assertSame($settings, [
@@ -147,7 +147,7 @@ class NextGenStripeGatewayTest extends TestCase
     protected function getMockGateway(array $methods = [])
     {
         return $this->createMock(
-            NextGenStripeGateway::class,
+            StripePaymentElementGateway::class,
             function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) use ($methods) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
@@ -8,7 +8,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripePaymentIntentData;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripePaymentIntentData;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Stripe\Customer;
 use Stripe\ErrorObject;
@@ -16,7 +16,7 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;
 use Stripe\PaymentIntent;
 
-trait NextGenStripeRepository
+trait StripePaymentElementRepository
 {
     /**
      * @since 0.3.0 update params to use StripePaymentIntentData

@@ -1,25 +1,24 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners;
 
 use Exception;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Event;
 use Stripe\Subscription as StripeSubscription;
 
 /**
  * @since 0.3.0
  */
-class CustomerSubscriptionDeleted
+class CustomerSubscriptionCreated
 {
     use StripeWebhookListenerRepository;
 
     /**
-     * Processes customer.subscription.deleted event.
+     * Processes customer.subscription.created event.
      *
-     * Occurs whenever a customer’s subscription ends.
+     * Occurs whenever a customer is signed up for a new plan.
      *
-     * @see https://stripe.com/docs/api/events/types#event_types-customer.subscription.deleted
+     * @see https://stripe.com/docs/api/events/types#event_types-customer.subscription.created
      *
      * @since 0.3.0
      *
@@ -39,7 +38,6 @@ class CustomerSubscriptionDeleted
 
     /**
      * @since 0.3.0
-     * @throws Exception
      */
     public function processEvent(Event $event)
     {
@@ -53,9 +51,8 @@ class CustomerSubscriptionDeleted
             return;
         }
 
-        if (!$subscription->status->isCancelled() && !$subscription->status->isCompleted()) {
-            $subscription->status = SubscriptionStatus::COMPLETED();
-            $subscription->save();
-        }
+        // exit early to prevent legacy webhook
+        // we don't need to do anything here at the moment because the subscription is already created & active
+        exit;
     }
 }

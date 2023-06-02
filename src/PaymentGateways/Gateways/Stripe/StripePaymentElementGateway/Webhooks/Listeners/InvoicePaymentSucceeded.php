@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Decorators\SubscriptionModelDecorator;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Decorators\SubscriptionModelDecorator;
 use Give\Subscriptions\Models\Subscription;
 use Stripe\Event;
 use Stripe\Invoice;

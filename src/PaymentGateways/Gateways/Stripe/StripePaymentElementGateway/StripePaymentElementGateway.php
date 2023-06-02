@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
@@ -9,15 +9,15 @@ use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripeGatewayData;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
 use Stripe\Exception\ApiErrorException;
 
 /**
  * @since 0.1.0
  */
-class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
+class StripePaymentElementGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
-    use NextGenStripeRepository;
+    use StripePaymentElementRepository;
     use HandleHttpResponses;
 
     /**
@@ -41,7 +41,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getName(): string
     {
-        return __('Stripe - Payment Element (Next Gen)', 'give');
+        return __('Stripe - Payment Element', 'give');
     }
 
     /**
@@ -49,7 +49,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Stripe Payment Element (Next Gen)', 'give');
+        return __('Stripe Payment Element', 'give');
     }
 
     /**
@@ -59,7 +59,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     {
         return new EnqueueScript(
             self::id(),
-            'build/nextGenStripeGateway.js',
+            'build/stripePaymentElementGateway.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'

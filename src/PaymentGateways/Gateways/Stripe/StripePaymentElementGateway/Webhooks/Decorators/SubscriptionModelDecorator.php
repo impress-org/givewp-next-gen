@@ -1,5 +1,5 @@
 <?php
-namespace Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Decorators;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Decorators;
 
 use Exception;
 use Give\Donations\Models\Donation;

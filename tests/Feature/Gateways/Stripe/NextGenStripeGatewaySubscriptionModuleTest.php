@@ -6,7 +6,7 @@ use Exception;
 use Give\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\DonationForm\Models\DonationForm;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
-use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGatewaySubscriptionModule;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -136,12 +136,17 @@ class NextGenStripeGatewaySubscriptionModuleTest extends TestCase
     protected function getMockGateway(array $methods = [])
     {
         return $this->createMock(
-            NextGenStripeGatewaySubscriptionModule::class,
+            StripePaymentElementGatewaySubscriptionModule::class,
             function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) use ($methods) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(
                     array_merge(
-                        ['setUpStripeAppInfo', 'generateStripePaymentIntent', 'getStripePublishableKey', 'getStripeConnectedAccountKey'],
+                        [
+                            'setUpStripeAppInfo',
+                            'generateStripePaymentIntent',
+                            'getStripePublishableKey',
+                            'getStripeConnectedAccountKey'
+                        ],
                         $methods
                     )
                 );
