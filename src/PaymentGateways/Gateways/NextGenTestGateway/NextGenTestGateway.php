@@ -37,7 +37,7 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
      */
     public function getName(): string
     {
-        return __('Test Gateway (Next Gen)', 'give');
+        return __('Test Gateway (v3)', 'give');
     }
 
     /**
@@ -45,7 +45,7 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway (Next Gen)', 'give');
+        return __('Test Gateway (v3)', 'give');
     }
 
     /**

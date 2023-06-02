@@ -61,7 +61,7 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
      */
     public function getName(): string
     {
-        return __('PayPal Standard (Next Gen)', 'give');
+        return __('PayPal Standard (v3)', 'give');
     }
 
     /**

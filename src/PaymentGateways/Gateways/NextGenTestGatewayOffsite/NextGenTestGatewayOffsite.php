@@ -47,7 +47,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getName(): string
     {
-        return __('Test Gateway Offsite (Next Gen)', 'give');
+        return __('Test Gateway Offsite (v3)', 'give');
     }
 
     /**
@@ -55,7 +55,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway Offsite (Next Gen)', 'give');
+        return __('Test Gateway Offsite (v3)', 'give');
     }
 
     /**

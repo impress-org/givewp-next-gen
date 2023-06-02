@@ -64,7 +64,7 @@ class FormBuilderResourceControllerTest extends TestCase
         $mockRequest = $this->getMockRequest(WP_REST_Server::CREATABLE);
 
         $updatedSettings = $mockForm->settings;
-        $updatedSettings->formTitle = 'Updated Next Gen Form Builder Title';
+        $updatedSettings->formTitle = 'Updated v3 Form Builder Title';
 
         $mockRequest->set_param('id', $mockForm->id);
         $mockRequest->set_param('settings', $updatedSettings->toJson());
