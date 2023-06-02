@@ -2,8 +2,8 @@
 
 namespace Give\Tests\Unit\DataTransferObjects;
 
-use Give\NextGen\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
-use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
+use Give\DonationForm\Models\DonationForm;
 use Give\Tests\TestCase;
 
 /**

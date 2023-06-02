@@ -2,13 +2,13 @@
 
 namespace TestsNextGen\Unit\DataTransferObjects;
 
+use Give\DonationForm\DataTransferObjects\DonateControllerData;
+use Give\DonationForm\DataTransferObjects\DonateFormRouteData;
+use Give\DonationForm\Models\DonationForm;
 use Give\Donations\ValueObjects\DonationType;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
+use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 

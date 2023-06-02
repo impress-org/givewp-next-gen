@@ -2,13 +2,13 @@
 
 namespace Give\Tests\Unit\DonationForm\VieModels;
 
+use Give\DonationForm\Models\DonationForm;
+use Give\DonationForm\Repositories\DonationFormRepository;
+use Give\DonationForm\ViewModels\DonationConfirmationReceiptViewModel;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
-use Give\NextGen\DonationForm\ViewModels\DonationConfirmationReceiptViewModel;
-use Give\NextGen\Framework\Receipts\DonationReceipt;
-use Give\NextGen\Framework\Receipts\DonationReceiptBuilder;
+use Give\Framework\Receipts\DonationReceipt;
+use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

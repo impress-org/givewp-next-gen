@@ -2,11 +2,11 @@
 
 namespace Give\Tests\Unit\DonationForm\Actions;
 
+use Give\DonationForm\Models\DonationForm;
+use Give\DonationForm\ValueObjects\GoalType;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\ValueObjects\GoalType;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

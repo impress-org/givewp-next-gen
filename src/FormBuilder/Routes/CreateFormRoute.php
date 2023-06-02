@@ -3,11 +3,11 @@
 namespace Give\FormBuilder\Routes;
 
 use Exception;
+use Give\DonationForm\Models\DonationForm;
+use Give\DonationForm\Properties\FormSettings;
+use Give\DonationForm\ValueObjects\DonationFormStatus;
 use Give\FormBuilder\FormBuilderRouteBuilder;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\Properties\FormSettings;
-use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
-use Give\NextGen\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockCollection;
 
 /**
  * Route to create a new form

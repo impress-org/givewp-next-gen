@@ -2,13 +2,13 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForm\Models\DonationForm;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\FormDesigns\FormDesign;
+use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\FormDesigns\FormDesign;
-use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
 class FormBuilderViewModel
 {

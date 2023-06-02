@@ -2,9 +2,9 @@
 
 namespace Give\Tests\Unit\DonationForm\VieModels;
 
-use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\ValueObjects\GoalType;
+use Give\DonationForm\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForm\Models\DonationForm;
+use Give\DonationForm\ValueObjects\GoalType;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

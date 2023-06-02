@@ -3,15 +3,15 @@
 namespace Give\Tests\Feature\Gateways\Stripe;
 
 use Exception;
+use Give\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
+use Give\DonationForm\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripePaymentIntentData;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
+use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripePaymentIntentData;
+use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use PHPUnit_Framework_MockObject_MockBuilder;

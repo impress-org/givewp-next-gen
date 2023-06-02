@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\DataTransferObjects;
 
-use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
+use Give\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 use Give\Tests\TestCase;
 
 /**

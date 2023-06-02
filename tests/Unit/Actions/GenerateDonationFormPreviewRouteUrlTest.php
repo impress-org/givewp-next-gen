@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\Actions;
 
-use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\Tests\TestCase;
 
 /**

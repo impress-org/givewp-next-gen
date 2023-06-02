@@ -20,13 +20,13 @@
         ],
         "paths": {
             "@givewp/forms/types": [
-                "./src/NextGen/DonationForm/resources/types.ts"
+                "./src/DonationForm/resources/types.ts"
             ],
             "@givewp/forms/propTypes": [
-                "./src/NextGen/DonationForm/resources/propTypes.ts"
+                "./src/DonationForm/resources/propTypes.ts"
             ],
             "@givewp/forms/app/*": [
-                "./src/NextGen/DonationForm/resources/app/*"
+                "./src/DonationForm/resources/app/*"
             ],
             "@givewp/form-builder/*": [
                 "./packages/form-builder/src/*"

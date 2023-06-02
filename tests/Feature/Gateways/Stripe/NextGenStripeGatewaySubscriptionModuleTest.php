@@ -3,10 +3,10 @@
 namespace Give\Tests\Feature\Gateways\Stripe;
 
 use Exception;
+use Give\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
+use Give\DonationForm\Models\DonationForm;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
+use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGatewaySubscriptionModule;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;

@@ -4,8 +4,8 @@ namespace Give\Tests\Feature\Gateways\Stripe\Webhooks\Listeners;
 
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentFailed;
+use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentFailed;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;

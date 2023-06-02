@@ -3,7 +3,7 @@
 namespace Give\Tests\Unit\DonationForm\Models;
 
 use Exception;
-use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\DonationForm\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

@@ -5,13 +5,13 @@ namespace Give;
 use Give\Addon\Activation;
 use Give\Addon\Environment;
 use Give\Addon\ServiceProvider as AddonServiceProvider;
-use Give\NextGen\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
-use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
-use Give\NextGen\FormPage\ServiceProvider as FormPageServiceProvider;
-use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
-use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
-use Give\NextGen\ServiceProvider as NextGenServiceProvider;
-use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
+use Give\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
+use Give\DonationForm\ServiceProvider as DonationFormServiceProvider;
+use Give\FormPage\ServiceProvider as FormPageServiceProvider;
+use Give\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
+use Give\PaymentGateways\Gateways\ServiceProvider as PaymentGatewaysServiceProvider;
+use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
+use Give\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
 
 /**
  * Plugin Name:         Give - Visual Donation Form Builder
@@ -61,8 +61,8 @@ add_action(
             give(LegacyStripeAdapter::class)->addToStripeSupportedPaymentMethodsList();
 
             give()->registerServiceProvider(AddonServiceProvider::class);
+            give()->registerServiceProvider(PaymentGatewaysServiceProvider::class);
             give()->registerServiceProvider(DonationFormServiceProvider::class);
-            give()->registerServiceProvider(NextGenServiceProvider::class);
             give()->registerServiceProvider(FormBuilder\ServiceProvider::class);
             give()->registerServiceProvider(FormDesignServiceProvider::class);
             give()->registerServiceProvider(CustomFieldsServiceProvider::class);

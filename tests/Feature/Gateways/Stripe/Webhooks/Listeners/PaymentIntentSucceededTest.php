@@ -6,8 +6,8 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentSucceeded;
+use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\PaymentGateways\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Stripe\Event;
@@ -16,6 +16,7 @@ use Stripe\PaymentIntent;
 class PaymentIntentSucceededTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * @since 0.3.0
      *

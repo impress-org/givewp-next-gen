@@ -2,21 +2,23 @@
 
 namespace Give\Tests\Unit\CustomFields\Controllers;
 
+use Give\CustomFields\Controllers\DonationDetailsController;
+use Give\CustomFields\Views\DonationDetailsView;
+use Give\DonationForm\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
-use Give\NextGen\CustomFields\Controllers\DonationDetailsController;
-use Give\NextGen\CustomFields\Views\DonationDetailsView;
-use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class TestDonationDetailsController extends TestCase {
+class TestDonationDetailsController extends TestCase
+{
     use RefreshDatabase;
 
     /**
      * @since 0.1.0
      */
-    public function testShowShouldReturnDonationDetailsViewRendered() {
+    public function testShowShouldReturnDonationDetailsViewRendered()
+    {
         $donationForm = DonationForm::factory()->create();
 
         $donation = Donation::factory()->create([

@@ -2,16 +2,16 @@
 
 namespace Give\Tests\Unit\DonationForm\VieModels;
 
+use Give\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
+use Give\DonationForm\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
+use Give\DonationForm\Models\DonationForm;
+use Give\DonationForm\Properties\FormSettings;
+use Give\DonationForm\Repositories\DonationFormRepository;
+use Give\DonationForm\ValueObjects\GoalType;
+use Give\DonationForm\ViewModels\DonationFormViewModel;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
-use Give\NextGen\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
-use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
-use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\Properties\FormSettings;
-use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
-use Give\NextGen\DonationForm\ValueObjects\GoalType;
-use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

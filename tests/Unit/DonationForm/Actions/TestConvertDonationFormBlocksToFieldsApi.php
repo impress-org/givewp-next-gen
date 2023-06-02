@@ -3,13 +3,13 @@
 namespace Give\Tests\Unit\DonationForm\Actions;
 
 use Exception;
+use Give\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
-use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
