@@ -116,9 +116,9 @@
                         <p><?php
                             _e('Go directly to the new form builder and get started exploring!', 'give'); ?></p>
                         <a
-                            href="<?php
-                            echo admin_url('edit.php?post_type=give_forms&page=form-builder-next-gen'); ?>"
-                            style="
+                                href="<?php
+                                echo admin_url('edit.php?post_type=give_forms&page=givewp-form-builder'); ?>"
+                                style="
                         display: flex;
                         flex-direction: row;
                         justify-content: center;

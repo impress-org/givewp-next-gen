@@ -109,7 +109,7 @@ class DonationConfirmationReceiptViewModel
         ?>
 
         <script>
-            window.giveNextGenExports = <?= wp_json_encode($this->formExports()) ?>;
+            window.givewpDonationFormExports = <?= wp_json_encode($this->formExports()) ?>;
             window.givewpDonationConfirmationReceiptExports = <?= wp_json_encode($this->exports()) ?>;
         </script>
 

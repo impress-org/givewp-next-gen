@@ -29,7 +29,9 @@ class CreateFormRoute
                 exit();
             }
             if ('new' === $_GET['donationFormID']) {
-                $blocksJson = file_get_contents(GIVE_NEXT_GEN_DIR . 'packages/form-builder/src/blocks.json');
+                $blocksJson = file_get_contents(
+                    GIVE_NEXT_GEN_DIR . 'src/FormBuilder/resources/js/form-builder/src/blocks.json'
+                );
 
                 $form = DonationForm::create([
                     'title' => __('GiveWP Donation Form', 'give'),

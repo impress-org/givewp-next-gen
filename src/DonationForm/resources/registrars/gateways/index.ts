@@ -1,6 +1,6 @@
 import {Gateway, RegisteredGateway} from '@givewp/forms/types';
 
-const {registeredGateways} = window.giveNextGenExports;
+const {registeredGateways} = window.givewpDonationFormExports;
 
 /**
  * @since 0.1.0

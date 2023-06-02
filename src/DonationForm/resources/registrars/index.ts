@@ -7,7 +7,7 @@ import useDonationSummary from '@givewp/forms/app/hooks/useDonationSummary';
 
 declare global {
     interface Window {
-        giveNextGenExports: FormServerExports;
+        givewpDonationFormExports: FormServerExports;
         givewpDonationConfirmationReceiptExports: DonationConfirmationReceiptServerExports;
         givewp: {
             gateways: GatewayRegistrar;
