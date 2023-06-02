@@ -37,7 +37,10 @@ class AuthenticationRoute
      */
     protected function authenticate(AuthenticationData $auth): WP_User
     {
-        $userOrError = wp_authenticate_username_password( null, $auth->login, $auth->password );
+        $userOrError = wp_signon([
+            'user_login' => $auth->login,
+            'user_password' => $auth->password,
+        ]);
 
         if( is_wp_error( $userOrError ) ) {
             wp_send_json_error([
