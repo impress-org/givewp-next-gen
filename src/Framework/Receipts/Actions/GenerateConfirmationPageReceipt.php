@@ -2,8 +2,8 @@
 
 namespace Give\Framework\Receipts\Actions;
 
-use Give\DonationForm\Models\DonationForm;
-use Give\DonationForm\Repositories\DonationFormRepository;
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;

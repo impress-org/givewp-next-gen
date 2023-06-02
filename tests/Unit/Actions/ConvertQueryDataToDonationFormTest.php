@@ -2,11 +2,11 @@
 
 namespace Give\Tests\Unit\Actions;
 
-use Give\DonationForm\Actions\ConvertQueryDataToDonationForm;
-use Give\DonationForm\Models\DonationForm;
-use Give\DonationForm\Properties\FormSettings;
-use Give\DonationForm\ValueObjects\DonationFormStatus;
-use Give\DonationForm\ValueObjects\GoalType;
+use Give\DonationForms\Actions\ConvertQueryDataToDonationForm;
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Properties\FormSettings;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Support\Facades\DateTime\Temporal;

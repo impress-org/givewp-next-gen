@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\Framework\Receipts;
 
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;

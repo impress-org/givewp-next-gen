@@ -6,7 +6,7 @@ use Give\Addon\Activation;
 use Give\Addon\Environment;
 use Give\Addon\ServiceProvider as AddonServiceProvider;
 use Give\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
-use Give\DonationForm\ServiceProvider as DonationFormServiceProvider;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\FormPage\ServiceProvider as FormPageServiceProvider;
 use Give\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\PaymentGateways\Gateways\ServiceProvider as PaymentGatewaysServiceProvider;
@@ -62,7 +62,7 @@ add_action(
 
             give()->registerServiceProvider(AddonServiceProvider::class);
             give()->registerServiceProvider(PaymentGatewaysServiceProvider::class);
-            give()->registerServiceProvider(DonationFormServiceProvider::class);
+            give()->registerServiceProvider(DonationFormsServiceProvider::class);
             give()->registerServiceProvider(FormBuilder\ServiceProvider::class);
             give()->registerServiceProvider(FormDesignServiceProvider::class);
             give()->registerServiceProvider(CustomFieldsServiceProvider::class);

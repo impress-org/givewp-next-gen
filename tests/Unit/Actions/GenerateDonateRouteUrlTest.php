@@ -2,8 +2,8 @@
 
 namespace Give\Tests\Unit\Actions;
 
-use Give\DonationForm\Actions\GenerateDonateRouteUrl;
-use Give\DonationForm\Routes\DonateRouteSignature;
+use Give\DonationForms\Actions\GenerateDonateRouteUrl;
+use Give\DonationForms\Routes\DonateRouteSignature;
 use Give\Tests\TestCase;
 
 class GenerateDonateRouteUrlTest extends TestCase

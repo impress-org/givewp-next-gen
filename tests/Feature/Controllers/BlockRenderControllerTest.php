@@ -2,9 +2,9 @@
 
 namespace Give\Tests\Feature\Controllers;
 
-use Give\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
-use Give\DonationForm\Blocks\DonationFormBlock\Controllers\BlockRenderController;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Actions\GenerateDonationFormViewRouteUrl;
+use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
+use Give\DonationForms\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

@@ -2,9 +2,9 @@
 
 namespace TestsNextGen\Unit\DataTransferObjects;
 
-use Give\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\DonationForm\DataTransferObjects\DonateFormRouteData;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\DataTransferObjects\DonateControllerData;
+use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;

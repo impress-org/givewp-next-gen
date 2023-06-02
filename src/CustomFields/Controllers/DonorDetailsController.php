@@ -3,8 +3,8 @@
 namespace Give\CustomFields\Controllers;
 
 use Give\CustomFields\Views\DonorDetailsView;
-use Give\DonationForm\Models\DonationForm;
-use Give\DonationForm\Repositories\DonationFormRepository;
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 

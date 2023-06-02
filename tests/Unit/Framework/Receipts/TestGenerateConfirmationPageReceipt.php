@@ -2,7 +2,7 @@
 
 namespace Give\Framework\Receipts;
 
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
 use Give\Framework\Receipts\Properties\ReceiptDetail;

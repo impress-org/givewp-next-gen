@@ -3,9 +3,9 @@
 namespace Give\Tests\Feature\Controllers;
 
 use Exception;
-use Give\DonationForm\Models\DonationForm;
-use Give\DonationForm\ValueObjects\DonationFormMetaKeys;
-use Give\DonationForm\ValueObjects\GoalType;
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\Blocks\BlockCollection;

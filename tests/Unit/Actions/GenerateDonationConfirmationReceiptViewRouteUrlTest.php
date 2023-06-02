@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\Actions;
 
-use Give\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
+use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\Framework\Routes\Route;
 use Give\Tests\TestCase;
 

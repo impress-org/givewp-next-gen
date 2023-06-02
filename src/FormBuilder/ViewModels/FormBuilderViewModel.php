@@ -2,8 +2,8 @@
 
 namespace Give\FormBuilder\ViewModels;
 
-use Give\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Models\DonationForm;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;

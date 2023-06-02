@@ -3,10 +3,10 @@
 namespace Give\Tests\Feature\Controllers;
 
 use Exception;
-use Give\DonationForm\Controllers\DonateController;
-use Give\DonationForm\DataTransferObjects\DonateFormRouteData;
-use Give\DonationForm\Exceptions\DonationFormFieldErrorsException;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Controllers\DonateController;
+use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
+use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;

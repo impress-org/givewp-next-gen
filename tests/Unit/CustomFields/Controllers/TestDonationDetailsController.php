@@ -4,7 +4,7 @@ namespace Give\Tests\Unit\CustomFields\Controllers;
 
 use Give\CustomFields\Controllers\DonationDetailsController;
 use Give\CustomFields\Views\DonationDetailsView;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;

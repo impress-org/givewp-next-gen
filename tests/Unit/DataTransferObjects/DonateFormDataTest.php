@@ -3,8 +3,8 @@
 namespace Give\Tests\Unit\DataTransferObjects;
 
 use Exception;
-use Give\DonationForm\DataTransferObjects\DonateFormRouteData;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;

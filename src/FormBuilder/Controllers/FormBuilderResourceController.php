@@ -2,8 +2,8 @@
 
 namespace Give\FormBuilder\Controllers;
 
-use Give\DonationForm\Models\DonationForm;
-use Give\DonationForm\Properties\FormSettings;
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Properties\FormSettings;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Form;

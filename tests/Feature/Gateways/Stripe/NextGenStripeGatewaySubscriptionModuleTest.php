@@ -3,8 +3,8 @@
 namespace Give\Tests\Feature\Gateways\Stripe;
 
 use Exception;
-use Give\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptUrl;
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGatewaySubscriptionModule;
 use Give\Subscriptions\Models\Subscription;

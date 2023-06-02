@@ -3,8 +3,8 @@
 namespace TestsNextGen\Unit\DataTransferObjects;
 
 use Exception;
-use Give\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\DataTransferObjects\DonateControllerData;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;

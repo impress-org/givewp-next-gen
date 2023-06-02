@@ -3,8 +3,8 @@
 namespace Give\Tests\Unit\VieModels;
 
 use Exception;
-use Give\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Models\DonationForm;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\FormDesigns\FormDesign;

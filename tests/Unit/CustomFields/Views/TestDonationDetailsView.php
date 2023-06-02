@@ -3,8 +3,8 @@
 namespace Give\Tests\Unit\CustomFields\Views;
 
 use Give\CustomFields\Views\DonationDetailsView;
-use Give\DonationForm\Listeners\StoreCustomFields;
-use Give\DonationForm\Models\DonationForm;
+use Give\DonationForms\Listeners\StoreCustomFields;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
