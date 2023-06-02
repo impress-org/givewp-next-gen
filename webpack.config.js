@@ -20,7 +20,7 @@ module.exports = {
             '@givewp/forms/types': path.resolve(__dirname, 'src/DonationForm/resources/types.ts'),
             '@givewp/forms/propTypes': path.resolve(__dirname, 'src/DonationForm/resources/propTypes.ts'),
             '@givewp/forms/app': path.resolve(__dirname, 'src/DonationForm/resources/app'),
-            '@givewp/form-builder': path.resolve(__dirname, 'packages/form-builder/src'),
+            '@givewp/form-builder': path.resolve(__dirname, 'src/FormBuilder/resources/js/form-builder/src'),
         },
     },
     entry: {
@@ -44,7 +44,7 @@ module.exports = {
         multiStepFormDesignJs: srcPath('DonationForm/FormDesigns/MultiStepFormDesign/js/main.ts'),
         donationConfirmationReceiptApp: srcPath('DonationForm/resources/receipt/DonationConfirmationReceiptApp.tsx'),
         baseFormDesignCss: srcPath('DonationForm/resources/styles/base.scss'),
-        formBuilderApp: path.resolve(process.cwd(), 'packages/form-builder/src/index.tsx'),
+        formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
         formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
     },
 };
