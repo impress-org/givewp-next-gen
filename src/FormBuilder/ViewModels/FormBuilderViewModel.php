@@ -45,14 +45,6 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.1.0
-     */
-    public function jsPathFromRoot(): string
-    {
-        return GIVE_NEXT_GEN_URL . 'packages/form-builder/build/givewp-form-builder.js';
-    }
-
-    /**
      * @unreleased
      */
     public function jsPathFromPluginRoot(): string

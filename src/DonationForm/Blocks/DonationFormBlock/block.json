@@ -3,7 +3,7 @@
     "apiVersion": 2,
     "name": "givewp/donation-form-block",
     "version": "1.0.0",
-    "title": "GiveWP Donation Form Block (v3)",
+    "title": "Donation Form (v3)",
     "category": "give",
     "icon": "superhero",
     "description": "A whole new world.",
@@ -19,6 +19,6 @@
         }
     },
     "textdomain": "give",
-    "editorStyle": "file:../../../../../build/donationFormBlockStyle.css",
-    "editorScript": "file:../../../../../build/donationFormBlock.js"
+    "editorStyle": "file:../../../../build/donationFormBlockStyle.css",
+    "editorScript": "file:../../../../build/donationFormBlock.js"
 }

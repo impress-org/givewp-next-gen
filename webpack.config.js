@@ -17,10 +17,10 @@ module.exports = {
         ...defaultConfig.resolve,
         alias: {
             ...defaultConfig.resolve.alias,
-            '@givewp/forms/types': path.resolve(__dirname, 'src/DonationForm/resources/types.ts'),
-            '@givewp/forms/propTypes': path.resolve(__dirname, 'src/DonationForm/resources/propTypes.ts'),
-            '@givewp/forms/app': path.resolve(__dirname, 'src/DonationForm/resources/app'),
-            '@givewp/form-builder': path.resolve(__dirname, 'src/FormBuilder/resources/js/form-builder/src'),
+            '@givewp/forms/types': srcPath('DonationForm/resources/types.ts'),
+            '@givewp/forms/propTypes': srcPath('DonationForm/resources/propTypes.ts'),
+            '@givewp/forms/app': srcPath('DonationForm/resources/app'),
+            '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
         },
     },
     entry: {
