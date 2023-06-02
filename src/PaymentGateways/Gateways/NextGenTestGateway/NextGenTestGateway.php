@@ -7,14 +7,12 @@ use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 /**
  * @since 0.1.0
  */
 class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
-    use HandleHttpResponses;
 
     /**
      * @inheritDoc

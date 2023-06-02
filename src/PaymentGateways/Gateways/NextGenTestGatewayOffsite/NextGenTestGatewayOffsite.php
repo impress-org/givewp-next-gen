@@ -10,15 +10,12 @@ use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 /**
  * @since 0.1.0
  */
 class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
-    use HandleHttpResponses;
-
     /**
      * @inheritDoc
      */

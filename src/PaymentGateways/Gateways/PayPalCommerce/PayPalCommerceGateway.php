@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\Gateways\PayPalCommerce;
 
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -14,8 +13,6 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
  */
 class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGatewayInterface
 {
-    use HandleHttpResponses;
-
     public function enqueueScript(): EnqueueScript
     {
         return (new EnqueueScript(

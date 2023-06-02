@@ -8,7 +8,6 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
 use Stripe\Exception\ApiErrorException;
 
@@ -18,7 +17,6 @@ use Stripe\Exception\ApiErrorException;
 class StripePaymentElementGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
     use StripePaymentElementRepository;
-    use HandleHttpResponses;
 
     /**
      * @inheritDoc
