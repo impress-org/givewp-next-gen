@@ -2,10 +2,10 @@
 
 namespace Give\Tests\Unit\CustomFields\Views;
 
-use Give\CustomFields\Views\DonorDetailsView;
 use Give\DonationForms\Listeners\StoreCustomFields;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donors\CustomFields\Views\DonorDetailsView;
 use Give\Donors\Models\Donor;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;

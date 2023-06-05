@@ -2,7 +2,7 @@
 
 namespace Give\Donors;
 
-use Give\CustomFields\Controllers\DonorDetailsController;
+use Give\Donors\CustomFields\Controllers\DonorDetailsController;
 use Give\Donors\Models\Donor;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give_Donor as LegacyDonor;

@@ -3,10 +3,10 @@
 namespace Give\Tests\Unit\CustomFields\Controllers;
 
 use Exception;
-use Give\CustomFields\Controllers\DonorDetailsController;
-use Give\CustomFields\Views\DonorDetailsView;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donors\CustomFields\Controllers\DonorDetailsController;
+use Give\Donors\CustomFields\Views\DonorDetailsView;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;

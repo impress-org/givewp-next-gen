@@ -4,7 +4,6 @@ namespace Give\DonationForms\Listeners;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
-use Give\Framework\FieldsAPI\Concerns\StoreAsMeta;
 use Give\Framework\FieldsAPI\Field;
 
 class StoreCustomFields
@@ -22,7 +21,7 @@ class StoreCustomFields
     {
         $form->schema()->walkFields(
             function (Field $field) use ($customFields, $donation) {
-                if (!array_key_exists($field->getName(), $customFields) || !$this->fieldUsesStoreAsMetaTrait($field)) {
+                if (!array_key_exists($field->getName(), $customFields)) {
                     return;
                 }
 
@@ -37,13 +36,5 @@ class StoreCustomFields
                 }
             }
         );
-    }
-
-    /**
-     * @unreleased
-     */
-    private function fieldUsesStoreAsMetaTrait(Field $field): bool
-    {
-        return array_key_exists(StoreAsMeta::class, class_uses($field));
     }
 }

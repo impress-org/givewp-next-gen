@@ -7,8 +7,6 @@ use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\Donors\CustomFields\Views\DonorDetailsView;
 use Give\Donors\Models\Donor;
-use Give\Framework\FieldsAPI\Concerns\ShowInAdmin;
-use Give\Framework\FieldsAPI\Concerns\StoreAsMeta;
 
 use function array_reduce;
 
@@ -68,13 +66,7 @@ class DonorDetailsController
     protected function getDisplayedDonorMetaFieldsForForm(DonationForm $form): array
     {
         return array_filter($form->schema()->getFields(), static function ($field) {
-            $traits = class_uses($field);
-
-            if (in_array(ShowInAdmin::class, $traits, true) && in_array(StoreAsMeta::class, $traits, true)) {
-                return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
-            }
-
-            return false;
+            return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
         });
     }
 }
