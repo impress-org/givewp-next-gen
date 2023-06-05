@@ -228,12 +228,11 @@ class ConvertDonationFormBlocksToFieldsApi
             }
 
             if ($block->hasAttribute('displayInAdmin') && $block->getAttribute('displayInAdmin')) {
-                $node->displayInAdmin = $block->getAttribute('displayInAdmin');
+                $node->showInAdmin($block->getAttribute('displayInAdmin'));
             }
 
-            /** TODO: ask kyle about $node->showInReceipt() */
             if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
-                $node->displayInReceipt = $block->getAttribute('displayInReceipt');
+                $node->showInReceipt($block->getAttribute('displayInReceipt'));
             }
         }
 

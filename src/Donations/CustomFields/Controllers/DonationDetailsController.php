@@ -1,13 +1,14 @@
 <?php
 
-namespace Give\CustomFields\Controllers;
+namespace Give\Donations\CustomFields\Controllers;
 
-use Give\CustomFields\Views\DonationDetailsView;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\Donations\CustomFields\Views\DonationDetailsView;
 use Give\Donations\Models\Donation;
 
 /**
+ * TODO: move into donations domain
  * @since 0.1.0
  */
 class DonationDetailsController
@@ -32,7 +33,7 @@ class DonationDetailsController
         $form = DonationForm::find($donation->formId);
 
         $fields = array_filter($form->schema()->getFields(), static function ($field) {
-            return $field->shouldDisplayInAdmin() && !$field->shouldStoreAsDonorMeta();
+            return $field->shouldShowInAdmin() && !$field->shouldStoreAsDonorMeta();
         });
 
         return (new DonationDetailsView($donation, $fields))->render();

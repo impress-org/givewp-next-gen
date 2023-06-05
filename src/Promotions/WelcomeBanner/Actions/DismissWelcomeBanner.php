@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\WelcomeBanner\Actions;
+namespace Give\Promotions\WelcomeBanner\Actions;
 
 class DismissWelcomeBanner
 {

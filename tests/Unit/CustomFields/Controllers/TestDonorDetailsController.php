@@ -32,7 +32,7 @@ class TestDonorDetailsController extends TestCase
 
         $fields = array_reduce([$donationForm], static function ($fields, DonationForm $form) {
             return $fields + array_filter($form->schema()->getFields(), static function ($field) {
-                    return $field->shouldDisplayInAdmin() && $field->shouldStoreAsDonorMeta();
+                    return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
                 });
         }, []);
 

@@ -57,7 +57,7 @@ class TestDonorDetailsView extends TestCase
         $form = DonationForm::find($form->id);
 
         $fields = array_filter($form->schema()->getFields(), static function ($field) {
-            return $field->shouldDisplayInAdmin() && $field->shouldStoreAsDonorMeta();
+            return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
         });
 
         $donorDetailsView = new DonorDetailsView($donation->donor, $fields);

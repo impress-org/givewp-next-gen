@@ -1,16 +1,17 @@
 <?php
 
-namespace Give\CustomFields\Controllers;
+namespace Give\Donors\CustomFields\Controllers;
 
-use Give\CustomFields\Views\DonorDetailsView;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
+use Give\Donors\CustomFields\Views\DonorDetailsView;
 use Give\Donors\Models\Donor;
 
 use function array_reduce;
 
 /**
+ * TODO: move into donors domain
  * @since 0.1.0
  */
 class DonorDetailsController
@@ -65,7 +66,7 @@ class DonorDetailsController
     protected function getDisplayedDonorMetaFieldsForForm(DonationForm $form): array
     {
         return array_filter($form->schema()->getFields(), function($field) {
-            return $field->shouldDisplayInAdmin() && $field->shouldStoreAsDonorMeta();
+            return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
         });
     }
 }

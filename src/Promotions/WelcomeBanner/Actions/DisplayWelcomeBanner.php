@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\WelcomeBanner\Actions;
+namespace Give\Promotions\WelcomeBanner\Actions;
 
 use Give\Addon\View;
 
@@ -17,6 +17,6 @@ class DisplayWelcomeBanner
 
     public function __invoke() {
         wp_enqueue_style('givewp-design-system-foundation');
-        echo View::load('WelcomeBanner.welcome-banner', $this->data);
+        echo View::load('Promotions/WelcomeBanner.welcome-banner', $this->data);
     }
 }

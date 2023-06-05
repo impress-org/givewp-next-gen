@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\WelcomeBanner;
+namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -8,7 +8,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 /**
  * @since 0.1.0
  */
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProviderV3 implements ServiceProviderInterface
 {
     /**
      * @inheritDoc
@@ -24,8 +24,8 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         if(!get_option('givewp_next_gen_welcome_banner_dismissed')) {
-            Hooks::addAction('admin_notices', Actions\DisplayWelcomeBanner::class);
-            Hooks::addAction('wp_ajax_givewp_next_gen_welcome_banner_dismiss', Actions\DismissWelcomeBanner::class);
+            Hooks::addAction('admin_notices', \Give\Promotions\WelcomeBanner\Actions\DisplayWelcomeBanner::class);
+            Hooks::addAction('wp_ajax_givewp_next_gen_welcome_banner_dismiss', \Give\Promotions\WelcomeBanner\Actions\DismissWelcomeBanner::class);
         }
     }
 }

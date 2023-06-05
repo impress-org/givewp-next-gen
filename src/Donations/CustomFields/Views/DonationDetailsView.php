@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\CustomFields\Views;
+namespace Give\Donations\CustomFields\Views;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Field;

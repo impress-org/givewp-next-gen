@@ -28,7 +28,7 @@ class TestDonationDetailsController extends TestCase
         $controller = new DonationDetailsController();
 
         $fields = array_filter($donationForm->schema()->getFields(), static function ($field) {
-            return $field->shouldDisplayInAdmin() && !$field->shouldStoreAsDonorMeta();
+            return $field->shouldShowInAdmin() && !$field->shouldStoreAsDonorMeta();
         });
 
         $view = new DonationDetailsView($donation, $fields);

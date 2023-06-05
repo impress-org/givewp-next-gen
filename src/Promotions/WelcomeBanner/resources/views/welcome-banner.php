@@ -202,7 +202,7 @@
                     ">
                         <img style="width: 100%;" src="<?php
                         echo esc_attr(
-                            GIVE_NEXT_GEN_URL . '/src/WelcomeBanner/resources/design-mode.min.png'
+                            GIVE_NEXT_GEN_URL . '/src/Promotions/WelcomeBanner/resources/design-mode.min.png'
                         ); ?>"
                              alt="">
                         <h3><?php
@@ -225,7 +225,7 @@
                     ">
                         <img style="width: 100%;" src="<?php
                         esc_attr_e(
-                            GIVE_NEXT_GEN_URL . '/src/WelcomeBanner/resources/custom-fields.min.png'
+                            GIVE_NEXT_GEN_URL . '/src/Promotions/WelcomeBanner/resources/custom-fields.min.png'
                         ); ?>"
                              alt="">
                         <h3><?php

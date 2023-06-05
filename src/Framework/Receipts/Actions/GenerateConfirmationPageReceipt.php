@@ -7,6 +7,8 @@ use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;
+use Give\Framework\FieldsAPI\Concerns\ShowInReceipt;
+use Give\Framework\FieldsAPI\Concerns\StoreAsMeta;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Receipts\DonationReceipt;
@@ -42,8 +44,11 @@ class GenerateConfirmationPageReceipt
         $form = DonationForm::find($donation->formId);
 
         $customFields = array_filter($form->schema()->getFields(), static function (Field $field) {
-            /** $field->shouldDisplayInReceipt is a temporary macro */
-            return $field->shouldDisplayInReceipt();
+            $traits = class_uses($field);
+
+            return in_array(StoreAsMeta::class, $traits, true) &&
+                in_array(ShowInReceipt::class, $traits, true) &&
+                $field->shouldShowInReceipt();
         });
 
         return array_map(static function (Field $field) use ($donation) {
