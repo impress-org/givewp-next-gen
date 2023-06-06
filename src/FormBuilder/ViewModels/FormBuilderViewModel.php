@@ -2,14 +2,14 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Models\DonationForm;
 use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\FormDesigns\FormDesign;
+use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\FormDesigns\FormDesign;
-use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
 class FormBuilderViewModel
 {
@@ -53,7 +53,7 @@ class FormBuilderViewModel
             'emailNotifications' => array_map(static function ($notification) {
                 return EmailNotificationData::fromLegacyNotification($notification);
             }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
-            'emailPreviewURL' => rest_url('givewp/next-gen/email-preview'),
+            'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
             'emailDefaultAddress' => get_option('admin_email'),
         ];
     }

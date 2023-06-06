@@ -2,7 +2,7 @@
 
 namespace Give\FormBuilder\Actions;
 
-use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\DonationForms\Models\DonationForm;
 
 /**
  * Update email template options on backwards compatible form meta.
