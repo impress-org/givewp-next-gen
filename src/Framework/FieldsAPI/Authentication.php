@@ -20,10 +20,10 @@ class Authentication extends Group
         return parent::make($name)
             ->append(
                 Text::make('login')
-                    ->label(__('Login', 'givewp'))
+                    ->label(__('Username or Email Address', 'givewp'))
             )
             ->append(
-                Text::make('password') // @todo Add Password field type
+                Password::make('password')
                 ->label(__('Password', 'givewp'))
             );
     }

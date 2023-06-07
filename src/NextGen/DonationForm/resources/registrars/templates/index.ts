@@ -1,4 +1,5 @@
 import TextField from './fields/Text';
+import PasswordField from './fields/Password';
 import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
@@ -29,6 +30,7 @@ const defaultFormTemplates = {
     fields: {
         amount: AmountField,
         text: TextField,
+        password: PasswordField,
         textarea: TextAreaField,
         email: EmailField,
         hidden: HiddenField,
