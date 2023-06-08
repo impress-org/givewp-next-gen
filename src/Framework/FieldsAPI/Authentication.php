@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\NextGen\Framework\Blocks\BlockModel;
+
 class Authentication extends Group
 {
     const TYPE = 'authentication';
@@ -14,6 +16,8 @@ class Authentication extends Group
     protected $loginRedirectUrl;
     protected $loginNotice;
     protected $loginConfirmation;
+
+    public function rules(...$rules) {}
 
     public static function make($name)
     {

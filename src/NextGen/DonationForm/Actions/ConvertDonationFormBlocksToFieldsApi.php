@@ -15,6 +15,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\NextGen\DonationForm\Rules\AuthenticationRule;
 use Give\NextGen\DonationForm\Rules\GatewayRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
@@ -162,7 +163,12 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->loginRedirect($block->getAttribute('loginRedirect'))
                     ->loginRedirectUrl(wp_login_url()) // @todo set redirect parameter back to donation form.
                     ->loginNotice($block->getAttribute('loginNotice'))
-                    ->loginConfirmation($block->getAttribute('loginConfirmation'));
+                    ->loginConfirmation($block->getAttribute('loginConfirmation'))
+                    ->tapNode('login', function($field) use ($block) {
+                        if($block->getAttribute('required')) {
+                            $field->rules(new AuthenticationRule());
+                        }
+                    });
 
             default:
                 $customField = apply_filters(
