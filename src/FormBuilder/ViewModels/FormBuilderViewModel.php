@@ -2,13 +2,13 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Models\DonationForm;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\FormDesigns\FormDesign;
+use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\FormDesigns\FormDesign;
-use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
 class FormBuilderViewModel
 {
@@ -45,14 +45,6 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.1.0
-     */
-    public function jsPathFromRoot(): string
-    {
-        return GIVE_NEXT_GEN_URL . 'packages/form-builder/build/givewp-form-builder.js';
-    }
-
-    /**
      * @unreleased
      */
     public function jsPathFromPluginRoot(): string
@@ -63,11 +55,19 @@ class FormBuilderViewModel
     /**
      * @unreleased
      */
+    public function jsPathToRegistrars(): string
+    {
+        return GIVE_NEXT_GEN_URL . 'build/formBuilderRegistrars.js';
+    }
+
+    /**
+     * @unreleased
+     */
     public function jsDependencies(): array
     {
         $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/formBuilderApp.asset.php';
 
-        return $scriptAsset['dependencies'];
+        return array_merge($scriptAsset['dependencies'], ['@givewp/form-builder/registrars']);
     }
 
     /**

@@ -2,13 +2,13 @@
 
 namespace TestsNextGen\Unit\DataTransferObjects;
 
+use Give\DonationForms\DataTransferObjects\DonateControllerData;
+use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\ValueObjects\DonationType;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
+use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 
@@ -25,6 +25,14 @@ class DonateFormRouteDataTest extends TestCase
     {
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
+
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return NextGenTestGateway::id();
+        });
 
         $customFieldBlockModel = BlockModel::make([
             'name' => 'givewp/section',
@@ -84,6 +92,14 @@ class DonateFormRouteDataTest extends TestCase
     {
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
+
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return NextGenTestGateway::id();
+        });
 
         $customFieldBlockModel = BlockModel::make([
             'name' => 'givewp/section',
