@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\DonationForm\Routes;
+namespace Give\DonationForms\Routes;
 
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
-use Give\DonationForm\DataTransferObjects\AuthenticationData;
-use Give\DonationForm\DataTransferObjects\UserData;
+use Give\DonationForms\DataTransferObjects\AuthenticationData;
+use Give\DonationForms\DataTransferObjects\UserData;
 use WP_User;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForm\DataTransferObjects;
+namespace Give\DonationForms\DataTransferObjects;
 
 /**
  * @since 0.1.0

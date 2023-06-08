@@ -2,7 +2,7 @@
 
 namespace Give\DonationForms\ViewModels;
 
-use Give\DonationForm\Actions\GenerateAuthUrl;
+use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;

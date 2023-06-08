@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForm\Actions;
+namespace Give\DonationForms\Actions;
 
 
 use Give\Framework\Routes\Route;

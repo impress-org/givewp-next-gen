@@ -3,7 +3,7 @@
 namespace Give\DonationForms\Actions;
 
 use Give\DonationForms\Repositories\DonationFormRepository;
-use Give\DonationForm\Rules\AuthenticationRule;
+use Give\DonationForms\Rules\AuthenticationRule;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;

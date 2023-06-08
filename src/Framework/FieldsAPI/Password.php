@@ -15,8 +15,16 @@ class Password extends Field
 
     const TYPE = 'password';
 
-    public function shouldStoreAsDonorMeta()
+    /**
+     * @param $storeAsDonorMeta
+     *
+     * @return $this
+     */
+    public function storeAsDonorMeta($storeAsDonorMeta = true): self
     {
-        return false;
+        // Do not allow password fields to be stored as donor meta.
+        $this->storeAsDonorMeta = false;
+
+        return $this;
     }
 }

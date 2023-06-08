@@ -3,7 +3,7 @@
 namespace Give\DonationForms;
 
 use Exception;
-use Give\DonationForm\Routes\AuthenticationRoute;
+use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;

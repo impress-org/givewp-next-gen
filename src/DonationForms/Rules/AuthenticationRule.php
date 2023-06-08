@@ -1,5 +1,5 @@
 <?php
-namespace Give\DonationForm\Rules;
+namespace Give\DonationForms\Rules;
 
 use Closure;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
