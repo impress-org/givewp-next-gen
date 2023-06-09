@@ -6,6 +6,7 @@ import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import {useCallback} from '@wordpress/element';
+import FieldError from "../layouts/FieldError";
 
 const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
 
@@ -85,7 +86,7 @@ export default function Authentication({
                 </p>
             )}
             {!isAuth && showLogin && (
-                <LoginForm success={() => setIsAuth(true)} fail={(errorMessage) => alert(errorMessage)}>
+                <LoginForm success={() => setIsAuth(true)}>
                     <Login />
                     <Password />
                 </LoginForm>
@@ -105,7 +106,7 @@ export default function Authentication({
     );
 }
 
-const LoginForm = ({children, success, fail}) => {
+const LoginForm = ({children, success}) => {
     const {authUrl} = getWindowData();
     const {useWatch, useFormContext} = window.givewp.form.hooks;
     const {setValue, getValues} = useFormContext();
@@ -113,6 +114,8 @@ const LoginForm = ({children, success, fail}) => {
 
     const login = useWatch({name: 'login'});
     const password = useWatch({name: 'password'});
+
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const tryLogin = async (event) => {
         event.preventDefault();
@@ -129,8 +132,7 @@ const LoginForm = ({children, success, fail}) => {
             setValue('email', email || responseData.email);
             success();
         } else {
-            console.log('here', responseData);
-            fail(
+            setErrorMessage(
                 'authentication_error' === responseData.type
                     ? responseData.message
                     : __('Something went wrong. Please try or again or contact a site administrator.', 'givewp')
@@ -141,6 +143,8 @@ const LoginForm = ({children, success, fail}) => {
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
             <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>{children}</div>
+
+            {!!errorMessage && <FieldError error={errorMessage} />}
 
             <div
                 style={{
