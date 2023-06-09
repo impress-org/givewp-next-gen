@@ -14,6 +14,7 @@ class Authentication extends Group
     protected $loginRedirectUrl;
     protected $loginNotice;
     protected $loginConfirmation;
+    protected $lostPasswordUrl;
 
     public static function make($name)
     {
@@ -61,6 +62,13 @@ class Authentication extends Group
     public function loginConfirmation($value): self
     {
         $this->loginConfirmation = $value;
+        return $this;
+    }
+
+
+    public function lostPasswordUrl($value): self
+    {
+        $this->lostPasswordUrl = $value;
         return $this;
     }
 }

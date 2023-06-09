@@ -46,6 +46,7 @@ interface AuthProps extends GroupProps {
     loginRedirectUrl: string;
     loginNotice: string;
     loginConfirmation: string;
+    lostPasswordUrl: string;
 }
 
 export default function Authentication({
@@ -56,6 +57,7 @@ export default function Authentication({
     loginRedirectUrl,
     loginNotice,
     loginConfirmation,
+    lostPasswordUrl,
 }: AuthProps) {
     const [isAuth, setIsAuth] = useState<boolean>(isAuthenticated);
     const [showLogin, setShowLogin] = useState<boolean>(required);
@@ -86,7 +88,7 @@ export default function Authentication({
                 </p>
             )}
             {!isAuth && showLogin && (
-                <LoginForm success={() => setIsAuth(true)}>
+                <LoginForm success={() => setIsAuth(true)} lostPasswordUrl={lostPasswordUrl}>
                     <Login />
                     <Password />
                 </LoginForm>
@@ -106,7 +108,7 @@ export default function Authentication({
     );
 }
 
-const LoginForm = ({children, success}) => {
+const LoginForm = ({children, success, lostPasswordUrl}) => {
     const {authUrl} = getWindowData();
     const {useWatch, useFormContext} = window.givewp.form.hooks;
     const {setValue, getValues} = useFormContext();
@@ -158,7 +160,10 @@ const LoginForm = ({children, success}) => {
                 <button style={{width: 'auto'}} onClick={tryLogin}>
                     {__('Log In', 'givewp')}
                 </button>
-                <a href={'#'}>{__('Reset Password', 'givewp')}</a>
+                <a onClick={(event) => {
+                    event.preventDefault();
+                    window.top.location.assign(lostPasswordUrl);
+                }}>{__('Reset Password', 'givewp')}</a>
             </div>
         </div>
     );

@@ -164,6 +164,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Authentication::make('login')
                     ->required($block->getAttribute('required'))
                     ->isAuthenticated(is_user_logged_in())
+                    ->lostPasswordUrl(wp_lostpassword_url())
                     ->loginRedirect($block->getAttribute('loginRedirect'))
                     ->loginRedirectUrl(wp_login_url()) // @todo set redirect parameter back to donation form.
                     ->loginNotice($block->getAttribute('loginNotice'))
