@@ -93,7 +93,9 @@ export default function Authentication({
             {!isAuth && !showLogin && (
                 <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
                     {loginRedirect ? (
-                        <button onClick={handleLoginPageRedirect}>{loginNotice}</button>
+                        <button type="button" onClick={handleLoginPageRedirect}>
+                            {loginNotice}
+                        </button>
                     ) : (
                         <LoginNotice onClick={toggleShowLogin}>{loginNotice}</LoginNotice>
                     )}
