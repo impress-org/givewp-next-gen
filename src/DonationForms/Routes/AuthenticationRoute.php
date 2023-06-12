@@ -2,9 +2,10 @@
 
 namespace Give\DonationForms\Routes;
 
-use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\DonationForms\DataTransferObjects\AuthenticationData;
+use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\DataTransferObjects\UserData;
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use WP_User;
 
 /**
@@ -21,9 +22,11 @@ class AuthenticationRoute
      */
     public function __invoke(array $request)
     {
-        $user = $this->authenticate(
-            AuthenticationData::fromRequest($request)
-        );
+        $routeData = DonateRouteData::fromRequest(give_clean($_GET));
+
+        $routeData->validateSignature();
+
+        $user = $this->authenticate(AuthenticationData::fromRequest($request));
 
         wp_send_json_success(UserData::fromUser($user));
 
@@ -32,8 +35,6 @@ class AuthenticationRoute
 
     /**
      * @unreleased
-     *
-     * @return WP_User
      */
     protected function authenticate(AuthenticationData $auth): WP_User
     {
@@ -42,7 +43,7 @@ class AuthenticationRoute
             'user_password' => $auth->password,
         ]);
 
-        if( is_wp_error( $userOrError ) ) {
+        if (is_wp_error($userOrError)) {
             wp_send_json_error([
                 'type' => 'authentication_error',
                 'message' => __('The login/password does not match or is incorrect.', 'givewp'),

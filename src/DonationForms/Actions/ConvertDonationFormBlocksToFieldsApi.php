@@ -20,6 +20,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use WP_User;
 
 /**
  * @since 0.1.0
@@ -204,6 +205,7 @@ class ConvertDonationFormBlocksToFieldsApi
             $group->getNodeByName('firstName')
                 ->label($block->getAttribute('firstNameLabel'))
                 ->placeholder($block->getAttribute('firstNamePlaceholder'))
+                ->required($block->getAttribute('requireFirstName'))
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('lastName')
@@ -212,10 +214,17 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->required($block->getAttribute('requireLastName'))
                 ->rules('max:255');
 
-            if(is_user_logged_in()) {
+            if (is_user_logged_in()) {
+                /** @var WP_User $user */
                 $user = wp_get_current_user();
-                $group->getNodeByName('firstName')->defaultValue($user->first_name);
-                $group->getNodeByName('lastName')->defaultValue($user->last_name);
+
+                if ($user->first_name) {
+                    $group->getNodeByName('firstName')->defaultValue($user->first_name);
+                }
+
+                if ($user->last_name) {
+                    $group->getNodeByName('lastName')->defaultValue($user->last_name);
+                }
             }
 
 
