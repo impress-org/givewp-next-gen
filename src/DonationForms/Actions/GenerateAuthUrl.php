@@ -18,11 +18,7 @@ class GenerateAuthUrl
     {
         $signature = new DonateRouteSignature('givewp-donation-form-authentication');
 
-        $queryArgs = [
-            'givewp-route-signature' => $signature->toHash(),
-            'givewp-route-signature-id' => 'givewp-donation-form-authentication',
-            'givewp-route-signature-expiration' => $signature->expiration,
-        ];
+        $queryArgs = (new GenerateDonateRouteSignatureArgs())($signature, 'givewp-donation-form-authentication');
 
         return esc_url_raw(Route::url('authenticate', $queryArgs));
     }
