@@ -7,13 +7,13 @@ use Give\DonationForms\Rules\AuthenticationRule;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
+use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
@@ -166,11 +166,15 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->isAuthenticated(is_user_logged_in())
                     ->lostPasswordUrl(wp_lostpassword_url())
                     ->loginRedirect($block->getAttribute('loginRedirect'))
-                    ->loginRedirectUrl(wp_login_url()) // @todo set redirect parameter back to donation form.
+                    ->loginRedirectUrl(wp_login_url())
                     ->loginNotice($block->getAttribute('loginNotice'))
                     ->loginConfirmation($block->getAttribute('loginConfirmation'))
                     ->tapNode('login', function($field) use ($block) {
                         if($block->getAttribute('required')) {
+                            if (!is_user_logged_in()) {
+                                $field->required();
+                            }
+                            
                             $field->rules(new AuthenticationRule());
                         }
                     });

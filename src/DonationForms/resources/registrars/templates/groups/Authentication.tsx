@@ -5,11 +5,24 @@ import {GroupProps} from '@givewp/forms/propTypes';
 import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
-import {useCallback} from '@wordpress/element';
-import FieldError from "../layouts/FieldError";
+import FieldError from '../layouts/FieldError';
 
 const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
 
+const getRedirectUrl = (redirectUrl: URL) => {
+    const formPageUrl = new URL(originUrl);
+    formPageUrl.searchParams.append('givewp-auth-redirect', 'true');
+
+    if (isEmbed) {
+        formPageUrl.searchParams.append('givewp-is-embed', String(isEmbed));
+        formPageUrl.searchParams.append('givewp-embed-id', embedId);
+    }
+
+    // use wp core login redirect param
+    redirectUrl.searchParams.set('redirect_to', formPageUrl.toString());
+
+    return redirectUrl;
+};
 const handleLoginPageRedirected = () => {
     const formPageUrl = new URL(window.top.location.href);
 
@@ -63,23 +76,6 @@ export default function Authentication({
     const [showLogin, setShowLogin] = useState<boolean>(required);
     const toggleShowLogin = () => setShowLogin(!showLogin);
 
-    const handleLoginPageRedirect = useCallback(() => {
-        const loginUrl = new URL(loginRedirectUrl);
-        const redirectUrl = new URL(originUrl);
-
-        redirectUrl.searchParams.append('givewp-auth-redirect', 'true');
-
-        if (isEmbed) {
-            redirectUrl.searchParams.append('givewp-is-embed', String(isEmbed));
-            redirectUrl.searchParams.append('givewp-embed-id', embedId);
-        }
-
-        // use wp core login redirect param
-        loginUrl.searchParams.set('redirect_to', redirectUrl.toString());
-
-        window.top.location.assign(loginUrl);
-    }, [loginRedirectUrl, isEmbed, embedId]);
-
     return (
         <>
             {isAuth && (
@@ -96,7 +92,14 @@ export default function Authentication({
             {!isAuth && !showLogin && (
                 <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
                     {loginRedirect ? (
-                        <button type="button" onClick={handleLoginPageRedirect}>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const loginUrl = getRedirectUrl(new URL(loginRedirectUrl));
+
+                                window.top.location.assign(loginUrl);
+                            }}
+                        >
                             {loginNotice}
                         </button>
                     ) : (
@@ -160,10 +163,16 @@ const LoginForm = ({children, success, lostPasswordUrl}) => {
                 <button style={{width: 'auto'}} onClick={tryLogin}>
                     {__('Log In', 'givewp')}
                 </button>
-                <a onClick={(event) => {
-                    event.preventDefault();
-                    window.top.location.assign(lostPasswordUrl);
-                }}>{__('Reset Password', 'givewp')}</a>
+                <a
+                    onClick={(event) => {
+                        event.preventDefault();
+                        const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
+
+                        window.top.location.assign(passwordResetUrl);
+                    }}
+                >
+                    {__('Reset Password', 'givewp')}
+                </a>
             </div>
         </div>
     );
