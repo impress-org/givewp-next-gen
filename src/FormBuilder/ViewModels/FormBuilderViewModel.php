@@ -39,7 +39,8 @@ class FormBuilderViewModel
                 ];
             }, give(FormDesignRegistrar::class)->getDesigns()),
             'formPage' => [
-                'isEnabled' => give_is_setting_enabled(give_get_option('forms_singular')), // Note: Boolean values must be nested in an array to maintain boolean type, see \WP_Scripts::localize().
+                'isEnabled' => give_is_setting_enabled(give_get_option('forms_singular')),
+                // Note: Boolean values must be nested in an array to maintain boolean type, see \WP_Scripts::localize().
                 'permalink' => add_query_arg(['p' => $donationFormId], site_url('?post_type=give_forms')),
                 'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
             ],
@@ -49,7 +50,12 @@ class FormBuilderViewModel
             'recurringAddonData' => [
                 'isInstalled' => defined('GIVE_RECURRING_VERSION'),
             ],
-            'emailTemplateTags' => array_values(give()->email_tags->get_tags()),
+            'emailTemplateTags' => array_map(static function ($tag) {
+                $tag['desc'] = html_entity_decode($tag['desc'], ENT_QUOTES);
+                $tag['description'] = html_entity_decode($tag['description'], ENT_QUOTES);
+
+                return $tag;
+            }, array_values(give()->email_tags->get_tags())),
             'emailNotifications' => array_map(static function ($notification) {
                 return EmailNotificationData::fromLegacyNotification($notification);
             }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
