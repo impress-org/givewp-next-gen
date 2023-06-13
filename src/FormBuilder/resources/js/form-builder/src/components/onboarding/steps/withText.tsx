@@ -60,9 +60,7 @@ const withText = (steps) => {
 
         return {
             ...step,
-            ...{
-                text: tempContainer.innerHTML,
-            },
+            text: tempContainer.innerHTML,
         };
     });
 };
