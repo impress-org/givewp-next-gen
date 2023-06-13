@@ -76,10 +76,9 @@ const Editor = ({onChange, value}) => {
     ]
 
     return (
-        <div className="text-editor">
-
+        <div className="text-editor givewp-ql-text-editor">
             <CustomToolbar>
-                <button id='ql-wpmedia' className="ql-wpmedia" onClick={openMediaLibrary}>
+                <button id="ql-wpmedia" className="ql-wpmedia" onClick={openMediaLibrary}>
                     <MediaIcon />
                 </button>
             </CustomToolbar>
@@ -91,19 +90,16 @@ const Editor = ({onChange, value}) => {
                 onChange={onChange}
                 modules={modules}
                 formats={formats}
+                bounds=".givewp-ql-text-editor"
             />
         </div>
-    )
+    );
 }
 
 const CustomToolbar = ({children}) => {
     return (
         <div id="toolbar">
-            <select
-                className="ql-header"
-                defaultValue={''}
-                onChange={(e) => e.persist()}
-            >
+            <select className="ql-header" defaultValue={''} onChange={(e) => e.persist()}>
                 <option value="1"></option>
                 <option value="2"></option>
                 <option selected></option>
@@ -115,9 +111,8 @@ const CustomToolbar = ({children}) => {
             <button className="ql-link"></button>
 
             {children}
-
         </div>
-    )
+    );
 }
 
 const MediaIcon = () => {
