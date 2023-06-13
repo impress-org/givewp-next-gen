@@ -43,7 +43,7 @@ class BlockModel implements Arrayable
         $innerBlocks = null
     ) {
         $this->name = $name;
-        $this->clientId = $clientId ?? $name;
+        $this->clientId = $clientId ?? wp_generate_uuid4();
         $this->isValid = $isValid;
         $this->attributes = $attributes;
         $this->innerBlocks = $innerBlocks;
@@ -98,7 +98,7 @@ class BlockModel implements Arrayable
 
         return new BlockModel(
             $blockData['name'],
-            !empty($blockData['clientId']) ? $blockData['clientId'] : $blockData['name'],
+            !empty($blockData['clientId']) ? $blockData['clientId'] : wp_generate_uuid4(),
             !empty($blockData['isValid']) ? $blockData['isValid'] : true,
             !empty($blockData['attributes']) ? $blockData['attributes'] : [],
             $innerBlocks
