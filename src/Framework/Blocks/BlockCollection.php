@@ -79,24 +79,106 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      *
-     * @param BlockModel[] $blocks
-     * @param string $name
-     * @return BlockModel|null
+     * @param string $nameOrId
+     * @param BlockCollection|null $blockCollection
+     * @param string $return self|parent
+     * @return BlockCollection|null
      */
-    public function findByName(string $name, array $blocks = null)
+    public function findBlock(string $nameOrId, BlockCollection $blockCollection = null, string $return = 'self')
     {
-        if ($blocks === null) {
-            $blocks = $this->blocks;
+        if ($blockCollection === null) {
+            $blockCollection = $this;
         }
 
-        foreach ($blocks as $block) {
-            if ($block->name === $name) {
-                return $block;
-            } else if ($block->innerBlocks) {
-                return $this->findByName($name, $block->innerBlocks->blocks);
+        foreach ($blockCollection->blocks as $block) {
+            if ($block->name === $nameOrId || $block->clientId === $nameOrId) {
+                if ($return === 'self') {
+                    return $block->innerBlocks;
+                } elseif ($return === 'parent') {
+                    return $blockCollection;
+                }
+            } elseif ($block->innerBlocks) {
+                $result = $this->findBlock($nameOrId, $block->innerBlocks, $return);
+                if ($result) {
+                    return $result;
+                }
             }
         }
 
         return null;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function insertBefore(string $blockNameOrId, BlockModel $block): BlockCollection
+    {
+        $blockCollection = $this->findBlock($blockNameOrId, $this, 'parent');
+
+        if (!$blockCollection) {
+            return $this;
+        }
+
+        $innerBlocks = $blockCollection->blocks;
+        $blockIndex = array_search($blockNameOrId, array_column($innerBlocks, wp_is_uuid($blockNameOrId) ? 'id' : 'name'));
+        array_splice($innerBlocks, $blockIndex, 0, [$block]);
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function insertAfter(string $blockNameOrId, BlockModel $block): BlockCollection
+    {
+        $blockCollection = $this->findBlock($blockNameOrId, $this, 'parent');
+
+        if (!$blockCollection) {
+            return $this;
+        }
+
+        $innerBlocks = $blockCollection->blocks;
+        $blockIndex = array_search($blockNameOrId, array_column($innerBlocks, wp_is_uuid($blockNameOrId) ? 'id' : 'name'));
+        array_splice($innerBlocks, $blockIndex + 1, 0, [$block]);
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function prepend(string $blockNameOrId, BlockModel $block): BlockCollection
+    {
+        $blockCollection = $this->findBlock($blockNameOrId);
+
+        if (!$blockCollection) {
+            return $this;
+        }
+
+        $innerBlocks = $blockCollection->blocks;
+        array_unshift($innerBlocks, $block);
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function append(string $blockNameOrId, BlockModel $block): BlockCollection
+    {
+        $blockCollection = $this->findBlock($blockNameOrId);
+
+        if (!$blockCollection) {
+            return $this;
+        }
+        
+        $innerBlocks = $blockCollection->blocks;
+        $innerBlocks[] = $block;
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
     }
 }
