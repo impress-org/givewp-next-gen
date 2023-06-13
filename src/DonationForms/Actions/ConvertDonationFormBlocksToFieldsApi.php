@@ -175,14 +175,23 @@ class ConvertDonationFormBlocksToFieldsApi
                             if (!is_user_logged_in()) {
                                 $field->required();
                             }
-                            
+
                             $field->rules(new AuthenticationRule());
                         }
                     });
 
             default:
                 $customField = apply_filters(
+                    'givewp_donation_form_block_render',
+                    null,
+                    $block,
+                    $blockIndex,
+                    $this->formId
+                );
+
+                $customField = apply_filters(
                     "givewp_donation_form_block_render_{$blockName}",
+                    $customField,
                     $block,
                     $blockIndex,
                     $this->formId
