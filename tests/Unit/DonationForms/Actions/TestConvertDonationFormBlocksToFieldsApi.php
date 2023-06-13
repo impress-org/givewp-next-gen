@@ -112,7 +112,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
                 return Email::make('givewp-custom-block');
             },
             10,
-            2
+            3
         );
 
         $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
