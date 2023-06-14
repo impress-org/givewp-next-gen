@@ -43,7 +43,7 @@ class CreateFormRoute
                     'blocks' => BlockCollection::fromJson($blocksJson)
                 ]);
 
-                Hooks::doAction('give_form_builder_new_form', $form);
+                Hooks::doAction('givewp_form_builder_new_form', $form);
 
                 $form->save();
 
