@@ -17,7 +17,7 @@ import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donat
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback} from '@wordpress/element';
 
-const compareBillingPeriods = (val1: string, val2:string ): number => {
+const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
     const index2 = Object.keys(periodLookup).indexOf(val2);
 
@@ -45,6 +45,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const addBillingPeriodOption = useCallback(
         (value) => {
             const options = Array.from(new Set(recurringBillingPeriodOptions.concat([value])));
+
             options.sort(compareBillingPeriods);
 
             setAttributes({
@@ -53,6 +54,7 @@ const Inspector = ({attributes, setAttributes}) => {
         },
         [recurringBillingPeriodOptions]
     );
+
     const removeBillingPeriodOption = useCallback(
         (value) => {
             const options = recurringBillingPeriodOptions.filter((option) => option !== value);
