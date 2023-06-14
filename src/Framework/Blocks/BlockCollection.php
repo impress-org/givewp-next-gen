@@ -83,7 +83,7 @@ class BlockCollection implements Arrayable
      */
     public function findByName(string $blockName, int $blockIndex = 0, string $return = 'self')
     {
-        return $this->findByNameRecursive($blockName, $blockIndex, $this, $return);
+        return $this->findByNameRecursive($blockName, $blockIndex, $return);
     }
 
     /**
@@ -91,7 +91,7 @@ class BlockCollection implements Arrayable
      *
      * @return BlockCollection|null
      */
-    private function findByNameRecursive(string $blockName, int $blockIndex = 0, BlockCollection $blockCollection = null, string $return = 'self', int &$count = 0)
+    private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', BlockCollection $blockCollection = null, int &$count = 0)
     {
         foreach ($blockCollection->blocks as $block) {
             if ($block->name === $blockName) {
@@ -105,7 +105,7 @@ class BlockCollection implements Arrayable
                     }
                 }
             } elseif ($block->innerBlocks) {
-                $result = $this->findByNameRecursive($blockName, $blockIndex, $block->innerBlocks, $return, $count);
+                $result = $this->findByNameRecursive($blockName, $blockIndex, $return, $block->innerBlocks, $count);
                 if ($result) {
                     return $result;
                 }
