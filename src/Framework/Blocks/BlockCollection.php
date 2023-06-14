@@ -79,26 +79,27 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      *
-     * @param string $nameOrId
-     * @param BlockCollection|null $blockCollection
-     * @param string $return self|parent
      * @return BlockCollection|null
      */
-    public function findBlock(string $nameOrId, BlockCollection $blockCollection = null, string $return = 'self')
+    public function findBlock(string $blockName, int $blockIndex = 0, BlockCollection $blockCollection = null, string $return = 'self', int &$count = 0)
     {
         if ($blockCollection === null) {
             $blockCollection = $this;
         }
 
         foreach ($blockCollection->blocks as $block) {
-            if ($block->name === $nameOrId || $block->clientId === $nameOrId) {
-                if ($return === 'self') {
-                    return $block->innerBlocks;
-                } elseif ($return === 'parent') {
-                    return $blockCollection;
+            if ($block->name === $blockName) {
+                $count++;
+
+                if ($count === $blockIndex + 1) {
+                    if ($return === 'self') {
+                        return $block->innerBlocks;
+                    } elseif ($return === 'parent') {
+                        return $blockCollection;
+                    }
                 }
             } elseif ($block->innerBlocks) {
-                $result = $this->findBlock($nameOrId, $block->innerBlocks, $return);
+                $result = $this->findBlock($blockName, $blockIndex, $block->innerBlocks, $return, $count);
                 if ($result) {
                     return $result;
                 }
@@ -111,16 +112,16 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      */
-    public function insertBefore(string $blockNameOrId, BlockModel $block): BlockCollection
+    public function insertBefore(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findBlock($blockNameOrId, $this, 'parent');
+        $blockCollection = $this->findBlock($blockName, $blockIndex, $this, 'parent');
 
         if (!$blockCollection) {
             return $this;
         }
 
         $innerBlocks = $blockCollection->blocks;
-        $blockIndex = array_search($blockNameOrId, array_column($innerBlocks, wp_is_uuid($blockNameOrId) ? 'id' : 'name'));
+        $blockIndex = array_search($blockName, array_column($innerBlocks, wp_is_uuid($blockName) ? 'id' : 'name'));
         array_splice($innerBlocks, $blockIndex, 0, [$block]);
         $blockCollection->blocks = $innerBlocks;
 
@@ -130,16 +131,16 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      */
-    public function insertAfter(string $blockNameOrId, BlockModel $block): BlockCollection
+    public function insertAfter(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findBlock($blockNameOrId, $this, 'parent');
+        $blockCollection = $this->findBlock($blockName, $blockIndex, $this, 'parent');
 
         if (!$blockCollection) {
             return $this;
         }
 
         $innerBlocks = $blockCollection->blocks;
-        $blockIndex = array_search($blockNameOrId, array_column($innerBlocks, wp_is_uuid($blockNameOrId) ? 'id' : 'name'));
+        $blockIndex = array_search($blockName, array_column($innerBlocks, wp_is_uuid($blockName) ? 'id' : 'name'));
         array_splice($innerBlocks, $blockIndex + 1, 0, [$block]);
         $blockCollection->blocks = $innerBlocks;
 
@@ -149,9 +150,9 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      */
-    public function prepend(string $blockNameOrId, BlockModel $block): BlockCollection
+    public function prepend(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findBlock($blockNameOrId);
+        $blockCollection = $this->findBlock($blockName, $blockIndex);
 
         if (!$blockCollection) {
             return $this;
@@ -167,14 +168,14 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      */
-    public function append(string $blockNameOrId, BlockModel $block): BlockCollection
+    public function append(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findBlock($blockNameOrId);
+        $blockCollection = $this->findBlock($blockName, $blockIndex);
 
         if (!$blockCollection) {
             return $this;
         }
-        
+
         $innerBlocks = $blockCollection->blocks;
         $innerBlocks[] = $block;
         $blockCollection->blocks = $innerBlocks;
