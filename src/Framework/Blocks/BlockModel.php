@@ -74,6 +74,18 @@ class BlockModel implements Arrayable
     }
 
     /**
+     * @unreleased
+     */
+    public function setAttribute(string $name, $value): BlockModel
+    {
+        if ($this->hasAttribute($name)) {
+            $this->attributes[$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the unqualified, or short name, of the block without the namespace.
      *
      * @since 0.1.0
