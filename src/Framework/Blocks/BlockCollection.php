@@ -127,7 +127,7 @@ class BlockCollection implements Arrayable
         }
 
         $innerBlocks = $blockCollection->blocks;
-        $blockIndex = array_search($blockName, array_column($innerBlocks, wp_is_uuid($blockName) ? 'id' : 'name'));
+        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
         array_splice($innerBlocks, $blockIndex, 0, [$block]);
         $blockCollection->blocks = $innerBlocks;
 
@@ -146,7 +146,7 @@ class BlockCollection implements Arrayable
         }
 
         $innerBlocks = $blockCollection->blocks;
-        $blockIndex = array_search($blockName, array_column($innerBlocks, wp_is_uuid($blockName) ? 'id' : 'name'));
+        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
         array_splice($innerBlocks, $blockIndex + 1, 0, [$block]);
         $blockCollection->blocks = $innerBlocks;
 
