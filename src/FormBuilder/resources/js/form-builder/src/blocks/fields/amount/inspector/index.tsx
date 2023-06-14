@@ -15,6 +15,19 @@ import {CurrencyControl} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {useCallback} from '@wordpress/element';
+
+const getOrderedRecurringBillingPeriodOptions = (options) => {
+    const orderedOptions = [];
+
+    Object.keys(periodLookup).forEach((key) => {
+        if (options.includes(key)) {
+            orderedOptions.push(key);
+        }
+    });
+
+    return orderedOptions;
+};
 
 const Inspector = ({attributes, setAttributes}) => {
     const {
@@ -34,18 +47,32 @@ const Inspector = ({attributes, setAttributes}) => {
         recurringOptInDefaultBillingPeriod,
     } = attributes;
 
-    const addBillingPeriodOption = (value) => {
-        setAttributes({
-            recurringBillingPeriodOptions: Array.from(new Set(recurringBillingPeriodOptions.concat([value]))),
-        });
-    };
-    const removeBillingPeriodOption = (value) => {
-        if (recurringBillingPeriodOptions.length > 1) {
+    const addBillingPeriodOption = useCallback(
+        (value) => {
+            const options = getOrderedRecurringBillingPeriodOptions(
+                Array.from(new Set(recurringBillingPeriodOptions.concat([value])))
+            );
+
             setAttributes({
-                recurringBillingPeriodOptions: recurringBillingPeriodOptions.filter((option) => option !== value),
+                recurringBillingPeriodOptions: options,
             });
-        }
-    };
+        },
+        [recurringBillingPeriodOptions]
+    );
+    const removeBillingPeriodOption = useCallback(
+        (value) => {
+            const options = getOrderedRecurringBillingPeriodOptions(
+                recurringBillingPeriodOptions.filter((option) => option !== value)
+            );
+
+            if (recurringBillingPeriodOptions.length > 1) {
+                setAttributes({
+                    recurringBillingPeriodOptions: options,
+                });
+            }
+        },
+        [recurringBillingPeriodOptions]
+    );
 
     const {gateways, recurringAddonData, gatewaySettingsUrl} = getFormBuilderData();
     const enabledGateways = gateways.filter((gateway) => gateway.enabled);
