@@ -89,17 +89,21 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      *
-     * @return BlockCollection|null
+     * @return BlockModel|BlockCollection|null
      */
     private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', BlockCollection $blockCollection = null, int &$count = 0)
     {
+        if (!$blockCollection) {
+            $blockCollection = $this;
+        }
+
         foreach ($blockCollection->blocks as $block) {
             if ($block->name === $blockName) {
                 $count++;
 
                 if ($count === $blockIndex + 1) {
                     if ($return === 'self') {
-                        return $block->innerBlocks;
+                        return $block;
                     } elseif ($return === 'parent') {
                         return $blockCollection;
                     }
@@ -158,7 +162,7 @@ class BlockCollection implements Arrayable
      */
     public function prepend(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findByName($blockName, $blockIndex);
+        $blockCollection = $this->findByName($blockName, $blockIndex)->innerBlocks;
 
         if (!$blockCollection) {
             return $this;
@@ -176,7 +180,7 @@ class BlockCollection implements Arrayable
      */
     public function append(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findByName($blockName, $blockIndex);
+        $blockCollection = $this->findByName($blockName, $blockIndex)->innerBlocks;
 
         if (!$blockCollection) {
             return $this;
