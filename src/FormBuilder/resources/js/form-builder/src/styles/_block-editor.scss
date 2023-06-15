@@ -15,7 +15,6 @@
 
 .interface-interface-skeleton__body {
     min-height: 100vh;
-    padding-top: 60px;
     width: 100%;
     background-color: var(--givewp-gray-10);
 }
@@ -26,6 +25,10 @@
 
 
 .interface-interface-skeleton__content {
+    width: 720px;
+    margin: auto;
+    padding: 100px 0; /* Leave room for toolbar above first block. */
+    flex-grow: unset;
     box-sizing: border-box;
 
     @media screen and (max-width: 782px) {
@@ -36,14 +39,6 @@
     *:before,
     *:after {
         box-sizing: inherit;
-    }
-
-    #form-blocks-canvas,
-    #form-preview-canvas {
-        width: 720px;
-        margin: auto;
-        padding: 60px 0 120px; /* Leave room for toolbar above first block. */
-        position: relative;
     }
 
     input,
@@ -170,7 +165,6 @@
 
 .interface-interface-skeleton {
     left: 0 !important;
-    top: 0;
 }
 
 .block-editor-block-list__layout {

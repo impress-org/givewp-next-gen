@@ -26,10 +26,6 @@
     display: flex;
     flex-direction: column-reverse;
     gap: var(--givewp-spacing-2);
-
-    .components-flex {
-        gap: var(--givewp-spacing-2);
-    }
 }
 
 .email-template-tags {
