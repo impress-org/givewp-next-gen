@@ -29,18 +29,18 @@ class BlockModel implements Arrayable
     public $innerBlocks;
 
     /**
-     * @param  string  $name
-     * @param  string|null  $clientId
-     * @param  bool  $isValid
-     * @param  array  $attributes
-     * @param  BlockCollection|null  $innerBlocks
+     * @param string $name
+     * @param string $clientId
+     * @param bool $isValid
+     * @param array $attributes
+     * @param BlockCollection|null $innerBlocks
      */
     public function __construct(
         string $name,
-        $clientId,
-        bool $isValid = true,
-        array $attributes = [],
-        $innerBlocks = null
+        string $clientId = null,
+        bool   $isValid = true,
+        array  $attributes = [],
+               $innerBlocks = null
     ) {
         $this->name = $name;
         $this->clientId = $clientId ?? wp_generate_uuid4();
