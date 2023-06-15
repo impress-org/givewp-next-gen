@@ -79,11 +79,11 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      *
-     * @return BlockModel|BlockCollection|null
+     * @return BlockModel|null
      */
-    public function findByName(string $blockName, int $blockIndex = 0, string $return = 'self')
+    public function findByName(string $blockName, int $blockIndex = 0)
     {
-        return $this->findByNameRecursive($blockName, $blockIndex, $return);
+        return $this->findByNameRecursive($blockName, $blockIndex);
     }
 
     /**
