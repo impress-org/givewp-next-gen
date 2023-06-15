@@ -79,7 +79,7 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      *
-     * @return BlockCollection|null
+     * @return BlockModel|BlockCollection|null
      */
     public function findByName(string $blockName, int $blockIndex = 0, string $return = 'self')
     {
