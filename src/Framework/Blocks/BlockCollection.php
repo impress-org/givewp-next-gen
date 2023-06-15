@@ -124,7 +124,7 @@ class BlockCollection implements Arrayable
      */
     public function insertBefore(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findByName($blockName, $blockIndex, 'parent');
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex, 'parent');
 
         if (!$blockCollection) {
             return $this;
@@ -143,7 +143,7 @@ class BlockCollection implements Arrayable
      */
     public function insertAfter(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findByName($blockName, $blockIndex, 'parent');
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex, 'parent');
 
         if (!$blockCollection) {
             return $this;
@@ -162,13 +162,13 @@ class BlockCollection implements Arrayable
      */
     public function prepend(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findByName($blockName, $blockIndex)->innerBlocks;
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
 
         if (!$blockCollection) {
             return $this;
         }
 
-        $innerBlocks = $blockCollection->blocks;
+        $innerBlocks = $blockCollection->innerBlocks->blocks;
         array_unshift($innerBlocks, $block);
         $blockCollection->blocks = $innerBlocks;
 
@@ -180,13 +180,13 @@ class BlockCollection implements Arrayable
      */
     public function append(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
-        $blockCollection = $this->findByName($blockName, $blockIndex)->innerBlocks;
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
 
         if (!$blockCollection) {
             return $this;
         }
 
-        $innerBlocks = $blockCollection->blocks;
+        $innerBlocks = $blockCollection->innerBlocks->blocks;
         $innerBlocks[] = $block;
         $blockCollection->blocks = $innerBlocks;
 
