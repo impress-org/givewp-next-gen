@@ -23,7 +23,7 @@ const DesignPreview = () => {
     ]);
 
     return (
-        <>
+        <div id="form-preview-canvas">
             {isLoading && <DesignPreviewLoading />}
             <IframeResizer
                 srcDoc={previewHTML}
@@ -47,7 +47,7 @@ const DesignPreview = () => {
                 srcDoc={sourceDocument}
                 style={{display: 'none'}}
             />
-        </>
+        </div>
     );
 };
 
