@@ -6,6 +6,7 @@ import defaultBlocks from './blocks.json';
 import Feedback from '@givewp/form-builder/feedback';
 import {BlockInstance} from '@wordpress/blocks';
 import './App.scss';
+import mountHooksToWindow from '@givewp/form-builder/hooks/mountHooksToWindow';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
@@ -25,6 +26,8 @@ if (initialBlocks instanceof Error) {
 if (ShortcutProvider === undefined) {
     console.error('ShortcutProvider is undefined.');
 }
+
+mountHooksToWindow();
 
 export default function App() {
     return (
