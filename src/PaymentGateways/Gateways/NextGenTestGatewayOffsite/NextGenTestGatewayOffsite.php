@@ -7,13 +7,12 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 
 /**
  * @since 0.1.0
  */
-class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPaymentGatewayInterface
+class NextGenTestGatewayOffsite extends PaymentGateway
 {
     /**
      * @inheritDoc
@@ -24,10 +23,12 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
 
     /**
      * @unreleased
+     *
+     * @return array
      */
-    public static function apiVersion(): int
+    public static function formVersions(): array
     {
-        return 3;
+        return [2, 3];
     }
 
     /**

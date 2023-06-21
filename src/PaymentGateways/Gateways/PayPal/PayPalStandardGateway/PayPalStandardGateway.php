@@ -6,26 +6,27 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 
-class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGatewayInterface
+class PayPalStandardGateway extends PayPalStandard
 {
     use HandleHttpResponses;
     use HasScriptAssetFile;
 
     /**
      * @unreleased
+     *
+     * @return array
      */
-    public static function apiVersion(): int
+    public static function formVersions(): array
     {
-        return 3;
+        return [2, 3];
     }
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
     public function enqueueScript(int $formId)
     {

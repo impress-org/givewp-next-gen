@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalCommerce;
 
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
@@ -11,16 +10,18 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 /**
  * An extension of the PayPalCommerce gateway in GiveWP that supports the NextGenPaymentGatewayInterface.
  */
-class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGatewayInterface
+class PayPalCommerceGateway extends PayPalCommerce
 {
     use HasScriptAssetFile;
 
     /**
      * @unreleased
+     *
+     * @return array
      */
-    public static function apiVersion(): int
+    public static function formVersions(): array
     {
-        return 3;
+        return [2, 3];
     }
 
     /**

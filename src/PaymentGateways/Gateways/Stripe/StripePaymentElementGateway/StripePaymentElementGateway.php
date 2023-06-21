@@ -5,7 +5,6 @@ namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
@@ -14,17 +13,19 @@ use Stripe\Exception\ApiErrorException;
 /**
  * @since 0.1.0
  */
-class StripePaymentElementGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
+class StripePaymentElementGateway extends PaymentGateway
 {
     use StripePaymentElementRepository;
     use HasScriptAssetFile;
 
     /**
      * @unreleased
+     *
+     * @return array
      */
-    public static function apiVersion(): int
+    public static function formVersions(): array
     {
-        return 3;
+        return [3];
     }
 
     /**

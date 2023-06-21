@@ -103,11 +103,12 @@ class FormBuilderViewModel
                 /** @var PaymentGateway $gateway */
                 $gateway = give($gatewayClass);
 
-                return $gateway::apiVersion() >= 3;
+                return in_array(3, $gateway::formVersions(), true);
             }
         );
 
         $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
+            /** @var PaymentGateway $gateway */
             $gateway = give($gatewayClass);
             return [
                 'id' => $gateway::id(),

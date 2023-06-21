@@ -4,23 +4,24 @@ namespace Give\PaymentGateways\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 
 /**
  * @since 0.1.0
  */
-class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
+class NextGenTestGateway extends PaymentGateway
 {
     use HasScriptAssetFile;
 
     /**
      * @unreleased
+     *
+     * @return array
      */
-    public static function apiVersion(): int
+    public static function formVersions(): array
     {
-        return 3;
+        return [2, 3];
     }
 
     /**

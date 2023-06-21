@@ -302,7 +302,7 @@ class DonationFormRepository
 
             $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
             
-            if ($gateway::apiVersion() >= 3) {
+            if (in_array(3, $gateway::formVersions(), true)) {
                 $gateways[$gatewayId] = $gateway;
             }
         }
