@@ -3,11 +3,11 @@
 namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
 use Stripe\Exception\ApiErrorException;
 
@@ -17,6 +17,7 @@ use Stripe\Exception\ApiErrorException;
 class StripePaymentElementGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
     use StripePaymentElementRepository;
+    use HasScriptAssetFile;
 
     /**
      * @inheritDoc
@@ -53,14 +54,16 @@ class StripePaymentElementGateway extends PaymentGateway implements NextGenPayme
     /**
      * @since 0.1.0
      */
-    public function enqueueScript(): EnqueueScript
+    public function enqueueScript()
     {
-        return new EnqueueScript(
+        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/stripePaymentElementGateway.asset.php');
+
+        wp_enqueue_script(
             self::id(),
-            'build/stripePaymentElementGateway.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
+            GIVE_NEXT_GEN_URL . 'build/stripePaymentElementGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
         );
     }
 

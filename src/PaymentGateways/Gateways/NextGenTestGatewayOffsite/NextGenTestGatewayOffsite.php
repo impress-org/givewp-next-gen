@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\Gateways\NextGenTestGatewayOffsite;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\EnqueueScript;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
@@ -57,17 +56,15 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
 
     /**
      * @since 0.1.0
-     *
-     * @return EnqueueScript
      */
-    public function enqueueScript(): EnqueueScript
+    public function enqueueScript()
     {
-        return new EnqueueScript(
+        wp_enqueue_script(
             self::id(),
-            'src/PaymentGateways/Gateways/NextGenTestGatewayOffsite/nextGenTestGatewayOffsite.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
+            GIVE_NEXT_GEN_DIR . 'src/PaymentGateways/Gateways/NextGenTestGatewayOffsite/nextGenTestGatewayOffsite.js',
+            [],
+            false,
+            true
         );
     }
 

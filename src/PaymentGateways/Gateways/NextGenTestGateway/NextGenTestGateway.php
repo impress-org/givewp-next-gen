@@ -3,16 +3,17 @@
 namespace Give\PaymentGateways\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 
 /**
  * @since 0.1.0
  */
 class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
+    use HasScriptAssetFile;
 
     /**
      * @inheritDoc
@@ -48,17 +49,17 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
 
     /**
      * @since 0.1.0
-     *
-     * @return EnqueueScript
      */
-    public function enqueueScript(): EnqueueScript
+    public function enqueueScript()
     {
-        return new EnqueueScript(
+        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/nextGenTestGateway.asset.php');
+
+        wp_enqueue_script(
             self::id(),
-            'build/nextGenTestGateway.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
+            GIVE_NEXT_GEN_URL . 'build/nextGenTestGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
         );
     }
 

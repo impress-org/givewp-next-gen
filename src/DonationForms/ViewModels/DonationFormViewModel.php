@@ -11,7 +11,6 @@ use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
-use Give\Framework\EnqueueScript;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Helpers\Hooks;
@@ -206,10 +205,6 @@ class DonationFormViewModel
         wp_print_head_scripts();
         ?>
 
-        <script>
-            window.givewpDonationFormExports = <?= wp_json_encode($this->exports()) ?>;
-        </script>
-
         <?php
         if ($this->formSettings->customCss): ?>
             <style><?php
@@ -250,14 +245,19 @@ class DonationFormViewModel
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
 
-        // load registrars
-        (new EnqueueScript(
-            'givewp-donation-form-registrars-js',
-            'build/donationFormRegistrars.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->loadInFooter()->enqueue();
+        wp_enqueue_script(
+            'givewp-donation-form-registrars',
+            GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.js',
+            $this->getScriptAssetDependencies(GIVE_NEXT_GEN_DIR . 'build/donationFormRegistrars.asset.php'),
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
+
+        wp_add_inline_script(
+            'givewp-donation-form-registrars',
+            'window.givewpDonationFormExports = ' . wp_json_encode($this->exports()) . ';',
+            'before'
+        );
 
         Hooks::doAction('givewp_donation_form_enqueue_scripts');
 
@@ -274,10 +274,9 @@ class DonationFormViewModel
                     'givewp-form-design-' . $design::id(),
                     $design->js(),
                     array_merge(
-                        ['givewp-donation-form-registrars-js'],
-                        $design->dependencies()
+                        $design->dependencies(),
+                        ['givewp-donation-form-registrars']
                     ),
-                    false,
                     true
                 );
             }
@@ -286,36 +285,34 @@ class DonationFormViewModel
         // load gateways
         foreach ($donationFormRepository->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {
-                /** @var EnqueueScript $script */
-                $script = $gateway->enqueueScript();
-
-                $script->dependencies(['givewp-donation-form-registrars-js'])
-                    ->loadInFooter()
-                    ->enqueue();
+                $gateway->enqueueScript(['givewp-donation-form-registrars']);
             }
         }
 
         // load block - since this is using render_callback viewScript in blocks.json will not work.
-        (new EnqueueScript(
-            'givewp-next-gen-donation-form-js',
-            'build/donationFormApp.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->dependencies(['givewp-donation-form-registrars-js'])->loadInFooter()->enqueue();
+        wp_enqueue_script(
+            'givewp-donation-form-app',
+            GIVE_NEXT_GEN_URL . 'build/donationFormApp.js',
+            array_merge(
+                $this->getScriptAssetDependencies(GIVE_NEXT_GEN_DIR . 'build/donationFormApp.asset.php'),
+                ['givewp-donation-form-registrars']
+            ),
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
 
         /**
          * Load iframeResizer.contentWindow.min.js inside iframe
          *
          * @see https://github.com/davidjbradshaw/iframe-resizer
          */
-        (new EnqueueScript(
+        wp_enqueue_script(
             'givewp-donation-form-embed-inside',
-            'build/donationFormEmbedInside.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->loadInFooter()->enqueue();
+            GIVE_NEXT_GEN_URL . 'build/donationFormEmbedInside.js',
+            [],
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
     }
 
     /**
@@ -329,5 +326,33 @@ class DonationFormViewModel
         $formDesignRegistrar = give(FormDesignRegistrar::class);
 
         return $formDesignRegistrar->hasDesign($this->designId()) ? $formDesignRegistrar->getDesign($designId) : null;
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getScriptAssetDependencies(string $path)
+    {
+        $assets = $this->getScriptAssetFile($path);
+
+        return $assets['dependencies'];
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getScriptAssetVersion(string $path)
+    {
+        $assets = $this->getScriptAssetFile($path);
+
+        return $assets['version'];
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getScriptAssetFile(string $path)
+    {
+        return file_exists($path) ? require $path : ['dependencies' => [], 'version' => filemtime($path)];
     }
 }

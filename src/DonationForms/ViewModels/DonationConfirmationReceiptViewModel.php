@@ -173,7 +173,7 @@ class DonationConfirmationReceiptViewModel
     {
         // load registrars
         (new EnqueueScript(
-            'givewp-donation-form-registrars-js',
+            'givewp-donation-form-registrars',
             'build/donationFormRegistrars.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
@@ -197,7 +197,7 @@ class DonationConfirmationReceiptViewModel
                     'givewp-form-design-' . $design::id(),
                     $design->js(),
                     array_merge(
-                        ['givewp-donation-form-registrars-js'],
+                        ['givewp-donation-form-registrars'],
                         $design->dependencies()
                     ),
                     false,
@@ -213,7 +213,7 @@ class DonationConfirmationReceiptViewModel
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        ))->dependencies(['givewp-donation-form-registrars-js'])->loadInFooter()->enqueue();
+        ))->dependencies(['givewp-donation-form-registrars'])->loadInFooter()->enqueue();
 
         /**
          * Load iframeResizer.contentWindow.min.js inside iframe

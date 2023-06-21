@@ -4,18 +4,17 @@ namespace Give\PaymentGateways\Gateways\PayPal\PayPalStandardGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\EnqueueScript;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
-
-use function add_query_arg;
 
 class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGatewayInterface
 {
     use HandleHttpResponses;
+    use HasScriptAssetFile;
 
     /**
      * @inheritdoc
@@ -28,14 +27,16 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
     /**
      * @inheritdoc
      */
-    public function enqueueScript(): EnqueueScript
+    public function enqueueScript()
     {
-        return new EnqueueScript(
+        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalStandardGateway.asset.php');
+
+        wp_enqueue_script(
             self::id(),
-            'build/payPalStandardGateway.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
+            GIVE_NEXT_GEN_URL . 'build/payPalStandardGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
         );
     }
 

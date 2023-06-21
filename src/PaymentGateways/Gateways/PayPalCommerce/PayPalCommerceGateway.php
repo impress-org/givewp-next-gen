@@ -2,8 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalCommerce;
 
-use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -13,15 +13,19 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
  */
 class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGatewayInterface
 {
-    public function enqueueScript(): EnqueueScript
+    use HasScriptAssetFile;
+
+    public function enqueueScript()
     {
-        return (new EnqueueScript(
+        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalCommerceGateway.asset.php');
+        
+        wp_enqueue_script(
             self::id(),
-            'build/payPalCommerceGateway.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ));
+            GIVE_NEXT_GEN_URL . 'build/payPalCommerceGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
+        );
     }
 
     public function formSettings(int $formId): array
