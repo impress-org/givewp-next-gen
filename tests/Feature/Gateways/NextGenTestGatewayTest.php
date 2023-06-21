@@ -4,17 +4,17 @@ namespace Give\Tests\Feature\Gateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\PaymentGateways\Gateways\NextGenTestGateway\TestModeGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class NextGenTestGatewayTest extends TestCase
+class TestGatewayTest extends TestCase
 {
     use RefreshDatabase;
 
     public function testShouldCreatePaymentAndReturnPaymentComplete()
     {
-        $gateway = new TestModeGateway();
+        $gateway = new TestGateway();
         $donation = Donation::factory()->create();
         $gatewayData = ['testGatewayIntent' => 'test-gateway-intent'];
 

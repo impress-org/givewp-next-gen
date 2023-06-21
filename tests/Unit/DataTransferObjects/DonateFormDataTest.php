@@ -10,7 +10,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\PaymentGateways\Gateways\NextGenTestGateway\TestModeGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -37,15 +37,15 @@ class DonateFormDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         add_filter('give_get_option_gateways', static function ($gateways) {
-            return array_merge($gateways, [TestModeGateway::id() => true]);
+            return array_merge($gateways, [TestGateway::id() => true]);
         });
 
         add_filter('give_default_gateway', static function () {
-            return TestModeGateway::id();
+            return TestGateway::id();
         });
 
         $data = (object)[
-            'gatewayId' => TestModeGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'amount' => 50,
             'currency' => 'USD',
             'firstName' => 'Bill',
@@ -99,15 +99,15 @@ class DonateFormDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         add_filter('give_get_option_gateways', static function ($gateways) {
-            return array_merge($gateways, [TestModeGateway::id() => true]);
+            return array_merge($gateways, [TestGateway::id() => true]);
         });
 
         add_filter('give_default_gateway', static function () {
-            return TestModeGateway::id();
+            return TestGateway::id();
         });
 
         $data = (object)[
-            'gatewayId' => TestModeGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'amount' => 50,
             'currency' => 'USD',
             'firstName' => 'Bill',

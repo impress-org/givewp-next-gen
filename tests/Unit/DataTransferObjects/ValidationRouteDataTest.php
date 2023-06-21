@@ -10,7 +10,7 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\JsonResponse;
-use Give\PaymentGateways\Gateways\NextGenTestGateway\TestModeGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -32,16 +32,16 @@ class ValidationRouteDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         add_filter('give_get_option_gateways', static function ($gateways) {
-            return array_merge($gateways, [TestModeGateway::id() => true]);
+            return array_merge($gateways, [TestGateway::id() => true]);
         });
 
         add_filter('give_default_gateway', static function () {
-            return TestModeGateway::id();
+            return TestGateway::id();
         });
 
         $request = [
             'formId' => $form->id,
-            'gatewayId' => TestModeGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'amount' => 100,
             'currency' => "USD",
             'firstName' => "Bill",
@@ -114,11 +114,11 @@ class ValidationRouteDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         add_filter('give_get_option_gateways', static function ($gateways) {
-            return array_merge($gateways, [TestModeGateway::id() => true]);
+            return array_merge($gateways, [TestGateway::id() => true]);
         });
 
         add_filter('give_default_gateway', static function () {
-            return TestModeGateway::id();
+            return TestGateway::id();
         });
 
         $customFieldBlockModel = BlockModel::make([
@@ -204,7 +204,7 @@ class ValidationRouteDataTest extends TestCase
 
         $request = [
             'formId' => $form->id,
-            'gatewayId' => TestModeGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'amount' => 100,
             'currency' => "USD",
             'firstName' => "Bill",

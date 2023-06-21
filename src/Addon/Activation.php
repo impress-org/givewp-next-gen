@@ -17,7 +17,7 @@ class Activation
      * Activate add-on action hook.
      *
      * @since 0.3.2 auto-activate free license key
-     * @since 0.3.0 enable the NextGenTestGateway gateway by default
+     * @since 0.3.0 enable the TestGateway gateway by default
      * @since 0.1.0
      * @return void
      */
