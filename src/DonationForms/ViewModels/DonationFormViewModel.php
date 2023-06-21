@@ -13,6 +13,7 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 
 use function implode;
@@ -24,6 +25,7 @@ use function wp_print_styles;
  */
 class DonationFormViewModel
 {
+    use HasScriptAssetFile;
     /**
      * @var int
      */
@@ -326,33 +328,5 @@ class DonationFormViewModel
         $formDesignRegistrar = give(FormDesignRegistrar::class);
 
         return $formDesignRegistrar->hasDesign($this->designId()) ? $formDesignRegistrar->getDesign($designId) : null;
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function getScriptAssetDependencies(string $path)
-    {
-        $assets = $this->getScriptAssetFile($path);
-
-        return $assets['dependencies'];
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function getScriptAssetVersion(string $path)
-    {
-        $assets = $this->getScriptAssetFile($path);
-
-        return $assets['version'];
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function getScriptAssetFile(string $path)
-    {
-        return file_exists($path) ? require $path : ['dependencies' => [], 'version' => filemtime($path)];
     }
 }
