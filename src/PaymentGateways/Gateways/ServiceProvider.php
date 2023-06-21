@@ -7,9 +7,6 @@ use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
-use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGatewaySubscriptionModule;
-use Give\PaymentGateways\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\PaymentGateways\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\PaymentGateways\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGatewaySubscriptionModule;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
@@ -25,6 +22,9 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGatewaySubscriptionModule;
+use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -61,9 +61,9 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerGateways()
     {
         add_action('givewp_register_payment_gateway', static function (PaymentGatewayRegister $registrar) {
-            $registrar->registerGateway(NextGenTestGateway::class);
+            $registrar->registerGateway(TestGateway::class);
             $registrar->registerGateway(StripePaymentElementGateway::class);
-            $registrar->registerGateway(NextGenTestGatewayOffsite::class);
+            $registrar->registerGateway(TestOffsiteGateway::class);
             $registrar->unregisterGateway(PayPalStandard::id());
             $registrar->registerGateway(PayPalStandardGateway::class);
 
@@ -110,9 +110,9 @@ class ServiceProvider implements ServiceProviderInterface
             );
 
             add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", NextGenTestGateway::id()),
+                sprintf("givewp_gateway_%s_subscription_module", TestGateway::id()),
                 static function () {
-                    return NextGenTestGatewaySubscriptionModule::class;
+                    return TestGatewaySubscriptionModule::class;
                 }
             );
 

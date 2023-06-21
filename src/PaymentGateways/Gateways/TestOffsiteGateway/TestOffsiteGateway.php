@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\NextGenTestGatewayOffsite;
+namespace Give\PaymentGateways\Gateways\TestOffsiteGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -12,7 +12,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 /**
  * @since 0.1.0
  */
-class NextGenTestGatewayOffsite extends PaymentGateway
+class TestOffsiteGateway extends PaymentGateway
 {
     /**
      * @inheritDoc
@@ -36,7 +36,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway
      */
     public static function id(): string
     {
-        return 'test-gateway-next-gen-offsite';
+        return 'test-offsite-gateway';
     }
 
     /**
@@ -52,7 +52,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway
      */
     public function getName(): string
     {
-        return __('Test Gateway Offsite', 'give');
+        return __('Test Offsite Gateway', 'give');
     }
 
     /**
@@ -60,7 +60,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway Offsite', 'give');
+        return __('Test Offsite Gateway', 'give');
     }
 
     /**
@@ -70,7 +70,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway
     {
         wp_enqueue_script(
             self::id(),
-            GIVE_NEXT_GEN_URL . 'src/PaymentGateways/Gateways/NextGenTestGatewayOffsite/nextGenTestGatewayOffsite.js',
+            GIVE_NEXT_GEN_URL . 'src/PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.js',
             [],
             false,
             true
@@ -114,7 +114,10 @@ class NextGenTestGatewayOffsite extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        return false;
+        return __(
+            'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.',
+            'give'
+        );
     }
 
     /**

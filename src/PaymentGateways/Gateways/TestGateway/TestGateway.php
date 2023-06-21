@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\NextGenTestGateway;
+namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
@@ -10,7 +10,7 @@ use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 /**
  * @since 0.1.0
  */
-class NextGenTestGateway extends PaymentGateway
+class TestGateway extends PaymentGateway
 {
     use HasScriptAssetFile;
 
@@ -29,7 +29,7 @@ class NextGenTestGateway extends PaymentGateway
      */
     public static function id(): string
     {
-        return 'test-gateway-next-gen';
+        return 'test-gateway';
     }
 
     /**
@@ -61,11 +61,11 @@ class NextGenTestGateway extends PaymentGateway
      */
     public function enqueueScript(int $formId)
     {
-        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/nextGenTestGateway.asset.php');
+        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/testGateway.asset.php');
 
         wp_enqueue_script(
             self::id(),
-            GIVE_NEXT_GEN_URL . 'build/nextGenTestGateway.js',
+            GIVE_NEXT_GEN_URL . 'build/testGateway.js',
             $assets['dependencies'],
             $assets['version'],
             true
@@ -100,11 +100,4 @@ class NextGenTestGateway extends PaymentGateway
         // TODO: Implement refundDonation() method.
     }
 
-    /**
-     * @since 0.1.0
-     */
-    public function formSettings(int $formId): array
-    {
-        return [];
-    }
 }
