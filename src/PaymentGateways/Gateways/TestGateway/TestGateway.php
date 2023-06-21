@@ -4,8 +4,11 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * @since 0.1.0
@@ -73,11 +76,18 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        return false;
+        if (FormUtils::isLegacyForm($formId)) {
+            return '';
+        }
+
+        /** @var LegacyFormFieldMarkup $legacyFormFieldMarkup */
+        $legacyFormFieldMarkup = give(LegacyFormFieldMarkup::class);
+
+        return $legacyFormFieldMarkup();
     }
 
     /**
@@ -95,9 +105,9 @@ class TestGateway extends PaymentGateway
     /**
      * @inerhitDoc
      */
-    public function refundDonation(Donation $donation)
+    public function refundDonation(Donation $donation): PaymentRefunded
     {
-        // TODO: Implement refundDonation() method.
+        return new PaymentRefunded();
     }
 
 }
