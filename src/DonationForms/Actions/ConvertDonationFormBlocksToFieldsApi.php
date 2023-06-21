@@ -8,6 +8,7 @@ use Give\DonationForms\Rules\GatewayRule;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
+use Give\Framework\FieldsAPI\BillingAddress;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
@@ -255,7 +256,7 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
     {
-        return Name::make('billingAddress')->tap(function ($group) use ($block) {
+        return BillingAddress::make('billingAddress')->tap(function ($group) use ($block) {
             $group->getNodeByName('addressLine1')
                 ->label($block->getAttribute('addressLine1Label'))
                 ->placeholder($block->getAttribute('addressLine1Placeholder'))
