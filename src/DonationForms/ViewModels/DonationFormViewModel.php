@@ -244,9 +244,6 @@ class DonationFormViewModel
      */
     private function enqueueFormScripts(int $formId, string $formDesignId)
     {
-        /** @var DonationFormRepository $donationFormRepository */
-        $donationFormRepository = give(DonationFormRepository::class);
-
         wp_enqueue_script(
             'givewp-donation-form-registrars',
             GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.js',
@@ -284,12 +281,7 @@ class DonationFormViewModel
             }
         }
 
-        // load gateways
-        foreach ($donationFormRepository->getEnabledPaymentGateways($formId) as $gateway) {
-            if (method_exists($gateway, 'enqueueScript')) {
-                $gateway->enqueueScript(['givewp-donation-form-registrars']);
-            }
-        }
+        Hooks::doAction('givewp_donation_form_enqueue_gateway_scripts', $formId);
 
         // load block - since this is using render_callback viewScript in blocks.json will not work.
         wp_enqueue_script(
