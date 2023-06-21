@@ -103,14 +103,14 @@ export default function Edit({
                         <TextControl
                             label={__('Label')}
                             value={addressLine1Label}
-                            onChange={(value) => setAttributes({firstNameLabel: value})}
+                            onChange={(value) => setAttributes({addressLine1Label: value})}
                         />
                     </PanelRow>
                     <PanelRow>
                         <TextControl
                             label={__('Placeholder')}
                             value={addressLine1Placeholder}
-                            onChange={(value) => setAttributes({firstNamePlaceholder: value})}
+                            onChange={(value) => setAttributes({addressLine1Placeholder: value})}
                         />
                     </PanelRow>
                 </PanelBody>
@@ -119,21 +119,21 @@ export default function Edit({
                         <TextControl
                             label={__('Label')}
                             value={addressLine2Label}
-                            onChange={(value) => setAttributes({lastNameLabel: value})}
+                            onChange={(value) => setAttributes({addressLine2Label: value})}
                         />
                     </PanelRow>
                     <PanelRow>
                         <TextControl
                             label={__('Placeholder')}
                             value={addressLine2Placeholder}
-                            onChange={(value) => setAttributes({lastNamePlaceholder: value})}
+                            onChange={(value) => setAttributes({addressLine2Placeholder: value})}
                         />
                     </PanelRow>
                     <PanelRow>
                         <ToggleControl
                             label={__('Required', 'give')}
                             checked={requireAddressLine2}
-                            onChange={() => setAttributes({requireLastName: !requireAddressLine2})}
+                            onChange={() => setAttributes({requireAddressLine2: !requireAddressLine2})}
                             help={__('Do you want to force the Address Line 2 field to be required?', 'give')}
                         />
                     </PanelRow>

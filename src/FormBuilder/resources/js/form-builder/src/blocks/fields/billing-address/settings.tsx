@@ -24,22 +24,22 @@ const settings: FieldBlock['settings'] = {
         addressLine1Label: {
             type: 'string',
             source: 'attribute',
-            default: __('Address line 1', 'give'),
+            default: __('Address Line 1', 'give'),
         },
         addressLine1Placeholder: {
             type: 'string',
             source: 'attribute',
-            default: __('Address line 1', 'give'),
+            default: __('Address Line 1', 'give'),
         },
         addressLine2Label: {
             type: 'string',
             source: 'attribute',
-            default: __('Address line 2', 'give'),
+            default: __('Address Line 2', 'give'),
         },
         addressLine2Placeholder: {
             type: 'string',
             source: 'attribute',
-            default: __('Address line 2', 'give'),
+            default: __('Address Line 2', 'give'),
         },
         requireAddressLine2: {
             type: 'boolean',
