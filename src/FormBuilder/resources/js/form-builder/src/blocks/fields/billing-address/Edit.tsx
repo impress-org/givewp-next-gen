@@ -37,8 +37,6 @@ export default function Edit({
     },
     setAttributes,
 }: BlockEditProps<any>) {
-    // @ts-ignore
-    // @ts-ignore
     return (
         <>
             <div

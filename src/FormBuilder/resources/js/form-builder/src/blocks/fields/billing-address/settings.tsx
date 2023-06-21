@@ -34,12 +34,12 @@ const settings: FieldBlock['settings'] = {
         addressLine2Label: {
             type: 'string',
             source: 'attribute',
-            default: __('Last name', 'give'),
+            default: __('Address line 2', 'give'),
         },
         addressLine2Placeholder: {
             type: 'string',
             source: 'attribute',
-            default: __('Last name', 'give'),
+            default: __('Address line 2', 'give'),
         },
         requireAddressLine2: {
             type: 'boolean',
