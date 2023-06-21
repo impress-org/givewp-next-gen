@@ -23,6 +23,14 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     ];
 
     /**
+     * @unreleased
+     */
+    public static function apiVersion(): int
+    {
+        return 3;
+    }
+
+    /**
      * @inheritDoc
      */
     public static function id(): string
@@ -43,7 +51,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getName(): string
     {
-        return __('Test Gateway Offsite (v3)', 'give');
+        return __('Test Gateway Offsite', 'give');
     }
 
     /**
@@ -51,17 +59,17 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway Offsite (v3)', 'give');
+        return __('Test Gateway Offsite', 'give');
     }
 
     /**
      * @since 0.1.0
      */
-    public function enqueueScript()
+    public function enqueueScript(int $formId)
     {
         wp_enqueue_script(
             self::id(),
-            GIVE_NEXT_GEN_DIR . 'src/PaymentGateways/Gateways/NextGenTestGatewayOffsite/nextGenTestGatewayOffsite.js',
+            GIVE_NEXT_GEN_URL . 'src/PaymentGateways/Gateways/NextGenTestGatewayOffsite/nextGenTestGatewayOffsite.js',
             [],
             false,
             true
@@ -129,13 +137,5 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
                 'give'
             ),
         ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function supportsLegacyForm(): bool
-    {
-        return false;
     }
 }

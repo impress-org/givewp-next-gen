@@ -15,10 +15,21 @@ class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGate
 {
     use HasScriptAssetFile;
 
-    public function enqueueScript()
+    /**
+     * @unreleased
+     */
+    public static function apiVersion(): int
+    {
+        return 3;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function enqueueScript(int $formId)
     {
         $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalCommerceGateway.asset.php');
-        
+
         wp_enqueue_script(
             self::id(),
             GIVE_NEXT_GEN_URL . 'build/payPalCommerceGateway.js',
@@ -54,13 +65,5 @@ class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGate
                 'currency' => 'USD',
             ],
         ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function supportsLegacyForm(): bool
-    {
-        return true;
     }
 }

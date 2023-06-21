@@ -17,17 +17,17 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
     use HasScriptAssetFile;
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
-    public function supportsLegacyForm(): bool
+    public static function apiVersion(): int
     {
-        return true;
+        return 3;
     }
 
     /**
      * @inheritdoc
      */
-    public function enqueueScript()
+    public function enqueueScript(int $formId)
     {
         $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalStandardGateway.asset.php');
 
@@ -62,7 +62,7 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
      */
     public function getName(): string
     {
-        return __('PayPal Standard (v3)', 'give');
+        return __('PayPal Standard', 'give');
     }
 
     /**

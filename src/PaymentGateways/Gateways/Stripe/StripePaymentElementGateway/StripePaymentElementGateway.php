@@ -20,6 +20,14 @@ class StripePaymentElementGateway extends PaymentGateway implements NextGenPayme
     use HasScriptAssetFile;
 
     /**
+     * @unreleased
+     */
+    public static function apiVersion(): int
+    {
+        return 3;
+    }
+
+    /**
      * @inheritDoc
      */
     public static function id(): string
@@ -54,7 +62,7 @@ class StripePaymentElementGateway extends PaymentGateway implements NextGenPayme
     /**
      * @since 0.1.0
      */
-    public function enqueueScript()
+    public function enqueueScript(int $formId)
     {
         $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/stripePaymentElementGateway.asset.php');
 
@@ -147,24 +155,8 @@ class StripePaymentElementGateway extends PaymentGateway implements NextGenPayme
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup(int $formId, array $args): string
-    {
-        return false;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function supportsLegacyForm(): bool
-    {
-        return false;
     }
 }

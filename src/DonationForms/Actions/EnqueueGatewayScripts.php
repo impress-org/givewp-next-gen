@@ -7,7 +7,7 @@ use Give\DonationForms\Repositories\DonationFormRepository;
 class EnqueueGatewayScripts
 {
     /**
-     * @unreleased 
+     * @unreleased
      * @return void
      */
     public function __invoke(int $formId)
@@ -18,7 +18,7 @@ class EnqueueGatewayScripts
         // load gateway scripts
         foreach ($donationFormRepository->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {
-                $gateway->enqueueScript();
+                $gateway->enqueueScript($formId);
             }
         }
     }

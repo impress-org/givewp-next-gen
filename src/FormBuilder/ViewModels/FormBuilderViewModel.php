@@ -8,7 +8,7 @@ use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 
 class FormBuilderViewModel
@@ -99,8 +99,11 @@ class FormBuilderViewModel
 
         $supportedGateways = array_filter(
             give(PaymentGatewayRegister::class)->getPaymentGateways(),
-            static function ($gateway) {
-                return is_a($gateway, NextGenPaymentGatewayInterface::class, true);
+            static function ($gatewayClass) {
+                /** @var PaymentGateway $gateway */
+                $gateway = give($gatewayClass);
+
+                return $gateway::apiVersion() >= 3;
             }
         );
 

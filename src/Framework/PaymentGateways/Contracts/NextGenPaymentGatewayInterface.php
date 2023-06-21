@@ -10,12 +10,7 @@ interface NextGenPaymentGatewayInterface
     /**
      * @since 0.1.0
      */
-    public function supportsLegacyForm(): bool;
-
-    /**
-     * @since 0.1.0
-     */
-    public function enqueueScript();
+    public function enqueueScript(int $formId);
 
     /**
      * @since 0.1.0

@@ -16,6 +16,14 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
     use HasScriptAssetFile;
 
     /**
+     * @unreleased
+     */
+    public static function apiVersion(): int
+    {
+        return 3;
+    }
+
+    /**
      * @inheritDoc
      */
     public static function id(): string
@@ -36,7 +44,7 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
      */
     public function getName(): string
     {
-        return __('Test Gateway (v3)', 'give');
+        return __('Test Gateway', 'give');
     }
 
     /**
@@ -44,13 +52,13 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway (v3)', 'give');
+        return __('Test Gateway', 'give');
     }
 
     /**
      * @since 0.1.0
      */
-    public function enqueueScript()
+    public function enqueueScript(int $formId)
     {
         $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/nextGenTestGateway.asset.php');
 
@@ -97,13 +105,5 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
     public function formSettings(int $formId): array
     {
         return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function supportsLegacyForm(): bool
-    {
-        return false;
     }
 }
