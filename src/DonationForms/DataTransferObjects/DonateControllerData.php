@@ -7,6 +7,7 @@ use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -91,6 +92,10 @@ class DonateControllerData
      * @var int|null
      */
     public $subscriptionInstallments;
+    /**
+     * @var BillingAddress
+     */
+    public $billingAddress;
 
     /**
      * @since 0.1.0
@@ -110,7 +115,8 @@ class DonateControllerData
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,
-            'type' => DonationType::SINGLE()
+            'type' => DonationType::SINGLE(),
+            'billingAddress' => $this->billingAddress,
         ]);
     }
 
@@ -134,6 +140,7 @@ class DonateControllerData
             'company' => $this->company,
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscriptionId,
+            'billingAddress' => $this->billingAddress,
         ]);
     }
 

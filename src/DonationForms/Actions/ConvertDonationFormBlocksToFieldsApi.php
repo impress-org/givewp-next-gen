@@ -123,6 +123,9 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
 
+            case "givewp/billing-address":
+                return $this->createNodeFromBillingAddressBlock($block);
+
             case "givewp/paragraph":
                 return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
@@ -244,6 +247,26 @@ class ConvertDonationFormBlocksToFieldsApi
             } else {
                 $group->remove('honorific');
             }
+        });
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
+    {
+        return Name::make('billingAddress')->tap(function ($group) use ($block) {
+            $group->getNodeByName('addressLine1')
+                ->label($block->getAttribute('addressLine1Label'))
+                ->placeholder($block->getAttribute('addressLine1Placeholder'))
+                ->required($block->getAttribute('requireAddressLine1'))
+                ->rules('required', 'max:255');
+
+            $group->getNodeByName('addressLine2')
+                ->label($block->getAttribute('addressLine2Label'))
+                ->placeholder($block->getAttribute('addressLine2Placeholder'))
+                ->required($block->getAttribute('requireAddressLine2'))
+                ->rules('max:255');
         });
     }
 

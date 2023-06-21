@@ -14,7 +14,7 @@ import Form from './layouts/Form';
 import AmountField from './fields/Amount';
 import SelectField from './fields/Select';
 import Gateways from './fields/Gateways';
-import Authentication from "./groups/Authentication";
+import Authentication from './groups/Authentication';
 import Paragraph from './elements/Paragraph';
 import FieldLabel from './layouts/FieldLabel';
 import FieldError from './layouts/FieldError';
@@ -50,6 +50,7 @@ const defaultFormTemplates = {
         name: NameGroup,
         donationAmount: DonationAmountGroup,
         authentication: Authentication,
+        billingAddress: BillingAddressGroup,
     },
     layouts: {
         wrapper: NodeWrapper,
