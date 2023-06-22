@@ -68,6 +68,9 @@ export interface BillingAddressProps extends GroupProps {
         country: FC<SelectFieldProps | {}>;
         addressLine1: FC<FieldProps | {}>;
         addressLine2: FC<FieldProps | {}>;
+        city: FC<FieldProps | {}>;
+        state: FC<FieldProps | {}>;
+        zipPostalCode: FC<FieldProps | {}>;
     };
 }
 

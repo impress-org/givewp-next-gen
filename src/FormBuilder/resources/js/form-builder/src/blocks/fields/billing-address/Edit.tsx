@@ -16,6 +16,7 @@ const CountrySelect = ({countryList}) => {
         <SelectControl
             label={__('Country', 'give')}
             required={true}
+            className={'give-is-required'}
             options={countryOptions}
             value={selectedCountry}
             onChange={setSelectedCountry}
@@ -40,6 +41,7 @@ export default function Edit({
                 style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr',
+                    gap: '15px',
                     marginBottom: '15px',
                 }}
             >
@@ -48,8 +50,9 @@ export default function Edit({
             <div
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
+                    gridTemplateColumns: '1fr',
                     gap: '15px',
+                    marginBottom: '15px',
                 }}
             >
                 <TextControl
@@ -67,6 +70,53 @@ export default function Edit({
                     required={requireAddressLine2}
                     className={`${requireAddressLine2 ? 'give-is-required' : ''}`}
                     value={addressLine2Placeholder}
+                    onChange={null}
+                    readOnly
+                />
+            </div>
+
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '15px',
+                    marginBottom: '15px',
+                }}
+            >
+                <TextControl
+                    label={__('City', 'give')}
+                    placeholder={__('City', 'give')}
+                    required={true}
+                    className={'give-is-required'}
+                    readOnly
+                    value={__('City', 'give')}
+                    onChange={null}
+                />
+                <TextControl
+                    label={__('State/Province/Country', 'give')}
+                    placeholder={__('State/Province/Country', 'give')}
+                    required={true}
+                    className={'give-is-required'}
+                    value={__('State/Province/Country', 'give')}
+                    onChange={null}
+                    readOnly
+                />
+            </div>
+
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    gap: '15px',
+                    marginBottom: '15px',
+                }}
+            >
+                <TextControl
+                    label={__('Zip/Postal Code', 'give')}
+                    placeholder={__('Zip/Postal Code', 'give')}
+                    required={true}
+                    className={'give-is-required'}
+                    value={__('Zip/Postal Code', 'give')}
                     onChange={null}
                     readOnly
                 />
