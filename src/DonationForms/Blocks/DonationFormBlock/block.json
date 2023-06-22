@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/block.json",
     "apiVersion": 2,
-    "name": "givewp/donation-form-block",
+    "name": "givewp/donation-form",
     "version": "1.0.0",
     "title": "Donation Form (v3)",
     "category": "give",
