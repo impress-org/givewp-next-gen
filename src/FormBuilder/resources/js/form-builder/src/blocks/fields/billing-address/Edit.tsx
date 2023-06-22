@@ -46,85 +46,75 @@ export default function Edit({
             <div
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '15px',
-                    marginBottom: '15px',
-                }}
-            >
-                <CountrySelect countryList={country} />
-            </div>
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '15px',
-                    marginBottom: '15px',
-                }}
-            >
-                <TextControl
-                    label={address1Label}
-                    placeholder={address1Placeholder}
-                    required={true}
-                    className={'give-is-required'}
-                    readOnly
-                    value={address1Placeholder}
-                    onChange={null}
-                />
-                <TextControl
-                    label={address2Label}
-                    placeholder={address2Placeholder}
-                    required={requireAddress2}
-                    className={`${requireAddress2 ? 'give-is-required' : ''}`}
-                    value={address2Placeholder}
-                    onChange={null}
-                    readOnly
-                />
-            </div>
-
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: '15px',
-                    marginBottom: '15px',
-                }}
-            >
-                <TextControl
-                    label={cityLabel}
-                    placeholder={cityPlaceholder}
-                    required={true}
-                    className={'give-is-required'}
-                    readOnly
-                    value={cityPlaceholder}
-                    onChange={null}
-                />
-                <TextControl
-                    label={stateLabel}
-                    placeholder={statePlaceholder}
-                    required={true}
-                    className={'give-is-required'}
-                    value={statePlaceholder}
-                    onChange={null}
-                    readOnly
-                />
-            </div>
-
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
+                    gridTemplateAreas: `
+                    "country country"
+                    "address1 address1"
+                    "address2 address2"
+                    "city state"
+                    "zip zip"
+                    `,
+                    gridAutoColumns: '1fr',
                     gap: '15px',
                 }}
             >
-                <TextControl
-                    label={zipLabel}
-                    placeholder={zipPlaceholder}
-                    required={true}
-                    className={'give-is-required'}
-                    value={zipPlaceholder}
-                    onChange={null}
-                    readOnly
-                />
+                <div style={{gridArea: 'country'}}>
+                    <CountrySelect countryList={country} />
+                </div>
+                <div style={{gridArea: 'address1'}}>
+                    <TextControl
+                        label={address1Label}
+                        placeholder={address1Placeholder}
+                        required={true}
+                        className={'give-is-required'}
+                        readOnly
+                        value={address1Placeholder}
+                        onChange={null}
+                    />
+                </div>
+                <div style={{gridArea: 'address2'}}>
+                    <TextControl
+                        label={address2Label}
+                        placeholder={address2Placeholder}
+                        required={requireAddress2}
+                        className={`${requireAddress2 ? 'give-is-required' : ''}`}
+                        value={address2Placeholder}
+                        onChange={null}
+                        readOnly
+                    />
+                </div>
+                <div style={{gridArea: 'city'}}>
+                    <TextControl
+                        label={cityLabel}
+                        placeholder={cityPlaceholder}
+                        required={true}
+                        className={'give-is-required'}
+                        readOnly
+                        value={cityPlaceholder}
+                        onChange={null}
+                    />
+                </div>
+                <div style={{gridArea: 'state'}}>
+                    <TextControl
+                        label={stateLabel}
+                        placeholder={statePlaceholder}
+                        required={true}
+                        className={'give-is-required'}
+                        value={statePlaceholder}
+                        onChange={null}
+                        readOnly
+                    />
+                </div>
+                <div style={{gridArea: 'zip'}}>
+                    <TextControl
+                        label={zipLabel}
+                        placeholder={zipPlaceholder}
+                        required={true}
+                        className={'give-is-required'}
+                        value={zipPlaceholder}
+                        onChange={null}
+                        readOnly
+                    />
+                </div>
             </div>
 
             <InspectorControls>
