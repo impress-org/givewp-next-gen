@@ -264,14 +264,12 @@ class ConvertDonationFormBlocksToFieldsApi
 
         return BillingAddress::make('billingAddress')->tap(function ($group) use ($block, $countryArrayValues) {
             $group->getNodeByName('country')
-                //->label('Country')
                 ->options(...$countryArrayValues)
                 ->rules('required');
 
             $group->getNodeByName('addressLine1')
                 ->label($block->getAttribute('addressLine1Label'))
                 ->placeholder($block->getAttribute('addressLine1Placeholder'))
-                //->required($block->getAttribute('requireAddressLine1'))
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('addressLine2')
@@ -282,12 +280,18 @@ class ConvertDonationFormBlocksToFieldsApi
 
 
             $group->getNodeByName('city')
+                ->label($block->getAttribute('cityLabel'))
+                ->placeholder($block->getAttribute('cityPlaceholder'))
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('state')
+                ->label($block->getAttribute('stateLabel'))
+                ->placeholder($block->getAttribute('statePlaceholder'))
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('zipPostalCode')
+                ->label($block->getAttribute('zipPostalCodeLabel'))
+                ->placeholder($block->getAttribute('zipPostalCodePlaceholder'))
                 ->rules('required', 'max:255');
         });
     }

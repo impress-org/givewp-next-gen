@@ -32,6 +32,12 @@ export default function Edit({
         addressLine2Label,
         addressLine2Placeholder,
         requireAddressLine2,
+        cityLabel,
+        cityPlaceholder,
+        stateLabel,
+        statePlaceholder,
+        zipPostalCodeLabel,
+        zipPostalCodePlaceholder,
     },
     setAttributes,
 }: BlockEditProps<any>) {
@@ -84,20 +90,20 @@ export default function Edit({
                 }}
             >
                 <TextControl
-                    label={__('City', 'give')}
-                    placeholder={__('City', 'give')}
+                    label={cityLabel}
+                    placeholder={cityPlaceholder}
                     required={true}
                     className={'give-is-required'}
                     readOnly
-                    value={__('City', 'give')}
+                    value={cityPlaceholder}
                     onChange={null}
                 />
                 <TextControl
-                    label={__('State/Province/Country', 'give')}
-                    placeholder={__('State/Province/Country', 'give')}
+                    label={stateLabel}
+                    placeholder={statePlaceholder}
                     required={true}
                     className={'give-is-required'}
-                    value={__('State/Province/Country', 'give')}
+                    value={statePlaceholder}
                     onChange={null}
                     readOnly
                 />
@@ -108,15 +114,14 @@ export default function Edit({
                     display: 'grid',
                     gridTemplateColumns: '1fr',
                     gap: '15px',
-                    marginBottom: '15px',
                 }}
             >
                 <TextControl
-                    label={__('Zip/Postal Code', 'give')}
-                    placeholder={__('Zip/Postal Code', 'give')}
+                    label={zipPostalCodeLabel}
+                    placeholder={zipPostalCodePlaceholder}
                     required={true}
                     className={'give-is-required'}
-                    value={__('Zip/Postal Code', 'give')}
+                    value={zipPostalCodePlaceholder}
                     onChange={null}
                     readOnly
                 />
@@ -190,6 +195,54 @@ export default function Edit({
                             checked={requireAddressLine2}
                             onChange={() => setAttributes({requireAddressLine2: !requireAddressLine2})}
                             help={__('Do you want to force the Address Line 2 field to be required?', 'give')}
+                        />
+                    </PanelRow>
+                </PanelBody>
+                <PanelBody title={__('City', 'give')} initialOpen={true}>
+                    <PanelRow>
+                        <TextControl
+                            label={__('Label')}
+                            value={cityLabel}
+                            onChange={(value) => setAttributes({cityLabel: value})}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <TextControl
+                            label={__('Placeholder')}
+                            value={cityPlaceholder}
+                            onChange={(value) => setAttributes({cityPlaceholder: value})}
+                        />
+                    </PanelRow>
+                </PanelBody>
+                <PanelBody title={__('State/Province/Country', 'give')} initialOpen={true}>
+                    <PanelRow>
+                        <TextControl
+                            label={__('Label')}
+                            value={stateLabel}
+                            onChange={(value) => setAttributes({stateLabel: value})}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <TextControl
+                            label={__('Placeholder')}
+                            value={statePlaceholder}
+                            onChange={(value) => setAttributes({statePlaceholder: value})}
+                        />
+                    </PanelRow>
+                </PanelBody>
+                <PanelBody title={__('Zip/Postal Code', 'give')} initialOpen={true}>
+                    <PanelRow>
+                        <TextControl
+                            label={__('Label')}
+                            value={zipPostalCodeLabel}
+                            onChange={(value) => setAttributes({zipPostalCodeLabel: value})}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <TextControl
+                            label={__('Placeholder')}
+                            value={zipPostalCodePlaceholder}
+                            onChange={(value) => setAttributes({zipPostalCodePlaceholder: value})}
                         />
                     </PanelRow>
                 </PanelBody>

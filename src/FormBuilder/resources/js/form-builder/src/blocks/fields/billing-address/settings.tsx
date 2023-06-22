@@ -11,7 +11,7 @@ const settings: FieldBlock['settings'] = {
         multiple: false,
     },
     attributes: {
-        /*lock: {remove: true},*/
+        lock: {remove: true},
         country: {
             type: 'array',
             source: 'attribute',
@@ -43,6 +43,36 @@ const settings: FieldBlock['settings'] = {
         requireAddressLine2: {
             type: 'boolean',
             default: false,
+        },
+        cityLabel: {
+            type: 'string',
+            source: 'attribute',
+            default: __('City', 'give'),
+        },
+        cityPlaceholder: {
+            type: 'string',
+            source: 'attribute',
+            default: __('City', 'give'),
+        },
+        stateLabel: {
+            type: 'string',
+            source: 'attribute',
+            default: __('State/Province/Country', 'give'),
+        },
+        statePlaceholder: {
+            type: 'string',
+            source: 'attribute',
+            default: __('State/Province/Country', 'give'),
+        },
+        zipPostalCodeLabel: {
+            type: 'string',
+            source: 'attribute',
+            default: __('Zip/Postal Code', 'give'),
+        },
+        zipPostalCodePlaceholder: {
+            type: 'string',
+            source: 'attribute',
+            default: __('Zip/Postal Code', 'give'),
         },
     },
     edit: Edit,
