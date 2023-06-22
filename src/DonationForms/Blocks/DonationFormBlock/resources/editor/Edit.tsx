@@ -5,10 +5,10 @@ import {Fragment, useEffect} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
 import ConfirmButton from './components/ConfirmButton';
 import Logo from './components/Logo';
-import {BlockEditProps} from "@wordpress/blocks";
+import {BlockEditProps} from '@wordpress/blocks';
 import ReactSelect from 'react-select';
 import {useCallback} from 'react';
-
+import BlockPreview from './components/BlockPreview';
 
 /**
  * @since 0.1.0
@@ -66,61 +66,65 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
 
             {/*block preview*/}
             <div {...useBlockProps()}>
-                <div className="givewp-form-block--container">
-                    <Logo />
+                {formId ? (
+                    <BlockPreview clientId={clientId} formId={formId} />
+                ) : (
+                    <div className="givewp-form-block--container">
+                        <Logo />
 
-                    <div className="givewp-form-block__select--container">
-                        <label htmlFor="formId" className="givewp-form-block__select--label">
-                            {__('Choose a donation form', 'give')}
-                        </label>
+                        <div className="givewp-form-block__select--container">
+                            <label htmlFor="formId" className="givewp-form-block__select--label">
+                                {__('Choose a donation form', 'give')}
+                            </label>
 
-                        <ReactSelect
-                            classNamePrefix="givewp-form-block__select"
-                            name="formId"
-                            inputId="formId"
-                            value={getDefaultFormId()}
-                            placeholder={
-                                isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')
-                            }
-                            onChange={(option) => {
-                                if (option) {
-                                    setAttributes({formId: option.value});
+                            <ReactSelect
+                                classNamePrefix="givewp-form-block__select"
+                                name="formId"
+                                inputId="formId"
+                                value={getDefaultFormId()}
+                                placeholder={
+                                    isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')
                                 }
-                            }}
-                            noOptionsMessage={() => (
-                                <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
-                            )}
-                            options={formOptions}
-                            loadingMessage={() => <>{__('Loading Donation Forms...', 'give')}</>}
-                            isLoading={isResolving}
-                            theme={(theme) => ({
-                                ...theme,
-                                colors: {
-                                    ...theme.colors,
-                                    primary: '#27ae60',
-                                },
-                            })}
-                            styles={{
-                                input: (provided, state) => ({
-                                    ...provided,
-                                    height: '3rem',
-                                }),
-                                option: (provided, state) => ({
-                                    ...provided,
-                                    paddingTop: '0.8rem',
-                                    paddingBottom: '0.8rem',
-                                    fontSize: '1rem',
-                                }),
-                                control: (provided, state) => ({
-                                    ...provided,
-                                    fontSize: '1rem',
-                                }),
-                            }}
-                        />
-                    </div>
+                                onChange={(option) => {
+                                    if (option) {
+                                        setAttributes({formId: option.value});
+                                    }
+                                }}
+                                noOptionsMessage={() => (
+                                    <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
+                                )}
+                                options={formOptions}
+                                loadingMessage={() => <>{__('Loading Donation Forms...', 'give')}</>}
+                                isLoading={isResolving}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    colors: {
+                                        ...theme.colors,
+                                        primary: '#27ae60',
+                                    },
+                                })}
+                                styles={{
+                                    input: (provided, state) => ({
+                                        ...provided,
+                                        height: '3rem',
+                                    }),
+                                    option: (provided, state) => ({
+                                        ...provided,
+                                        paddingTop: '0.8rem',
+                                        paddingBottom: '0.8rem',
+                                        fontSize: '1rem',
+                                    }),
+                                    control: (provided, state) => ({
+                                        ...provided,
+                                        fontSize: '1rem',
+                                    }),
+                                }}
+                            />
+                        </div>
 
-                    <ConfirmButton />
-                </div>
+                        <ConfirmButton />
+                    </div>
+                )}
             </div>
         </Fragment>
     );
