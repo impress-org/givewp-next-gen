@@ -27,17 +27,17 @@ const CountrySelect = ({countryList}) => {
 export default function Edit({
     attributes: {
         country,
-        addressLine1Label,
-        addressLine1Placeholder,
-        addressLine2Label,
-        addressLine2Placeholder,
-        requireAddressLine2,
+        address1Label,
+        address1Placeholder,
+        address2Label,
+        address2Placeholder,
+        requireAddress2,
         cityLabel,
         cityPlaceholder,
         stateLabel,
         statePlaceholder,
-        zipPostalCodeLabel,
-        zipPostalCodePlaceholder,
+        zipLabel,
+        zipPlaceholder,
     },
     setAttributes,
 }: BlockEditProps<any>) {
@@ -62,20 +62,20 @@ export default function Edit({
                 }}
             >
                 <TextControl
-                    label={addressLine1Label}
-                    placeholder={addressLine1Placeholder}
+                    label={address1Label}
+                    placeholder={address1Placeholder}
                     required={true}
                     className={'give-is-required'}
                     readOnly
-                    value={addressLine1Placeholder}
+                    value={address1Placeholder}
                     onChange={null}
                 />
                 <TextControl
-                    label={addressLine2Label}
-                    placeholder={addressLine2Placeholder}
-                    required={requireAddressLine2}
-                    className={`${requireAddressLine2 ? 'give-is-required' : ''}`}
-                    value={addressLine2Placeholder}
+                    label={address2Label}
+                    placeholder={address2Placeholder}
+                    required={requireAddress2}
+                    className={`${requireAddress2 ? 'give-is-required' : ''}`}
+                    value={address2Placeholder}
                     onChange={null}
                     readOnly
                 />
@@ -117,11 +117,11 @@ export default function Edit({
                 }}
             >
                 <TextControl
-                    label={zipPostalCodeLabel}
-                    placeholder={zipPostalCodePlaceholder}
+                    label={zipLabel}
+                    placeholder={zipPlaceholder}
                     required={true}
                     className={'give-is-required'}
-                    value={zipPostalCodePlaceholder}
+                    value={zipPlaceholder}
                     onChange={null}
                     readOnly
                 />
@@ -162,15 +162,15 @@ export default function Edit({
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
-                            value={addressLine1Label}
-                            onChange={(value) => setAttributes({addressLine1Label: value})}
+                            value={address1Label}
+                            onChange={(value) => setAttributes({address1Label: value})}
                         />
                     </PanelRow>
                     <PanelRow>
                         <TextControl
                             label={__('Placeholder')}
-                            value={addressLine1Placeholder}
-                            onChange={(value) => setAttributes({addressLine1Placeholder: value})}
+                            value={address1Placeholder}
+                            onChange={(value) => setAttributes({address1Placeholder: value})}
                         />
                     </PanelRow>
                 </PanelBody>
@@ -178,22 +178,22 @@ export default function Edit({
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
-                            value={addressLine2Label}
-                            onChange={(value) => setAttributes({addressLine2Label: value})}
+                            value={address2Label}
+                            onChange={(value) => setAttributes({address2Label: value})}
                         />
                     </PanelRow>
                     <PanelRow>
                         <TextControl
                             label={__('Placeholder')}
-                            value={addressLine2Placeholder}
-                            onChange={(value) => setAttributes({addressLine2Placeholder: value})}
+                            value={address2Placeholder}
+                            onChange={(value) => setAttributes({address2Placeholder: value})}
                         />
                     </PanelRow>
                     <PanelRow>
                         <ToggleControl
                             label={__('Required', 'give')}
-                            checked={requireAddressLine2}
-                            onChange={() => setAttributes({requireAddressLine2: !requireAddressLine2})}
+                            checked={requireAddress2}
+                            onChange={() => setAttributes({requireAddress2: !requireAddress2})}
                             help={__('Do you want to force the Address Line 2 field to be required?', 'give')}
                         />
                     </PanelRow>
@@ -234,15 +234,15 @@ export default function Edit({
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
-                            value={zipPostalCodeLabel}
-                            onChange={(value) => setAttributes({zipPostalCodeLabel: value})}
+                            value={zipLabel}
+                            onChange={(value) => setAttributes({zipLabel: value})}
                         />
                     </PanelRow>
                     <PanelRow>
                         <TextControl
                             label={__('Placeholder')}
-                            value={zipPostalCodePlaceholder}
-                            onChange={(value) => setAttributes({zipPostalCodePlaceholder: value})}
+                            value={zipPlaceholder}
+                            onChange={(value) => setAttributes({zipPlaceholder: value})}
                         />
                     </PanelRow>
                 </PanelBody>

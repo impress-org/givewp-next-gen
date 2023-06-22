@@ -66,11 +66,11 @@ export interface NameProps extends GroupProps {
 export interface BillingAddressProps extends GroupProps {
     fields: {
         country: FC<SelectFieldProps | {}>;
-        addressLine1: FC<FieldProps | {}>;
-        addressLine2: FC<FieldProps | {}>;
+        address1: FC<FieldProps | {}>;
+        address2: FC<FieldProps | {}>;
         city: FC<FieldProps | {}>;
         state: FC<FieldProps | {}>;
-        zipPostalCode: FC<FieldProps | {}>;
+        zip: FC<FieldProps | {}>;
     };
 }
 

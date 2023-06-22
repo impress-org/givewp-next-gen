@@ -4,6 +4,7 @@ namespace Give\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
 use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Properties\BillingAddress;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
 use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
@@ -61,7 +62,8 @@ class DonateFormRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @since 0.1.0
+     * @unreleased Add support for billing address field
+     * @since      0.1.0
      *
      * @throws DonationFormFieldErrorsException
      */
@@ -73,7 +75,7 @@ class DonateFormRouteData implements Arrayable
         /** @var DonationForm $form */
         $form = DonationForm::find($this->formId);
 
-        if (!$form) {
+        if ( ! $form) {
             $this->throwDonationFormFieldErrorsException(['formId' => 'Invalid Form ID, Form not found']);
         }
 
@@ -83,9 +85,34 @@ class DonateFormRouteData implements Arrayable
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
+        $billingAddress = new BillingAddress();
+
         foreach ($validator->validated() as $fieldId => $value) {
-            $validData->{$fieldId} = $value;
+            switch ($fieldId) {
+                case 'country':
+                    $billingAddress->country = $value;
+                    break;
+                case 'address1':
+                    $billingAddress->address1 = $value;
+                    break;
+                case 'address2':
+                    $billingAddress->address2 = $value;
+                    break;
+                case 'city':
+                    $billingAddress->city = $value;
+                    break;
+                case 'state':
+                    $billingAddress->state = $value;
+                    break;
+                case 'zip':
+                    $billingAddress->zip = $value;
+                    break;
+                default:
+                    $validData->{$fieldId} = $value;
+            }
         }
+
+        $validData->billingAddress = $billingAddress;
 
         $validData->formTitle = $form->title;
         $validData->wpUserId = get_current_user_id();

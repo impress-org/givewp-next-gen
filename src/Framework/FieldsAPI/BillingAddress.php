@@ -22,11 +22,11 @@ class BillingAddress extends Group
                     ])
                     ->required(),
 
-                Text::make('addressLine1')
+                Text::make('address1')
                     ->label(__('Address Line 1', 'give'))
                     ->required(),
 
-                Text::make('addressLine2')
+                Text::make('address2')
                     ->label(__('Address Line 2', 'give')),
 
                 Text::make('city')
@@ -37,7 +37,7 @@ class BillingAddress extends Group
                     ->label(__('State/Province/Country', 'give'))
                     ->required(),
 
-                Text::make('zipPostalCode')
+                Text::make('zip')
                     ->label(__('Zip/Postal Code', 'give'))
                     ->required()
             );

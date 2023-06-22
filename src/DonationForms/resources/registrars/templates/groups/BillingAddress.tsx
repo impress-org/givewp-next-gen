@@ -1,23 +1,16 @@
 import type {BillingAddressProps} from '@givewp/forms/propTypes';
 
 export default function BillingAddress({
-    fields: {
-        country: Country,
-        addressLine1: AddressLine1,
-        addressLine2: AddressLine2,
-        city: City,
-        state: State,
-        zipPostalCode: ZipPostalCode,
-    },
+    fields: {country: Country, address1: Address1, address2: Address2, city: City, state: State, zip: Zip},
 }: BillingAddressProps) {
     return (
         <>
             <Country />
-            <AddressLine1 />
-            <AddressLine2 />
+            <Address1 />
+            <Address2 />
             <City />
             <State />
-            <ZipPostalCode />
+            <Zip />
         </>
     );
 }

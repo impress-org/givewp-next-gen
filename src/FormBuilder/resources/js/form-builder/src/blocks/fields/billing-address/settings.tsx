@@ -20,27 +20,27 @@ const settings: FieldBlock['settings'] = {
                 {value: 'US', label: 'United States'},
             ],
         },
-        addressLine1Label: {
+        address1Label: {
             type: 'string',
             source: 'attribute',
             default: __('Address Line 1', 'give'),
         },
-        addressLine1Placeholder: {
+        address1Placeholder: {
             type: 'string',
             source: 'attribute',
             default: __('Address Line 1', 'give'),
         },
-        addressLine2Label: {
+        address2Label: {
             type: 'string',
             source: 'attribute',
             default: __('Address Line 2', 'give'),
         },
-        addressLine2Placeholder: {
+        address2Placeholder: {
             type: 'string',
             source: 'attribute',
             default: __('Address Line 2', 'give'),
         },
-        requireAddressLine2: {
+        requireAddress2: {
             type: 'boolean',
             default: false,
         },
@@ -64,12 +64,12 @@ const settings: FieldBlock['settings'] = {
             source: 'attribute',
             default: __('State/Province/Country', 'give'),
         },
-        zipPostalCodeLabel: {
+        zipLabel: {
             type: 'string',
             source: 'attribute',
             default: __('Zip/Postal Code', 'give'),
         },
-        zipPostalCodePlaceholder: {
+        zipPlaceholder: {
             type: 'string',
             source: 'attribute',
             default: __('Zip/Postal Code', 'give'),

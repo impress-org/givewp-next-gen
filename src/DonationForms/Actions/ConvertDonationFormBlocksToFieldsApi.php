@@ -267,15 +267,15 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->options(...$countryArrayValues)
                 ->rules('required');
 
-            $group->getNodeByName('addressLine1')
-                ->label($block->getAttribute('addressLine1Label'))
-                ->placeholder($block->getAttribute('addressLine1Placeholder'))
+            $group->getNodeByName('address1')
+                ->label($block->getAttribute('address1Label'))
+                ->placeholder($block->getAttribute('address1Placeholder'))
                 ->rules('required', 'max:255');
 
-            $group->getNodeByName('addressLine2')
-                ->label($block->getAttribute('addressLine2Label'))
-                ->placeholder($block->getAttribute('addressLine2Placeholder'))
-                ->required($block->getAttribute('requireAddressLine2'))
+            $group->getNodeByName('address2')
+                ->label($block->getAttribute('address2Label'))
+                ->placeholder($block->getAttribute('address2Placeholder'))
+                ->required($block->getAttribute('requireAddress2'))
                 ->rules('max:255');
 
 
@@ -289,9 +289,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->placeholder($block->getAttribute('statePlaceholder'))
                 ->rules('required', 'max:255');
 
-            $group->getNodeByName('zipPostalCode')
-                ->label($block->getAttribute('zipPostalCodeLabel'))
-                ->placeholder($block->getAttribute('zipPostalCodePlaceholder'))
+            $group->getNodeByName('zip')
+                ->label($block->getAttribute('zipLabel'))
+                ->placeholder($block->getAttribute('zipPlaceholder'))
                 ->rules('required', 'max:255');
         });
     }
