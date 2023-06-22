@@ -6,7 +6,7 @@ namespace Give\Framework\FieldsAPI;
 
 class BillingAddress extends Group
 {
-    const TYPE = 'billing-address';
+    const TYPE = 'billingAddress';
 
     public static function make($name)
     {
@@ -17,6 +17,7 @@ class BillingAddress extends Group
                     //->options(give_get_country_list())
                     ->options([
                         ['value' => 'BR', 'label' => 'Brazil'],
+                        ['value' => 'PT', 'label' => 'Portugal'],
                         ['value' => 'US', 'label' => 'United States'],
                     ])
                     ->required(),
