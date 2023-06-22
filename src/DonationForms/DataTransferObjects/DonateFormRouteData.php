@@ -85,34 +85,32 @@ class DonateFormRouteData implements Arrayable
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
-        $billingAddress = new BillingAddress();
+        $validData->billingAddress = new BillingAddress();
 
         foreach ($validator->validated() as $fieldId => $value) {
             switch ($fieldId) {
                 case 'country':
-                    $billingAddress->country = $value;
+                    $validData->billingAddress->country = $value;
                     break;
                 case 'address1':
-                    $billingAddress->address1 = $value;
+                    $validData->billingAddress->address1 = $value;
                     break;
                 case 'address2':
-                    $billingAddress->address2 = $value;
+                    $validData->billingAddress->address2 = $value;
                     break;
                 case 'city':
-                    $billingAddress->city = $value;
+                    $validData->billingAddress->city = $value;
                     break;
                 case 'state':
-                    $billingAddress->state = $value;
+                    $validData->billingAddress->state = $value;
                     break;
                 case 'zip':
-                    $billingAddress->zip = $value;
+                    $validData->billingAddress->zip = $value;
                     break;
                 default:
                     $validData->{$fieldId} = $value;
             }
         }
-
-        $validData->billingAddress = $billingAddress;
 
         $validData->formTitle = $form->title;
         $validData->wpUserId = get_current_user_id();
