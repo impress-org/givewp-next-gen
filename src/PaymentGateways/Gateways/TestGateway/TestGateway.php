@@ -20,6 +20,14 @@ class TestGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function id(): string
     {
         return 'test-gateway';

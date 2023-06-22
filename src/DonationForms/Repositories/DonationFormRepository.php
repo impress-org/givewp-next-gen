@@ -300,11 +300,7 @@ class DonationFormRepository
                 continue;
             }
 
-            $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
-            
-            if (in_array(3, $gateway->formVersions(), true)) {
-                $gateways[$gatewayId] = $gateway;
-            }
+            $gateways[$gatewayId] = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
         }
 
         if (array_key_exists($defaultGateway, $gateways)) {

@@ -21,6 +21,14 @@ class StripePaymentElementGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function id(): string
     {
         return 'stripe_payment_element';

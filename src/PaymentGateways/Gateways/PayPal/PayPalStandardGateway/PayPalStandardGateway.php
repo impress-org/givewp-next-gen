@@ -16,6 +16,14 @@ class PayPalStandardGateway extends PayPalStandard
     use HasScriptAssetFile;
 
     /**
+     * @inheritDoc
+     */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
+    /**
      * @unreleased
      */
     public function enqueueScript(int $formId)

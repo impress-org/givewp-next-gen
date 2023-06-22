@@ -97,26 +97,17 @@ class FormBuilderViewModel
     {
         $enabledGateways = array_keys(give_get_option('gateways'));
 
-        $supportedGateways = array_filter(
-            give(PaymentGatewayRegister::class)->getPaymentGateways(),
-            static function ($gatewayClass) {
-                /** @var PaymentGateway $gateway */
-                $gateway = give($gatewayClass);
-
-                return in_array(3, $gateway->formVersions(), true);
-            }
-        );
-
         $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
             /** @var PaymentGateway $gateway */
             $gateway = give($gatewayClass);
+            
             return [
                 'id' => $gateway::id(),
                 'enabled' => in_array($gateway::id(), $enabledGateways, true),
                 'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
             ];
-        }, $supportedGateways);
+        }, give(PaymentGatewayRegister::class)->getPaymentGateways());
 
         return array_values($builderPaymentGatewayData);
     }
