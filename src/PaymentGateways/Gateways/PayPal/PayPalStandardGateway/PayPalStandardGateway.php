@@ -17,16 +17,6 @@ class PayPalStandardGateway extends PayPalStandard
 
     /**
      * @unreleased
-     *
-     * @return array
-     */
-    public static function formVersions(): array
-    {
-        return [2, 3];
-    }
-
-    /**
-     * @unreleased
      */
     public function enqueueScript(int $formId)
     {

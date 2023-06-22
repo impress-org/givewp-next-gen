@@ -14,7 +14,6 @@ use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
-use Give\Helpers\Hooks;
 
 use function implode;
 use function wp_enqueue_style;
@@ -244,6 +243,30 @@ class DonationFormViewModel
      */
     private function enqueueFormScripts(int $formId, string $formDesignId)
     {
+        $this->enqueueRegistrars();
+        $this->enqueueGateways($formId);
+        $this->enqueueDesign($formDesignId);
+        $this->enqueueFormApp();
+    }
+
+    /**
+     * @since 0.4.0
+     *
+     * @return FormDesign|null
+     */
+    protected function getFormDesign(string $designId)
+    {
+        /** @var FormDesignRegistrar $formDesignRegistrar */
+        $formDesignRegistrar = give(FormDesignRegistrar::class);
+
+        return $formDesignRegistrar->hasDesign($this->designId()) ? $formDesignRegistrar->getDesign($designId) : null;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function enqueueRegistrars()
+    {
         wp_enqueue_script(
             'givewp-donation-form-registrars',
             GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.js',
@@ -257,9 +280,29 @@ class DonationFormViewModel
             'window.givewpDonationFormExports = ' . wp_json_encode($this->exports()) . ';',
             'before'
         );
+    }
 
-        Hooks::doAction('givewp_donation_form_enqueue_scripts');
+    /**
+     * @unreleased
+     */
+    private function enqueueGateways(int $formId)
+    {
+        /** @var DonationFormRepository $donationFormRepository */
+        $donationFormRepository = give(DonationFormRepository::class);
 
+        // load gateway scripts
+        foreach ($donationFormRepository->getEnabledPaymentGateways($formId) as $gateway) {
+            if (method_exists($gateway, 'enqueueScript')) {
+                $gateway->enqueueScript($formId);
+            }
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function enqueueDesign(string $formDesignId)
+    {
         $design = $this->getFormDesign($formDesignId);
 
         // silently fail if design is missing for some reason
@@ -280,9 +323,13 @@ class DonationFormViewModel
                 );
             }
         }
+    }
 
-        Hooks::doAction('givewp_donation_form_enqueue_gateway_scripts', $formId);
-
+    /**
+     * @unreleased
+     */
+    private function enqueueFormApp()
+    {
         // load block - since this is using render_callback viewScript in blocks.json will not work.
         wp_enqueue_script(
             'givewp-donation-form-app',
@@ -307,18 +354,5 @@ class DonationFormViewModel
             GIVE_NEXT_GEN_VERSION,
             true
         );
-    }
-
-    /**
-     * @since 0.4.0
-     *
-     * @return FormDesign|null
-     */
-    protected function getFormDesign(string $designId)
-    {
-        /** @var FormDesignRegistrar $formDesignRegistrar */
-        $formDesignRegistrar = give(FormDesignRegistrar::class);
-
-        return $formDesignRegistrar->hasDesign($this->designId()) ? $formDesignRegistrar->getDesign($designId) : null;
     }
 }

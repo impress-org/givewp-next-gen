@@ -5,7 +5,6 @@ namespace Give\DonationForms;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
-use Give\DonationForms\Actions\EnqueueGatewayScripts;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
@@ -26,6 +25,7 @@ use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -59,7 +59,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerRoutes();
         $this->registerFormDesigns();
         $this->registerSingleFormPage();
-        $this->enqueueFormScripts();
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
@@ -163,13 +162,5 @@ class ServiceProvider implements ServiceProviderInterface
     protected function registerSingleFormPage()
     {
         Hooks::addFilter('template_include', TemplateHandler::class, 'handle', 11);
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function enqueueFormScripts()
-    {
-        Hooks::addAction('givewp_donation_form_enqueue_gateway_scripts', EnqueueGatewayScripts::class);
     }
 }

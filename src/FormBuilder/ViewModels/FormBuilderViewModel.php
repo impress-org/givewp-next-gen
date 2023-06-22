@@ -103,7 +103,7 @@ class FormBuilderViewModel
                 /** @var PaymentGateway $gateway */
                 $gateway = give($gatewayClass);
 
-                return in_array(3, $gateway::formVersions(), true);
+                return in_array(3, $gateway->formVersions(), true);
             }
         );
 

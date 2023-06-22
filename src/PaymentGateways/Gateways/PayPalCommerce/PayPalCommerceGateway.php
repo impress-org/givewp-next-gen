@@ -16,16 +16,6 @@ class PayPalCommerceGateway extends PayPalCommerce
 
     /**
      * @unreleased
-     *
-     * @return array
-     */
-    public static function formVersions(): array
-    {
-        return [2, 3];
-    }
-
-    /**
-     * @unreleased
      */
     public function enqueueScript(int $formId)
     {

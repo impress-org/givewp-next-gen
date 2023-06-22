@@ -18,16 +18,6 @@ class TestGateway extends PaymentGateway
     use HasScriptAssetFile;
 
     /**
-     * @unreleased
-     *
-     * @return array
-     */
-    public static function formVersions(): array
-    {
-        return [2, 3];
-    }
-
-    /**
      * @inheritDoc
      */
     public static function id(): string
