@@ -12,16 +12,20 @@ class BillingAddress extends Group
     {
         return parent::make($name)
             ->append(
+                Select::make('country')
+                    ->label('Country')
+                    //->options(give_get_country_list())
+                    ->options([
+                        ['value' => 'BR', 'label' => 'Brazil'],
+                        ['value' => 'US', 'label' => 'United States'],
+                    ])
+                    ->required(),
                 Text::make('addressLine1')
                     ->label('Address Line 1')
                     ->required(),
 
                 Text::make('addressLine2')
                     ->label('Address Line 2')
-
-            /*Select::make('honorific')
-                ->label('Honorific')
-                ->options('Mr.', 'Mrs.', 'Ms.')*/
             );
     }
 }

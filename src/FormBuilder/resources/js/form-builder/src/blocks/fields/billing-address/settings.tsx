@@ -13,14 +13,14 @@ const settings: FieldBlock['settings'] = {
     },
     attributes: {
         lock: {remove: true},
-        /*showHonorific: {
-            type: 'boolean',
-            default: true,
-        },
-        honorifics: {
+        country: {
             type: 'array',
-            default: ['Mr', 'Ms', 'Mrs'],
-        },*/
+            source: 'attribute',
+            default: [
+                {value: 'BR', label: 'Brazil'},
+                {value: 'US', label: 'United States'},
+            ],
+        },
         addressLine1Label: {
             type: 'string',
             source: 'attribute',

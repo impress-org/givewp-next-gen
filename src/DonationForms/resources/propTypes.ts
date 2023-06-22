@@ -65,7 +65,7 @@ export interface NameProps extends GroupProps {
 
 export interface BillingAddressProps extends GroupProps {
     fields: {
-        //honorific?: FC<SelectFieldProps | {}>;
+        country: FC<SelectFieldProps | {}>;
         addressLine1: FC<FieldProps | {}>;
         addressLine2: FC<FieldProps | {}>;
     };

@@ -4,31 +4,28 @@ import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@w
 import {InspectorControls} from '@wordpress/block-editor';
 import {useState} from 'react';
 
-const HonorificSelect = ({honorifics}) => {
-    const [selectedTitle, setSelectedTitle] = useState(honorifics[0] ?? '');
-    const honorificOptions = honorifics.map((token) => {
+const CountrySelect = ({countryList}) => {
+    const [selectedCountry, setSelectedCountry] = useState(countryList[0] ?? '');
+    const countryOptions = countryList.map((country) => {
         return {
-            label: titleLabelTransform(token),
-            value: titleValueTransform(token),
+            label: country.label,
+            value: country.value,
         };
     });
     return (
         <SelectControl
-            label={__('Title', 'give')}
-            options={honorificOptions}
-            value={selectedTitle}
-            onChange={setSelectedTitle}
+            label={__('Country', 'give')}
+            required={true}
+            options={countryOptions}
+            value={selectedCountry}
+            onChange={setSelectedCountry}
         />
     );
 };
 
-const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
-const titleValueTransform = (token = '') => token.trim().toLowerCase();
-
 export default function Edit({
     attributes: {
-        showHonorific,
-        honorifics,
+        country,
         addressLine1Label,
         addressLine1Placeholder,
         addressLine2Label,
@@ -42,11 +39,19 @@ export default function Edit({
             <div
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: showHonorific ? '1fr 2fr 2fr' : '1fr 1fr',
+                    gridTemplateColumns: '1fr',
+                    marginBottom: '15px',
+                }}
+            >
+                <CountrySelect countryList={country} />
+            </div>
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
                     gap: '15px',
                 }}
             >
-                {/*!!showHonorific && <HonorificSelect honorifics={honorifics} />*/}
                 <TextControl
                     label={addressLine1Label}
                     placeholder={addressLine1Placeholder}

@@ -1,11 +1,11 @@
 import type {BillingAddressProps} from '@givewp/forms/propTypes';
 
 export default function BillingAddress({
-    fields: {/*honorific: Honorific,*/ addressLine1: AddressLine1, addressLine2: AddressLine2},
+    fields: {country: Country, addressLine1: AddressLine1, addressLine2: AddressLine2},
 }: BillingAddressProps) {
     return (
         <>
-            {/*Honorific && <Honorific />*/}
+            <Country />
             <AddressLine1 />
             <AddressLine2 />
         </>
