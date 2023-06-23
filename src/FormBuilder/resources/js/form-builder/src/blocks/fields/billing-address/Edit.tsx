@@ -129,7 +129,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('Address Line 1', 'give')} initialOpen={true}>
+                <PanelBody title={__('Address 1', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
@@ -145,7 +145,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('Address Line 2', 'give')} initialOpen={true}>
+                <PanelBody title={__('Address 2', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
@@ -185,7 +185,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('State/Province/Country', 'give')} initialOpen={true}>
+                <PanelBody title={__('State', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
@@ -201,7 +201,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('Zip/Postal Code', 'give')} initialOpen={true}>
+                <PanelBody title={__('Zip', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
