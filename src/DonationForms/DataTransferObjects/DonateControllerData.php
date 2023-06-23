@@ -98,7 +98,8 @@ class DonateControllerData
     public $billingAddress;
 
     /**
-     * @since 0.1.0
+     * @unreleased Add support billing address field
+     * @since      0.1.0
      */
     public function toDonation(int $donorId): Donation
     {
@@ -121,7 +122,8 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.3.0
+     * @unreleased Add support billing address field
+     * @since      0.3.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
     {
