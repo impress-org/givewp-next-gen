@@ -256,15 +256,15 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
     {
-        $countryList = $block->getAttribute('country');
-        $countryArrayValues = [];
-        foreach ($countryList as $country) {
-            $countryArrayValues[] = array_values($country);
+        $countryList = [];
+        foreach (give_get_country_list() as $value => $label) {
+            $countryList[] = [$value, $label];
         }
 
-        return BillingAddress::make('billingAddress')->tap(function ($group) use ($block, $countryArrayValues) {
+        return BillingAddress::make('billingAddress')->tap(function ($group) use ($block, $countryList) {
             $group->getNodeByName('country')
-                ->options(...$countryArrayValues)
+                ->label($block->getAttribute('countryLabel'))
+                ->options(...$countryList)
                 ->rules('required');
 
             $group->getNodeByName('address1')
