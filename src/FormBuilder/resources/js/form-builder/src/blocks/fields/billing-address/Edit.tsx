@@ -4,17 +4,18 @@ import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@w
 import {InspectorControls} from '@wordpress/block-editor';
 import {useState} from 'react';
 
-const CountrySelect = ({countryList}) => {
+const CountrySelect = ({countryList, countryLabel}) => {
     const [selectedCountry, setSelectedCountry] = useState(countryList[0] ?? '');
     const countryOptions = countryList.map((country) => {
         return {
             label: country.label,
             value: country.value,
+            disabled: country.label === 'none' || country.label === '',
         };
     });
     return (
         <SelectControl
-            label={__('Country', 'give')}
+            label={countryLabel}
             required={true}
             className={'give-is-required'}
             options={countryOptions}
@@ -27,6 +28,7 @@ const CountrySelect = ({countryList}) => {
 export default function Edit({
     attributes: {
         country,
+        countryLabel,
         address1Label,
         address1Placeholder,
         address2Label,
@@ -58,7 +60,7 @@ export default function Edit({
                 }}
             >
                 <div style={{gridArea: 'country'}}>
-                    <CountrySelect countryList={country} />
+                    <CountrySelect countryList={country} countryLabel={countryLabel} />
                 </div>
                 <div style={{gridArea: 'address1'}}>
                     <TextControl
@@ -118,36 +120,15 @@ export default function Edit({
             </div>
 
             <InspectorControls>
-                {/*<PanelBody title={__('Name Title Prefix', 'give')} initialOpen={true}>
+                <PanelBody title={__('Country', 'give')} initialOpen={true}>
                     <PanelRow>
-                        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                            <div>
-                                <!-- Wrapper added to control spacing between control and help text. -->
-                                <ToggleControl
-                                    label={__('Show Name Title Prefix', 'give')}
-                                    checked={showHonorific}
-                                    onChange={() => setAttributes({showHonorific: !showHonorific})}
-                                    help={__(
-                                        "Do you want to add a name title prefix dropdown field before the donor's first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for the donor to choose from.",
-                                        'give'
-                                    )}
-                                />
-                            </div>
-                            {!!showHonorific && (
-                                <FormTokenField
-                                    tokenizeOnSpace={true}
-                                    label={__('Title Prefixes', 'give')}
-                                    value={honorifics}
-                                    suggestions={['Mr', 'Ms', 'Mrs']}
-                                    // placeholder={__('Select some options', 'give')}
-                                    onChange={(tokens) => setAttributes({honorifics: tokens})}
-                                    displayTransform={titleLabelTransform}
-                                    saveTransform={titleValueTransform}
-                                />
-                            )}
-                        </div>
+                        <TextControl
+                            label={__('Label')}
+                            value={countryLabel}
+                            onChange={(value) => setAttributes({countryLabel: value})}
+                        />
                     </PanelRow>
-                </PanelBody>*/}
+                </PanelBody>
                 <PanelBody title={__('Address Line 1', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl

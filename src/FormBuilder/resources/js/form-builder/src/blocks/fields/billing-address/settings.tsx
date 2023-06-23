@@ -15,10 +15,12 @@ const settings: FieldBlock['settings'] = {
         country: {
             type: 'array',
             source: 'attribute',
-            default: [
-                {value: 'BR', label: 'Brazil'},
-                {value: 'US', label: 'United States'},
-            ],
+            default: [{value: 'sample', label: __('A full country list will be displayed here...', 'give')}],
+        },
+        countryLabel: {
+            type: 'string',
+            source: 'attribute',
+            default: __('Country', 'give'),
         },
         address1Label: {
             type: 'string',
