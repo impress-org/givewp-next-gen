@@ -5,6 +5,7 @@ namespace TestsNextGen\Unit\DataTransferObjects;
 use Give\DonationForms\DataTransferObjects\DonateControllerData;
 use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
 use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
@@ -74,6 +75,7 @@ class DonateFormRouteDataTest extends TestCase
         $data->subscriptionFrequency = null;
         $data->subscriptionPeriod = null;
         $data->subscriptionInstallments = null;
+        $data->billingAddress = new BillingAddress();
 
         $request = array_merge(get_object_vars($data), [
             'text_block_meta' => 'text block meta value',
@@ -200,6 +202,7 @@ class DonateFormRouteDataTest extends TestCase
         $data->subscriptionFrequency = 1;
         $data->subscriptionPeriod = SubscriptionPeriod::MONTH();
         $data->subscriptionInstallments = 0;
+        $data->billingAddress = new BillingAddress();
 
         $requestData = get_object_vars($data);
 
