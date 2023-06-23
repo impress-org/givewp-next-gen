@@ -4,21 +4,27 @@ declare(strict_types=1);
 
 namespace Give\Framework\FieldsAPI;
 
+/**
+ * @unreleased
+ */
 class BillingAddress extends Group
 {
     const TYPE = 'billingAddress';
 
-    public static function make($name)
+    /**
+     * @unreleased
+     *
+     * @throws Exceptions\EmptyNameException|Exceptions\NameCollisionException
+     */
+    public static function make($name): BillingAddress
     {
         return parent::make($name)
             ->append(
                 Select::make('country')
                     ->label(__('Country', 'give'))
-                    //->options(give_get_country_list())
                     ->options([
-                        ['value' => 'BR', 'label' => 'Brazil'],
-                        ['value' => 'PT', 'label' => 'Portugal'],
-                        ['value' => 'US', 'label' => 'United States'],
+                        ['BR', 'Brazil'],
+                        ['US', 'United States'],
                     ])
                     ->required(),
 
