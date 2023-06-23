@@ -56,7 +56,7 @@ export default function Edit({
                     "zip zip"
                     `,
                     gridAutoColumns: '1fr',
-                    gap: '15px',
+                    gap: '1rem',
                 }}
             >
                 <div style={{gridArea: 'country'}}>
