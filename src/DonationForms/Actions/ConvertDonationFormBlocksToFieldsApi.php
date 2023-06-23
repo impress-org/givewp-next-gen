@@ -105,8 +105,9 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.4.0 add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
-     * @since 0.1.0
+     * @unreleased Add support to billing address field
+     * @since      0.4.0 add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
+     * @since      0.1.0
      *
      * @return Node|null
      * @throws NameCollisionException
