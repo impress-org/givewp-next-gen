@@ -11,7 +11,6 @@ const settings: FieldBlock['settings'] = {
         multiple: false,
     },
     attributes: {
-        lock: {remove: true},
         country: {
             type: 'array',
             source: 'attribute',
