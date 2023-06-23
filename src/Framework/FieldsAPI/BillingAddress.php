@@ -27,7 +27,7 @@ class BillingAddress extends Group
             ->append(
                 Select::make('country')
                     ->label(__('Country', 'give'))
-                    ->options($countryList)
+                    ->options(...$countryList)
                     ->required(),
 
                 Text::make('address1')
