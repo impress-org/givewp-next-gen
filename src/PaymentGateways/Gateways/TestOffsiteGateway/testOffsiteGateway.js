@@ -1,9 +1,9 @@
 (() => {
     'use strict';
     const testOffsiteGateway = {
-        id: 'test-offsite-gateway',
+        id: 'test-gateway-offsite',
         Fields() {
-            return testOffsiteGateway.settings.message;
+            return givewpTestGatewayOffsiteData.message;
         },
     };
 

@@ -21,7 +21,7 @@ class TestGatewayTest extends TestCase
         $response = $gateway->createPayment($donation, $gatewayData);
 
         $intent = $gatewayData['testGatewayIntent'];
-        $transactionId = "test-gateway-transaction-id-{$intent}-{$donation->id}-";
+        $transactionId = "test-gateway-transaction-id-{$intent}-{$donation->id}";
 
         $command = new PaymentComplete($transactionId);
 
