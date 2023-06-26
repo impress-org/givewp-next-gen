@@ -18,16 +18,11 @@ class BillingAddress extends Group
      */
     public static function make($name): BillingAddress
     {
-        $countryList = [];
-        foreach (give_get_country_list() as $value => $label) {
-            $countryList[] = [$value, $label];
-        }
-
         return parent::make($name)
             ->append(
                 Select::make('country')
                     ->label(__('Country', 'give'))
-                    ->options(...$countryList)
+                    ->options([])
                     ->required(),
 
                 Text::make('address1')
