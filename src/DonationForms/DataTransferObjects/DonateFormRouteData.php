@@ -4,7 +4,6 @@ namespace Give\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
 use Give\DonationForms\Models\DonationForm;
-use Give\Donations\Properties\BillingAddress;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
 use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
@@ -85,31 +84,8 @@ class DonateFormRouteData implements Arrayable
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
-        $validData->billingAddress = new BillingAddress();
-
         foreach ($validator->validated() as $fieldId => $value) {
-            switch ($fieldId) {
-                case 'country':
-                    $validData->billingAddress->country = $value;
-                    break;
-                case 'address1':
-                    $validData->billingAddress->address1 = $value;
-                    break;
-                case 'address2':
-                    $validData->billingAddress->address2 = $value;
-                    break;
-                case 'city':
-                    $validData->billingAddress->city = $value;
-                    break;
-                case 'state':
-                    $validData->billingAddress->state = $value;
-                    break;
-                case 'zip':
-                    $validData->billingAddress->zip = $value;
-                    break;
-                default:
-                    $validData->{$fieldId} = $value;
-            }
+            $validData->{$fieldId} = $value;
         }
 
         $validData->formTitle = $form->title;

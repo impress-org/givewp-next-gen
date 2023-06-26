@@ -93,9 +93,29 @@ class DonateControllerData
      */
     public $subscriptionInstallments;
     /**
-     * @var BillingAddress
+     * @var string
      */
-    public $billingAddress;
+    public $country;
+    /**
+     * @var string
+     */
+    public $address1;
+    /**
+     * @var string
+     */
+    public $address2;
+    /**
+     * @var string
+     */
+    public $city;
+    /**
+     * @var string
+     */
+    public $state;
+    /**
+     * @var string
+     */
+    public $zip;
 
     /**
      * @unreleased Add support billing address field
@@ -117,7 +137,7 @@ class DonateControllerData
             'formTitle' => $form->title,
             'company' => $this->company,
             'type' => DonationType::SINGLE(),
-            'billingAddress' => $this->billingAddress,
+            'billingAddress' => $this->getBillingAddress(),
         ]);
     }
 
@@ -142,7 +162,7 @@ class DonateControllerData
             'company' => $this->company,
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscriptionId,
-            'billingAddress' => $this->billingAddress,
+            'billingAddress' => $this->getBillingAddress(),
         ]);
     }
 
@@ -218,7 +238,13 @@ class DonateControllerData
                         'donationType',
                         'subscriptionPeriod',
                         'subscriptionFrequency',
-                        'subscriptionInstallments'
+                        'subscriptionInstallments',
+                        'country',
+                        'address1',
+                        'address2',
+                        'city',
+                        'state',
+                        'zip',
                     ]
                 ),
                 true
@@ -259,5 +285,20 @@ class DonateControllerData
     public function getGateway(): PaymentGateway
     {
         return give(PaymentGatewayRegister::class)->getPaymentGateway($this->gatewayId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getBillingAddress(): BillingAddress
+    {
+        return BillingAddress::fromArray([
+            'country' => $this->country,
+            'address1' => $this->address1,
+            'address2' => $this->address2,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zip' => $this->zip,
+        ]);
     }
 }
