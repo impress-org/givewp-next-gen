@@ -4,7 +4,7 @@ import type {Post} from '@wordpress/core-data/src/entity-types';
 import type {Option} from '../types';
 
 /**
- * @unreleased filter v3 forms by post_author
+ * @unreleased filter v3 forms by rendered excerpt.
  * @since 0.1.0
  */
 export default function useFormOptions(): {formOptions: Option[] | []; isResolving: boolean} {
@@ -12,7 +12,7 @@ export default function useFormOptions(): {formOptions: Option[] | []; isResolvi
         return {
             forms: select('core')
                 .getEntityRecords<Post[]>('postType', 'give_forms')
-                ?.filter(({author}) => !author),
+                ?.filter(({excerpt}) => excerpt.rendered === '<p>[]</p>\n'),
             isResolving: select('core/data').getIsResolving('core', 'getEntityRecords', ['postType', 'give_forms']),
         };
     }, []);
