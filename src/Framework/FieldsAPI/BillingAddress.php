@@ -22,7 +22,9 @@ class BillingAddress extends Group
             ->append(
                 Select::make('country')
                     ->label(__('Country', 'give'))
-                    ->options([])
+                    ->options([
+                        ['value', 'label'],
+                    ])
                     ->required(),
 
                 Text::make('address1')
