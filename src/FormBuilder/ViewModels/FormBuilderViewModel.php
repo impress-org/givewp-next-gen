@@ -100,14 +100,14 @@ class FormBuilderViewModel
         $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
             /** @var PaymentGateway $gateway */
             $gateway = give($gatewayClass);
-            
+
             return [
                 'id' => $gateway::id(),
                 'enabled' => in_array($gateway::id(), $enabledGateways, true),
                 'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
             ];
-        }, give(PaymentGatewayRegister::class)->getPaymentGateways());
+        }, give(PaymentGatewayRegister::class)->getPaymentGateways(3));
 
         return array_values($builderPaymentGatewayData);
     }
