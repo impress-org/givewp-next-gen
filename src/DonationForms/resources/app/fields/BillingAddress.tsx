@@ -1,3 +1,5 @@
+import React from 'react';
+
 declare global {
     interface Window {
         give_global_vars: {
@@ -19,7 +21,6 @@ function readyHandler() {
     const countrySelect = document.querySelector(
         '.givewp-groups-billingAddress-billingAddress .givewp-fields-select-country select'
     );
-    console.log('countrySelect:', countrySelect);
 
     if (!!countrySelect) {
         countrySelect.addEventListener('change', updateBillingStateField);
@@ -27,10 +28,26 @@ function readyHandler() {
 }
 
 function updateBillingStateField(e) {
+    const loadingStateInput =
+        '<input type="text" id="loading_states" name="loading_states" class="loading_states give-input" placeholder="Loading..." disabled="disabled"/>';
+
     const defaultStateInput = document.querySelector(
         '.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state input'
     );
-    console.log('defaultStateInput:', defaultStateInput);
+
+    const selectStateInput = document.querySelector(
+        '.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state select'
+    );
+
+    if (!!selectStateInput) {
+        selectStateInput.remove();
+    }
+
+    // @ts-ignore
+    defaultStateInput.style.display = 'block';
+    defaultStateInput.parentElement.insertAdjacentHTML('afterend', loadingStateInput);
+    // @ts-ignore
+    defaultStateInput.style.display = 'none';
 
     const country = e.target.value;
     getStates(country)
@@ -41,14 +58,17 @@ function updateBillingStateField(e) {
             throw new Error('Fail to load states from ' + country);
         })
         .then((responseJson) => {
-            console.log(responseJson);
-
             if (!!responseJson.states_found) {
-                console.log('select: ', responseJson.data);
                 defaultStateInput.parentElement.insertAdjacentHTML('afterend', responseJson.data);
                 // @ts-ignore
                 defaultStateInput.style.display = 'none';
+            } else {
+                // @ts-ignore
+                defaultStateInput.value = '';
+                // @ts-ignore
+                defaultStateInput.style.display = 'block';
             }
+            document.querySelector('#loading_states').remove();
         })
         .catch((error) => {
             console.log(error);
