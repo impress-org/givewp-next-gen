@@ -8,7 +8,11 @@ declare global {
     }
 }
 
-export default function BillingAddressStateSelector({getValues, setValue}) {
+export default function BillingAddressStateSelector() {
+    const methods = window.givewp.form.hooks.useFormContext();
+
+    const {getValues, setValue} = methods;
+
     // Check if the DOMContentLoaded has already been completed
     if (document.readyState !== 'loading') {
         readyHandler();
