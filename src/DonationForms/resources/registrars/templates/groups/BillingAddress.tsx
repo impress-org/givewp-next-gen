@@ -44,7 +44,7 @@ function stateSelector() {
             '.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state input'
         );
         addLoadingStatus(defaultStateInput);
-        removeStateSelector();
+        removeStateSelectField();
 
         const country = e.target.value;
         getStates(country)
@@ -82,7 +82,7 @@ function stateSelector() {
         console.log('[*CHANGE AFTER*] BillingAddressStateSelector', getValues());
     }
 
-    function removeStateSelector() {
+    function removeStateSelectField() {
         const selectStateInput = document.querySelector(
             '.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state select'
         );
