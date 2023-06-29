@@ -40,26 +40,11 @@ function stateSelector() {
     }
 
     function updateBillingStateField(e) {
-        const loadingStateInput =
-            '<input type="text" id="loading_states" name="loading_states" class="loading_states give-input" placeholder="Loading..." disabled="disabled"/>';
-
         const defaultStateInput = document.querySelector(
             '.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state input'
         );
-
-        const selectStateInput = document.querySelector(
-            '.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state select'
-        );
-
-        if (!!selectStateInput) {
-            selectStateInput.remove();
-        }
-
-        // @ts-ignore
-        defaultStateInput.style.display = 'block';
-        defaultStateInput.parentElement.insertAdjacentHTML('afterend', loadingStateInput);
-        // @ts-ignore
-        defaultStateInput.style.display = 'none';
+        addLoadingStatus(defaultStateInput);
+        removeStateSelector();
 
         const country = e.target.value;
         getStates(country)
@@ -71,29 +56,61 @@ function stateSelector() {
             })
             .then((responseJson) => {
                 if (!!responseJson.states_found) {
-                    defaultStateInput.parentElement.insertAdjacentHTML('afterend', responseJson.data);
-
-                    document
-                        .querySelector('.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state select')
-                        .addEventListener('change', function (e) {
-                            console.log('[*CHANGE BEFORE*] BillingAddressStateSelector', getValues());
-                            // @ts-ignore
-                            setValue('state', e.target.value);
-                            console.log('[*CHANGE AFTER*] BillingAddressStateSelector', getValues());
-                        });
-                    // @ts-ignore
-                    defaultStateInput.style.display = 'none';
+                    addStateSelectField(defaultStateInput, responseJson.data);
+                    hideDefaultStateInput(defaultStateInput);
                 } else {
-                    // @ts-ignore
-                    defaultStateInput.value = '';
-                    // @ts-ignore
-                    defaultStateInput.style.display = 'block';
+                    showDefaultStateInput(defaultStateInput);
                 }
-                document.querySelector('#loading_states').remove();
+                removeLoadingStatus();
             })
             .catch((error) => {
                 console.log(error);
             });
+    }
+
+    function addStateSelectField(defaultStateInput, select) {
+        defaultStateInput.parentElement.insertAdjacentHTML('afterend', select);
+
+        document
+            .querySelector('.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state select')
+            .addEventListener('change', updateDefaultStateInput);
+    }
+
+    function updateDefaultStateInput(e) {
+        console.log('[*CHANGE BEFORE*] BillingAddressStateSelector', getValues());
+        setValue('state', e.target.value);
+        console.log('[*CHANGE AFTER*] BillingAddressStateSelector', getValues());
+    }
+
+    function removeStateSelector() {
+        const selectStateInput = document.querySelector(
+            '.givewp-groups-billingAddress-billingAddress .givewp-fields-text-state select'
+        );
+
+        if (!!selectStateInput) {
+            selectStateInput.remove();
+        }
+    }
+
+    function addLoadingStatus(defaultStateInput) {
+        const loadingStateInput =
+            '<input type="text" id="loading_states" name="loading_states" class="loading_states give-input" placeholder="Loading..." disabled="disabled"/>';
+        showDefaultStateInput(defaultStateInput);
+        defaultStateInput.parentElement.insertAdjacentHTML('afterend', loadingStateInput);
+        hideDefaultStateInput(defaultStateInput);
+    }
+
+    function removeLoadingStatus() {
+        document.querySelector('#loading_states').remove();
+    }
+
+    function hideDefaultStateInput(defaultStateInput) {
+        defaultStateInput.style.display = 'none';
+    }
+
+    function showDefaultStateInput(defaultStateInput) {
+        defaultStateInput.value = '';
+        defaultStateInput.style.display = 'block';
     }
 }
 
