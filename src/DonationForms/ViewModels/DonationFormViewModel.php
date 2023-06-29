@@ -14,7 +14,6 @@ use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
-use Give\Helpers\Hooks;
 
 /**
  * @since 0.1.0
@@ -293,9 +292,6 @@ class DonationFormViewModel
                 $gateway->enqueueScript($formId);
             }
         }
-
-        // let gateways enqueue scripts through a hook
-        Hooks::doAction('givewp_donation_form_enqueue_gateway_scripts', $formId);
     }
 
     /**

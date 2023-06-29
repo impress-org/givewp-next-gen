@@ -19,14 +19,6 @@ class StripePaymentElementGateway extends PaymentGateway
     use HasScriptAssetFile;
 
     /**
-     * @unreleased
-     */
-    public static function supportsApiVersions(): array
-    {
-        return [2, 3];
-    }
-
-    /**
      * @inheritDoc
      */
     public static function id(): string

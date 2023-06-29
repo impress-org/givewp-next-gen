@@ -18,14 +18,6 @@ class PayPalStandardGateway extends PayPalStandard
     /**
      * @unreleased
      */
-    public static function supportsApiVersions(): array
-    {
-        return [2, 3];
-    }
-
-    /**
-     * @unreleased
-     */
     public function enqueueScript(int $formId)
     {
         $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalStandardGateway.asset.php');
