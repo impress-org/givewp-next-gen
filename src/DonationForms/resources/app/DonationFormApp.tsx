@@ -10,7 +10,6 @@ import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
-import BillingAddress from './fields/BillingAddress';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -23,8 +22,6 @@ const {form} = getWindowData();
 prepareFormData(form);
 
 mountWindowData();
-
-BillingAddress();
 
 /**
  * Prepare default values for form

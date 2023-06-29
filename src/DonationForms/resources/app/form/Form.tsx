@@ -12,6 +12,7 @@ import {ObjectSchema} from 'joi';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import handleSubmitRequest from '@givewp/forms/app/utilities/handleFormSubmitRequest';
 import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary';
+import BillingAddressStateSelector from '@givewp/forms/app/utilities/BillingAddressStateSelector';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -30,6 +31,8 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
     });
 
     const {handleSubmit, setError, control} = methods;
+
+    BillingAddressStateSelector({...methods});
 
     const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
 
