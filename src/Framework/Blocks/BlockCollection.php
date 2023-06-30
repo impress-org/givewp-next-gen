@@ -2,7 +2,6 @@
 
 namespace Give\Framework\Blocks;
 
-use Give\Framework\Blocks\Exceptions\ReferenceBlockNotFoundException;
 use Give\Framework\Support\Contracts\Arrayable;
 
 class BlockCollection implements Arrayable
@@ -91,7 +90,6 @@ class BlockCollection implements Arrayable
      * @since 0.4.0
      *
      * @return BlockModel|BlockCollection|null
-     * @throws ReferenceBlockNotFoundException
      */
     private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', BlockCollection $blockCollection = null, int &$count = 0)
     {
@@ -118,7 +116,7 @@ class BlockCollection implements Arrayable
             }
         }
 
-        throw new ReferenceBlockNotFoundException($blockName);
+        return null;
     }
 
     /**
