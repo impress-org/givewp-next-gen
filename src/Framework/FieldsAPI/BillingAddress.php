@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\DonationForms\Rules\BillingAddressStateRule;
+
 /**
  * @unreleased
  */
@@ -38,9 +40,9 @@ class BillingAddress extends Group
                     ->label(__('City', 'give'))
                     ->required(),
 
-                Text::make('state')
+                Hidden::make('state')
                     ->label(__('State/Province/Country', 'give'))
-                    ->required(),
+                    ->rules(new BillingAddressStateRule()),
 
                 Text::make('zip')
                     ->label(__('Zip/Postal Code', 'give'))

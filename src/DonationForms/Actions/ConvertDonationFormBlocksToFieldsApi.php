@@ -286,9 +286,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('state')
-                ->label($block->getAttribute('stateLabel'))
-                ->placeholder($block->getAttribute('statePlaceholder'))
-                ->rules('required', 'max:255');
+                ->label($block->getAttribute('stateLabel'));
+            //->placeholder($block->getAttribute('statePlaceholder'))
+            //->rules('required', 'max:255');
 
             $group->getNodeByName('zip')
                 ->label($block->getAttribute('zipLabel'))
