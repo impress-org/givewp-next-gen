@@ -67,7 +67,7 @@ function StateFieldContainer({
     const [states, setStates] = useState<State[]>([]);
     const [statesLoading, setStatesLoading] = useState<boolean>(false);
     const [stateLabel, setStateLabel] = useState<string>('State');
-    const [showField, setShowField] = useState<boolean>(false);
+    const [showField, setShowField] = useState<boolean>(true);
     const [stateRequired, setStateRequired] = useState<boolean>(false);
 
     const updateStateValue = useCallback(
@@ -82,6 +82,7 @@ function StateFieldContainer({
 
     useEffect(() => {
         if (!country) {
+            setStates([]);
             return;
         }
 
@@ -137,7 +138,10 @@ function StateFieldContainer({
 
                     <select onChange={updateStateValue} aria-invalid={fieldError ? 'true' : 'false'}>
                         {statesLoading ? (
-                            <option disabled>{__('Loading...', 'give')}</option>
+                            <>
+                                <option hidden>{__('Loading...', 'give')}</option>
+                                <option disabled>{__('Loading...', 'give')}</option>
+                            </>
                         ) : (
                             <>
                                 <option hidden>{__(`Select ${stateLabel}`, 'give')}</option>
@@ -171,7 +175,11 @@ function StateFieldContainer({
             <label>
                 <Label label={stateLabel ?? __('State', 'give')} required={stateRequired} />
 
-                <input type="text" onChange={updateStateValue} aria-invalid={fieldError ? 'true' : 'false'} />
+                {statesLoading ? (
+                    <input type="text" disabled={true} placeholder={__('Loading...', 'give')} />
+                ) : (
+                    <input type="text" onChange={updateStateValue} aria-invalid={fieldError ? 'true' : 'false'} />
+                )}
 
                 <HiddenStateField />
 
