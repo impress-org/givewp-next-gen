@@ -192,4 +192,15 @@ class BlockCollection implements Arrayable
 
         return $this;
     }
+
+    public function walk(callable $callback)
+    {
+        foreach ($this->blocks as $block) {
+            $callback($block);
+
+            if ($block->innerBlocks) {
+                $block->innerBlocks->walk($callback);
+            }
+        }
+    }
 }
