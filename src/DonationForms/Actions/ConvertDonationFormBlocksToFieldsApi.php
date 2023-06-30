@@ -284,7 +284,7 @@ class ConvertDonationFormBlocksToFieldsApi
             $group->getNodeByName('city')
                 ->label($block->getAttribute('cityLabel'))
                 ->placeholder($block->getAttribute('cityPlaceholder'))
-                ->rules('required', 'max:255');
+                ->rules('max:255');
 
             $group->getNodeByName('state')
                 ->label($block->getAttribute('stateLabel'))
@@ -293,7 +293,7 @@ class ConvertDonationFormBlocksToFieldsApi
             $group->getNodeByName('zip')
                 ->label($block->getAttribute('zipLabel'))
                 ->placeholder($block->getAttribute('zipPlaceholder'))
-                ->rules('required', 'max:255');
+                ->rules('max:255');
         });
     }
 

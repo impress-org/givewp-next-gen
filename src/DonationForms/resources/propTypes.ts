@@ -65,12 +65,12 @@ export interface NameProps extends GroupProps {
 
 export interface BillingAddressProps extends GroupProps {
     fields: {
-        country: FC<SelectFieldProps | {}>;
+        country: FC<Partial<SelectFieldProps> | {}>;
         address1: FC<FieldProps | {}>;
         address2: FC<FieldProps | {}>;
-        city: FC<FieldProps | {}>;
+        city: FC<Partial<FieldProps> | {}>;
         state: FC<FieldProps | {}>;
-        zip: FC<FieldProps | {}>;
+        zip: FC<Partial<FieldProps> | {}>;
     };
 }
 

@@ -24,26 +24,22 @@ class BillingAddress extends Group
                     ->label(__('Country', 'give'))
                     ->options([
                         ['value', 'label'],
-                    ])
-                    ->required(),
+                    ]),
 
                 Text::make('address1')
-                    ->label(__('Address Line 1', 'give'))
-                    ->required(),
+                    ->label(__('Address Line 1', 'give')),
 
                 Text::make('address2')
                     ->label(__('Address Line 2', 'give')),
 
                 Text::make('city')
-                    ->label(__('City', 'give'))
-                    ->required(),
+                    ->label(__('City', 'give')),
 
                 Hidden::make('state')
                     ->label(__('State/Province/Country', 'give')),
 
                 Text::make('zip')
                     ->label(__('Zip/Postal Code', 'give'))
-                    ->required()
             );
     }
 }

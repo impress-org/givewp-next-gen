@@ -4,6 +4,7 @@ import {__} from '@wordpress/i18n';
 import NodeWrapper from '../layouts/NodeWrapper';
 import {ErrorMessage} from '@hookform/error-message';
 import {useCallback} from '@wordpress/element';
+import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 async function getStates(country) {
     return await fetch('/wp-admin/admin-ajax.php', {
@@ -15,7 +16,15 @@ async function getStates(country) {
     });
 }
 
-function StateFieldContainer({state: HiddenStateField}: {state: FC}) {
+function StateFieldContainer({
+    state: HiddenStateField,
+    setCityRequired,
+    setZipRequired,
+}: {
+    state: FC;
+    setCityRequired: Function;
+    setZipRequired: Function;
+}) {
     const Label = window.givewp.form.templates.layouts.fieldLabel;
     const FieldError = window.givewp.form.templates.layouts.fieldError;
     const {useWatch, useFormContext, useFormState} = window.givewp.form.hooks;
@@ -59,6 +68,8 @@ function StateFieldContainer({state: HiddenStateField}: {state: FC}) {
                 setStateLabel(responseJson.state_label);
                 setShowField(responseJson.show_field);
                 setStateRequired(responseJson.states_require);
+                setCityRequired(responseJson.city_require);
+                setZipRequired(responseJson.zip_require);
 
                 if (responseJson.states_found) {
                     const stateResponse = [];
@@ -139,14 +150,17 @@ function StateFieldContainer({state: HiddenStateField}: {state: FC}) {
 export default function BillingAddress({
     fields: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
 }: BillingAddressProps) {
+    const [cityRequired, setCityRequired] = useState(false);
+    const [zipRequired, setZipRequired] = useState(false);
+    
     return (
         <>
             <Country />
             <Address1 />
             <Address2 />
-            <City />
-            <StateFieldContainer state={state} />
-            <Zip />
+            <City validationRules={{required: cityRequired}} />
+            <StateFieldContainer state={state} setCityRequired={setCityRequired} setZipRequired={setZipRequired} />
+            <Zip validationRules={{required: zipRequired}} />
         </>
     );
 }
