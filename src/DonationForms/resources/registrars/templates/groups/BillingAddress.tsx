@@ -1,7 +1,6 @@
 import type {BillingAddressProps} from '@givewp/forms/propTypes';
 import {FC, useEffect, useState} from 'react';
 import {__} from '@wordpress/i18n';
-import NodeWrapper from '../layouts/NodeWrapper';
 import {ErrorMessage} from '@hookform/error-message';
 import {useCallback} from '@wordpress/element';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
@@ -27,6 +26,7 @@ function StateFieldContainer({
 }) {
     const Label = window.givewp.form.templates.layouts.fieldLabel;
     const FieldError = window.givewp.form.templates.layouts.fieldError;
+    const NodeWrapper = window.givewp.form.templates.layouts.wrapper;
     const {useWatch, useFormContext, useFormState} = window.givewp.form.hooks;
     const {errors} = useFormState();
     const {setValue, clearErrors} = useFormContext();
@@ -152,7 +152,6 @@ export default function BillingAddress({
 }: BillingAddressProps) {
     const [cityRequired, setCityRequired] = useState(false);
     const [zipRequired, setZipRequired] = useState(false);
-    
     return (
         <>
             <Country />
