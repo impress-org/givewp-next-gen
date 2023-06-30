@@ -5,6 +5,32 @@ import {ErrorMessage} from '@hookform/error-message';
 import {useCallback} from '@wordpress/element';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
+/**
+ * @unreleased
+ */
+type StatesJsonResponse = {
+    state_label: string;
+    show_field: boolean;
+    states_require: boolean;
+    city_require: boolean;
+    zip_require: boolean;
+    states_found: boolean;
+    states: {[key: string]: string};
+};
+
+/**
+ * @unreleased
+ */
+type State = {
+    label: string;
+    value: string;
+};
+
+/**
+ * Get states from the server based on the country value
+ *
+ * @unreleased
+ */
 async function getStates(country) {
     return await fetch('/wp-admin/admin-ajax.php', {
         method: 'POST',
@@ -15,6 +41,11 @@ async function getStates(country) {
     });
 }
 
+/**
+ * This component is used to dynamically update the state field based on the country value
+ *
+ * @unreleased
+ */
 function StateFieldContainer({
     state: HiddenStateField,
     setCityRequired,
@@ -31,10 +62,10 @@ function StateFieldContainer({
     const {errors} = useFormState();
     const {setValue, clearErrors} = useFormContext();
     const country = useWatch({name: 'country'});
-    const [states, setStates] = useState([]);
-    const [statesLoading, setStatesLoading] = useState(false);
-    const [stateLabel, setStateLabel] = useState('State');
-    const [showField, setShowField] = useState(false);
+    const [states, setStates] = useState<State[]>([]);
+    const [statesLoading, setStatesLoading] = useState<boolean>(false);
+    const [stateLabel, setStateLabel] = useState<string>('State');
+    const [showField, setShowField] = useState<boolean>(false);
     const [stateRequired, setStateRequired] = useState<boolean>(false);
 
     const updateStateValue = useCallback(
@@ -64,7 +95,7 @@ function StateFieldContainer({
                 }
                 throw new Error('Fail to load states from ' + country);
             })
-            .then((responseJson) => {
+            .then((responseJson: StatesJsonResponse) => {
                 setStateLabel(responseJson.state_label);
                 setShowField(responseJson.show_field);
                 setStateRequired(responseJson.states_require);
@@ -72,12 +103,13 @@ function StateFieldContainer({
                 setZipRequired(responseJson.zip_require);
 
                 if (responseJson.states_found) {
-                    const stateResponse = [];
+                    const stateResponse: State[] = [];
                     Object.entries(responseJson.states).forEach(([key, value]) => {
                         if (key) {
                             stateResponse.push({value: key, label: value});
                         }
                     });
+
                     setStates(stateResponse);
                 } else {
                     setStates([]);
@@ -147,9 +179,14 @@ function StateFieldContainer({
     );
 }
 
+/**
+ * @unreleased
+ */
 export default function BillingAddress({
     fields: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
 }: BillingAddressProps) {
+    // these are necessary to set the required indicator on the city and zip field labels
+    // the actual validation will come from the server as we don't yet have the ability to update the actual client validation rules here
     const [cityRequired, setCityRequired] = useState(false);
     const [zipRequired, setZipRequired] = useState(false);
     return (
