@@ -31,13 +31,13 @@ type State = {
  *
  * @unreleased
  */
-async function getStates(country) {
-    return await fetch('/wp-admin/admin-ajax.php', {
+async function getStates(url, country) {
+    return await fetch(url, {
         method: 'POST',
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
         },
-        body: 'action=give_get_states&field_name=state_selector&country=' + country,
+        body: 'country=' + country,
     });
 }
 
@@ -47,10 +47,12 @@ async function getStates(country) {
  * @unreleased
  */
 function StateFieldContainer({
+    apiUrl,
     state: HiddenStateField,
     setCityRequired,
     setZipRequired,
 }: {
+    apiUrl: string;
     state: FC;
     setCityRequired: Function;
     setZipRequired: Function;
@@ -84,7 +86,7 @@ function StateFieldContainer({
         }
 
         setStatesLoading(true);
-        const response = getStates(country);
+        const response = getStates(apiUrl, country);
         response
             .then((data) => {
                 if (data.ok) {
@@ -184,6 +186,7 @@ function StateFieldContainer({
  */
 export default function BillingAddress({
     fields: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
+    apiUrl,
 }: BillingAddressProps) {
     // these are necessary to set the required indicator on the city and zip field labels
     // the actual validation will come from the server as we don't yet have the ability to update the actual client validation rules here
@@ -195,7 +198,12 @@ export default function BillingAddress({
             <Address1 />
             <Address2 />
             <City validationRules={{required: cityRequired}} />
-            <StateFieldContainer state={state} setCityRequired={setCityRequired} setZipRequired={setZipRequired} />
+            <StateFieldContainer
+                apiUrl={apiUrl}
+                state={state}
+                setCityRequired={setCityRequired}
+                setZipRequired={setZipRequired}
+            />
             <Zip validationRules={{required: zipRequired}} />
         </>
     );

@@ -263,38 +263,45 @@ class ConvertDonationFormBlocksToFieldsApi
             $countryList[] = [$value, $label];
         }
 
-        return BillingAddress::make('billingAddress')->tap(function ($group) use ($block, $countryList) {
-            $group->getNodeByName('country')
-                ->label($block->getAttribute('countryLabel'))
-                ->options(...$countryList)
-                ->rules('required');
+        return BillingAddress::make('billingAddress')
+            ->setApiUrl(
+                give_get_ajax_url([
+                    'action' => 'give_get_states',
+                    'field_name' => 'state_selector'
+                ])
+            )
+            ->tap(function ($group) use ($block, $countryList) {
+                $group->getNodeByName('country')
+                    ->label($block->getAttribute('countryLabel'))
+                    ->options(...$countryList)
+                    ->rules('required');
 
-            $group->getNodeByName('address1')
-                ->label($block->getAttribute('address1Label'))
-                ->placeholder($block->getAttribute('address1Placeholder'))
-                ->rules('required', 'max:255');
+                $group->getNodeByName('address1')
+                    ->label($block->getAttribute('address1Label'))
+                    ->placeholder($block->getAttribute('address1Placeholder'))
+                    ->rules('required', 'max:255');
 
-            $group->getNodeByName('address2')
-                ->label($block->getAttribute('address2Label'))
-                ->placeholder($block->getAttribute('address2Placeholder'))
-                ->required($block->getAttribute('requireAddress2'))
-                ->rules('max:255');
+                $group->getNodeByName('address2')
+                    ->label($block->getAttribute('address2Label'))
+                    ->placeholder($block->getAttribute('address2Placeholder'))
+                    ->required($block->getAttribute('requireAddress2'))
+                    ->rules('max:255');
 
 
-            $group->getNodeByName('city')
-                ->label($block->getAttribute('cityLabel'))
-                ->placeholder($block->getAttribute('cityPlaceholder'))
-                ->rules('max:255');
+                $group->getNodeByName('city')
+                    ->label($block->getAttribute('cityLabel'))
+                    ->placeholder($block->getAttribute('cityPlaceholder'))
+                    ->rules('max:255');
 
-            $group->getNodeByName('state')
-                ->label($block->getAttribute('stateLabel'))
-                ->rules(new BillingAddressStateRule());
+                $group->getNodeByName('state')
+                    ->label($block->getAttribute('stateLabel'))
+                    ->rules(new BillingAddressStateRule());
 
-            $group->getNodeByName('zip')
-                ->label($block->getAttribute('zipLabel'))
-                ->placeholder($block->getAttribute('zipPlaceholder'))
-                ->rules('max:255');
-        });
+                $group->getNodeByName('zip')
+                    ->label($block->getAttribute('zipLabel'))
+                    ->placeholder($block->getAttribute('zipPlaceholder'))
+                    ->rules('max:255');
+            });
     }
 
     /**

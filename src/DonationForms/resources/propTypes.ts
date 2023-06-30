@@ -72,6 +72,7 @@ export interface BillingAddressProps extends GroupProps {
         state: FC<FieldProps | {}>;
         zip: FC<Partial<FieldProps> | {}>;
     };
+    apiUrl: string;
 }
 
 export interface DonationAmountProps extends GroupProps {

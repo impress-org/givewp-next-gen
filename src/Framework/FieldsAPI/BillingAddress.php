@@ -13,6 +13,21 @@ class BillingAddress extends Group
 
     /**
      * @unreleased
+     */
+    public $apiUrl;
+
+    /**
+     * @unreleased
+     */
+    public function setApiUrl(string $url): BillingAddress
+    {
+        $this->apiUrl = $url;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
      *
      * @throws Exceptions\EmptyNameException|Exceptions\NameCollisionException
      */
