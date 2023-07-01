@@ -63,7 +63,7 @@ const settings: FieldBlock['settings'] = {
         statePlaceholder: {
             type: 'string',
             source: 'attribute',
-            default: __('This changes by Country...', 'give'),
+            default: __('This changes by country selection...', 'give'),
         },
         zipLabel: {
             type: 'string',
