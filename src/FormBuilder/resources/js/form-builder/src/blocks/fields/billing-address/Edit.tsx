@@ -28,7 +28,6 @@ const CountrySelect = ({countryList, countryLabel}) => {
 export default function Edit({
     attributes: {
         country,
-        state,
         countryLabel,
         address1Label,
         address1Placeholder,
