@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\DonationForms\Rules;
 
 use Closure;
@@ -7,14 +8,14 @@ use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 /**
  * @unreleased
  */
-class BillingAddressStateRule implements ValidationRule
+class BillingAddressZipRule implements ValidationRule
 {
     /**
      * @unreleased
      */
     public static function id(): string
     {
-        return 'state';
+        return 'zip';
     }
 
     /**
@@ -30,8 +31,9 @@ class BillingAddressStateRule implements ValidationRule
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        if ( !$value && !array_key_exists( $values['country'], give_states_not_required_country_list() ) ) {
-             $fail(__('State required.', 'give'));
-		}
+        if ( ! $value && ! array_key_exists($values['country'], give_get_country_list_without_postcodes())) {
+            $fail(__('Zip required.', 'give'));
+        }
     }
 }
+

@@ -4,7 +4,9 @@ namespace Give\DonationForms\Actions;
 
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Rules\AuthenticationRule;
+use Give\DonationForms\Rules\BillingAddressCityRule;
 use Give\DonationForms\Rules\BillingAddressStateRule;
+use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
@@ -287,20 +289,19 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->required($block->getAttribute('requireAddress2'))
                     ->rules('max:255');
 
-
                 $group->getNodeByName('city')
                     ->label($block->getAttribute('cityLabel'))
                     ->placeholder($block->getAttribute('cityPlaceholder'))
-                    ->rules('max:255');
+                    ->rules('max:255', new BillingAddressCityRule());
 
                 $group->getNodeByName('state')
                     ->label($block->getAttribute('stateLabel'))
-                    ->rules(new BillingAddressStateRule());
+                    ->rules('max:255', new BillingAddressStateRule());
 
                 $group->getNodeByName('zip')
                     ->label($block->getAttribute('zipLabel'))
                     ->placeholder($block->getAttribute('zipPlaceholder'))
-                    ->rules('max:255');
+                    ->rules('max:255', new BillingAddressZipRule());
             });
     }
 

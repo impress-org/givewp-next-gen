@@ -136,7 +136,11 @@ function StateFieldContainer({
                 <label>
                     <Label label={stateLabel} required={stateRequired} />
 
-                    <select onChange={updateStateValue} aria-invalid={fieldError ? 'true' : 'false'}>
+                    <select
+                        onChange={updateStateValue}
+                        disabled={statesLoading}
+                        aria-invalid={fieldError ? 'true' : 'false'}
+                    >
                         {statesLoading ? (
                             <>
                                 <option hidden>{__('Loading...', 'give')}</option>
@@ -176,9 +180,14 @@ function StateFieldContainer({
                 <Label label={stateLabel ?? __('State', 'give')} required={stateRequired} />
 
                 {statesLoading ? (
-                    <input type="text" disabled={true} placeholder={__('Loading...', 'give')} />
+                    <input type="text" disabled={true} value={__('Loading...', 'give')} />
                 ) : (
-                    <input type="text" onChange={updateStateValue} aria-invalid={fieldError ? 'true' : 'false'} />
+                    <input
+                        type="text"
+                        value={''}
+                        onChange={updateStateValue}
+                        aria-invalid={fieldError ? 'true' : 'false'}
+                    />
                 )}
 
                 <HiddenStateField />
