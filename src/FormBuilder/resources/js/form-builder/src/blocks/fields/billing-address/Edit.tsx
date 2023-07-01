@@ -28,6 +28,7 @@ const CountrySelect = ({countryList, countryLabel}) => {
 export default function Edit({
     attributes: {
         country,
+        state,
         countryLabel,
         address1Label,
         address1Placeholder,
@@ -182,22 +183,6 @@ export default function Edit({
                             label={__('Placeholder')}
                             value={cityPlaceholder}
                             onChange={(value) => setAttributes({cityPlaceholder: value})}
-                        />
-                    </PanelRow>
-                </PanelBody>
-                <PanelBody title={__('State', 'give')} initialOpen={true}>
-                    <PanelRow>
-                        <TextControl
-                            label={__('Label')}
-                            value={stateLabel}
-                            onChange={(value) => setAttributes({stateLabel: value})}
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <TextControl
-                            label={__('Placeholder')}
-                            value={statePlaceholder}
-                            onChange={(value) => setAttributes({statePlaceholder: value})}
                         />
                     </PanelRow>
                 </PanelBody>
