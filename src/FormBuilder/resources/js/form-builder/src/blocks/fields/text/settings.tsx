@@ -9,22 +9,10 @@ const settings: FieldBlock['settings'] = {
     title: __('Text', 'custom-block-editor'),
     category: 'custom',
     description: __('A custom text field that donors can use.', 'give'),
-    attributes: {
-        ...defaultSettings.attributes,
-        storeAsDonorMeta: {
-            type: 'boolean',
-            source: 'attribute',
-            default: false,
-        },
-        displayInAdmin: {
-            type: 'boolean',
-            source: 'attribute',
-            default: true,
-        },
-        displayInReceipt: {
-            type: 'boolean',
-            source: 'attribute',
-            default: true,
+    supports: {
+        // @ts-ignore
+        giveWPFieldSettings: {
+            placeholder: true,
         },
     },
     icon: () => (
