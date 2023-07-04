@@ -12,6 +12,11 @@ import {FieldSettings} from './types';
 import {FieldSettingsSlot, DisplaySettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
 
+/**
+ * Higher Order Component that adds field settings to the inspector controls.
+ *
+ * @unreleased
+ */
 const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
     return (props) => {
         const {name, attributes, setAttributes} = props;
@@ -40,6 +45,11 @@ const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
 
 export default FieldSettingsHOC;
 
+/**
+ * Renders the field settings inspector controls.
+ *
+ * @unreleased
+ */
 function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}) {
     const validateFieldName = useFieldNameValidator();
 

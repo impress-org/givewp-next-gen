@@ -1,5 +1,11 @@
 import {FieldSettings, FieldSettingsSupport} from "./types";
 
+/**
+ * Takes in the "supports" settings for a field and normalizes them into a standard object. It is recommended to use
+ * this function rather than the settings directly.
+ *
+ * @unreleased
+ */
 export default function normalizeFieldSettings(settings: FieldSettingsSupport | false): FieldSettings | null {
     if (settings === undefined || settings === false) {
         return null;

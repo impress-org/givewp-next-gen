@@ -3,6 +3,11 @@ import {__} from "@wordpress/i18n";
 import normalizeFieldSettings from "./normalizeFieldSettings";
 import type {FieldAttributes} from "./types";
 
+/**
+ * Adds attributes to the block types that support the field settings.
+ *
+ * @unreleased
+ */
 export default function updateBlockTypes(settings) {
     const fieldSettings = normalizeFieldSettings(settings.supports.giveWPFieldSettings);
 
