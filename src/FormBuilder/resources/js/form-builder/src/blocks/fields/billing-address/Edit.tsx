@@ -47,7 +47,7 @@ export default function Edit({
     return (
         <>
             {groupLabel.length > 0 && (
-                <div style={{gridArea: 'groupLabel'}}>
+                <div style={{gridArea: 'groupLabel', marginTop: '-1.5rem'}}>
                     <RichText
                         tagName="p"
                         value={groupLabel}
