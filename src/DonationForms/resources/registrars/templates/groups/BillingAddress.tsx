@@ -202,6 +202,7 @@ function StateFieldContainer({
  * @unreleased
  */
 export default function BillingAddress({
+    groupLabel,
     fields: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
     apiUrl,
 }: BillingAddressProps) {
@@ -209,19 +210,23 @@ export default function BillingAddress({
     // the actual validation will come from the server as we don't yet have the ability to update the actual client validation rules here
     const [cityRequired, setCityRequired] = useState(false);
     const [zipRequired, setZipRequired] = useState(false);
+
     return (
         <>
-            <Country />
-            <Address1 />
-            <Address2 />
-            <City validationRules={{required: cityRequired}} />
-            <StateFieldContainer
-                apiUrl={apiUrl}
-                state={state}
-                setCityRequired={setCityRequired}
-                setZipRequired={setZipRequired}
-            />
-            <Zip validationRules={{required: zipRequired}} />
+            <fieldset>
+                {groupLabel && <legend>{groupLabel}</legend>}
+                <Country />
+                <Address1 />
+                <Address2 />
+                <City validationRules={{required: cityRequired}} />
+                <StateFieldContainer
+                    apiUrl={apiUrl}
+                    state={state}
+                    setCityRequired={setCityRequired}
+                    setZipRequired={setZipRequired}
+                />
+                <Zip validationRules={{required: zipRequired}} />
+            </fieldset>
         </>
     );
 }

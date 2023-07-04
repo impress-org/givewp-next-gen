@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
-import {InspectorControls} from '@wordpress/block-editor';
+import {InspectorControls, RichText} from '@wordpress/block-editor';
 import {useState} from 'react';
 
 const CountrySelect = ({countryList, countryLabel}) => {
@@ -27,6 +27,7 @@ const CountrySelect = ({countryList, countryLabel}) => {
 
 export default function Edit({
     attributes: {
+        groupLabel,
         country,
         countryLabel,
         address1Label,
@@ -45,6 +46,17 @@ export default function Edit({
 }: BlockEditProps<any>) {
     return (
         <>
+            {groupLabel.length > 0 && (
+                <div style={{gridArea: 'groupLabel'}}>
+                    <RichText
+                        tagName="p"
+                        value={groupLabel}
+                        onChange={(value) => setAttributes({groupLabel: value})}
+                        style={{width: '100%', fontSize: '1.1rem', fontWeight: 500}}
+                        allowedFormats={[]}
+                    />
+                </div>
+            )}
             <div
                 style={{
                     display: 'grid',
@@ -120,6 +132,15 @@ export default function Edit({
             </div>
 
             <InspectorControls>
+                <PanelBody title={__('Group', 'give')} initialOpen={true}>
+                    <PanelRow>
+                        <TextControl
+                            label={'Label'}
+                            value={groupLabel}
+                            onChange={(value) => setAttributes({groupLabel: value})}
+                        />
+                    </PanelRow>
+                </PanelBody>
                 <PanelBody title={__('Country', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl

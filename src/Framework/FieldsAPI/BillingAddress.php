@@ -19,9 +19,24 @@ class BillingAddress extends Group
     /**
      * @unreleased
      */
+    public $groupLabel;
+
+    /**
+     * @unreleased
+     */
     public function setApiUrl(string $url): BillingAddress
     {
         $this->apiUrl = $url;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setGroupLabel(string $groupLabel): BillingAddress
+    {
+        $this->groupLabel = $groupLabel;
 
         return $this;
     }

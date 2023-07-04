@@ -64,6 +64,7 @@ export interface NameProps extends GroupProps {
 }
 
 export interface BillingAddressProps extends GroupProps {
+    groupLabel: string;
     fields: {
         country: FC<Partial<SelectFieldProps> | {}>;
         address1: FC<FieldProps | {}>;

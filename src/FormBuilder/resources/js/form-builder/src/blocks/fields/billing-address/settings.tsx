@@ -11,6 +11,12 @@ const settings: FieldBlock['settings'] = {
         multiple: false,
     },
     attributes: {
+        groupLabel: {
+            type: 'string',
+            source: 'attribute',
+            selector: 'p',
+            default: 'Billing Address',
+        },
         country: {
             type: 'array',
             source: 'attribute',

@@ -269,8 +269,11 @@ class ConvertDonationFormBlocksToFieldsApi
             ->setApiUrl(
                 give_get_ajax_url([
                     'action' => 'give_get_states',
-                    'field_name' => 'state_selector'
+                    'field_name' => 'state_selector',
                 ])
+            )
+            ->setGroupLabel(
+                $block->getAttribute('groupLabel')
             )
             ->tap(function ($group) use ($block, $countryList) {
                 $group->getNodeByName('country')
