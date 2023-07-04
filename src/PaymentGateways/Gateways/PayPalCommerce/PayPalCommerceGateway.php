@@ -41,7 +41,7 @@ class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGate
                 'merchant-id' => $merchantDetailModel->merchantIdInPayPal,
                 'components' => "buttons,hosted-fields",
                 'locale' => get_locale(),
-                'disable-funding' => 'card',
+                'disable-funding' => 'credit',
                 'enable-funding' => 'venmo',
                 'intent' => 'capture',
                 'vault' => 'false',
