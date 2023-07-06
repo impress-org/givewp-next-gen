@@ -3,6 +3,7 @@ import type {ConsentProps} from '@givewp/forms/propTypes';
 import Checkbox from '../Checkbox';
 import ShowTerms from './ShowTerms';
 import ConsentModal from './ConsentModal';
+import {Interweave} from 'interweave';
 
 export default function ConsentField({
     name,
@@ -68,7 +69,7 @@ export default function ConsentField({
                         padding: '8px 12px',
                     }}
                 >
-                    {agreementText}
+                    <Interweave content={agreementText} />
                 </div>
             )}
         </>
