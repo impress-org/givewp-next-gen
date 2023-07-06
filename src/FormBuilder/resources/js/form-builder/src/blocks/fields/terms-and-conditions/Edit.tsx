@@ -78,15 +78,13 @@ export default function Edit({
                                 />
                             </PanelRow>
 
-                            {!isFormDisplay && (
-                                <PanelRow>
-                                    <TextControl
-                                        label={__('Link Text', 'give')}
-                                        value={linkText}
-                                        onChange={(value) => setAttributes({linkText: value})}
-                                    />
-                                </PanelRow>
-                            )}
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Link Text', 'give')}
+                                    value={linkText}
+                                    onChange={(value) => setAttributes({linkText: value})}
+                                />
+                            </PanelRow>
 
                             {isLinkDisplay && (
                                 <PanelRow>
