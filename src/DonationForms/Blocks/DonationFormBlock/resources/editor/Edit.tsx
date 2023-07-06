@@ -1,13 +1,12 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {ExternalLink, PanelBody, PanelRow, SelectControl} from '@wordpress/components';
-import {Fragment, useEffect} from '@wordpress/element';
+import {Fragment, useCallback, useEffect, useState} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
 import ConfirmButton from './components/ConfirmButton';
 import Logo from './components/Logo';
 import {BlockEditProps} from '@wordpress/blocks';
 import ReactSelect from 'react-select';
-import {useCallback} from 'react';
 import BlockPreview from './components/BlockPreview';
 
 /**
@@ -17,6 +16,7 @@ import BlockPreview from './components/BlockPreview';
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
     const {formId, blockId} = attributes;
     const {formOptions, isResolving} = useFormOptions();
+    const [showPreview, setShowPreview] = useState<boolean>(!!formId);
 
     useEffect(() => {
         if (!blockId) {
@@ -67,7 +67,7 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
 
             {/*block preview*/}
             <div {...useBlockProps()}>
-                {formId ? (
+                {formId && showPreview ? (
                     <BlockPreview clientId={clientId} formId={formId} />
                 ) : (
                     <div className="givewp-form-block--container">
@@ -123,7 +123,7 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                             />
                         </div>
 
-                        <ConfirmButton />
+                        <ConfirmButton formId={formId} enablePreview={() => setShowPreview(true)} />
                     </div>
                 )}
             </div>
