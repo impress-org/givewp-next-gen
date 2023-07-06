@@ -68,4 +68,15 @@ class FormMetaDecorator
         }
         return false;
     }
+
+    public function getFormTemplate(): string
+    {
+        return give_get_meta($this->form->id, '_give_form_template', true);
+    }
+
+    public function getFormTemplateSettings(): array
+    {
+        $template = $this->getFormTemplate();
+        return give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+    }
 }

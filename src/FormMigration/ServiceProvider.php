@@ -3,8 +3,6 @@
 namespace Give\FormMigration;
 
 use Give\FormMigration\Commands\MigrationCommand;
-use Give\FormMigration\Controllers\MigrationController;
-use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use WP_CLI;
 
@@ -20,6 +18,9 @@ class ServiceProvider implements ServiceProviderInterface
     {
         give()->singleton(Pipeline::class, function() {
             return new Pipeline([
+                Steps\FormTemplate\ClassicTemplateSettings::class,
+                Steps\FormTemplate\SequoiaTemplateSettings::class,
+                Steps\FormTemplate\LegacyTemplateSettings::class,
                 Steps\DonationOptions::class,
                 Steps\FormFields::class
             ]);

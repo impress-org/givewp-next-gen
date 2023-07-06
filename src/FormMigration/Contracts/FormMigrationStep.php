@@ -26,6 +26,11 @@ abstract class FormMigrationStep
         $this->fieldBlocks = $payload->formV3->blocks;
     }
 
+    public function canHandle(): bool
+    {
+        return true;
+    }
+
     abstract public function process();
 
     protected function getMetaV2($key)
