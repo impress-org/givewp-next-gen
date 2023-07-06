@@ -1,11 +1,11 @@
 <?php
 
 register_rest_route('givewp/v3', '/migrate/(?P<id>\d+)', [
-    'methods' => WP_REST_Server::CREATABLE,
+    'methods' => WP_REST_Server::ALLMETHODS,
     'callback' => new \Give\FormMigration\Controllers\MigrationController(),
-    'permission_callback' => function () {
-        return current_user_can('manage_options');
-    },
+//    'permission_callback' => function () {
+//        return current_user_can('manage_options');
+//    },
     'args' => [
         'id' => [
             'type' => 'integer',

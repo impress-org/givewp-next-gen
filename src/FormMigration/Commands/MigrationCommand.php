@@ -6,6 +6,7 @@ use Give\DonationForms\Models\DonationForm as DonationFormV3;
 use Give\DonationForms\V2\Models\DonationForm as DonationFormV2;
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Pipeline;
+use Give\Framework\Blocks\BlockDifference;
 use Give\Framework\Blocks\BlockModel;
 use WP_CLI;
 
@@ -37,7 +38,7 @@ class MigrationCommand
             $pipeline->beforeEach(function ($stepClass, $payload) {
                 WP_CLI::log('Processing ' . $stepClass);
             });
-            $pipeline->afterEach([$this, 'debugStep']);
+            $pipeline->afterEach([$this, 'afterEach']);
         }
 
         $pipeline
@@ -48,42 +49,19 @@ class MigrationCommand
             });
     }
 
-    public function clearOutput()
-    {
-        system('clear || cls'); // Clear screen with cross-platform.
-    }
-
-    public function debugStep($stepClass, $payload, $_payload)
+    public function afterEach($stepClass, $payload, $_payload)
     {
         WP_CLI::log('Processed ' . $stepClass);
 
-        $blockLookup = [];
-        $_payload->formV3->blocks->walk(function(BlockModel $block) use (&$blockLookup) {
-            $blockLookup[$block->clientId] = $block;
-        });
-
-        $payload->formV3->blocks->walk(function(BlockModel $block) use ($blockLookup) {
-            if('givewp/section' === $block->name) return;
-
-            if(!isset($blockLookup[$block->clientId])) {
+        (new BlockDifference($_payload->formV3->blocks))
+            ->skip('givewp/section')
+            ->onBlockAdded(function(BlockModel $block) {
                 WP_CLI::log('');
                 WP_CLI::log('Block added: ' . $block->name);
                 WP_CLI::log(json_encode($block->getAttributes()));
                 WP_CLI::log('');
-                return;
-            }
-
-            $differences = [];
-            foreach($block->getAttributes() as $key => $value) {
-                $previousValue = $blockLookup[$block->clientId]->getAttributes()[$key] ?? null;
-                if($previousValue !== $value) {
-                    $differences[$key] = [
-                        'previous' => $previousValue,
-                        'current' => $value,
-                    ];
-                }
-            }
-            if($differences) {
+            })
+            ->onBlockDifference(function(BlockModel $block, $differences) {
                 WP_CLI::log('');
                 WP_CLI::log($block->name);
                 WP_CLI::log('');
@@ -92,11 +70,16 @@ class MigrationCommand
                     WP_CLI::log(json_encode($difference['previous']) . ' => ' . json_encode($difference['current']));
                     WP_CLI::log('');
                 }
-            }
-        });
+            })
+            ->diff($payload->formV3->blocks);
 
         fwrite( STDOUT, 'Continue?' . ' [enter] ' );
         fgets( STDIN );
         $this->clearOutput();
+    }
+
+    protected function clearOutput()
+    {
+        system('clear || cls'); // Clear screen with cross-platform.
     }
 }
