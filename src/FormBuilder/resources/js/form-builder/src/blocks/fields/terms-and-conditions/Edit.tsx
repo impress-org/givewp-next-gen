@@ -34,7 +34,6 @@ export default function Edit({
     const [showAgreementTextModal, setShowAgreementTextModal] = useState(false);
     const isModalDisplay = displayType === 'showModalTerms';
     const isLinkDisplay = displayType === 'showLinkTerms';
-    const isFormDisplay = displayType === 'showFormTerms';
 
     return (
         <Fragment>
