@@ -2,7 +2,9 @@
 
 namespace Give\FormMigration;
 
+use Give\FormBuilder\Routes\RegisterFormBuilderRestRoutes;
 use Give\FormMigration\Commands\MigrationCommand;
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use WP_CLI;
 
@@ -32,6 +34,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        add_action('rest_api_init', function() {
+            include __DIR__ . '/routes.php';
+        });
+
         if ( defined( 'WP_CLI' ) && WP_CLI ) {
             error_reporting( E_ALL & ~E_DEPRECATED );
             WP_CLI::add_command('givewp form:migrate', MigrationCommand::class);

@@ -2,6 +2,7 @@
 
 namespace Give\FormMigration;
 
+use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 
 class StepProcessor
@@ -16,9 +17,11 @@ class StepProcessor
         $this->payload = $payload;
     }
 
-    public function __invoke($step)
+    public function __invoke(FormMigrationStep $step)
     {
-        (new $step($this->payload))->process();
+        if($step->canHandle()) {
+            $step->process();
+        }
     }
 
     public function finally(callable $callback)

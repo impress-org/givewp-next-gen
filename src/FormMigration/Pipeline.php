@@ -40,10 +40,9 @@ class Pipeline
     {
         $processor = new StepProcessor($payload);
         foreach ($this->steps as $stepClass) {
-            if(!$stepClass->canHandle()) continue;
             if ($this->beforeStep) call_user_func($this->beforeStep, $stepClass, $payload);
             $_payload = unserialize(serialize($payload));
-            $processor($stepClass);
+            $processor(new $stepClass($payload));
             if ($this->afterStep) call_user_func($this->afterStep, $stepClass, $payload, $_payload);
         }
 
