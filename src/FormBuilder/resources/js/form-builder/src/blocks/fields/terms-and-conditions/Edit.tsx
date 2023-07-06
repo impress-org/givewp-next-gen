@@ -16,7 +16,7 @@ import {BlockEditProps} from '@wordpress/blocks';
 import {InspectorControls} from '@wordpress/block-editor';
 
 import {MenuIcon} from '@givewp/form-builder/blocks/fields/terms-and-conditions/Icon';
-import Editor from '@givewp/form-builder/settings/email/template-options/components/Editor';
+import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
 
 export default function Edit({
     attributes: {
