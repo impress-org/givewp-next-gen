@@ -16,6 +16,10 @@
         },
         "blockId": {
             "type": "string"
+        },
+        "formFormat": {
+            "type": "string",
+            "default": "Full Form"
         }
     },
     "textdomain": "give",

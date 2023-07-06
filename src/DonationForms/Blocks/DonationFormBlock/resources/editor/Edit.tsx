@@ -14,7 +14,7 @@ import BlockPreview from './components/BlockPreview';
  * @since 0.1.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
-    const {formId, blockId} = attributes;
+    const {formId, blockId, formFormat} = attributes;
     const {formOptions, isResolving} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!formId);
 
@@ -54,6 +54,29 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                         )}
                     </PanelRow>
                     <PanelRow>
+                        <SelectControl
+                            label={__('Form Format', 'give')}
+                            value={formFormat}
+                            options={[
+                                {
+                                    label: __('Full Form', 'give'),
+                                    value: 'full form',
+                                },
+                                {
+                                    label: __('Reveal', 'give'),
+                                    value: 'reveal',
+                                },
+                                {
+                                    label: __('Modal', 'give'),
+                                    value: 'modal',
+                                },
+                            ]}
+                            onChange={(value) => {
+                                setAttributes({formFormat: value});
+                            }}
+                        />
+                    </PanelRow>
+                    <PanelRow>
                         {formId && (
                             <ExternalLink
                                 href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
@@ -68,7 +91,7 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
             {/*block preview*/}
             <div {...useBlockProps()}>
                 {formId && showPreview ? (
-                    <BlockPreview clientId={clientId} formId={formId} />
+                    <BlockPreview clientId={clientId} formId={formId} formFormat={formFormat} />
                 ) : (
                     <div className="givewp-form-block--container">
                         <Logo />
