@@ -61,7 +61,7 @@ export default function Edit({
                                 <TextControl
                                     label={__('Checkbox Label', 'give')}
                                     value={checkboxLabel}
-                                    onChange={(value) => setAttributes({checkBoxLabel: value})}
+                                    onChange={(value) => setAttributes({checkboxLabel: value})}
                                 />
                             </PanelRow>
                             <PanelRow>
