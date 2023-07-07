@@ -1,4 +1,5 @@
-import {FieldSettings, FieldSettingsSupport} from "./types";
+import {FieldSettings, FieldSettingsSupport} from './types';
+import {__} from '@wordpress/i18n';
 
 /**
  * Takes in the "supports" settings for a field and normalizes them into a standard object. It is recommended to use
@@ -25,7 +26,7 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
     };
 
     return {
-        label: getSupportSetting('label', true, ''),
+        label: getSupportSetting('label', true, __('Custom field', 'give')),
         name: getSupportSetting('name', true, ''),
         placeholder: getSupportSetting('placeholder', false, ''),
         required: getSupportSetting('required', true, false),
