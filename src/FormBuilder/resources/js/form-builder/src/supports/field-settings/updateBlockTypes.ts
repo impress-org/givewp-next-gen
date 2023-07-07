@@ -1,7 +1,8 @@
-import {__} from "@wordpress/i18n";
+import {__} from '@wordpress/i18n';
 
-import normalizeFieldSettings from "./normalizeFieldSettings";
-import type {FieldAttributes} from "./types";
+import normalizeFieldSettings from './normalizeFieldSettings';
+import type {FieldAttributes} from './types';
+import fields from '@givewp/form-builder/blocks/fields';
 
 /**
  * Adds attributes to the block types that support the field settings.
@@ -20,49 +21,49 @@ export default function updateBlockTypes(settings) {
     if (fieldSettings.label) {
         fieldAttributes.label = {
             type: 'string',
-            default: __('Text Field', 'give'),
+            default: fieldSettings.label.default,
         };
     }
 
     if (fieldSettings.name) {
         fieldAttributes.fieldName = {
             type: 'string',
-            default: '',
+            default: fieldSettings.name.default,
         };
     }
 
     if (fieldSettings.required) {
         fieldAttributes.isRequired = {
             type: 'boolean',
-            default: false,
+            default: fieldSettings.required.default,
         };
     }
 
     if (fieldSettings.placeholder) {
         fieldAttributes.placeholder = {
             type: 'string',
-            default: '',
+            default: fieldSettings.placeholder.default,
         };
     }
 
     if (fieldSettings.storeAsDonorMeta) {
         fieldAttributes.storeAsDonorMeta = {
             type: 'boolean',
-            default: false,
+            default: fieldSettings.storeAsDonorMeta.default,
         };
     }
 
     if (fieldSettings.displayInAdmin) {
         fieldAttributes.displayInAdmin = {
             type: 'boolean',
-            default: true,
+            default: fieldSettings.displayInAdmin.default,
         };
     }
 
     if (fieldSettings.displayInReceipt) {
         fieldAttributes.displayInReceipt = {
             type: 'boolean',
-            default: true,
+            default: fieldSettings.displayInReceipt.default,
         };
     }
 

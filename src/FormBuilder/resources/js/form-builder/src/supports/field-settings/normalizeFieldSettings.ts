@@ -11,17 +11,26 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
         return null;
     }
 
-    const getSupportSetting = (setting: keyof FieldSettings, defaultValue: boolean) => {
-        return settings === true || settings[setting] === undefined ? defaultValue : settings[setting];
+    const getSupportSetting = (setting: keyof FieldSettings, enabledByDefault: boolean, defaultValue: any) => {
+        if (settings[setting] === false) {
+            return false;
+        }
+
+        if (settings === true || settings[setting] === true || settings[setting] === undefined) {
+            return enabledByDefault ? {default: defaultValue} : false;
+        }
+
+        // @ts-ignore - it logically must be the default object
+        return {default: settings[setting].default};
     };
 
     return {
-        label: getSupportSetting('label', true),
-        name: getSupportSetting('name', true),
-        placeholder: getSupportSetting('placeholder', false),
-        required: getSupportSetting('required', true),
-        storeAsDonorMeta: getSupportSetting('storeAsDonorMeta', true),
-        displayInAdmin: getSupportSetting('displayInAdmin', true),
-        displayInReceipt: getSupportSetting('displayInReceipt', true),
+        label: getSupportSetting('label', true, ''),
+        name: getSupportSetting('name', true, ''),
+        placeholder: getSupportSetting('placeholder', false, ''),
+        required: getSupportSetting('required', true, false),
+        storeAsDonorMeta: getSupportSetting('storeAsDonorMeta', true, true),
+        displayInAdmin: getSupportSetting('displayInAdmin', true, false),
+        displayInReceipt: getSupportSetting('displayInReceipt', true, true),
     };
 }

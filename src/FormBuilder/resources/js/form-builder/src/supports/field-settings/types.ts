@@ -1,14 +1,30 @@
 export type FieldSettings = {
-    label: boolean;
-    name: boolean;
-    placeholder: boolean;
-    required: boolean;
-    storeAsDonorMeta: boolean;
-    displayInAdmin: boolean;
-    displayInReceipt: boolean;
+    label: FieldSettingProperty;
+    name: FieldSettingProperty;
+    placeholder: FieldSettingProperty;
+    required: FieldSettingProperty;
+    storeAsDonorMeta: FieldSettingProperty;
+    displayInAdmin: FieldSettingProperty;
+    displayInReceipt: FieldSettingProperty;
 };
 
-export type FieldSettingsSupport = FieldSettings | true;
+export type FieldSettingsSupport =
+    | true
+    | {
+          label: FieldSettingProperty | boolean;
+          name: FieldSettingProperty | boolean;
+          placeholder: FieldSettingProperty | boolean;
+          required: FieldSettingProperty | boolean;
+          storeAsDonorMeta: FieldSettingProperty | boolean;
+          displayInAdmin: FieldSettingProperty | boolean;
+          displayInReceipt: FieldSettingProperty | boolean;
+      };
+
+export type FieldSettingProperty =
+    | false
+    | {
+          default: any;
+      };
 
 export type FieldAttributes = {
     [key: string]: {
@@ -16,4 +32,4 @@ export type FieldAttributes = {
         default: string | boolean;
         required?: boolean;
     };
-}
+};
