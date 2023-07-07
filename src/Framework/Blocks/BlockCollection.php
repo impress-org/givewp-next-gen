@@ -86,6 +86,17 @@ class BlockCollection implements Arrayable
         return $this->findByNameRecursive($blockName, $blockIndex);
     }
 
+    public function findParentByChildName($blockName, int $blockIndex = 0)
+    {
+        foreach($this->blocks as $block) {
+            if($block->innerBlocks->findByName($blockName)) {
+                return $block;
+            }
+        }
+
+        // @todo Throw exception if not found.
+    }
+
     /**
      * @since 0.4.0
      *
@@ -190,6 +201,15 @@ class BlockCollection implements Arrayable
         $innerBlocks[] = $block;
         $blockCollection->blocks = $innerBlocks;
 
+        return $this;
+    }
+
+    public function remove($blockName) {
+        $blockCollection = $this->findByNameRecursive($blockName, 0, 'parent');
+        $innerBlocks = $blockCollection->blocks;
+        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
+        array_splice($innerBlocks, $blockIndex, 1);
+        $blockCollection->blocks = $innerBlocks;
         return $this;
     }
 

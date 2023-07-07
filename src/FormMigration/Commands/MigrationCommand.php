@@ -49,27 +49,36 @@ class MigrationCommand
             });
     }
 
-    public function afterEach($stepClass, $payload, $_payload)
+    public function afterEach($stepClass, FormMigrationPayload $payload, $_payload)
     {
         WP_CLI::log('Processed ' . $stepClass);
+
+        foreach($payload->formV3->settings->toArray() as $key => $value) {
+            $previousValue = $_payload->formV3->settings->$key;
+            if($previousValue != $value) { // The check is loosely typed to support Enums
+                WP_CLI::log('');
+                WP_CLI::log('Form Setting: ' . $key);
+                WP_CLI::log('    ' . $previousValue . ' => ' . $value);
+                WP_CLI::log('');
+            }
+        }
 
         (new BlockDifference($_payload->formV3->blocks))
             ->skip('givewp/section')
             ->onBlockAdded(function(BlockModel $block) {
                 WP_CLI::log('');
-                WP_CLI::log('Block added: ' . $block->name);
-                WP_CLI::log(json_encode($block->getAttributes()));
+                WP_CLI::log('Block Added: ' . $block->name);
+                WP_CLI::log('    ' .  json_encode($block->getAttributes()));
                 WP_CLI::log('');
             })
             ->onBlockDifference(function(BlockModel $block, $differences) {
                 WP_CLI::log('');
-                WP_CLI::log($block->name);
-                WP_CLI::log('');
+                WP_CLI::log('Block Updated: ' . $block->name);
                 foreach($differences as $key => $difference) {
-                    WP_CLI::log($key);
-                    WP_CLI::log(json_encode($difference['previous']) . ' => ' . json_encode($difference['current']));
-                    WP_CLI::log('');
+                    WP_CLI::log('    ' . $key);
+                    WP_CLI::log('    ' . '    ' . json_encode($difference['previous']) . ' => ' . json_encode($difference['current']));
                 }
+                WP_CLI::log('');
             })
             ->diff($payload->formV3->blocks);
 
