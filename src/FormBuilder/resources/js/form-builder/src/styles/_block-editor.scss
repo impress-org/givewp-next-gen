@@ -116,6 +116,17 @@
 .block-editor-block-list__block {
     position: relative;
 
+    .wp-block {
+
+        &.is-selected {
+            padding: 1.5rem;
+            border-style: solid;
+            border-width: thin;
+            border-radius: 0.25rem;
+            border-color: var(--wp-admin-theme-color);
+        }
+    }
+
     &:not(.is-selected) {
         .block-list-appender {
             display: none;
