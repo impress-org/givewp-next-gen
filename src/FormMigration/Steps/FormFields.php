@@ -9,18 +9,10 @@ class FormFields extends FormMigrationStep
 {
     public function process()
     {
-        $nameField = $this->fieldBlocks->findByName('givewp/donor-name');
-
-        // Set default gateway
-        // @note No corresponding setting in v3 for "Default Gateway"
-
-        // Name title prefix
-        $nameField->setAttribute('showHonorific', $this->formV2->isNameTitlePrefixEnabled());
-        $nameField->setAttribute('honorifics', $this->formV2->getNameTitlePrefixes());
-
-        if($this->formV2->isLastNameRequired()) {
-            $nameField->setAttribute('requireLastName', true);
-        }
+        $this->fieldBlocks->findByName('givewp/donor-name')
+            ->setAttribute('showHonorific', $this->formV2->isNameTitlePrefixEnabled())
+            ->setAttribute('honorifics', $this->formV2->getNameTitlePrefixes())
+            ->setAttribute('requireLastName', $this->formV2->isLastNameRequired());
 
         // Company Donations
         if($this->formV2->isCompanyFieldEnabled()) {
@@ -32,6 +24,9 @@ class FormFields extends FormMigrationStep
                 ]
             ]));
         }
+
+        // Set default gateway
+        // @note No corresponding setting in v3 for "Default Gateway"
 
         // Anonymous Donations
         // @note No corresponding setting in v3 for "Anonymous Donations"
