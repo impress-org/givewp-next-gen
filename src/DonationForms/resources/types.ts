@@ -16,6 +16,15 @@ export interface Currency {
     currency: string;
 }
 
+/**
+ * @unreleased
+ */
+export type CurrencySetting = {
+    id: string;
+    exchangeRate: number;
+    gateways: string[];
+};
+
 export interface FormData {
     honorific?: string;
     firstName: string;

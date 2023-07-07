@@ -19,6 +19,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Option;
+use Give\Framework\FieldsAPI\Properties\Amount\CurrencySetting;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
@@ -54,6 +55,11 @@ class ConvertDonationAmountBlockToFieldsApi
                 }
             }
 
+            $currencySettings = [
+                new CurrencySetting('USD', 0, ['test-gateway']),
+                new CurrencySetting('AUD', "1.50874", ['test-gateway'])
+            ];
+
             /** @var Amount $amountNode */
             $amountNode = $group->getNodeByName('amount');
             $amountNode
@@ -62,6 +68,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->allowLevels($block->getAttribute('priceOption') === 'multi')
                 ->allowCustomAmount($block->getAttribute('customAmount'))
                 ->fixedAmountValue($block->getAttribute('setPrice'))
+                ->currencySettings(...$currencySettings)
                 ->defaultValue(
                     $block->getAttribute('priceOption') === 'set' ?
                         $block->getAttribute('setPrice') : 50

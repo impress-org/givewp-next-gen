@@ -1,15 +1,23 @@
 import {useMemo} from 'react';
 import classNames from 'classnames';
+import {CurrencySetting} from '@givewp/forms/types';
 
 /**
  * @since 0.2.0
  */
 export default function AmountLevels({
-                                         name,
-                                         currency,
-                                         levels,
-                                         onLevelClick
-                                     }: { name: string; currency: string; levels: Number[]; onLevelClick?: (amount: Number) => void }) {
+    name,
+    currency,
+    levels,
+    onLevelClick,
+    currencySettings,
+}: {
+    name: string;
+    currency: string;
+    levels: number[];
+    currencySettings: CurrencySetting[];
+    onLevelClick?: (amount: number) => void;
+}) {
     const {useWatch} = window.givewp.form.hooks;
     const amount = useWatch({name});
     const formatter = useMemo(
@@ -21,9 +29,24 @@ export default function AmountLevels({
         [currency, navigator.language]
     );
 
+    // Convert level amounts to the selected currency and fallback to original values if no currency setting is found or exchange rate is 0.
+    const amountLevels = useMemo(
+        () =>
+            levels.map((levelAmount) => {
+                const currencySetting = currencySettings.find(({id}) => id === currency);
+
+                if (currencySetting !== undefined && currencySetting.exchangeRate !== 0) {
+                    return levelAmount * currencySetting.exchangeRate;
+                }
+
+                return levelAmount;
+            }),
+        [currency, levels]
+    );
+
     return (
         <div className="givewp-fields-amount__levels--container">
-            {levels.map((levelAmount, index) => {
+            {amountLevels.map((levelAmount, index) => {
                 const label = formatter.format(Number(levelAmount));
                 const selected = levelAmount === Number(amount);
                 return (

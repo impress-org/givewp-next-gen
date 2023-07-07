@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import {__} from "@wordpress/i18n";
-import CurrencyInput from "react-currency-input-field";
-import {forwardRef} from "@wordpress/element";
-import {ForwardedRef, RefObject} from "react";
+import {__} from '@wordpress/i18n';
+import CurrencyInput from 'react-currency-input-field';
+import {forwardRef} from '@wordpress/element';
+import {ForwardedRef, RefObject} from 'react';
 
 /**
  * @since 0.2.0
@@ -13,7 +13,7 @@ type CustomAmountProps = {
     currencySymbol?: string;
     defaultValue?: number;
     onValueChange?: (value: string) => void;
-}
+};
 
 /**
  * @since 0.2.0
@@ -28,14 +28,13 @@ const CustomAmount = forwardRef(({
     return (
         <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
             {currencySymbol && !currency && (
-                <span className="givewp-fields-amount__input--currency-symbol">
-                    {currencySymbol}
-                </span>
+                <span className="givewp-fields-amount__input--currency-symbol">{currencySymbol}</span>
             )}
             <CurrencyInput
                 ref={ref}
                 intlConfig={{
-                    locale: navigator.language, currency,
+                    locale: navigator.language,
+                    currency,
                 }}
                 className="givewp-fields-amount__input givewp-fields-amount__input--custom"
                 aria-invalid={fieldError ? 'true' : 'false'}
@@ -52,7 +51,7 @@ const CustomAmount = forwardRef(({
                         props = {...props, value: ''};
                     }
 
-                    return <input {...props} ref={ref}/>
+                    return <input {...props} ref={ref} />;
                 })}
             />
         </div>

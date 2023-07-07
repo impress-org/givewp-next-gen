@@ -23,17 +23,30 @@ $borderColor: #9A9A9A;
         border-radius: 5px;
     }
 
-    &__currency {
-        &--container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-            font-size: 0.8rem;
-            background-color: #E9E9E9;
-            padding: 0.25rem 0.75rem;
-            border-radius: 5px;
-        }
+    &__currency-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        background-color: #E9E9E9;
+        padding: 0.25rem 0.75rem;
+        border-radius: 5px;
+    }
+
+    &__currency-select-container {
+        //
+    }
+
+    &__currency-select {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        background-color: #DAF0E3;
+        padding: 0.25rem 2rem 0.25rem 0.75rem;
+        border-radius: 5px;
     }
 
     &__input {

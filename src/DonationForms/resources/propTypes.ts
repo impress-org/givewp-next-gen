@@ -1,4 +1,5 @@
 import {
+    CurrencySetting,
     Element,
     Field,
     Gateway,
@@ -85,11 +86,11 @@ export interface DonationAmountProps extends GroupProps {
 }
 
 export interface AmountProps extends FieldProps {
-    levels: Number[];
+    levels: number[];
     allowLevels: boolean;
     allowCustomAmount: boolean;
-
     fixedAmountValue: number;
+    currencySettings?: CurrencySetting[];
 }
 
 export interface ParagraphProps extends ElementProps {
