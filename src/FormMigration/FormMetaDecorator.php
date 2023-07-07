@@ -3,8 +3,9 @@
 namespace Give\FormMigration;
 
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\FormMigration\Contracts\FormModelDecorator;
 
-class FormMetaDecorator
+class FormMetaDecorator extends FormModelDecorator
 {
     /**
      * @var DonationForm
@@ -14,21 +15,6 @@ class FormMetaDecorator
     public function __construct(DonationForm $form)
     {
         $this->form = $form;
-    }
-
-    public function __call($name, $arguments)
-    {
-        return $this->form->{$name}(...$arguments);
-    }
-
-    public function __get($name)
-    {
-        return $this->form->{$name};
-    }
-
-    public function __set($name, $value)
-    {
-        $this->form->{$name} = $value;
     }
 
     public function isLastNameRequired(): bool
