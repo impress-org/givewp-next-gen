@@ -15,18 +15,7 @@ export default function RevealForm({dataSrc, embedId, openFormButton}) {
 
     return (
         <Fragment>
-            <button
-                style={{
-                    color: '#fff',
-                    background: '#2271b1',
-                    padding: '.5rem 1rem',
-                    cursor: 'pointer',
-                    border: 'none',
-                    borderRadius: '5px',
-                    fontSize: '1rem',
-                }}
-                onClick={revealForm}
-            >
+            <button className={'givewp-form-block__display-button'} onClick={revealForm}>
                 {openFormButton}
             </button>
 

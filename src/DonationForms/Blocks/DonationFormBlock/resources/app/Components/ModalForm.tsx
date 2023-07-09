@@ -16,18 +16,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton}) {
 
     return (
         <Fragment>
-            <button
-                style={{
-                    color: '#fff',
-                    background: '#2271b1',
-                    padding: '.5rem 1rem',
-                    cursor: 'pointer',
-                    border: 'none',
-                    borderRadius: '5px',
-                    fontSize: '1rem',
-                }}
-                onClick={toggleModal}
-            >
+            <button className={'givewp-form-block__display-button'} onClick={toggleModal}>
                 {openFormButton}
             </button>
             {isOpen &&
@@ -40,16 +29,37 @@ export default function ModalForm({dataSrc, embedId, openFormButton}) {
                             left: 0,
                             right: 0,
                             bottom: 0,
+                            borderRadius: '1rem',
                             width: '100%',
-                            maxWidth: 'min(100%, 51.5rem)',
-                            height: '50vh',
-                            padding: '0',
+                            maxWidth: 'min(100%, 52rem)',
+                            height: '100%',
+                            maxHeight: '80vh',
+                            padding: '0.25rem 0 0',
                             border: 'none',
                             overflowY: 'scroll',
                             zIndex: 999,
                         }}
                     >
-                        <div onClick={toggleModal}>Close</div>
+                        <div
+                            onClick={toggleModal}
+                            style={{
+                                borderRadius: '0.5rem',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                background: '#fff',
+                                color: '#333',
+                                fontSize: '2rem',
+                                width: '3rem',
+                                height: '3rem',
+                                position: 'absolute',
+                                top: '1.5rem',
+                                right: '1.5rem',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            ×
+                        </div>
                         <IframeResizer
                             id={embedId}
                             src={dataSrc}
