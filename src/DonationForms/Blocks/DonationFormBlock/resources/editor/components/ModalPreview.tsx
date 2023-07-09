@@ -8,18 +8,19 @@ import IframeResizer from 'iframe-resizer-react';
 export default function ModalPreview({enableIframe, formId, openFormButton}) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const openModal = () => {
+    const toggleModal = () => {
         setIsOpen(!isOpen);
     };
 
     return (
         <Fragment>
-            <button onClick={openModal} className={'givewp-form-block__display-button'}>
+            <button onClick={toggleModal} className={'givewp-form-block__display-button'}>
                 {openFormButton}
             </button>
             {isOpen &&
                 createPortal(
                     <dialog
+                        className={'givewp-donation-form-modal'}
                         open={true}
                         style={{
                             position: 'absolute',
