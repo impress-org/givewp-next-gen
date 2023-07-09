@@ -1,4 +1,5 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment} from 'react';
+import {useEffect, useRef, useState} from '@wordpress/element';
 import {createPortal} from 'react-dom';
 import IframeResizer from 'iframe-resizer-react';
 
@@ -9,10 +10,16 @@ import '../../editor/styles/index.scss';
  */
 export default function ModalForm({dataSrc, embedId, openFormButton}) {
     const [isOpen, setIsOpen] = useState(false);
+    const modalRef = useRef(null);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        const {current: el} = modalRef;
+        if (isOpen) el.showModal();
+    }, [isOpen]);
 
     return (
         <Fragment>
@@ -22,19 +29,14 @@ export default function ModalForm({dataSrc, embedId, openFormButton}) {
             {isOpen &&
                 createPortal(
                     <dialog
-                        open={true}
+                        className={'givewp-donation-form-modal'}
+                        ref={modalRef}
                         style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            borderRadius: '1rem',
-                            width: '100%',
-                            maxWidth: 'min(100%, 52rem)',
-                            height: '100%',
-                            maxHeight: '80vh',
-                            padding: '0.25rem 0 0',
+                            width: 'fit-content',
+                            minWidth: '552px',
+                            height: 'fit-content',
+                            maxHeight: 'calc(100% - 5rem)',
+                            padding: '0',
                             border: 'none',
                             overflowY: 'scroll',
                             zIndex: 999,
@@ -47,14 +49,15 @@ export default function ModalForm({dataSrc, embedId, openFormButton}) {
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                background: '#fff',
-                                color: '#333',
-                                fontSize: '2rem',
-                                width: '3rem',
-                                height: '3rem',
+                                background: 'rgba(255, 255, 255, 0.8)',
+                                color: '#555',
+                                fontSize: '1.5rem',
+                                lineHeight: '1',
+                                width: '2.5rem',
+                                height: '2.5rem',
                                 position: 'absolute',
-                                top: '1.5rem',
-                                right: '1.5rem',
+                                top: '0.5rem',
+                                right: '0.5rem',
                                 cursor: 'pointer',
                             }}
                         >

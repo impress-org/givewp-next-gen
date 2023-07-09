@@ -48,7 +48,7 @@ class BlockRenderController
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<div class='root-data-givewp-embed' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$formFormat' data-open-form-button='$openFormButton' ></div>";
+        return "<div class='root-data-givewp-embed' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$formFormat' data-open-form-button='$openFormButton'></div>";
     }
 
     /**
@@ -107,6 +107,12 @@ class BlockRenderController
             'give'
         ))->loadInFooter()->enqueue();
 
+        wp_enqueue_style(
+            'givewp-donation-form-embed-app',
+            GIVE_NEXT_GEN_URL . 'build/donationFormBlockApp.css',
+            [],
+            GIVE_NEXT_GEN_VERSION
+        );
 
         (new EnqueueScript(
             'givewp-donation-form-embed-app',
