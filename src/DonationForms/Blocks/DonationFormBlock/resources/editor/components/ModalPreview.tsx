@@ -28,8 +28,10 @@ export default function ModalPreview({enableIframe, formId}) {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            width: '100vw',
-                            height: '100vh',
+                            width: '50vw',
+                            height: '50vh',
+                            overflowY: 'scroll',
+                            border: 'none',
                             background: 'transparent',
                             zIndex: 999,
                         }}
@@ -39,8 +41,10 @@ export default function ModalPreview({enableIframe, formId}) {
                             checkOrigin={false}
                             style={{
                                 width: '1px',
-                                minWidth: '100%',
+                                minWidth: '50vw',
                                 border: '0',
+                                overflowY: 'scroll',
+                                background: 'transparent',
                                 pointerEvents: enableIframe,
                             }}
                         />
