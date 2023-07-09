@@ -8,12 +8,13 @@ interface BlockPreviewProps {
     formId: number;
     clientId: string;
     formFormat: string;
+    openFormButton: string;
 }
 
 /**
  * @unreleased
  */
-export default function BlockPreview({clientId, formId, formFormat}: BlockPreviewProps) {
+export default function BlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isBlockSelected = selectedBlock?.clientId === clientId;
 
@@ -23,9 +24,9 @@ export default function BlockPreview({clientId, formId, formFormat}: BlockPrevie
     const isRevealDisplay = formFormat === 'reveal';
 
     return isModalDisplay ? (
-        <ModalPreview enableIframe={enableIframe} formId={formId} />
+        <ModalPreview enableIframe={enableIframe} formId={formId} openFormButton={openFormButton} />
     ) : isRevealDisplay ? (
-        <RevealPreview enableIframe={enableIframe} formId={formId} />
+        <RevealPreview enableIframe={enableIframe} formId={formId} openFormButton={openFormButton} />
     ) : (
         <IframeResizer
             src={`/?givewp-route=donation-form-view&form-id=${formId}`}

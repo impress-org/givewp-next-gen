@@ -1,6 +1,4 @@
 import React, {Fragment, useState} from 'react';
-
-import {__} from '@wordpress/i18n';
 import {createPortal} from 'react-dom';
 import IframeResizer from 'iframe-resizer-react';
 
@@ -9,7 +7,7 @@ import '../../editor/styles/index.scss';
 /**
  * @unreleased
  */
-export default function ModalForm({dataSrc, embedId}) {
+export default function ModalForm({dataSrc, embedId, openFormButton}) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleModal = () => {
@@ -30,7 +28,7 @@ export default function ModalForm({dataSrc, embedId}) {
                 }}
                 onClick={toggleModal}
             >
-                {__('Donate now', 'give')}
+                {openFormButton}
             </button>
             {isOpen &&
                 createPortal(
@@ -42,7 +40,8 @@ export default function ModalForm({dataSrc, embedId}) {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            width: '50vw',
+                            width: '100%',
+                            maxWidth: 'min(100%, 51.5rem)',
                             height: '50vh',
                             padding: '0',
                             border: 'none',

@@ -5,13 +5,13 @@ import RevealForm from './Components/RevealForm';
 import ModalForm from './Components/ModalForm';
 import IframeResizer from 'iframe-resizer-react';
 
-function DonationFormBlockApp({formFormat, dataSrc, embedId}) {
+function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton}) {
     if (formFormat === 'reveal') {
-        return <RevealForm dataSrc={dataSrc} embedId={embedId} />;
+        return <RevealForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
     }
 
     if (formFormat === 'modal') {
-        return <ModalForm dataSrc={dataSrc} embedId={embedId} />;
+        return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
     }
 
     return (
@@ -34,10 +34,26 @@ roots.forEach((root) => {
     const dataSrc = root.getAttribute('data-src');
     const embedId = root.getAttribute('data-givewp-embed-id');
     const formFormat = root.getAttribute('data-form-format');
+    const openFormButton = root.getAttribute('data-open-form-button');
 
     if (createRoot) {
-        createRoot(root).render(<DonationFormBlockApp formFormat={formFormat} dataSrc={dataSrc} embedId={embedId} />);
+        createRoot(root).render(
+            <DonationFormBlockApp
+                openFormButton={openFormButton}
+                formFormat={formFormat}
+                dataSrc={dataSrc}
+                embedId={embedId}
+            />
+        );
     } else {
-        render(<DonationFormBlockApp formFormat={formFormat} dataSrc={dataSrc} embedId={embedId} />, root);
+        render(
+            <DonationFormBlockApp
+                openFormButton={openFormButton}
+                formFormat={formFormat}
+                dataSrc={dataSrc}
+                embedId={embedId}
+            />,
+            root
+        );
     }
 });

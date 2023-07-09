@@ -1,11 +1,10 @@
 import React, {Fragment, useState} from 'react';
-import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
 
 /**
  * @unreleased
  */
-export default function RevealPreview({enableIframe, formId}: any) {
+export default function RevealPreview({enableIframe, formId, openFormButton}: any) {
     const [isRevealed, setIsRevealed] = useState(false);
 
     const revealForm = () => {
@@ -15,7 +14,7 @@ export default function RevealPreview({enableIframe, formId}: any) {
     return (
         <Fragment>
             <button onClick={revealForm} className={'givewp-form-block__display-button'}>
-                {__('Donate now', 'give')}
+                {openFormButton}
             </button>
 
             {isRevealed && (

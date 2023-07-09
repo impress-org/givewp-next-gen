@@ -1,12 +1,11 @@
 import React, {Fragment, useState} from 'react';
-import {__} from '@wordpress/i18n';
 import {createPortal} from 'react-dom';
 import IframeResizer from 'iframe-resizer-react';
 
 /**
  * @unreleased
  */
-export default function ModalPreview({enableIframe, formId}) {
+export default function ModalPreview({enableIframe, formId, openFormButton}) {
     const [isOpen, setIsOpen] = useState(false);
 
     const openModal = () => {
@@ -16,7 +15,7 @@ export default function ModalPreview({enableIframe, formId}) {
     return (
         <Fragment>
             <button onClick={openModal} className={'givewp-form-block__display-button'}>
-                {__('Donate now', 'give')}
+                {openFormButton}
             </button>
             {isOpen &&
                 createPortal(

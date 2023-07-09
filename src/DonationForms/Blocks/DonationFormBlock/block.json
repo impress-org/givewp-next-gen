@@ -20,6 +20,10 @@
         "formFormat": {
             "type": "string",
             "default": "Full Form"
+        },
+        "openFormButton": {
+            "type": "string",
+            "default": "Donate now"
         }
     },
     "textdomain": "give",

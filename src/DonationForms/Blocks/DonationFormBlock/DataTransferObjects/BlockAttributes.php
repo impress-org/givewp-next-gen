@@ -31,6 +31,7 @@ class BlockAttributes implements Arrayable
         $self->formId = ! empty($array['formId']) ? (int)$array['formId'] : null;
         $self->blockId = ! empty($array['blockId']) ? (string)$array['blockId'] : null;
         $self->formFormat = ! empty($array['formFormat']) ? (string)$array['formFormat'] : null;
+        $self->openFormButton = ! empty($array['openFormButton']) ? (string)$array['openFormButton'] : null;
 
         return $self;
     }

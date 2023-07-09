@@ -1,6 +1,4 @@
 import React, {Fragment, useState} from 'react';
-
-import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
 
 import '../../editor/styles/index.scss';
@@ -8,7 +6,7 @@ import '../../editor/styles/index.scss';
 /**
  * @unreleased
  */
-export default function RevealForm({dataSrc, embedId}) {
+export default function RevealForm({dataSrc, embedId, openFormButton}) {
     const [isRevealed, setIsRevealed] = useState(false);
 
     const revealForm = () => {
@@ -29,8 +27,7 @@ export default function RevealForm({dataSrc, embedId}) {
                 }}
                 onClick={revealForm}
             >
-                {' '}
-                {__('Donate now', 'give')}
+                {openFormButton}
             </button>
 
             {isRevealed && (

@@ -42,11 +42,13 @@ class BlockRenderController
 
         $formFormat = $blockAttributes->formFormat ?? '';
 
+        $openFormButton = $blockAttributes->openFormButton ?? '';
+
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<div class='root-data-givewp-embed' data-form-format='$formFormat' data-src='$viewUrl' data-givewp-embed-id='$embedId'>test</div>";
+        return "<div class='root-data-givewp-embed' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$formFormat' data-open-form-button='$openFormButton' ></div>";
     }
 
     /**

@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
-import {ExternalLink, PanelBody, PanelRow, SelectControl} from '@wordpress/components';
+import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl} from '@wordpress/components';
 import {Fragment, useCallback, useEffect, useState} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
 import ConfirmButton from './components/ConfirmButton';
@@ -14,7 +14,7 @@ import BlockPreview from './components/BlockPreview';
  * @since 0.1.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
-    const {formId, blockId, formFormat} = attributes;
+    const {formId, blockId, formFormat, openFormButton} = attributes;
     const {formOptions, isResolving} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!formId);
 
@@ -77,6 +77,15 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                         />
                     </PanelRow>
                     <PanelRow>
+                        <TextControl
+                            label={__('Open Form Button', 'give')}
+                            value={openFormButton}
+                            onChange={(value) => {
+                                setAttributes({openFormButton: value});
+                            }}
+                        />
+                    </PanelRow>
+                    <PanelRow>
                         {formId && (
                             <ExternalLink
                                 href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
@@ -91,7 +100,12 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
             {/*block preview*/}
             <div {...useBlockProps()}>
                 {formId && showPreview ? (
-                    <BlockPreview clientId={clientId} formId={formId} formFormat={formFormat} />
+                    <BlockPreview
+                        clientId={clientId}
+                        formId={formId}
+                        formFormat={formFormat}
+                        openFormButton={openFormButton}
+                    />
                 ) : (
                     <div className="givewp-form-block--container">
                         <Logo />
