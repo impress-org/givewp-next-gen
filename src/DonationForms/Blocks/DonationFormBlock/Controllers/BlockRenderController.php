@@ -116,5 +116,10 @@ class BlockRenderController
             ->dependencies(['jquery'])
             ->loadInFooter()
             ->enqueue();
+
+        wp_enqueue_style(
+            'givewp-donation-form-embed-app-styles',
+            GIVE_NEXT_GEN_URL . 'build/donationFormBlockAppStyle.css'
+        );
     }
 }
