@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Shortcodes;
 
+use Give\DonationForms\Actions\GenerateDonationFormViewRouteUrl;
 use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 
 class GiveFormShortcode
@@ -14,7 +15,7 @@ class GiveFormShortcode
         $formId = absint($atts['id']);
         $isV3Form = (bool) give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
 
-        if (!$isV3Form) {
+        if (!$formId || !$isV3Form) {
             return $output;
         }
 
@@ -24,6 +25,20 @@ class GiveFormShortcode
             'blockId' => 'give-form-shortcode-' . uniqid(),
         ];
 
-        return $controller->render($blockAttributes);
+        $output = $controller->render($blockAttributes);
+
+        if (!$output) {
+            $viewUrl = (new GenerateDonationFormViewRouteUrl())($formId);
+            $output = sprintf(
+                "<iframe
+                    src='%s'
+                    style='width: 1px;min-width: 100%%;border: 0;transition: height 0.25s;'
+                    onload='if( \"undefined\" !== typeof Give ) { Give.initializeIframeResize(this) }'
+                ></iframe>",
+                esc_url($viewUrl)
+            );
+        }
+
+        return $output;
     }
 }
