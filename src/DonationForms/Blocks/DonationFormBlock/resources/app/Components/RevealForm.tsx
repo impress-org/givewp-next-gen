@@ -1,8 +1,6 @@
 import React, {Fragment, useState} from 'react';
 import IframeResizer from 'iframe-resizer-react';
 
-import '../../editor/styles/index.scss';
-
 /**
  * @unreleased
  */

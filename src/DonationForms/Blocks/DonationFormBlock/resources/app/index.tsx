@@ -5,7 +5,7 @@ import RevealForm from './Components/RevealForm';
 import ModalForm from './Components/ModalForm';
 import IframeResizer from 'iframe-resizer-react';
 
-import './styles.scss';
+import '../app/styles/index.scss';
 
 function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton}) {
     if (formFormat === 'reveal') {
