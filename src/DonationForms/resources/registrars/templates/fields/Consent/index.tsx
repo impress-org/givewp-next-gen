@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState} from '@wordpress/element';
 import type {ConsentProps} from '@givewp/forms/propTypes';
 import Checkbox from '../Checkbox';
 import ShowTerms from './ShowTerms';

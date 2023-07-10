@@ -1,5 +1,3 @@
-import {Fragment} from 'react';
-
 import {
     BaseControl,
     Button,
@@ -36,7 +34,7 @@ export default function Edit({
     const isLinkDisplay = displayType === 'showLinkTerms';
 
     return (
-        <Fragment>
+        <>
             <Checkbox label={checkboxLabel} linkText={linkText} />
 
             <InspectorControls>
@@ -55,7 +53,7 @@ export default function Edit({
                     </PanelRow>
 
                     {useGlobalSettings === false && (
-                        <Fragment>
+                        <>
                             <PanelRow>
                                 <TextControl
                                     label={__('Checkbox Label', 'give')}
@@ -125,7 +123,7 @@ export default function Edit({
                             )}
 
                             {isModalDisplay && (
-                                <Fragment>
+                                <>
                                     <PanelRow>
                                         <TextControl
                                             label={__('Modal Heading', 'give')}
@@ -140,7 +138,7 @@ export default function Edit({
                                             onChange={(value) => setAttributes({modalAcceptanceText: value})}
                                         />
                                     </PanelRow>
-                                </Fragment>
+                                </>
                             )}
 
                             {showAgreementTextModal && (
@@ -155,11 +153,11 @@ export default function Edit({
                                     />
                                 </Modal>
                             )}
-                        </Fragment>
+                        </>
                     )}
                 </PanelBody>
             </InspectorControls>
-        </Fragment>
+        </>
     );
 }
 
