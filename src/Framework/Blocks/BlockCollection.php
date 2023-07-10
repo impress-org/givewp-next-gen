@@ -171,36 +171,18 @@ class BlockCollection implements Arrayable
     /**
      * @since 0.4.0
      */
-    public function prepend(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    public function prepend(BlockModel $block): BlockCollection
     {
-        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
-
-        if (!$blockCollection) {
-            return $this;
-        }
-
-        $innerBlocks = $blockCollection->innerBlocks->blocks;
-        array_unshift($innerBlocks, $block);
-        $blockCollection->blocks = $innerBlocks;
-
+        array_unshift($this->blocks, $block);
         return $this;
     }
 
     /**
      * @since 0.4.0
      */
-    public function append(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    public function append(BlockModel $block): BlockCollection
     {
-        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
-
-        if (!$blockCollection) {
-            return $this;
-        }
-
-        $innerBlocks = $blockCollection->innerBlocks->blocks;
-        $innerBlocks[] = $block;
-        $blockCollection->blocks = $innerBlocks;
-
+        $this->blocks[] = $block;
         return $this;
     }
 
