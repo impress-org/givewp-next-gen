@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {createRoot, render} from '@wordpress/element';
 import RevealForm from './Components/RevealForm';
 import ModalForm from './Components/ModalForm';

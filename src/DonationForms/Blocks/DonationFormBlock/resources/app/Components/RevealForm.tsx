@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import {useState} from 'react';
 import IframeResizer from 'iframe-resizer-react';
 
 /**
@@ -12,7 +12,7 @@ export default function RevealForm({dataSrc, embedId, openFormButton}) {
     };
 
     return (
-        <Fragment>
+        <>
             <button className={'givewp-donation-form-display__button'} onClick={revealForm}>
                 {openFormButton}
             </button>
@@ -29,6 +29,6 @@ export default function RevealForm({dataSrc, embedId, openFormButton}) {
                     }}
                 />
             )}
-        </Fragment>
+        </>
     );
 }

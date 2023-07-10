@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import {useState} from '@wordpress/element';
 import IframeResizer from 'iframe-resizer-react';
 
 /**
@@ -12,7 +12,7 @@ export default function RevealPreview({enableIframe, formId, openFormButton}: an
     };
 
     return (
-        <Fragment>
+        <>
             <button onClick={revealForm} className={'givewp-form-block__display-button'}>
                 {openFormButton}
             </button>
@@ -29,6 +29,6 @@ export default function RevealPreview({enableIframe, formId, openFormButton}: an
                     }}
                 />
             )}
-        </Fragment>
+        </>
     );
 }

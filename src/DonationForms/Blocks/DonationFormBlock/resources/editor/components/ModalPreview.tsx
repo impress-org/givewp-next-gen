@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import {useState} from '@wordpress/element';
 import {createPortal} from 'react-dom';
 import IframeResizer from 'iframe-resizer-react';
 
@@ -13,7 +13,7 @@ export default function ModalPreview({enableIframe, formId, openFormButton}) {
     };
 
     return (
-        <Fragment>
+        <>
             <button onClick={toggleModal} className={'givewp-form-block__display-button'}>
                 {openFormButton}
             </button>
@@ -49,6 +49,6 @@ export default function ModalPreview({enableIframe, formId, openFormButton}) {
                     </dialog>,
                     document.body
                 )}
-        </Fragment>
+        </>
     );
 }

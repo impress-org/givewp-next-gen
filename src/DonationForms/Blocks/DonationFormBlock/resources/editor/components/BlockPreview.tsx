@@ -1,4 +1,3 @@
-import React from 'react';
 import ModalPreview from './ModalPreview';
 import RevealPreview from './RevealPreview';
 import IframeResizer from 'iframe-resizer-react';

@@ -1,4 +1,3 @@
-import React, {Fragment} from 'react';
 import {useEffect, useRef, useState} from '@wordpress/element';
 import {createPortal} from 'react-dom';
 import IframeResizer from 'iframe-resizer-react';
@@ -20,7 +19,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton}) {
     }, [isOpen]);
 
     return (
-        <Fragment>
+        <>
             <button className={'givewp-donation-form-display__button'} onClick={toggleModal}>
                 {openFormButton}
             </button>
@@ -56,6 +55,6 @@ export default function ModalForm({dataSrc, embedId, openFormButton}) {
                     </dialog>,
                     document.body
                 )}
-        </Fragment>
+        </>
     );
 }
