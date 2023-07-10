@@ -11,8 +11,4 @@ const {Slot: DisplaySettingsSlot, Fill: DisplaySettingsFill} = createSlotFill(
     'GiveWP/FieldSettings/DisplaySettingSlot'
 );
 
-window.givewp.form.slots = window.givewp.slots || {};
-window.givewp.form.slots.FieldSettingsFill = FieldSettingsFill;
-window.givewp.form.slots.DisplaySettingsFill = DisplaySettingsFill;
-
 export {FieldSettingsSlot, FieldSettingsFill, DisplaySettingsSlot, DisplaySettingsFill};
