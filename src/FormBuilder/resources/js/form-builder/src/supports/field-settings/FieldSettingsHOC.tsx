@@ -62,6 +62,12 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
         [setAttributes]
     );
 
+    const enforceRequiredValue = useCallback(() => {
+        if (!attributes.fieldName) {
+            updateFieldName(attributes.label);
+        }
+    }, [attributes.fieldName, updateFieldName, attributes.label]);
+
     const enforceUniqueFieldName = useCallback(() => {
         const [isUnique, suggestedName] = validateFieldName(attributes.fieldName, '');
         if (!isUnique) {
