@@ -49,7 +49,6 @@ export default function ModalForm({dataSrc, embedId, openFormButton}) {
                                 width: '1px',
                                 minWidth: '100%',
                                 border: 'none',
-                                padding: '0 !important',
                                 overflowY: 'scroll',
                                 background: 'none !important',
                             }}
