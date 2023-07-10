@@ -106,13 +106,7 @@ class BlockRenderController
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
-
-        wp_enqueue_style(
-            'givewp-donation-form-embed-app',
-            GIVE_NEXT_GEN_URL . 'build/donationFormBlockApp.css',
-            [],
-            GIVE_NEXT_GEN_VERSION
-        );
+        
 
         (new EnqueueScript(
             'givewp-donation-form-embed-app',
