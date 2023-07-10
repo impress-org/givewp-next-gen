@@ -13,7 +13,7 @@ use Give\Framework\Routes\RouteListener;
 class BlockRenderController
 {
     /**
-     * @unreleased replace iframe with root react element
+     * @unreleased replace iframe with root element for react
      * @since      0.1.0
      *
      * @return string|null

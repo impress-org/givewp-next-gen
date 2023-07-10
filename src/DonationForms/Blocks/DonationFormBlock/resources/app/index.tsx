@@ -7,6 +7,9 @@ import IframeResizer from 'iframe-resizer-react';
 
 import '../app/styles/index.scss';
 
+/**
+ * @unreleased
+ */
 function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton}) {
     if (formFormat === 'reveal') {
         return <RevealForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;

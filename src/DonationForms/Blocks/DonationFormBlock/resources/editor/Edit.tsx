@@ -10,7 +10,7 @@ import ReactSelect from 'react-select';
 import BlockPreview from './components/BlockPreview';
 
 /**
- * @unreleased  Render block preview in the editor.
+ * @unreleased Render block preview in the editor.
  * @since 0.1.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
