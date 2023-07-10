@@ -6,6 +6,8 @@ namespace Give\Framework\FieldsAPI;
 
 class Consent extends field
 {
+    use Concerns\HasLabel;
+    
     protected $useGlobalSettings;
     protected $checkboxLabel;
     protected $displayType;

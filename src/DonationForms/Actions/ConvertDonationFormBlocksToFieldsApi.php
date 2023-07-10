@@ -163,7 +163,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 );
 
             case "givewp/terms-and-conditions":
-                return $this->createNodeFromConsentBlock($block, $blockIndex);
+                return $this->createNodeFromConsentBlock($block, $blockIndex)
+                    ->label(__('Terms and Conditions', 'give'))
+                    ->required();
 
             case "givewp/login":
                 return Authentication::make('login')

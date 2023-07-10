@@ -21,8 +21,6 @@ class ConvertConsentBlockToFieldsApi
                 }
 
                 return $consentField;
-            })->tap(function (Consent $consentField) {
-//                $consentField->rules('numeric', new FeeRecoveryRule($consentField));
             });
     }
 
