@@ -19,7 +19,7 @@
         },
         "formFormat": {
             "type": "string",
-            "default": "full-form"
+            "default": "full"
         },
         "openFormButton": {
             "type": "string",

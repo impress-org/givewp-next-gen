@@ -62,7 +62,7 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                             options={[
                                 {
                                     label: __('Full Form', 'give'),
-                                    value: 'full-form',
+                                    value: 'full',
                                 },
                                 {
                                     label: __('Reveal', 'give'),
