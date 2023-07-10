@@ -12,6 +12,7 @@ import {FieldSettings} from './types';
 import {FieldSettingsSlot, DisplaySettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
+import {useState} from 'react';
 
 /**
  * Higher Order Component that adds field settings to the inspector controls.
@@ -53,28 +54,46 @@ export default FieldSettingsHOC;
  */
 function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}) {
     const validateFieldName = useFieldNameValidator();
+    const [fieldNameSet, setFieldNameSet] = useState(attributes.hasOwnProperty('fieldName'));
 
     const updateFieldName = useCallback(
-        (newFieldName) => {
+        (newFieldName = null, bumpUniqueness = false) => {
+            let slugifiedName = newFieldName ? slugify(newFieldName) : null;
+
+            if (!slugifiedName) {
+                slugifiedName = slugify(attributes.label);
+            }
+
+            const [isUnique, suggestedName] = validateFieldName(slugifiedName, bumpUniqueness);
+
+            if (!isUnique) {
+                slugifiedName = suggestedName;
+            }
+
             setAttributes({
-                fieldName: slugify(newFieldName),
+                fieldName: slugifiedName,
             });
         },
-        [setAttributes]
+        [setAttributes, attributes.label, validateFieldName]
     );
 
-    const enforceRequiredValue = useCallback(() => {
-        if (!attributes.fieldName) {
-            updateFieldName(attributes.label);
-        }
-    }, [attributes.fieldName, updateFieldName, attributes.label]);
+    const handleLabelBlur = useCallback(
+        (event) => {
+            if (!fieldNameSet) {
+                updateFieldName(event.target.value);
+                setFieldNameSet(true);
+            }
+        },
+        [fieldNameSet, updateFieldName]
+    );
 
-    const enforceUniqueFieldName = useCallback(() => {
-        const [isUnique, suggestedName] = validateFieldName(attributes.fieldName, '');
-        if (!isUnique) {
-            updateFieldName(suggestedName);
-        }
-    }, [attributes.fieldName, updateFieldName, validateFieldName]);
+    const enforceFieldName = useCallback(() => {
+        updateFieldName(attributes.fieldName, true);
+    }, [attributes.fieldName, updateFieldName]);
+
+    if (!attributes.hasOwnProperty('fieldName')) {
+        updateFieldName();
+    }
 
     return (
         <>
@@ -87,12 +106,7 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                                 <Label
                                     label={attributes.label}
                                     setAttributes={setAttributes}
-                                    onBlur={(event) => {
-                                        if (!attributes.fieldName) {
-                                            updateFieldName(event.target.value);
-                                            enforceUniqueFieldName();
-                                        }
-                                    }}
+                                    onBlur={handleLabelBlur}
                                 />
                             </PanelRow>
                         )}
@@ -174,11 +188,8 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                                         {__('Learn more about the Fields API', 'give')}
                                     </ExternalLink>,
                                 ]}
-                                onChange={updateFieldName}
-                                onBlur={() => {
-                                    enforceRequiredValue();
-                                    enforceUniqueFieldName();
-                                }}
+                                onChange={(newName) => setAttributes({fieldName: newName})}
+                                onBlur={enforceFieldName}
                             />
                         </PanelRow>
                     )}
