@@ -27,11 +27,12 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
 
     return {
         label: getSupportSetting('label', true, __('Custom field', 'give')),
-        name: getSupportSetting('name', true, ''),
+        name: getSupportSetting('name', true, null),
+        description: getSupportSetting('description', false, ''),
         placeholder: getSupportSetting('placeholder', false, ''),
         required: getSupportSetting('required', true, false),
-        storeAsDonorMeta: getSupportSetting('storeAsDonorMeta', true, true),
-        displayInAdmin: getSupportSetting('displayInAdmin', true, false),
+        storeAsDonorMeta: getSupportSetting('storeAsDonorMeta', true, false),
+        displayInAdmin: getSupportSetting('displayInAdmin', true, true),
         displayInReceipt: getSupportSetting('displayInReceipt', true, true),
     };
 }

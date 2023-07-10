@@ -11,6 +11,7 @@ import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 import {FieldSettings} from './types';
 import {FieldSettingsSlot, DisplaySettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
+import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 
 /**
  * Higher Order Component that adds field settings to the inspector controls.
@@ -23,9 +24,9 @@ const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
 
         const fieldSettings: FieldSettings = useMemo(() => {
             // @ts-ignore
-            const fieldSettings = getBlockSupport(name, 'giveWPFieldSettings') as FieldSettingsSupport;
+            const giveSupports = getBlockSupport(name, 'givewp') as GiveWPSupports;
 
-            return normalizeFieldSettings(fieldSettings);
+            return normalizeFieldSettings(giveSupports?.fieldSettings);
         }, [name]);
 
         if (!fieldSettings) {

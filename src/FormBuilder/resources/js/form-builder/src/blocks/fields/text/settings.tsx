@@ -11,11 +11,13 @@ const settings: FieldBlock['settings'] = {
     description: __('A custom text field that donors can use.', 'give'),
     supports: {
         // @ts-ignore
-        giveWPFieldSettings: {
-            label: {
-                default: __('Text field', 'give'),
+        givewp: {
+            fieldSettings: {
+                label: {
+                    default: __('Text field', 'give'),
+                },
+                placeholder: true,
             },
-            placeholder: true,
         },
     },
     icon: () => (

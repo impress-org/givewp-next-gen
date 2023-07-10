@@ -7,7 +7,7 @@ import type {FieldAttributes} from './types';
  * @unreleased
  */
 export default function updateBlockTypes(settings) {
-    const fieldSettings = normalizeFieldSettings(settings.supports.giveWPFieldSettings);
+    const fieldSettings = normalizeFieldSettings(settings.supports.givewp?.fieldSettings);
 
     if (fieldSettings === null) {
         return settings;
@@ -25,8 +25,11 @@ export default function updateBlockTypes(settings) {
     if (fieldSettings.name) {
         fieldAttributes.fieldName = {
             type: 'string',
-            default: fieldSettings.name.default,
         };
+
+        if (fieldSettings.name.default !== null) {
+            fieldAttributes.fieldName.default = fieldSettings.name.default;
+        }
     }
 
     if (fieldSettings.description) {

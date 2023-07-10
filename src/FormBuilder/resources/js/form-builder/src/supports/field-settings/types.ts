@@ -31,7 +31,7 @@ export type FieldSettingProperty =
 export type FieldAttributes = {
     [key: string]: {
         type: string;
-        default: string | boolean;
+        default?: string | boolean;
         required?: boolean;
     };
 };
