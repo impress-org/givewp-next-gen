@@ -26,13 +26,6 @@ const getCurrencySetting = (currency: string, currencySettings: CurrencySetting[
 /**
  * @unreleased
  */
-export const getFloatAmount = (amount: number): number => {
-    return Number(parseFloat(Number(amount).toFixed(2)))
-}
-
-/**
- * @unreleased
- */
 const isBaseCurrency = (currencySetting: CurrencySetting) => currencySetting.exchangeRate === 0;
 
 /**
@@ -50,13 +43,14 @@ const calculateCurrencyAmount = (
     const toCurrencySetting = getCurrencySetting(toCurrency, currencySettings);
 
     // convert from currency to base amount by dividing by the current exchange rate
+    // make sure to round the amount to avoid floating point issues
     if (fromCurrencySetting !== undefined && !isBaseCurrency(fromCurrencySetting)) {
-        amount = getFloatAmount(amount / fromCurrencySetting.exchangeRate);
+        amount = Math.round(amount / fromCurrencySetting.exchangeRate);
     }
 
     // convert to next currency by multiplying by the next exchange rate
     if (toCurrencySetting !== undefined && !isBaseCurrency(toCurrencySetting)) {
-        amount = getFloatAmount(amount * toCurrencySetting.exchangeRate);
+        amount = amount * toCurrencySetting.exchangeRate;
     }
 
     return amount;
@@ -153,7 +147,7 @@ export default function Amount({
     const updateCustomAmount = useCallback(
         (amount: number) => {
             if (customAmountValue !== '') {
-                setCustomAmountValue(getFloatAmount(amount).toString());
+                setCustomAmountValue(amount.toFixed(2));
             }
         },
         [customAmountValue]
