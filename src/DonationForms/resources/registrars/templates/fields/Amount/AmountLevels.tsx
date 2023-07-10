@@ -1,6 +1,7 @@
 import {useMemo} from 'react';
 import classNames from 'classnames';
 import {CurrencySetting} from '@givewp/forms/types';
+import {getFloatAmount} from './index';
 
 /**
  * @since 0.2.0
@@ -36,10 +37,10 @@ export default function AmountLevels({
                 const currencySetting = currencySettings.find(({id}) => id === currency);
 
                 if (currencySetting !== undefined && currencySetting.exchangeRate !== 0) {
-                    return levelAmount * currencySetting.exchangeRate;
+                    levelAmount = getFloatAmount(levelAmount * currencySetting.exchangeRate);
                 }
 
-                return levelAmount;
+                return getFloatAmount(levelAmount);
             }),
         [currency, levels]
     );
@@ -48,7 +49,7 @@ export default function AmountLevels({
         <div className="givewp-fields-amount__levels--container">
             {amountLevels.map((levelAmount, index) => {
                 const label = formatter.format(Number(levelAmount));
-                const selected = levelAmount === Number(amount);
+                const selected = levelAmount === amount;
                 return (
                     <button
                         className={classNames('givewp-fields-amount__level', {

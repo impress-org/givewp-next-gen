@@ -26,6 +26,13 @@ const getCurrencySetting = (currency: string, currencySettings: CurrencySetting[
 /**
  * @unreleased
  */
+export const getFloatAmount = (amount: number): number => {
+    return Number(parseFloat(Number(amount).toFixed(2)))
+}
+
+/**
+ * @unreleased
+ */
 const isBaseCurrency = (currencySetting: CurrencySetting) => currencySetting.exchangeRate === 0;
 
 /**
@@ -42,19 +49,17 @@ const calculateCurrencyAmount = (
     const fromCurrencySetting = getCurrencySetting(fromCurrency, currencySettings);
     const toCurrencySetting = getCurrencySetting(toCurrency, currencySettings);
 
-    let currencyAmount = amount;
-
     // convert from currency to base amount by dividing by the current exchange rate
     if (fromCurrencySetting !== undefined && !isBaseCurrency(fromCurrencySetting)) {
-        currencyAmount = currencyAmount / fromCurrencySetting.exchangeRate;
+        amount = getFloatAmount(amount / fromCurrencySetting.exchangeRate);
     }
 
     // convert to next currency by multiplying by the next exchange rate
     if (toCurrencySetting !== undefined && !isBaseCurrency(toCurrencySetting)) {
-        currencyAmount = currencyAmount * toCurrencySetting.exchangeRate;
+        amount = getFloatAmount(amount * toCurrencySetting.exchangeRate);
     }
 
-    return Number(currencyAmount);
+    return amount;
 };
 
 /**
@@ -148,7 +153,7 @@ export default function Amount({
     const updateCustomAmount = useCallback(
         (amount: number) => {
             if (customAmountValue !== '') {
-                setCustomAmountValue(String(amount.toFixed(2)));
+                setCustomAmountValue(getFloatAmount(amount).toString());
             }
         },
         [customAmountValue]
@@ -177,7 +182,6 @@ export default function Amount({
                         setValue('currency', selectedCurrency);
                         setValue('amount', currencyAmount);
 
-                        //TODO update custom amount input (this is not working right now)
                         updateCustomAmount(currencyAmount);
                     }}
                 />
@@ -204,7 +208,8 @@ export default function Amount({
                     value={customAmountValue}
                     onValueChange={(value) => {
                         setCustomAmountValue(value);
-                        setValue(name, value ?? null);
+
+                        setValue(name, Number(value) ?? null);
                     }}
                 />
             )}
