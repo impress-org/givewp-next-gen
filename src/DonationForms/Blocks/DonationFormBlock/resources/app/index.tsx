@@ -3,7 +3,7 @@ import RevealForm from './Components/RevealForm';
 import ModalForm from './Components/ModalForm';
 import IframeResizer from 'iframe-resizer-react';
 
-import '../app/styles/index.scss';
+import './styles/index.scss';
 
 /**
  * @unreleased

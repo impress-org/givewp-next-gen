@@ -9,6 +9,8 @@ import {BlockEditProps} from '@wordpress/blocks';
 import ReactSelect from 'react-select';
 import BlockPreview from './components/BlockPreview';
 
+import './styles/index.scss';
+
 /**
  * @unreleased Render block preview in the editor.
  * @since 0.1.0
