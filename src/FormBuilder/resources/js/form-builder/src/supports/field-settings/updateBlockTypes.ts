@@ -1,8 +1,5 @@
-import {__} from '@wordpress/i18n';
-
 import normalizeFieldSettings from './normalizeFieldSettings';
 import type {FieldAttributes} from './types';
-import fields from '@givewp/form-builder/blocks/fields';
 
 /**
  * Adds attributes to the block types that support the field settings.
@@ -29,6 +26,13 @@ export default function updateBlockTypes(settings) {
         fieldAttributes.fieldName = {
             type: 'string',
             default: fieldSettings.name.default,
+        };
+    }
+
+    if (fieldSettings.description) {
+        fieldAttributes.description = {
+            type: 'string',
+            default: fieldSettings.description.default,
         };
     }
 

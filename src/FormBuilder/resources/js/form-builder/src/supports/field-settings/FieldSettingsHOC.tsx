@@ -100,6 +100,17 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                                 />
                             </PanelRow>
                         )}
+                        {fieldSettings.description && (
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Description', 'give')}
+                                    value={attributes.description}
+                                    onChange={(newDescription) => {
+                                        setAttributes({description: newDescription});
+                                    }}
+                                />
+                            </PanelRow>
+                        )}
                         {fieldSettings.required && (
                             <PanelRow>
                                 <ToggleControl
