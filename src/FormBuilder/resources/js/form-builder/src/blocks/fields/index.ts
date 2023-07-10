@@ -8,7 +8,7 @@ import paymentGateways from './payment-gateways';
 import donationSummary from './donation-summary';
 import amount from './amount';
 import login from './login';
-import termsAndConditions from '@givewp/form-builder/blocks/fields/terms-and-conditions';
+import termsAndConditions from './terms-and-conditions';
 
 /**
  * @note Blocks in the appender are listed in the order that the blocks are registered.
