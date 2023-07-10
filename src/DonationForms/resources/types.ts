@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import type {FormSettings} from '@givewp/form-builder/src/types';
+import {FormSettings} from "@givewp/form-builder/types";
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.

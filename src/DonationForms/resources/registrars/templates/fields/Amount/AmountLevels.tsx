@@ -1,6 +1,7 @@
 import {useMemo} from 'react';
 import classNames from 'classnames';
 import {CurrencySetting} from '@givewp/forms/types';
+import {isBaseCurrency} from './Currency';
 
 /**
  * @since 0.2.0
@@ -35,7 +36,7 @@ export default function AmountLevels({
             levels.map((levelAmount) => {
                 const currencySetting = currencySettings.find(({id}) => id === currency);
 
-                if (currencySetting !== undefined && currencySetting.exchangeRate !== 0) {
+                if (currencySetting !== undefined && !isBaseCurrency(currencySetting)) {
                     levelAmount = levelAmount * currencySetting.exchangeRate;
                 }
 
