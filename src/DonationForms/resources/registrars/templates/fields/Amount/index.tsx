@@ -1,9 +1,9 @@
-import {useCallback, useRef} from '@wordpress/element';
+import {useCallback} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
 import {CurrencySetting} from '@givewp/forms/types';
-import {ChangeEvent} from 'react';
+import {ChangeEvent, useState} from 'react';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 
 /**
@@ -24,6 +24,11 @@ const getCurrencySetting = (currency: string, currencySettings: CurrencySetting[
 };
 
 /**
+ * @unreleased
+ */
+const isBaseCurrency = (currencySetting: CurrencySetting) => currencySetting.exchangeRate === 0;
+
+/**
  * Calculate the amount based on the currency exchange rate, taking into account the from and to currency values
  *
  * @unreleased
@@ -37,15 +42,19 @@ const calculateCurrencyAmount = (
     const fromCurrencySetting = getCurrencySetting(fromCurrency, currencySettings);
     const toCurrencySetting = getCurrencySetting(toCurrency, currencySettings);
 
-    if (toCurrencySetting !== undefined && toCurrencySetting.exchangeRate !== 0) {
-        return amount * toCurrencySetting.exchangeRate;
+    let currencyAmount = amount;
+
+    // convert from currency to base amount by dividing by the current exchange rate
+    if (fromCurrencySetting !== undefined && !isBaseCurrency(fromCurrencySetting)) {
+        currencyAmount = currencyAmount / fromCurrencySetting.exchangeRate;
     }
 
-    if (fromCurrencySetting !== undefined && fromCurrencySetting.exchangeRate !== 0) {
-        return amount / fromCurrencySetting.exchangeRate;
+    // convert to next currency by multiplying by the next exchange rate
+    if (toCurrencySetting !== undefined && !isBaseCurrency(toCurrencySetting)) {
+        currencyAmount = currencyAmount * toCurrencySetting.exchangeRate;
     }
 
-    return amount;
+    return Number(currencyAmount);
 };
 
 /**
@@ -107,7 +116,7 @@ export default function Amount({
     allowCustomAmount,
     currencySettings,
 }: AmountProps) {
-    const customAmountInputRef = useRef<HTMLInputElement>(null);
+    const [customAmountValue, setCustomAmountValue] = useState<string>('');
     const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
     const {setValue, getValues} = useFormContext();
 
@@ -130,21 +139,19 @@ export default function Amount({
 
     const isFixedAmount = !allowLevels;
 
-    const resetCustomAmountInput = useCallback(() => {
-        if (customAmountInputRef.current !== null) {
-            customAmountInputRef.current.value = '';
-            customAmountInputRef.current.attributes.getNamedItem('value').value = '';
+    const resetCustomAmount = useCallback(() => {
+        if (customAmountValue !== '') {
+            setCustomAmountValue('');
         }
-    }, [customAmountInputRef.current]);
+    }, [customAmountValue]);
 
     const updateCustomAmount = useCallback(
         (amount: number) => {
-            if (customAmountInputRef.current !== null) {
-                customAmountInputRef.current.value = String(amount);
-                customAmountInputRef.current.attributes.getNamedItem('value').value = String(amount);
+            if (customAmountValue !== '') {
+                setCustomAmountValue(String(amount.toFixed(2)));
             }
         },
-        [customAmountInputRef.current]
+        [customAmountValue]
     );
 
     return (
@@ -183,7 +190,7 @@ export default function Amount({
                     levels={levels}
                     currencySettings={currencySettings}
                     onLevelClick={(levelAmount) => {
-                        resetCustomAmountInput();
+                        resetCustomAmount();
                         setValue(name, levelAmount);
                     }}
                 />
@@ -191,12 +198,12 @@ export default function Amount({
 
             {allowCustomAmount && (
                 <CustomAmount
-                    ref={customAmountInputRef}
                     fieldError={fieldError}
                     defaultValue={isFixedAmount ? fixedAmountValue : null}
                     currency={currency}
-                    currencySymbol={currencySymbol}
+                    value={customAmountValue}
                     onValueChange={(value) => {
+                        setCustomAmountValue(value);
                         setValue(name, value ?? null);
                     }}
                 />

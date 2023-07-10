@@ -57,7 +57,8 @@ class ConvertDonationAmountBlockToFieldsApi
 
             $currencySettings = [
                 new CurrencySetting('USD', 0, ['test-gateway']),
-                new CurrencySetting('AUD', "1.50874", ['test-gateway'])
+                new CurrencySetting('AUD', "1.50874", ['test-gateway']),
+                new CurrencySetting('EUR', "2", ['test-gateway'])
             ];
 
             /** @var Amount $amountNode */
