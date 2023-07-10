@@ -46,7 +46,9 @@ export default function ConsentField({
     const Label = () => (
         <>
             <span>{checkboxLabel}</span>&nbsp;
-            <ShowTerms openTerms={openTerms} displayType={displayType} linkText={linkText} linkUrl={linkUrl} />
+            {(!isFormDisplay || !revealTerms) && (
+                <ShowTerms openTerms={openTerms} displayType={displayType} linkText={linkText} linkUrl={linkUrl} />
+            )}
         </>
     );
 
