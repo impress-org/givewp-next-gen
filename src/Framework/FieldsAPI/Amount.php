@@ -6,7 +6,6 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Properties\Amount\CurrencySetting;
-use Give\Framework\FieldsAPI\Properties\Amount\CurrencySettings;
 
 class Amount extends Field
 {
