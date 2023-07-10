@@ -43,7 +43,7 @@ const settings: FieldBlock['settings'] = {
             type: 'string',
             source: 'attribute',
             default: __(
-                'Acceptance of any contribution, gift or grant is at the discretion of the Givewp. The Givewp will not accept any gift unless it can be used or expended consistently with the purpose and mission of the Givewp. No irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.The Givewp will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.',
+                'Acceptance of any contribution, gift or grant is at the discretion of the GiveWP. The GiveWP will not accept any gift unless it can be used or expended consistently with the purpose and mission of the GiveWP. No irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.The GiveWP will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.',
                 'give'
             ),
         },
