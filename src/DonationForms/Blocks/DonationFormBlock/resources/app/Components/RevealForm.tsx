@@ -13,7 +13,7 @@ export default function RevealForm({dataSrc, embedId, openFormButton}) {
 
     return (
         <Fragment>
-            <button className={'givewp-form-block__display-button'} onClick={revealForm}>
+            <button className={'givewp-donation-form-display__button'} onClick={revealForm}>
                 {openFormButton}
             </button>
 

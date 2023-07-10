@@ -18,6 +18,8 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
     const {formOptions, isResolving} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!formId);
 
+    const showOpenFormButton = formFormat === 'reveal' || formFormat === 'modal';
+
     useEffect(() => {
         if (!blockId) {
             setAttributes({blockId: clientId});
@@ -76,15 +78,17 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                             }}
                         />
                     </PanelRow>
-                    <PanelRow>
-                        <TextControl
-                            label={__('Open Form Button', 'give')}
-                            value={openFormButton}
-                            onChange={(value) => {
-                                setAttributes({openFormButton: value});
-                            }}
-                        />
-                    </PanelRow>
+                    {showOpenFormButton && (
+                        <PanelRow>
+                            <TextControl
+                                label={__('Open Form Button', 'give')}
+                                value={openFormButton}
+                                onChange={(value) => {
+                                    setAttributes({openFormButton: value});
+                                }}
+                            />
+                        </PanelRow>
+                    )}
                     <PanelRow>
                         {formId && (
                             <ExternalLink
