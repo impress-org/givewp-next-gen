@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState} from '@wordpress/element';
 import IframeResizer from 'iframe-resizer-react';
 
 /**
