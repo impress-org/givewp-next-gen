@@ -20,17 +20,24 @@ function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
     );
 }
 
-export default function Gateways({inputProps, gateways}: GatewayFieldProps) {
+export default function Gateways({isTestMode, inputProps, gateways}: GatewayFieldProps) {
     const {errors} = window.givewp.form.hooks.useFormState();
+
+    console.log('isTestMode: ', isTestMode);
+    console.log('gateways', gateways);
+    console.log('inputProps', inputProps);
 
     return (
         <>
             {gateways.length > 0 ? (
-                <ul style={{listStyleType: 'none', padding: 0}}>
-                    {gateways.map((gateway, index) => (
-                        <GatewayOption gateway={gateway} index={index} key={gateway.id} inputProps={inputProps} />
-                    ))}
-                </ul>
+                <>
+                    {isTestMode && <div>NOTICE GOES HERE</div>}
+                    <ul style={{listStyleType: 'none', padding: 0}}>
+                        {gateways.map((gateway, index) => (
+                            <GatewayOption gateway={gateway} index={index} key={gateway.id} inputProps={inputProps} />
+                        ))}
+                    </ul>
+                </>
             ) : (
                 <em>
                     {__(
