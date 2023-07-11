@@ -4,7 +4,7 @@ import {getBlockSupport} from '@wordpress/blocks';
 import {slugify} from '@givewp/form-builder/common';
 import normalizeFieldSettings from '@givewp/form-builder/supports/field-settings/normalizeFieldSettings';
 import {useFieldNameValidator} from '@givewp/form-builder/hooks';
-import {ExternalLink, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
+import {ExternalLink, PanelBody, PanelRow, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
@@ -127,7 +127,7 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         )}
                         {fieldSettings.description && (
                             <PanelRow>
-                                <TextControl
+                                <TextareaControl
                                     label={__('Description', 'give')}
                                     value={attributes.description}
                                     onChange={(newDescription) => {
