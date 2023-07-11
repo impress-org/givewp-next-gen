@@ -21,13 +21,13 @@ const CustomAmount = (
     {defaultValue, fieldError, currency, value, onValueChange}: CustomAmountProps
 ) => {
     return (
-        <div className={classNames('givewp-fields-amount__input--container', {invalid: fieldError})}>
+        <div className={classNames('givewp-fields-amount__input-container', {invalid: fieldError})}>
             <CurrencyInput
                 intlConfig={{
                     locale: navigator.language,
                     currency,
                 }}
-                className="givewp-fields-amount__input givewp-fields-amount__input--custom"
+                className="givewp-fields-amount__input givewp-fields-amount__input-custom"
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
                 name="amount-custom"

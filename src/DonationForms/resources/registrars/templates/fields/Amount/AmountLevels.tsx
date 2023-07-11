@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import classNames from 'classnames';
 import {CurrencySetting} from '@givewp/forms/types';
-import {isBaseCurrency} from './Currency';
+import {isBaseCurrency} from './CurrencySwitcher';
 
 /**
  * @since 0.2.0
@@ -46,7 +46,7 @@ export default function AmountLevels({
     );
 
     return (
-        <div className="givewp-fields-amount__levels--container">
+        <div className="givewp-fields-amount__levels-container">
             {amountLevels.map((levelAmount, index) => {
                 const label = formatter.format(levelAmount);
                 const selected = levelAmount === amount;

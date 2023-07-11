@@ -3,8 +3,7 @@ import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
 import {useState} from 'react';
-import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
-import Currency, {calculateCurrencyAmount, CurrencyOption} from './Currency';
+import CurrencySwitcher, {calculateCurrencyAmount} from './CurrencySwitcher';
 
 /**
  * @since 0.2.0 add display options for multi levels, fixed amount, and custom amount
@@ -26,18 +25,6 @@ export default function Amount({
     const [customAmountValue, setCustomAmountValue] = useState<string>('');
     const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
     const {setValue, getValues} = useFormContext();
-
-    const getCurrencyOptions = useCallback((): CurrencyOption[] => {
-        return currencySettings.map(({id}) => {
-            const formatter = amountFormatter(id);
-            const symbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
-
-            return {
-                id,
-                symbol,
-            };
-        });
-    }, []);
 
     const currency = useWatch({name: 'currency'});
 
@@ -63,30 +50,37 @@ export default function Amount({
 
     return (
         <>
-            <div className="givewp-fields-amount__directions">
-                <label className="givewp-fields-amount__input--label" htmlFor={name} aria-labelledby={name}>
+            <div className="givewp-fields-amount__input-label-container">
+                <label className="givewp-fields-amount__input-label" htmlFor={name} aria-labelledby={name}>
                     <Label />
                 </label>
 
-                <Currency
-                    defaultCurrency={{id: currency, symbol: currencySymbol}}
-                    currencyOptions={getCurrencyOptions()}
-                    onSelect={(event) => {
-                        const selectedCurrency = event.target.value;
+                {currencySettings.length > 1 ? (
+                    <CurrencySwitcher
+                        defaultCurrency={currency}
+                        currencySettings={currencySettings}
+                        onSelect={(event) => {
+                            const selectedCurrency = event.target.value;
 
-                        const currencyAmount = calculateCurrencyAmount(
-                            getValues('amount'),
-                            currency,
-                            selectedCurrency,
-                            currencySettings
-                        );
+                            const currencyAmount = calculateCurrencyAmount(
+                                getValues('amount'),
+                                currency,
+                                selectedCurrency,
+                                currencySettings
+                            );
 
-                        setValue('currency', selectedCurrency);
-                        setValue('amount', currencyAmount);
+                            setValue('currency', selectedCurrency);
+                            setValue('amount', currencyAmount);
 
-                        updateCustomAmount(currencyAmount);
-                    }}
-                />
+                            updateCustomAmount(currencyAmount);
+                        }}
+                    />
+                ) : (
+                    <span className="givewp-fields-amount__currency-container">
+                        <span>{currency}</span>
+                        <span>{currencySymbol}</span>
+                    </span>
+                )}
             </div>
 
             {allowLevels && (
@@ -117,6 +111,16 @@ export default function Amount({
             )}
 
             <input type="hidden" {...inputProps} />
+
+            {/*TODO: Update Message and baseCurrency to be dynamic from settings */}
+            <CurrencySwitcher.Message
+                message={'The current exchange rate is 1.00 {base_currency} equals {new_currency_rate} {new_currency}.'}
+                baseCurrency={'USD'}
+                newCurrencyRate={
+                    currencySettings.find((setting) => setting.id === currency)?.exchangeRate.toFixed(2) ?? '1.00'
+                }
+                newCurrency={currency}
+            />
 
             <ErrorMessage />
         </>
