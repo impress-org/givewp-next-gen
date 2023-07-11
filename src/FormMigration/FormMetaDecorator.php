@@ -3,6 +3,7 @@
 namespace Give\FormMigration;
 
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
 
 class FormMetaDecorator extends FormModelDecorator
@@ -64,5 +65,52 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $template = $this->getFormTemplate();
         return give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+    }
+
+    public function isDonationGoalEnabled(): bool
+    {
+        return give_is_setting_enabled(
+            give_get_meta($this->form->id, '_give_goal_option', true)
+        );
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    protected function getDonationGoalFormat(): string
+    {
+        switch($format = give_get_form_goal_format($this->form->id)) {
+            case 'amount':
+            case 'percentage': // @note `percentage` is not supported in v3.
+                return GoalType::AMOUNT;
+            case 'donation': // v2: Singular
+                return GoalType::DONATIONS; // v3: Plural
+            case 'donors':
+                return GoalType::DONORS;
+        }
+
+        // @note Might be better to just force a default here? This isn't likely to be wrong, but if it is, something is probably very wrong.
+        throw new \Exception(sprintf('Goal format "%s" does not have a corresponding type.', $format));
+    }
+
+    /**
+     * @return mixed Goal of the form
+     */
+    public function getDonationGoalAmount()
+    {
+        return give_get_form_goal($this->form->id);
+    }
+
+    public function isAutoClosedEnabled()
+    {
+        return give_is_setting_enabled(
+            give_get_meta( $this->form->id, '_give_close_form_when_goal_achieved', true, 'disabled' )
+        );
+    }
+
+    public function getGoalAchievedMessage()
+    {
+        return give_get_meta( $this->form->id, '_give_form_goal_achieved_message', true );
     }
 }

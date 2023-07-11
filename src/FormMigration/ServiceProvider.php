@@ -24,7 +24,8 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormTemplate\SequoiaTemplateSettings::class,
                 Steps\FormTemplate\LegacyTemplateSettings::class,
                 Steps\DonationOptions::class,
-                Steps\FormFields::class
+                Steps\FormFields::class,
+                Steps\DonationGoal::class
             ]);
         });
     }
