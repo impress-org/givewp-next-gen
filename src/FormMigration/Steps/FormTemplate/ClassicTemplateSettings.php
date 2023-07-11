@@ -2,8 +2,10 @@
 
 namespace Give\FormMigration\Steps\FormTemplate;
 
+use Give\FormMigration\Actions\MapSettingsToDesignHeader;
 use Give\FormMigration\Actions\MapSettingsToDonationSummary;
 use Give\FormMigration\Contracts\FormMigrationStep;
+use Give\FormMigration\DataTransferObjects\DesignHeaderSettings;
 use Give\FormMigration\DataTransferObjects\DonationSummarySettings;
 
 class ClassicTemplateSettings extends FormMigrationStep
@@ -48,13 +50,8 @@ class ClassicTemplateSettings extends FormMigrationStep
             'secure_badge_text' => $secureBadgeText, // '100% Secure Donation',
         ] = $settings;
 
-        $this->formV3->settings->showHeader = give_is_setting_enabled($displayHeader);
-
-        $this->formV3->settings->showHeading = !empty($mainHeading);
-        $this->formV3->settings->heading = $mainHeading;
-
-        $this->formV3->settings->showDescription = !empty($description);
-        $this->formV3->settings->description = $description;
+        MapSettingsToDesignHeader::make($this->formV3)
+            ->__invoke(new DesignHeaderSettings($displayHeader, $mainHeading, $description));
 
         $this->formV3->settings->primaryColor = $primaryColor;
 

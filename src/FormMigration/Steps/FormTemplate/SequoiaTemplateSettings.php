@@ -3,8 +3,10 @@
 namespace Give\FormMigration\Steps\FormTemplate;
 
 use Give\DonationForms\Properties\FormSettings;
+use Give\FormMigration\Actions\MapSettingsToDesignHeader;
 use Give\FormMigration\Actions\MapSettingsToDonationSummary;
 use Give\FormMigration\Contracts\FormMigrationStep;
+use Give\FormMigration\DataTransferObjects\DesignHeaderSettings;
 use Give\FormMigration\DataTransferObjects\DonationSummarySettings;
 use Give\Framework\Blocks\BlockFactory;
 
@@ -61,13 +63,8 @@ class SequoiaTemplateSettings extends FormMigrationStep
             'donate_label' => $donateLabel, // 'Donate Now',
         ] = $settings;
 
-        $this->formV3->settings->showHeader = give_is_setting_enabled($enabled);
-
-        $this->formV3->settings->showHeading = !empty($headline);
-        $this->formV3->settings->heading = $headline;
-
-        $this->formV3->settings->showDescription = !empty($description);
-        $this->formV3->settings->description = $description;
+        MapSettingsToDesignHeader::make($this->formV3)
+            ->__invoke(new DesignHeaderSettings($enabled, $headline, $description));
 
         // @note `image` is not supported in v3 forms (defers to the Form Design).
 
