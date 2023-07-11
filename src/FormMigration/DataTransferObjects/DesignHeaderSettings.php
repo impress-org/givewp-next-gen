@@ -22,7 +22,7 @@ class DesignHeaderSettings
 
     public function isEnabled(): bool
     {
-        return $this->isEnabled();
+        return $this->enabled;
     }
 
     public function hasHeading(): bool
