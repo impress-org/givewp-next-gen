@@ -31,7 +31,7 @@ export default function ConsentModal({setShowModal, modalHeading, modalAcceptanc
                     scrollModalIntoView(element);
                 }}
                 style={{
-                    background: 'var(--givewp-shades-white)',
+                    background: 'var(--givep-shades-white, #fff)',
                     padding: '2.5rem 3.5rem',
                     width: 'calc(min(100%, 51.5rem) + 2rem)',
                     boxShadow: '0 0.25rem 0.5rem 0 rgba(230, 230, 230, 1)',
