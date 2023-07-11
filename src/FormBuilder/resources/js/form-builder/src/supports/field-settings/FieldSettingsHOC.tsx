@@ -74,7 +74,7 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                 fieldName: slugifiedName,
             });
         },
-        [setAttributes, attributes.label, validateFieldName]
+        [setAttributes, attributes.label]
     );
 
     const handleLabelBlur = useCallback(
