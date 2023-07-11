@@ -42,10 +42,6 @@ const TestModeNotice = () => {
 export default function Gateways({isTestMode, inputProps, gateways}: GatewayFieldProps) {
     const {errors} = window.givewp.form.hooks.useFormState();
 
-    console.log('isTestMode: ', isTestMode);
-    console.log('gateways', gateways);
-    console.log('inputProps', inputProps);
-
     return (
         <>
             {gateways.length > 0 ? (
