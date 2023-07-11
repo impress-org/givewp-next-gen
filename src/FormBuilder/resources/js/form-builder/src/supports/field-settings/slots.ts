@@ -10,5 +10,15 @@ const {Slot: FieldSettingsSlot, Fill: FieldSettingsFill} = createSlotFill('GiveW
 const {Slot: DisplaySettingsSlot, Fill: DisplaySettingsFill} = createSlotFill(
     'GiveWP/FieldSettings/DisplaySettingSlot'
 );
+const {Slot: AdvancedSettingsSlot, Fill: AdvancedSettingsFill} = createSlotFill(
+    'GiveWP/FieldSettings/AdvancedSettingSlot'
+);
 
-export {FieldSettingsSlot, FieldSettingsFill, DisplaySettingsSlot, DisplaySettingsFill};
+export {
+    FieldSettingsSlot,
+    FieldSettingsFill,
+    DisplaySettingsSlot,
+    DisplaySettingsFill,
+    AdvancedSettingsSlot,
+    AdvancedSettingsFill,
+};

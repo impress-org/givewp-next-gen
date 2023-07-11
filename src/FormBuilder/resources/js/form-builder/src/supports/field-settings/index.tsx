@@ -1,8 +1,8 @@
-import {addFilter} from "@wordpress/hooks";
+import {addFilter} from '@wordpress/hooks';
 
-import FieldSettingsHOC from "./FieldSettingsHOC";
-import updateBlockTypes from "./updateBlockTypes";
-import {DisplaySettingsFill, FieldSettingsFill} from "./slots";
+import FieldSettingsHOC from './FieldSettingsHOC';
+import updateBlockTypes from './updateBlockTypes';
+import {AdvancedSettingsFill, DisplaySettingsFill, FieldSettingsFill} from './slots';
 
 /**
  * Registers the necessary hooks for supports the field settings
@@ -17,4 +17,5 @@ export default function registerHooks() {
     window.givewp.form.slots = window.givewp.form.slots || {};
     window.givewp.form.slots.FieldSettingsFill = FieldSettingsFill;
     window.givewp.form.slots.DisplaySettingsFill = DisplaySettingsFill;
+    window.givewp.form.slots.AdvancedSettingsFill = AdvancedSettingsFill;
 }

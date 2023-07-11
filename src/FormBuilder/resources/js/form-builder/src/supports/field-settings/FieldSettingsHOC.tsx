@@ -1,4 +1,4 @@
-import {InspectorControls, InspectorAdvancedControls} from '@wordpress/block-editor';
+import {InspectorAdvancedControls, InspectorControls} from '@wordpress/block-editor';
 import {useCallback, useMemo} from '@wordpress/element';
 import {getBlockSupport} from '@wordpress/blocks';
 import {slugify} from '@givewp/form-builder/common';
@@ -9,7 +9,7 @@ import {__} from '@wordpress/i18n';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 import {FieldSettings} from './types';
-import {FieldSettingsSlot, DisplaySettingsSlot} from './slots';
+import {AdvancedSettingsSlot, DisplaySettingsSlot, FieldSettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 import {useState} from 'react';
@@ -178,6 +178,8 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
             )}
             {(fieldSettings.name || fieldSettings.storeAsDonorMeta) && (
                 <InspectorAdvancedControls>
+                    <AdvancedSettingsSlot />
+
                     {fieldSettings.name && (
                         <PanelRow>
                             <TextControl
