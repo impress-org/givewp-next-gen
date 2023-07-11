@@ -88,7 +88,11 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
     );
 
     const enforceFieldName = useCallback(() => {
-        updateFieldName(attributes.fieldName, true);
+        if (!attributes.fieldName) {
+            updateFieldName();
+        } else {
+            updateFieldName(attributes.fieldName, true);
+        }
     }, [attributes.fieldName, updateFieldName]);
 
     if (!attributes.hasOwnProperty('fieldName')) {
