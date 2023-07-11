@@ -2,7 +2,8 @@
 
 namespace Give\FormMigration\Steps\FormTemplate;
 
-use Give\FormMigration\Actions\MapTemplateSettingsToDonationSummaryBlock;
+use Give\DonationForms\Properties\FormSettings;
+use Give\FormMigration\Actions\MapSettingsToDonationSummary;
 use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\FormMigration\DataTransferObjects\DonationSummarySettings;
 use Give\Framework\Blocks\BlockFactory;
@@ -23,6 +24,10 @@ class SequoiaTemplateSettings extends FormMigrationStep
             'payment_information' => $paymentInformation,
             'thank-you' => $donationReceipt,
         ] = $this->formV2->getFormTemplateSettings();
+
+        /** @var FormSettings $formSettings */
+        $formSettings = $this->formV3->settings;
+        $formSettings->designId = 'multi-step';
 
         $this->visualAppearance($visualAppearance);
         $this->introduction($introduction);
@@ -56,10 +61,13 @@ class SequoiaTemplateSettings extends FormMigrationStep
             'donate_label' => $donateLabel, // 'Donate Now',
         ] = $settings;
 
-        if(give_is_setting_enabled($enabled)) {
-            $introductionSection = BlockFactory::section($headline, $description);
-            $this->fieldBlocks->prepend($introductionSection);
-        }
+        $this->formV3->settings->showHeader = give_is_setting_enabled($enabled);
+
+        $this->formV3->settings->showHeading = !empty($headline);
+        $this->formV3->settings->heading = $headline;
+
+        $this->formV3->settings->showDescription = !empty($description);
+        $this->formV3->settings->description = $description;
 
         // @note `image` is not supported in v3 forms (defers to the Form Design).
 
@@ -97,7 +105,7 @@ class SequoiaTemplateSettings extends FormMigrationStep
             ->setAttribute('title', $headline) // @note Should this be `headline` or `header_label`?
             ->setAttribute('description', $description);
 
-        MapTemplateSettingsToDonationSummaryBlock::make($this->fieldBlocks)
+        MapSettingsToDonationSummary::make($this->fieldBlocks)
             ->__invoke(DonationSummarySettings::make($settings));
     }
 

@@ -2,7 +2,7 @@
 
 namespace Give\FormMigration\Steps\FormTemplate;
 
-use Give\FormMigration\Actions\MapTemplateSettingsToDonationSummaryBlock;
+use Give\FormMigration\Actions\MapSettingsToDonationSummary;
 use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\FormMigration\DataTransferObjects\DonationSummarySettings;
 
@@ -50,19 +50,11 @@ class ClassicTemplateSettings extends FormMigrationStep
 
         $this->formV3->settings->showHeader = give_is_setting_enabled($displayHeader);
 
-        if($mainHeading) {
-            $this->formV3->settings->showHeading = true;
-            $this->formV3->settings->heading = $mainHeading;
-        } else {
-            $this->formV3->settings->showHeading = false;
-        }
+        $this->formV3->settings->showHeading = !empty($mainHeading);
+        $this->formV3->settings->heading = $mainHeading;
 
-        if($description) {
-            $this->formV3->settings->showDescription = true;
-            $this->formV3->settings->description = $description;
-        } else {
-            $this->formV3->settings->showDescription = false;
-        }
+        $this->formV3->settings->showDescription = !empty($description);
+        $this->formV3->settings->description = $description;
 
         $this->formV3->settings->primaryColor = $primaryColor;
 
@@ -107,7 +99,7 @@ class ClassicTemplateSettings extends FormMigrationStep
             ->setAttribute('title', $headline)
             ->setAttribute('description', $description);
 
-        MapTemplateSettingsToDonationSummaryBlock::make($this->fieldBlocks)
+        MapSettingsToDonationSummary::make($this->fieldBlocks)
             ->__invoke(DonationSummarySettings::make($settings));
     }
 

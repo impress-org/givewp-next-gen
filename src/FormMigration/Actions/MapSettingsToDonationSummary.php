@@ -5,7 +5,7 @@ namespace Give\FormMigration\Actions;
 use Give\FormMigration\DataTransferObjects\DonationSummarySettings;
 use Give\Framework\Blocks\BlockCollection;
 
-class MapTemplateSettingsToDonationSummaryBlock
+class MapSettingsToDonationSummary
 {
     /**
      * @var BlockCollection
