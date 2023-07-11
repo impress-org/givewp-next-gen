@@ -2,7 +2,9 @@
 
 namespace Give\FormMigration\Steps\FormTemplate;
 
+use Give\FormMigration\Actions\MapTemplateSettingsToDonationSummaryBlock;
 use Give\FormMigration\Contracts\FormMigrationStep;
+use Give\FormMigration\DataTransferObjects\DonationSummarySettings;
 
 class ClassicTemplateSettings extends FormMigrationStep
 {
@@ -105,18 +107,8 @@ class ClassicTemplateSettings extends FormMigrationStep
             ->setAttribute('title', $headline)
             ->setAttribute('description', $description);
 
-        $donationSummaryBlock = $this->fieldBlocks->findByName('givewp/donation-summary');
-        $donationSummaryBlock->setAttribute('label', $donationSummaryHeading ?: __('Donation Summary', 'give'));
-        if(give_is_setting_enabled($donationSummaryEnabled)) {
-            // @note `give_donation_form_user_info` is presented as "Before payment fields".
-            // @note `give_donation_form_before_submit` is the default location, presented as "After payment fields".
-            if('give_donation_form_user_info' === $donationSummaryLocation) {
-                $this->fieldBlocks->remove('givewp/donation-summary');
-                $this->fieldBlocks->insertBefore('givewp/payment-gateways', $donationSummaryBlock );
-            }
-        } else {
-            $this->fieldBlocks->remove('givewp/donation-summary');
-        }
+        MapTemplateSettingsToDonationSummaryBlock::make($this->fieldBlocks)
+            ->__invoke(DonationSummarySettings::make($settings));
     }
 
     protected function donationReceipt($settings)
