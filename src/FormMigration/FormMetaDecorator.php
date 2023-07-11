@@ -113,4 +113,22 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return give_get_meta( $this->form->id, '_give_form_goal_achieved_message', true );
     }
+
+    public function isTermsEnabled()
+    {
+        return give_is_terms_enabled($this->form->id);
+    }
+
+    public function getTermsAgreementLabel()
+    {
+        // @note Forked from give/includes/forms/template.php:1845
+        return ( $label = give_get_meta( $this->form->id, '_give_agree_label', true ) )
+            ? stripslashes( $label )
+            : esc_html__( 'Agree to Terms?', 'give' );
+    }
+
+    public function getTermsAgreementText()
+    {
+        return give_get_meta( $this->form->id, '_give_agree_text', true );
+    }
 }
