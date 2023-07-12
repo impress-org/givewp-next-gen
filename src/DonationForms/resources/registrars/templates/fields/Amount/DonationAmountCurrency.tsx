@@ -1,5 +1,5 @@
 import {CurrencySetting} from '@givewp/forms/types';
-import CurrencySwitcher, {calculateCurrencyAmount} from '../fields/Amount/CurrencySwitcher';
+import CurrencySwitcher, {calculateCurrencyAmount} from './CurrencySwitcher';
 
 /**
  * @unreleased

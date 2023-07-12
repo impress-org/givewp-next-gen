@@ -3,6 +3,8 @@ import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
 import {useState} from 'react';
 import getAmountLevelsWithCurrencySettings from './getAmountLevelsWithCurrencySettings';
+import DonationAmountCurrency from './DonationAmountCurrency';
+import DonationAmountLevels from './DonationAmountLevels';
 
 /**
  * @unreleased add currency settings
@@ -23,8 +25,6 @@ export default function Amount({
     currencySettings,
     children,
 }: AmountProps) {
-    const DonationAmountCurrency = window.givewp.form.templates.layouts.donationAmountCurrency;
-    const DonationAmountLevels = window.givewp.form.templates.layouts.donationAmountLevels;
     const [customAmountValue, setCustomAmountValue] = useState<string>('');
     const {useWatch, useFormContext} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
