@@ -23,7 +23,7 @@ export default function Amount({
     fixedAmountValue,
     allowCustomAmount,
     currencySettings,
-    children,
+    messages,
 }: AmountProps) {
     const [customAmountValue, setCustomAmountValue] = useState<string>('');
     const {useWatch, useFormContext} = window.givewp.form.hooks;
@@ -97,7 +97,7 @@ export default function Amount({
 
             <input type="hidden" {...inputProps} />
 
-            {children}
+            {messages}
 
             <ErrorMessage />
         </>

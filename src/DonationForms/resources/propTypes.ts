@@ -105,7 +105,7 @@ export interface AmountProps extends FieldProps {
     fixedAmountValue: number;
     currencySettings?: CurrencySetting[];
     currencySwitcherMessage?: string;
-    children: ReactNode;
+    messages: ReactNode;
 }
 
 export interface ParagraphProps extends ElementProps {

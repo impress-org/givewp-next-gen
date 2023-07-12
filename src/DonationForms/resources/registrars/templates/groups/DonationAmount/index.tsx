@@ -20,26 +20,30 @@ export default function DonationAmount({
     subscriptionDetailsAreFixed,
 }: DonationAmountProps) {
     useDonationType();
-    const {allowLevels, fixedAmountValue, allowCustomAmount, currencySettings, currencySwitcherMessage} = amountProps;
+    const {allowLevels, allowCustomAmount, currencySettings, currencySwitcherMessage} = amountProps;
 
     return (
         <>
             {subscriptionsEnabled && <SubscriptionPeriodField />}
             <CurrencyField />
             <DonationTypeField />
-            <AmountField>
-                <DonationAmountMessage
-                    isFixedAmount={!allowCustomAmount && !allowLevels}
-                    fixedAmountValue={fixedAmountValue}
-                    subscriptionDetailsAreFixed={subscriptionDetailsAreFixed}
-                />
-                {currencySettings.length > 1 && (
-                    <DonationAmountCurrencySwitcherMessage
-                        currencySettings={currencySettings}
-                        message={currencySwitcherMessage}
-                    />
-                )}
-            </AmountField>
+            <AmountField
+                messages={
+                    <>
+                        <DonationAmountMessage
+                            isFixedAmount={!allowCustomAmount && !allowLevels}
+                            subscriptionDetailsAreFixed={subscriptionDetailsAreFixed}
+                        />
+
+                        {currencySettings.length > 1 && currencySwitcherMessage && (
+                            <DonationAmountCurrencySwitcherMessage
+                                currencySettings={currencySettings}
+                                message={currencySwitcherMessage}
+                            />
+                        )}
+                    </>
+                }
+            />
             {subscriptionsEnabled && <SubscriptionFrequencyField />}
             {subscriptionsEnabled && <SubscriptionInstallmentsField />}
         </>
