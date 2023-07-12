@@ -4,10 +4,14 @@ namespace Give\DonationForms\Actions;
 
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Rules\AuthenticationRule;
+use Give\DonationForms\Rules\BillingAddressCityRule;
+use Give\DonationForms\Rules\BillingAddressStateRule;
+use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
+use Give\Framework\FieldsAPI\BillingAddress;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
@@ -88,9 +92,9 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @since 0.1.0
      *
+     * @return Node|null
      * @throws EmptyNameException|NameCollisionException
      *
-     * @return Node|null
      */
     protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex)
     {
@@ -104,8 +108,9 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.4.0 add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
-     * @since 0.1.0
+     * @unreleased Add support to billing address field
+     * @since      0.4.0 add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
+     * @since      0.1.0
      *
      * @return Node|null
      * @throws NameCollisionException
@@ -123,6 +128,9 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
 
+            case "givewp/billing-address":
+                return $this->createNodeFromBillingAddressBlock($block);
+
             case "givewp/paragraph":
                 return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
@@ -132,9 +140,10 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->emailTag('email')
                     ->rules('required', 'email')
                     ->tap(function ($email) use ($block) {
-                        if(is_user_logged_in()) {
+                        if (is_user_logged_in()) {
                             $email->defaultValue(wp_get_current_user()->user_email);
                         }
+
                         return $email;
                     });
 
@@ -161,6 +170,11 @@ class ConvertDonationFormBlocksToFieldsApi
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
 
+            case "givewp/terms-and-conditions":
+                return $this->createNodeFromConsentBlock($block, $blockIndex)
+                    ->label(__('Terms and Conditions', 'give'))
+                    ->required();
+
             case "givewp/login":
                 return Authentication::make('login')
                     ->required($block->getAttribute('required'))
@@ -170,9 +184,9 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->loginRedirectUrl(wp_login_url())
                     ->loginNotice($block->getAttribute('loginNotice'))
                     ->loginConfirmation($block->getAttribute('loginConfirmation'))
-                    ->tapNode('login', function($field) use ($block) {
-                        if($block->getAttribute('required')) {
-                            if (!is_user_logged_in()) {
+                    ->tapNode('login', function ($field) use ($block) {
+                        if ($block->getAttribute('required')) {
+                            if ( ! is_user_logged_in()) {
                                 $field->required();
                             }
 
@@ -248,6 +262,59 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @unreleased
+     */
+    protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
+    {
+        $countryList = [];
+        foreach (give_get_country_list() as $value => $label) {
+            $countryList[] = [$value, $label];
+        }
+
+        return BillingAddress::make('billingAddress')
+            ->setApiUrl(
+                give_get_ajax_url([
+                    'action' => 'give_get_states',
+                    'field_name' => 'state_selector',
+                ])
+            )
+            ->setGroupLabel(
+                $block->getAttribute('groupLabel')
+            )
+            ->tap(function ($group) use ($block, $countryList) {
+                $group->getNodeByName('country')
+                    ->label($block->getAttribute('countryLabel'))
+                    ->options(...$countryList)
+                    ->rules('required');
+
+                $group->getNodeByName('address1')
+                    ->label($block->getAttribute('address1Label'))
+                    ->placeholder($block->getAttribute('address1Placeholder'))
+                    ->rules('required', 'max:255');
+
+                $group->getNodeByName('address2')
+                    ->label($block->getAttribute('address2Label'))
+                    ->placeholder($block->getAttribute('address2Placeholder'))
+                    ->required($block->getAttribute('requireAddress2'))
+                    ->rules('max:255');
+
+                $group->getNodeByName('city')
+                    ->label($block->getAttribute('cityLabel'))
+                    ->placeholder($block->getAttribute('cityPlaceholder'))
+                    ->rules('max:255', new BillingAddressCityRule());
+
+                $group->getNodeByName('state')
+                    ->label($block->getAttribute('stateLabel'))
+                    ->rules('max:255', new BillingAddressStateRule());
+
+                $group->getNodeByName('zip')
+                    ->label($block->getAttribute('zipLabel'))
+                    ->placeholder($block->getAttribute('zipPlaceholder'))
+                    ->rules('max:255', new BillingAddressZipRule());
+            });
+    }
+
+    /**
      * @since 0.2.0
      *
      * @throws NameCollisionException
@@ -256,6 +323,14 @@ class ConvertDonationFormBlocksToFieldsApi
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
         return (new ConvertDonationAmountBlockToFieldsApi())($block, $this->currency);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function createNodeFromConsentBlock(BlockModel $block, int $blockIndex): Node
+    {
+        return (new ConvertConsentBlockToFieldsApi())($block, $blockIndex);
     }
 
     /**
