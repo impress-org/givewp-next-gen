@@ -20,7 +20,7 @@ export default function DonationAmount({
     subscriptionDetailsAreFixed,
 }: DonationAmountProps) {
     useDonationType();
-    const {allowLevels, fixedAmountValue, allowCustomAmount, currencySettings} = amountProps;
+    const {allowLevels, fixedAmountValue, allowCustomAmount, currencySettings, currencySwitcherMessage} = amountProps;
 
     return (
         <>
@@ -36,9 +36,7 @@ export default function DonationAmount({
                 {currencySettings.length > 1 && (
                     <DonationAmountCurrencySwitcherMessage
                         currencySettings={currencySettings}
-                        message={
-                            'The current exchange rate is 1.00 {base_currency} equals {new_currency_rate} {new_currency}.'
-                        }
+                        message={currencySwitcherMessage}
                     />
                 )}
             </AmountField>

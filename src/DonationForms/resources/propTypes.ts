@@ -91,6 +91,7 @@ export interface AmountProps extends FieldProps {
     allowCustomAmount: boolean;
     fixedAmountValue: number;
     currencySettings?: CurrencySetting[];
+    currencySwitcherMessage?: string;
     children: ReactNode;
 }
 

@@ -5,6 +5,7 @@ import AmountLevels from './AmountLevels';
 import {useState} from 'react';
 
 /**
+ * @unreleased add currency settings
  * @since 0.2.0 add display options for multi levels, fixed amount, and custom amount
  * @since 0.1.0
  */

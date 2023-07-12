@@ -44,6 +44,13 @@ class Amount extends Field
     protected $currencySettings = [];
 
     /**
+     * @unreleased
+     *
+     * @var string
+     */
+    protected $currencySwitcherMessage;
+
+    /**
      * Set the preset donation levels. Provide levels in minor units.
      *
      * @since 0.1.0
@@ -123,11 +130,20 @@ class Amount extends Field
 
     /**
      * @unreleased
-     * @return $this
      */
     public function currencySettings(CurrencySetting ...$settings): Amount
     {
         $this->currencySettings = $settings;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function currencySwitcherMessage(string $message): Amount
+    {
+        $this->currencySwitcherMessage = $message;
 
         return $this;
     }
