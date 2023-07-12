@@ -142,7 +142,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 $defaultGatewayId = give( DonationFormRepository::class )->getDefaultEnabledGatewayId( $this->formId );
 
                 return PaymentGateways::make( 'gatewayId' )
-                                      ->setTestMode( give_is_test_mode() )
+                                      ->testMode( give_is_test_mode() )
                                       ->rules( new GatewayRule() )
                                       ->required()
                                       ->defaultValue( $defaultGatewayId );

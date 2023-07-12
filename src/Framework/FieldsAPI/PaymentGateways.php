@@ -16,8 +16,8 @@ class PaymentGateways extends Field {
     /**
      * @unreleased
      */
-    public function setTestMode( bool $testMode ): PaymentGateways {
-        $this->isTestMode = $testMode;
+    public function testMode( bool $isTestMode = true ): PaymentGateways {
+        $this->isTestMode = $isTestMode;
 
         return $this;
     }
