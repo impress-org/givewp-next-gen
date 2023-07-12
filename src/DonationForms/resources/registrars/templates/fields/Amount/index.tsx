@@ -3,7 +3,6 @@ import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
 import {useState} from 'react';
-import CurrencySwitcher, {calculateCurrencyAmount} from './CurrencySwitcher';
 
 /**
  * @since 0.2.0 add display options for multi levels, fixed amount, and custom amount
@@ -21,15 +20,14 @@ export default function Amount({
     fixedAmountValue,
     allowCustomAmount,
     currencySettings,
+    children,
 }: AmountProps) {
+    const DonationAmountCurrency = window.givewp.form.templates.layouts.donationAmountCurrency;
     const [customAmountValue, setCustomAmountValue] = useState<string>('');
-    const {useWatch, useFormContext, useCurrencyFormatter} = window.givewp.form.hooks;
-    const {setValue, getValues} = useFormContext();
+    const {useWatch, useFormContext} = window.givewp.form.hooks;
+    const {setValue} = useFormContext();
 
     const currency = useWatch({name: 'currency'});
-
-    const formatter = useCurrencyFormatter(currency);
-    const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
 
     const isFixedAmount = !allowLevels;
 
@@ -55,32 +53,10 @@ export default function Amount({
                     <Label />
                 </label>
 
-                {currencySettings.length > 1 ? (
-                    <CurrencySwitcher
-                        defaultCurrency={currency}
-                        currencySettings={currencySettings}
-                        onSelect={(event) => {
-                            const selectedCurrency = event.target.value;
-
-                            const currencyAmount = calculateCurrencyAmount(
-                                getValues('amount'),
-                                currency,
-                                selectedCurrency,
-                                currencySettings
-                            );
-
-                            setValue('currency', selectedCurrency);
-                            setValue('amount', currencyAmount);
-
-                            updateCustomAmount(currencyAmount);
-                        }}
-                    />
-                ) : (
-                    <span className="givewp-fields-amount__currency-container">
-                        <span>{currency}</span>
-                        <span>{currencySymbol}</span>
-                    </span>
-                )}
+                <DonationAmountCurrency
+                    currencySettings={currencySettings}
+                    onCurrencyAmountChange={updateCustomAmount}
+                />
             </div>
 
             {allowLevels && (
@@ -112,15 +88,7 @@ export default function Amount({
 
             <input type="hidden" {...inputProps} />
 
-            {/*TODO: Update Message and baseCurrency to be dynamic from settings */}
-            <CurrencySwitcher.Message
-                message={'The current exchange rate is 1.00 {base_currency} equals {new_currency_rate} {new_currency}.'}
-                baseCurrency={'USD'}
-                newCurrencyRate={
-                    currencySettings.find((setting) => setting.id === currency)?.exchangeRate.toFixed(2) ?? '1.00'
-                }
-                newCurrency={currency}
-            />
+            {children}
 
             <ErrorMessage />
         </>

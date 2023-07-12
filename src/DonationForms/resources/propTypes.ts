@@ -66,7 +66,7 @@ export interface NameProps extends GroupProps {
 
 export interface DonationAmountProps extends GroupProps {
     fields: {
-        amount: FC<AmountProps | {}>;
+        amount: FC<Partial<AmountProps> | {}>;
         donationType: FC<FieldProps | {}>;
         currency: FC<FieldProps | {}>;
         subscriptionFrequency: FC<FieldProps | {}>;
@@ -91,6 +91,7 @@ export interface AmountProps extends FieldProps {
     allowCustomAmount: boolean;
     fixedAmountValue: number;
     currencySettings?: CurrencySetting[];
+    children: ReactNode;
 }
 
 export interface ParagraphProps extends ElementProps {

@@ -1,7 +1,6 @@
 import {CurrencySetting} from '@givewp/forms/types';
 import {ChangeEvent, useMemo} from 'react';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
-import {__} from '@wordpress/i18n';
 
 /**
  * @unreleased
@@ -109,34 +108,4 @@ function CurrencySwitcher({defaultCurrency, currencySettings, onSelect}: Currenc
         </span>
     );
 }
-
-function CurrencySwitcherMessage({
-    message,
-    baseCurrency,
-    newCurrencyRate,
-    newCurrency,
-}: {
-    message: string;
-    baseCurrency: string;
-    newCurrencyRate: string;
-    newCurrency: string;
-}) {
-    if (baseCurrency === newCurrency) {
-        return;
-    }
-
-    const templateTags = {
-        base_currency: baseCurrency,
-        new_currency_rate: newCurrencyRate,
-        new_currency: newCurrency,
-    };
-
-    Object.keys(templateTags).forEach((key) => {
-        message = message.replace(`{${key}}`, templateTags[key]);
-    });
-
-    return <div>{__(message, 'give')}</div>;
-}
-
-CurrencySwitcher.Message = CurrencySwitcherMessage;
 export default CurrencySwitcher;

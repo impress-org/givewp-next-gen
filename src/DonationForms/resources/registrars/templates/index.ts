@@ -14,7 +14,7 @@ import Form from './layouts/Form';
 import AmountField from './fields/Amount';
 import SelectField from './fields/Select';
 import Gateways from './fields/Gateways';
-import Authentication from "./groups/Authentication";
+import Authentication from './groups/Authentication';
 import Paragraph from './elements/Paragraph';
 import FieldLabel from './layouts/FieldLabel';
 import FieldError from './layouts/FieldError';
@@ -27,6 +27,7 @@ import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
 import DonationSummaryItems from './layouts/DonationSummaryItems';
+import DonationAmountCurrency from './layouts/DonationAmountCurrency';
 
 const defaultFormTemplates = {
     fields: {
@@ -65,6 +66,7 @@ const defaultFormTemplates = {
         goalAchieved: GoalAchieved,
         receipt: DonationReceipt,
         donationSummaryItems: DonationSummaryItems,
+        donationAmountCurrency: DonationAmountCurrency,
     },
 };
 
