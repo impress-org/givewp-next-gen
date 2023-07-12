@@ -2,6 +2,7 @@ import {ErrorMessage} from '@hookform/error-message';
 import type {GatewayFieldProps, GatewayOptionProps} from '@givewp/forms/propTypes';
 import {ErrorBoundary} from 'react-error-boundary';
 import {__} from '@wordpress/i18n';
+import {createInterpolateElement} from '@wordpress/element';
 
 function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
     return (
@@ -32,8 +33,15 @@ const TestModeNotice = () => {
                 />
             </svg>{' '}
             <p>
-                {__('Test mode is', 'give')} <strong>{__('enabled', 'give')}</strong>.{' '}
-                {__('While in test mode no live donations are processed.', 'give')}
+                {createInterpolateElement(
+                    __(
+                        'Test mode is <strong>enabled</strong>. While in test mode no live donations are processed.',
+                        'give'
+                    ),
+                    {
+                        strong: <strong />,
+                    }
+                )}
             </p>
         </div>
     );
