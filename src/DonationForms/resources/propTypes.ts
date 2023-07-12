@@ -39,6 +39,10 @@ export interface CheckboxProps extends FieldProps {
     value: string | number;
 }
 
+export interface UrlProps extends FieldProps {
+    description: string;
+}
+
 export interface ElementProps extends Element {}
 
 export interface GroupProps extends Group {
