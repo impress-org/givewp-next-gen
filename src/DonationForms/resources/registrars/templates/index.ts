@@ -30,6 +30,7 @@ import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
 import DonationSummaryItems from './layouts/DonationSummaryItems';
 import DonationAmountCurrency from './layouts/DonationAmountCurrency';
+import DonationAmountLevels from './layouts/DonationAmountLevels';
 
 const defaultFormTemplates = {
     fields: {
@@ -71,6 +72,7 @@ const defaultFormTemplates = {
         receipt: DonationReceipt,
         donationSummaryItems: DonationSummaryItems,
         donationAmountCurrency: DonationAmountCurrency,
+        donationAmountLevels: DonationAmountLevels,
     },
 };
 

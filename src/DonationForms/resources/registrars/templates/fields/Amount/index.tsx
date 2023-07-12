@@ -1,8 +1,8 @@
 import {useCallback} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
-import AmountLevels from './AmountLevels';
 import {useState} from 'react';
+import getAmountLevelsWithCurrencySettings from './getAmountLevelsWithCurrencySettings';
 
 /**
  * @unreleased add currency settings
@@ -24,11 +24,20 @@ export default function Amount({
     children,
 }: AmountProps) {
     const DonationAmountCurrency = window.givewp.form.templates.layouts.donationAmountCurrency;
+    const DonationAmountLevels = window.givewp.form.templates.layouts.donationAmountLevels;
     const [customAmountValue, setCustomAmountValue] = useState<string>('');
     const {useWatch, useFormContext} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
 
     const currency = useWatch({name: 'currency'});
+
+    const getAmountLevels = useCallback(() => {
+        if (currencySettings.length <= 1) {
+            return levels;
+        }
+
+        return getAmountLevelsWithCurrencySettings(levels, currency, currencySettings);
+    }, [currency]);
 
     const isFixedAmount = !allowLevels;
 
@@ -61,11 +70,10 @@ export default function Amount({
             </div>
 
             {allowLevels && (
-                <AmountLevels
+                <DonationAmountLevels
                     name={name}
                     currency={currency}
-                    levels={levels}
-                    currencySettings={currencySettings}
+                    levels={getAmountLevels()}
                     onLevelClick={(levelAmount) => {
                         resetCustomAmount();
                         setValue(name, levelAmount);
