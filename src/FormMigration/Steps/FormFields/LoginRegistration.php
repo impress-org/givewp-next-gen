@@ -2,8 +2,8 @@
 
 namespace Give\FormMigration\Steps\FormFields;
 
+use Give\FormMigration\Concerns\Blocks\BlockFactory;;
 use Give\FormMigration\Contracts\FormMigrationStep;
-use Give\Framework\Blocks\BlockFactory;
 
 class LoginRegistration extends FormMigrationStep
 {

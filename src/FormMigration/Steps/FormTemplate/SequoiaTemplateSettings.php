@@ -8,7 +8,6 @@ use Give\FormMigration\Actions\MapSettingsToDonationSummary;
 use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\FormMigration\DataTransferObjects\DesignHeaderSettings;
 use Give\FormMigration\DataTransferObjects\DonationSummarySettings;
-use Give\Framework\Blocks\BlockFactory;
 
 class SequoiaTemplateSettings extends FormMigrationStep
 {

@@ -96,24 +96,18 @@ class FormMetaDecorator extends FormModelDecorator
         );
     }
 
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    protected function getDonationGoalFormat(): string
+    public function getDonationGoalType(): GoalType
     {
-        switch($format = give_get_form_goal_format($this->form->id)) {
-            case 'amount':
-            case 'percentage': // @note `percentage` is not supported in v3.
-                return GoalType::AMOUNT;
-            case 'donation': // v2: Singular
-                return GoalType::DONATIONS; // v3: Plural
+        switch(give_get_form_goal_format($this->form->id)) {
             case 'donors':
-                return GoalType::DONORS;
+                return GoalType::DONORS();
+            case 'donation': // @note v2: Singular
+                return GoalType::DONATIONS(); // @note v3: Plural
+            case 'amount':
+            case 'percentage': // @note `percentage` is not supported in v3 - defaulting to `amount`
+            default:
+                return GoalType::AMOUNT();
         }
-
-        // @note Might be better to just force a default here? This isn't likely to be wrong, but if it is, something is probably very wrong.
-        throw new \Exception(sprintf('Goal format "%s" does not have a corresponding type.', $format));
     }
 
     /**

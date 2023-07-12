@@ -3,8 +3,6 @@
 namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
-use Give\Framework\Blocks\BlockFactory;
-use Give\Framework\Blocks\BlockModel;
 
 class FormFields extends FormMigrationStep
 {

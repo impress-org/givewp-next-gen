@@ -4,9 +4,9 @@ namespace Give\FormMigration\Controllers;
 
 use Give\DonationForms\Models\DonationForm as DonationFormV3;
 use Give\DonationForms\V2\Models\DonationForm as DonationFormV2;
+use Give\FormMigration\Concerns\Blocks\BlockDifference;
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Pipeline;
-use Give\Framework\Blocks\BlockDifference;
 use Give\Framework\Blocks\BlockModel;
 use Give\Log\Log;
 use WP_REST_Request;

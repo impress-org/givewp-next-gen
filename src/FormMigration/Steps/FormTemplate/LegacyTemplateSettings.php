@@ -2,8 +2,8 @@
 
 namespace Give\FormMigration\Steps\FormTemplate;
 
+use Give\FormMigration\Concerns\Blocks\BlockFactory;;
 use Give\FormMigration\Contracts\FormMigrationStep;
-use Give\Framework\Blocks\BlockFactory;
 
 class LegacyTemplateSettings extends FormMigrationStep
 {

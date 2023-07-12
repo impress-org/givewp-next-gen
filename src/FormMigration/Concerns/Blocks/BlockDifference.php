@@ -1,6 +1,9 @@
 <?php
 
-namespace Give\Framework\Blocks;
+namespace Give\FormMigration\Concerns\Blocks;
+
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 
 class BlockDifference
 {

@@ -1,19 +1,15 @@
 <?php
 
-namespace Give\Framework\Blocks;
+namespace Give\FormMigration\Concerns\Blocks;
+
+use Give\Framework\Blocks\BlockModel;
 
 class BlockFactory
 {
     /**
      * @note Fields API conversion requires a string for the description, even if empty.
-     *
-     * @param            $title
-     * @param            $description
-     * @param BlockModel ...$innerBlocks
-     *
-     * @return BlockModel
      */
-    public static function section($title = '', $description = '', BlockModel ...$innerBlocks)
+    public static function section($title = '', $description = '', BlockModel ...$innerBlocks): BlockModel
     {
         return BlockModel::make([
             'name' => 'givewp/section',
@@ -25,7 +21,7 @@ class BlockFactory
         ]);
     }
 
-    public static function paragraph($content)
+    public static function paragraph($content): BlockModel
     {
         return BlockModel::make([
             'name' => 'givewp/paragraph',
@@ -35,7 +31,7 @@ class BlockFactory
         ]);
     }
 
-    public static function company($isRequired)
+    public static function company($isRequired): BlockModel
     {
         return BlockModel::make([
             'name' => 'givewp/company',
@@ -46,7 +42,7 @@ class BlockFactory
         ]);
     }
 
-    public static function login($isRequired)
+    public static function login($isRequired): BlockModel
     {
         return BlockModel::make([
             'name' => 'givewp/login',
@@ -59,7 +55,7 @@ class BlockFactory
         ]);
     }
 
-    public static function termsAndConditions(array $attributes)
+    public static function termsAndConditions(array $attributes): BlockModel
     {
         return BlockModel::make([
             'name' => 'givewp/terms-and-conditions',
