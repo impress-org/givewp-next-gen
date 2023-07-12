@@ -5,6 +5,7 @@ import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
 import CheckboxField from './fields/Checkbox';
 import RadioField from './fields/Radio';
+import Url from './fields/Url';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
 import NameGroup from './groups/Name';
@@ -40,6 +41,7 @@ const defaultFormTemplates = {
         select: SelectField,
         checkbox: CheckboxField,
         radio: RadioField,
+        url: Url,
     },
     elements: {
         paragraph: Paragraph,
