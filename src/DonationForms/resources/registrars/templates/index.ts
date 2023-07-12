@@ -8,10 +8,12 @@ import RadioField from './fields/Radio';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
 import NameGroup from './groups/Name';
+import BillingAddressGroup from './groups/BillingAddress';
 import DonationAmountGroup from './groups/DonationAmount';
 import SectionLayout from './layouts/Section';
 import Form from './layouts/Form';
 import AmountField from './fields/Amount';
+import ConsentField from './fields/Consent';
 import SelectField from './fields/Select';
 import Gateways from './fields/Gateways';
 import Authentication from './groups/Authentication';
@@ -32,6 +34,7 @@ import DonationAmountCurrency from './layouts/DonationAmountCurrency';
 const defaultFormTemplates = {
     fields: {
         amount: AmountField,
+        consent: ConsentField,
         text: TextField,
         password: PasswordField,
         textarea: TextAreaField,
@@ -51,6 +54,7 @@ const defaultFormTemplates = {
         name: NameGroup,
         donationAmount: DonationAmountGroup,
         authentication: Authentication,
+        billingAddress: BillingAddressGroup,
     },
     layouts: {
         wrapper: NodeWrapper,
