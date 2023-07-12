@@ -2,7 +2,7 @@
 
     .givewp-test-mode-notice {
         display: flex;
-        justify-content: center;
+        justify-content: left;
         align-items: center;
         width: 100%;
         padding: 0.75rem 1rem;
@@ -22,7 +22,12 @@
         }
 
         p {
-            margin: 0.75rem 0 0.75rem 0;
+            margin: 0;
+            line-height: 1.25rem;
+            color: var(--grey-900, #0E0E0E);
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
         }
     }
 
