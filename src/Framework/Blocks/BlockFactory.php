@@ -35,6 +35,30 @@ class BlockFactory
         ]);
     }
 
+    public static function company($isRequired)
+    {
+        return BlockModel::make([
+            'name' => 'givewp/company',
+            'attributes' => [
+                'label' => __('Company Name', 'give'),
+                'isRequired' => $isRequired,
+            ]
+        ]);
+    }
+
+    public static function login($isRequired)
+    {
+        return BlockModel::make([
+            'name' => 'givewp/login',
+            'attributes' => [
+                'required' => $isRequired,
+                'loginRedirect' => false,
+                'loginNotice' => __('Already have an account?', 'give'),
+                'loginConfirmation' => __('Thank you for your continued support.', 'give'),
+            ]
+        ]);
+    }
+
     public static function termsAndConditions(array $attributes)
     {
         return BlockModel::make([

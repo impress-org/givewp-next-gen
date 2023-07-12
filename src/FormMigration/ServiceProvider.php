@@ -25,6 +25,8 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormTemplate\LegacyTemplateSettings::class,
                 Steps\DonationOptions::class,
                 Steps\FormFields::class,
+                Steps\FormFields\LoginRegistration::class,
+                Steps\FormFields\CompanyDonations::class,
                 Steps\DonationGoal::class,
                 Steps\TermsAndConditions::class,
                 Steps\OfflineDonations::class,

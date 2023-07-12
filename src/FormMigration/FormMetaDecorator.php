@@ -33,6 +33,28 @@ class FormMetaDecorator extends FormModelDecorator
         return give_get_name_title_prefixes($this->form->id);
     }
 
+    public function isUserRegistrationEnabled(): bool
+    {
+        // @note In v3 all donors are registered as users, so no need for a registration setting.
+        return in_array(
+            give_get_meta($this->form->id, '_give_show_register_form'),
+            ['registration', 'login', 'both']
+        );
+    }
+
+    public function isUserLoginRequired(): bool
+    {
+        return ! $this->isGuestDonationsEnabled();
+    }
+
+    public function isGuestDonationsEnabled(): bool
+    {
+        // @note The "Guest Donation" setting corresponds to the `_give_logged_in_only` meta, which seems backwards.
+        return give_is_setting_enabled(
+            give_get_meta($this->form->id, '_give_logged_in_only', true)
+        );
+    }
+
     public function isCompanyFieldEnabled(): bool
     {
         return give_is_company_field_enabled($this->form->id);
