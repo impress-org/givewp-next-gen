@@ -13,6 +13,7 @@ import DonationAmountGroup from './groups/DonationAmount';
 import SectionLayout from './layouts/Section';
 import Form from './layouts/Form';
 import AmountField from './fields/Amount';
+import ConsentField from './fields/Consent';
 import SelectField from './fields/Select';
 import Gateways from './fields/Gateways';
 import Authentication from './groups/Authentication';
@@ -32,6 +33,7 @@ import DonationSummaryItems from './layouts/DonationSummaryItems';
 const defaultFormTemplates = {
     fields: {
         amount: AmountField,
+        consent: ConsentField,
         text: TextField,
         password: PasswordField,
         textarea: TextAreaField,
