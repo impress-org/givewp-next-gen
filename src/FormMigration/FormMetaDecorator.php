@@ -131,4 +131,23 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return give_get_meta( $this->form->id, '_give_agree_text', true );
     }
+
+    public function isOfflineDonationsEnabled()
+    {
+        return give_is_setting_enabled(
+            give_get_meta( $this->form->id, '_give_customize_offline_donations', true )
+        );
+    }
+
+    public function isOfflineDonationsBillingFieldEnabled()
+    {
+        return give_is_setting_enabled(
+            give_get_meta( $this->form->id, '_give_offline_donation_enable_billing_fields_single', true )
+        );
+    }
+
+    public function getOfflineDonationInstructions()
+    {
+        return give_get_meta( $this->form->id, '_give_offline_checkout_notes', true );
+    }
 }

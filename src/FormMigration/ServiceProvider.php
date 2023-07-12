@@ -26,7 +26,8 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\DonationOptions::class,
                 Steps\FormFields::class,
                 Steps\DonationGoal::class,
-                Steps\TermsAndConditions::class
+                Steps\TermsAndConditions::class,
+                Steps\OfflineDonations::class,
             ]);
         });
     }
