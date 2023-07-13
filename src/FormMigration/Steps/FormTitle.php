@@ -8,8 +8,8 @@ class FormTitle extends FormMigrationStep
 {
     public function process()
     {
-        $this->formV3->title
-            = $this->formV3->settings->formTitle
-            = sprintf('%s [v3]', $this->formV2->title);
+        $formTitle = sprintf('%s [v3]', $this->formV2->title);
+        $this->formV3->title = $formTitle;
+        $this->formV3->settings->formTitle = $formTitle;
     }
 }
