@@ -7,18 +7,25 @@ import {createSlotFill} from '@wordpress/components';
  * @unreleased
  */
 const {Slot: FieldSettingsSlot, Fill: FieldSettingsFill} = createSlotFill('GiveWP/FieldSettings/FieldSettingSlot');
+
+const {Slot: AfterFieldSettingsSlot, Fill: AfterFieldSettingsFill} = createSlotFill(
+    'GiveWP/FieldSettings/AfterFieldSettingsSlot'
+);
 const {Slot: DisplaySettingsSlot, Fill: DisplaySettingsFill} = createSlotFill(
     'GiveWP/FieldSettings/DisplaySettingSlot'
 );
-const {Slot: AdvancedSettingsSlot, Fill: AdvancedSettingsFill} = createSlotFill(
-    'GiveWP/FieldSettings/AdvancedSettingSlot'
+
+const {Slot: AfterDisplaySettingsSlot, Fill: AfterDisplaySettingsFill} = createSlotFill(
+    'GiveWP/FieldSettings/AfterDisplaySettingsSlot'
 );
 
 export {
     FieldSettingsSlot,
     FieldSettingsFill,
+    AfterFieldSettingsSlot,
+    AfterFieldSettingsFill,
     DisplaySettingsSlot,
     DisplaySettingsFill,
-    AdvancedSettingsSlot,
-    AdvancedSettingsFill,
+    AfterDisplaySettingsSlot,
+    AfterDisplaySettingsFill,
 };

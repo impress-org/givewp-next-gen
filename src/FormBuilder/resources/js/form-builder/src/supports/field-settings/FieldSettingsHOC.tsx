@@ -9,7 +9,7 @@ import {__} from '@wordpress/i18n';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 import {FieldSettings} from './types';
-import {AdvancedSettingsSlot, DisplaySettingsSlot, FieldSettingsSlot} from './slots';
+import {AfterDisplaySettingsSlot, AfterFieldSettingsSlot, DisplaySettingsSlot, FieldSettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 import {useState} from 'react';
@@ -102,8 +102,11 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
     return (
         <>
             <BlockEdit />
-            {(fieldSettings.label || fieldSettings.required) && (
-                <InspectorControls>
+            <InspectorControls>
+                {(fieldSettings.label ||
+                    fieldSettings.placeholder ||
+                    fieldSettings.description ||
+                    fieldSettings.required) && (
                     <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
                         {fieldSettings.label && (
                             <PanelRow>
@@ -148,10 +151,11 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         {/* @ts-ignore */}
                         <FieldSettingsSlot />
                     </PanelBody>
-                </InspectorControls>
-            )}
-            {(fieldSettings.displayInAdmin || fieldSettings.displayInReceipt) && (
-                <InspectorControls>
+                )}
+
+                <AfterFieldSettingsSlot />
+
+                {(fieldSettings.displayInAdmin || fieldSettings.displayInReceipt) && (
                     <PanelBody title={__('Display Settings', 'give')} initialOpen={true}>
                         {fieldSettings.displayInAdmin && (
                             <PanelRow>
@@ -174,8 +178,11 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         {/* @ts-ignore */}
                         <DisplaySettingsSlot />
                     </PanelBody>
-                </InspectorControls>
-            )}
+                )}
+
+                <AfterDisplaySettingsSlot />
+            </InspectorControls>
+
             {(fieldSettings.name || fieldSettings.storeAsDonorMeta) && (
                 <InspectorAdvancedControls>
                     {fieldSettings.defaultValue && (
