@@ -178,7 +178,21 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
             )}
             {(fieldSettings.name || fieldSettings.storeAsDonorMeta) && (
                 <InspectorAdvancedControls>
-                    <AdvancedSettingsSlot />
+                    {fieldSettings.defaultValue && (
+                        <PanelRow>
+                            <TextControl
+                                label={__('Default Value', 'give')}
+                                value={attributes.defaultValue}
+                                help={[
+                                    __(
+                                        'The value of the field if the donor does not fill out this field. Leave blank in most cases.',
+                                        'give'
+                                    ),
+                                ]}
+                                onChange={(newDefaultValue) => setAttributes({defaultValue: newDefaultValue})}
+                            />
+                        </PanelRow>
+                    )}
 
                     {fieldSettings.name && (
                         <PanelRow>
@@ -199,6 +213,23 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                             />
                         </PanelRow>
                     )}
+
+                    {fieldSettings.emailTag && (
+                        <PanelRow>
+                            <TextControl
+                                label={__('Email Tag', 'give')}
+                                value={attributes.emailTag}
+                                help={[
+                                    __(
+                                        'Use this email tag to dynamically output the data in supported GiveWP emails.',
+                                        'give'
+                                    ),
+                                ]}
+                                onChange={(newDefaultValue) => setAttributes({emailTag: newDefaultValue})}
+                            />
+                        </PanelRow>
+                    )}
+
                     {fieldSettings.storeAsDonorMeta && (
                         <PanelRow>
                             <ToggleControl

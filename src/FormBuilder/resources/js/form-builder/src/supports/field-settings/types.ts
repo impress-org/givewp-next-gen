@@ -7,6 +7,8 @@ export type FieldSettings = {
     storeAsDonorMeta: FieldSettingProperty;
     displayInAdmin: FieldSettingProperty;
     displayInReceipt: FieldSettingProperty;
+    defaultValue: FieldSettingProperty;
+    emailTag: FieldSettingProperty;
 };
 
 export type FieldSettingsSupport =
@@ -20,6 +22,8 @@ export type FieldSettingsSupport =
           storeAsDonorMeta: FieldSettingProperty | boolean;
           displayInAdmin: FieldSettingProperty | boolean;
           displayInReceipt: FieldSettingProperty | boolean;
+          defaultValue: FieldSettingProperty | boolean;
+          emailTag: FieldSettingProperty | boolean;
       };
 
 export type FieldSettingProperty =
