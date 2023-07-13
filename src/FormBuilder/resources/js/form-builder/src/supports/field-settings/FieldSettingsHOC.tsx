@@ -183,7 +183,10 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                 <AfterDisplaySettingsSlot />
             </InspectorControls>
 
-            {(fieldSettings.name || fieldSettings.storeAsDonorMeta) && (
+            {(fieldSettings.defaultValue ||
+                fieldSettings.name ||
+                fieldSettings.emailTag ||
+                fieldSettings.storeAsDonorMeta) && (
                 <InspectorAdvancedControls>
                     {fieldSettings.defaultValue && (
                         <PanelRow>
