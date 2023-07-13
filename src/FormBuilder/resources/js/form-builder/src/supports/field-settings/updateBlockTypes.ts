@@ -74,6 +74,20 @@ export default function updateBlockTypes(settings) {
         };
     }
 
+    if (fieldSettings.defaultValue) {
+        fieldAttributes.defaultValue = {
+            type: 'string',
+            default: fieldSettings.defaultValue.default,
+        };
+    }
+
+    if (fieldSettings.emailTag) {
+        fieldAttributes.emailTag = {
+            type: 'string',
+            default: fieldSettings.emailTag.default,
+        };
+    }
+
     settings.attributes = {
         ...settings.attributes,
         ...fieldAttributes,

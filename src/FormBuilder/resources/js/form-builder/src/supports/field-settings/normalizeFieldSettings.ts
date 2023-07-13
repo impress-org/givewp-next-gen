@@ -34,5 +34,7 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
         storeAsDonorMeta: getSupportSetting('storeAsDonorMeta', true, false),
         displayInAdmin: getSupportSetting('displayInAdmin', true, true),
         displayInReceipt: getSupportSetting('displayInReceipt', true, true),
+        defaultValue: getSupportSetting('defaultValue', false, ''),
+        emailTag: getSupportSetting('emailTag', false, ''),
     };
 }

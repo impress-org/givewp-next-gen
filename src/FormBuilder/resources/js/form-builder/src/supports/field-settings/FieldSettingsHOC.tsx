@@ -1,15 +1,15 @@
-import {InspectorControls, InspectorAdvancedControls} from '@wordpress/block-editor';
+import {InspectorAdvancedControls, InspectorControls} from '@wordpress/block-editor';
 import {useCallback, useMemo} from '@wordpress/element';
 import {getBlockSupport} from '@wordpress/blocks';
 import {slugify} from '@givewp/form-builder/common';
 import normalizeFieldSettings from '@givewp/form-builder/supports/field-settings/normalizeFieldSettings';
 import {useFieldNameValidator} from '@givewp/form-builder/hooks';
-import {ExternalLink, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
+import {ExternalLink, PanelBody, PanelRow, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 import {FieldSettings} from './types';
-import {FieldSettingsSlot, DisplaySettingsSlot} from './slots';
+import {AfterDisplaySettingsSlot, AfterFieldSettingsSlot, DisplaySettingsSlot, FieldSettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 import {useState} from 'react';
@@ -102,8 +102,11 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
     return (
         <>
             <BlockEdit />
-            {(fieldSettings.label || fieldSettings.required) && (
-                <InspectorControls>
+            <InspectorControls>
+                {(fieldSettings.label ||
+                    fieldSettings.placeholder ||
+                    fieldSettings.description ||
+                    fieldSettings.required) && (
                     <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
                         {fieldSettings.label && (
                             <PanelRow>
@@ -127,7 +130,7 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         )}
                         {fieldSettings.description && (
                             <PanelRow>
-                                <TextControl
+                                <TextareaControl
                                     label={__('Description', 'give')}
                                     value={attributes.description}
                                     onChange={(newDescription) => {
@@ -148,10 +151,11 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         {/* @ts-ignore */}
                         <FieldSettingsSlot />
                     </PanelBody>
-                </InspectorControls>
-            )}
-            {(fieldSettings.displayInAdmin || fieldSettings.displayInReceipt) && (
-                <InspectorControls>
+                )}
+
+                <AfterFieldSettingsSlot />
+
+                {(fieldSettings.displayInAdmin || fieldSettings.displayInReceipt) && (
                     <PanelBody title={__('Display Settings', 'give')} initialOpen={true}>
                         {fieldSettings.displayInAdmin && (
                             <PanelRow>
@@ -174,10 +178,32 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         {/* @ts-ignore */}
                         <DisplaySettingsSlot />
                     </PanelBody>
-                </InspectorControls>
-            )}
-            {(fieldSettings.name || fieldSettings.storeAsDonorMeta) && (
+                )}
+
+                <AfterDisplaySettingsSlot />
+            </InspectorControls>
+
+            {(fieldSettings.defaultValue ||
+                fieldSettings.name ||
+                fieldSettings.emailTag ||
+                fieldSettings.storeAsDonorMeta) && (
                 <InspectorAdvancedControls>
+                    {fieldSettings.defaultValue && (
+                        <PanelRow>
+                            <TextControl
+                                label={__('Default Value', 'give')}
+                                value={attributes.defaultValue}
+                                help={[
+                                    __(
+                                        'The value of the field if the donor does not fill out this field. Leave blank in most cases.',
+                                        'give'
+                                    ),
+                                ]}
+                                onChange={(newDefaultValue) => setAttributes({defaultValue: newDefaultValue})}
+                            />
+                        </PanelRow>
+                    )}
+
                     {fieldSettings.name && (
                         <PanelRow>
                             <TextControl
@@ -197,6 +223,23 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                             />
                         </PanelRow>
                     )}
+
+                    {fieldSettings.emailTag && (
+                        <PanelRow>
+                            <TextControl
+                                label={__('Email Tag', 'give')}
+                                value={attributes.emailTag}
+                                help={[
+                                    __(
+                                        'Use this email tag to dynamically output the data in supported GiveWP emails.',
+                                        'give'
+                                    ),
+                                ]}
+                                onChange={(newDefaultValue) => setAttributes({emailTag: newDefaultValue})}
+                            />
+                        </PanelRow>
+                    )}
+
                     {fieldSettings.storeAsDonorMeta && (
                         <PanelRow>
                             <ToggleControl
