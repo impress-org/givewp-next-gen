@@ -16,10 +16,18 @@ class MigrationController
 {
     protected $debugContext;
 
-    public function __invoke(WP_REST_Request $request)
-    {
-        $formIdV2 = $request->get_param('id');
+    /**
+     * @var WP_REST_Request
+     */
+    protected $request;
 
+    public function __construct(WP_REST_Request $request)
+    {
+        $this->request = $request;
+    }
+
+    public function __invoke($formIdV2)
+    {
         $payload = new FormMigrationPayload(
             DonationFormV2::find($formIdV2),
             DonationFormV3::factory()->make()
@@ -49,13 +57,16 @@ class MigrationController
                 Log::info(esc_html__('Form migrated from v2 to v3.', 'give'), $this->debugContext);
             });
 
-        return new WP_REST_Response([
-            'success' => true,
-            'data' => [
-                'v2' => $payload->formV2->id,
-                'v3' => $payload->formV3->id,
-                'debug' => $this->debugContext,
-            ],
-        ]);
+        return new WP_REST_Response(array('errors' => [], 'successes' => [
+            $payload->formV2->id
+        ]));
+//        return new WP_REST_Response([
+//            'success' => true,
+//            'data' => [
+//                'v2' => $payload->formV2->id,
+//                'v3' => $payload->formV3->id,
+//                'debug' => $this->debugContext,
+//            ],
+//        ]);
     }
 }
