@@ -39,10 +39,10 @@ const zeroDecimalCurrencies = [
  */
 const dollarsToCents = (amount: string, currency: string) => {
     if (zeroDecimalCurrencies.includes(currency)) {
-        return parseInt(amount);
+        return Math.round(parseFloat(amount));
     }
 
-    return parseFloat(amount) * 100;
+    return Math.round(parseFloat(amount) * 100);
 };
 
 const StripeFields = ({gateway}) => {
