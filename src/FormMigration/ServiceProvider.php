@@ -32,6 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\DonationGoal::class,
                 Steps\TermsAndConditions::class,
                 Steps\OfflineDonations::class,
+                Steps\EmailSettings::class,
             ]);
         });
     }

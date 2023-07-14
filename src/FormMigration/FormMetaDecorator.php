@@ -166,4 +166,29 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return give_get_meta( $this->form->id, '_give_offline_checkout_notes', true );
     }
+
+    public function getEmailOptionsStatus(): string
+    {
+        return give_get_meta( $this->form->id, '_give_email_options', true );
+    }
+
+    public function getEmailTemplate(): string
+    {
+        return give_get_meta( $this->form->id, '_give_email_template', true );
+    }
+
+    public function getEmailLogo(): string
+    {
+        return \Give_Email_Notification_Util::get_email_logo($this->form->id);
+    }
+
+    public function getEmailFromName(): string
+    {
+        return give_get_meta( $this->form->id, '_give_from_name', true );
+    }
+
+    public function getEmailFromEmail(): string
+    {
+        return give_get_meta( $this->form->id, '_give_from_email', true );
+    }
 }

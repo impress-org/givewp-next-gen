@@ -56,6 +56,8 @@ class MigrationCommand
         foreach($payload->formV3->settings->toArray() as $key => $value) {
             $previousValue = $_payload->formV3->settings->$key;
             if($previousValue != $value) { // The check is loosely typed to support Enums
+                $value = is_array($value) ? '[Array]' : ( empty($value) ? '(empty)' : $value );
+                $previousValue = is_array($previousValue) ? '[Array]' : ( empty($previousValue) ? '(empty)' : $previousValue );
                 WP_CLI::log('');
                 WP_CLI::log('Form Setting: ' . $key);
                 WP_CLI::log('    ' . $previousValue . ' => ' . $value);
