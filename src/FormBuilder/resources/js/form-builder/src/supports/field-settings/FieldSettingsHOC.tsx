@@ -1,7 +1,6 @@
 import {InspectorAdvancedControls, InspectorControls} from '@wordpress/block-editor';
 import {useCallback, useMemo} from '@wordpress/element';
 import {getBlockSupport} from '@wordpress/blocks';
-import {slugify} from '@givewp/form-builder/common';
 import normalizeFieldSettings from '@givewp/form-builder/supports/field-settings/normalizeFieldSettings';
 import {useFieldNameValidator} from '@givewp/form-builder/hooks';
 import {PanelBody, PanelRow, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
@@ -13,7 +12,7 @@ import {AfterDisplaySettingsSlot, AfterFieldSettingsSlot, DisplaySettingsSlot, F
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 import {useState} from 'react';
-import MetaKeyTextControl from '@givewp/form-builder/supports/field-settings/MetaKeyTextControl';
+import MetaKeyTextControl, {slugifyMeta} from '@givewp/form-builder/supports/field-settings/MetaKeyTextControl';
 
 /**
  * Higher Order Component that adds field settings to the inspector controls.
@@ -60,10 +59,10 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
 
     const updateFieldName = useCallback(
         (newFieldName = null, bumpUniqueness = false) => {
-            let slugifiedName = newFieldName ? slugify(newFieldName) : null;
+            let slugifiedName = newFieldName ? slugifyMeta(newFieldName) : null;
 
             if (!slugifiedName) {
-                slugifiedName = slugify(attributes.label);
+                slugifiedName = slugifyMeta(attributes.label);
             }
 
             const [isUnique, suggestedName] = validateFieldName(slugifiedName, bumpUniqueness);
@@ -74,6 +73,9 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
 
             setAttributes({
                 fieldName: slugifiedName,
+                emailTag: attributes.storeAsDonorMeta
+                    ? `meta_donor_${slugifiedName}`
+                    : `meta_donation_${slugifiedName}`,
             });
         },
         [setAttributes, attributes.label]
@@ -215,18 +217,19 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         </PanelRow>
                     )}
 
-                    {fieldSettings.emailTag && (
+                    {fieldSettings.metaKey && fieldSettings.emailTag && (
                         <PanelRow>
                             <TextControl
                                 label={__('Email Tag', 'give')}
-                                value={attributes.emailTag}
+                                value={'{' + attributes.emailTag + '}'}
+                                readOnly
                                 help={[
                                     __(
                                         'Use this email tag to dynamically output the data in supported GiveWP emails.',
                                         'give'
                                     ),
                                 ]}
-                                onChange={(newDefaultValue) => setAttributes({emailTag: newDefaultValue})}
+                                onChange={() => {}}
                             />
                         </PanelRow>
                     )}

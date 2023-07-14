@@ -9,12 +9,12 @@ export default function MetaKeyTextControl({value, lockValue, onChange, onBlur})
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
     const [valueIsLocked, setValueIsLocked] = useState<boolean>(lockValue);
 
-    const togglePopover = () => setIsPopoverOpen(state => !state);
+    const togglePopover = () => setIsPopoverOpen((state) => !state);
 
     const handlePopoverConfirmation = () => {
         setIsPopoverOpen(false);
         setValueIsLocked(false);
-    }
+    };
 
     return (
         <>
@@ -39,7 +39,16 @@ export default function MetaKeyTextControl({value, lockValue, onChange, onBlur})
                 onConfirm={handlePopoverConfirmation}
             />
         </>
-    )
+    );
+}
+
+export function slugifyMeta(value) {
+    return value
+        .trim()
+        .toLowerCase()
+        .replace(/\s/g, '_') // Replace spaces and underscores with underscores
+        .replace(/[^a-zA-Z\d\s_-]/g, '') // Replace non-alphanumeric characters (other than dashes and underscores) with nothing
+        .replace(/-$/g, ''); // Remove trailing dash
 }
 
 function EditButton({onClick}) {
