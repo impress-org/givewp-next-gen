@@ -1,5 +1,4 @@
 import {useSelect} from '@wordpress/data';
-import {useMemo} from '@wordpress/element';
 
 /**
  * @since 0.1.0
@@ -59,7 +58,7 @@ const useFieldNameValidator = () => {
      */
     return (n, allowOne = false): ValidationSet => {
         const frequency = getFieldNameFrequency(n, fieldNames ?? []);
-        const isUnique = allowOne ? frequency === 1 : frequency === 0;
+        const isUnique = allowOne ? frequency <= 1 : frequency === 0;
 
         return [isUnique, isUnique ? null : getFieldNameSuggestion(n, fieldNames ?? [])];
     };

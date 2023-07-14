@@ -4,7 +4,7 @@ import {getBlockSupport} from '@wordpress/blocks';
 import {slugify} from '@givewp/form-builder/common';
 import normalizeFieldSettings from '@givewp/form-builder/supports/field-settings/normalizeFieldSettings';
 import {useFieldNameValidator} from '@givewp/form-builder/hooks';
-import {ExternalLink, PanelBody, PanelRow, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
+import {PanelBody, PanelRow, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
@@ -13,6 +13,7 @@ import {AfterDisplaySettingsSlot, AfterFieldSettingsSlot, DisplaySettingsSlot, F
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 import {useState} from 'react';
+import MetaKeyTextControl from '@givewp/form-builder/supports/field-settings/MetaKeyTextControl';
 
 /**
  * Higher Order Component that adds field settings to the inspector controls.
@@ -55,6 +56,7 @@ export default FieldSettingsHOC;
 function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}) {
     const validateFieldName = useFieldNameValidator();
     const [fieldNameSet, setFieldNameSet] = useState(attributes.hasOwnProperty('fieldName'));
+    const [isNewField] = useState(fieldNameSet);
 
     const updateFieldName = useCallback(
         (newFieldName = null, bumpUniqueness = false) => {
@@ -179,14 +181,12 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         <DisplaySettingsSlot />
                     </PanelBody>
                 )}
-
                 <AfterDisplaySettingsSlot />
             </InspectorControls>
-
             {(fieldSettings.defaultValue ||
-                fieldSettings.name ||
-                fieldSettings.emailTag ||
-                fieldSettings.storeAsDonorMeta) && (
+                fieldSettings.metaKey ||
+                fieldSettings.storeAsDonorMeta ||
+                fieldSettings.emailTag) && (
                 <InspectorAdvancedControls>
                     {fieldSettings.defaultValue && (
                         <PanelRow>
@@ -204,22 +204,13 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
                         </PanelRow>
                     )}
 
-                    {fieldSettings.name && (
+                    {fieldSettings.metaKey && (
                         <PanelRow>
-                            <TextControl
-                                label={__('Field Name', 'give')}
+                            <MetaKeyTextControl
                                 value={attributes.fieldName}
-                                help={[
-                                    __('The programmatic name of the field used by the Fields API.', 'give'),
-                                    <ExternalLink
-                                        style={{display: 'block', marginTop: '8px'}}
-                                        href="https://github.com/impress-org/givewp/tree/develop/src/Framework/FieldsAPI"
-                                    >
-                                        {__('Learn more about the Fields API', 'give')}
-                                    </ExternalLink>,
-                                ]}
                                 onChange={(newName) => setAttributes({fieldName: newName})}
                                 onBlur={enforceFieldName}
+                                lockValue={isNewField}
                             />
                         </PanelRow>
                     )}

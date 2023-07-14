@@ -1,6 +1,6 @@
 export type FieldSettings = {
     label: FieldSettingProperty;
-    name: FieldSettingProperty;
+    metaKey: boolean;
     placeholder: FieldSettingProperty;
     description: FieldSettingProperty;
     required: FieldSettingProperty;
@@ -15,7 +15,7 @@ export type FieldSettingsSupport =
     | true
     | {
           label: FieldSettingProperty | boolean;
-          name: FieldSettingProperty | boolean;
+          metaKey: boolean;
           placeholder: FieldSettingProperty | boolean;
           description: FieldSettingProperty | boolean;
           required: FieldSettingProperty | boolean;

@@ -17,6 +17,8 @@ const settings: FieldBlock['settings'] = {
                     default: __('Text field', 'give'),
                 },
                 placeholder: true,
+                defaultValue: true,
+                emailTag: true,
             },
         },
     },

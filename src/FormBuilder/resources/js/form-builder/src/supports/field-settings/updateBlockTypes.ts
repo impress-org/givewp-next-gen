@@ -22,14 +22,10 @@ export default function updateBlockTypes(settings) {
         };
     }
 
-    if (fieldSettings.name) {
+    if (fieldSettings.metaKey) {
         fieldAttributes.fieldName = {
             type: 'string',
         };
-
-        if (fieldSettings.name.default !== null) {
-            fieldAttributes.fieldName.default = fieldSettings.name.default;
-        }
     }
 
     if (fieldSettings.description) {

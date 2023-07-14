@@ -27,7 +27,7 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
 
     return {
         label: getSupportSetting('label', true, __('Custom field', 'give')),
-        name: getSupportSetting('name', true, null),
+        metaKey: !!getSupportSetting('metaKey', true, null),
         description: getSupportSetting('description', false, ''),
         placeholder: getSupportSetting('placeholder', false, ''),
         required: getSupportSetting('required', true, false),
