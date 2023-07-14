@@ -37,7 +37,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         // @note In v3 all donors are registered as users, so no need for a registration setting.
         return in_array(
-            give_get_meta($this->form->id, '_give_show_register_form'),
+            give_get_meta($this->form->id, '_give_show_register_form', true),
             ['registration', 'login', 'both']
         );
     }
