@@ -17,7 +17,11 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
             return false;
         }
 
-        if (settings === true || settings[setting] === true || settings[setting] === undefined) {
+        if (settings[setting] === true) {
+            return {default: defaultValue};
+        }
+
+        if (settings === true || settings[setting] === undefined) {
             return enabledByDefault ? {default: defaultValue} : false;
         }
 
@@ -27,7 +31,7 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
 
     return {
         label: getSupportSetting('label', true, __('Custom field', 'give')),
-        metaKey: !!getSupportSetting('metaKey', true, null),
+        metaKey: getSupportSetting('metaKey', true, null),
         description: getSupportSetting('description', false, ''),
         placeholder: getSupportSetting('placeholder', false, ''),
         required: getSupportSetting('required', true, false),
