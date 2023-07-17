@@ -18,6 +18,7 @@ const {
     setPrice,
     priceOption,
     levels,
+    defaultLevel,
 } = getDefaultBlockAttributes('givewp/donation-amount');
 
 const settings: FieldBlock['settings'] = {
@@ -37,6 +38,10 @@ const settings: FieldBlock['settings'] = {
         levels: {
             type: 'array',
             default: levels,
+        },
+        defaultLevel: {
+            type: 'number',
+            default: defaultLevel,
         },
         priceOption: {
             type: 'string',

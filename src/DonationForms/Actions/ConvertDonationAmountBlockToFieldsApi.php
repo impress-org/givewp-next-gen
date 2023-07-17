@@ -64,7 +64,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->fixedAmountValue($block->getAttribute('setPrice'))
                 ->defaultValue(
                     $block->getAttribute('priceOption') === 'set' ?
-                        $block->getAttribute('setPrice') : 50
+                        $block->getAttribute('setPrice') : $block->getAttribute('defaultLevel')
                 )
                 ->rules(...$amountRules);
 
@@ -137,7 +137,7 @@ class ConvertDonationAmountBlockToFieldsApi
         $options = $this->mergePeriodOptionsWithOneTime(
             array_map(static function ($option) {
                 $subscriptionPeriod = new SubscriptionPeriod($option);
-                
+
                 return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
             }, $recurringBillingPeriodOptions)
         );

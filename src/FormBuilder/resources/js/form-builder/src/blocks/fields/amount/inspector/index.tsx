@@ -11,7 +11,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import DeleteButton from './delete-button';
 import AddButton from './add-button';
-import {CurrencyControl} from '@givewp/form-builder/common/currency';
+import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
@@ -28,6 +28,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
+        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -102,6 +103,17 @@ const Inspector = ({attributes, setAttributes}) => {
                             : __('The donation amount is fixed to the following amount:', 'give')
                     }
                 />
+                {priceOption === 'multi' && (
+                    <SelectControl
+                        label={__('Default Level', 'give')}
+                        options={levels.map((level, index) => ({
+                            label: formatCurrencyAmount(level),
+                            value: level,
+                        }))}
+                        value={defaultLevel}
+                        onChange={(defaultLevel) => setAttributes({defaultLevel})}
+                    />
+                )}
                 {priceOption === 'set' && (
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
