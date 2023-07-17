@@ -46,7 +46,7 @@ class BlockModel implements Arrayable
         $this->clientId = $clientId ?? wp_generate_uuid4();
         $this->isValid = $isValid;
         $this->attributes = $attributes;
-        $this->innerBlocks = $innerBlocks;
+        $this->innerBlocks = $innerBlocks ?: new BlockCollection([]);
     }
 
     /**
