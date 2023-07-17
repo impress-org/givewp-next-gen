@@ -31,6 +31,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormFields\CompanyDonations::class,
                 Steps\DonationGoal::class,
                 Steps\TermsAndConditions::class,
+                Steps\FormGrid::class,
                 Steps\OfflineDonations::class,
                 Steps\EmailSettings::class,
             ]);

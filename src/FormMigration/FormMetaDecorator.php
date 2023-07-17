@@ -167,6 +167,24 @@ class FormMetaDecorator extends FormModelDecorator
         return give_get_meta( $this->form->id, '_give_offline_checkout_notes', true );
     }
 
+    public function isFormGridCustomized()
+    {
+        return give_is_setting_enabled(
+            give_get_meta( $this->form->id, '_give_form_grid_option', true ),
+            'custom'
+        );
+    }
+
+    public function getFormGridRedirectUrl()
+    {
+        return give_get_meta( $this->form->id, '_give_form_grid_redirect_url', true );
+    }
+
+    public function getFormGridDonateButtonText()
+    {
+        return give_get_meta( $this->form->id, '_give_form_grid_donate_button_text', true );
+    }
+
     public function getEmailOptionsStatus(): string
     {
         return give_get_meta( $this->form->id, '_give_email_options', true );

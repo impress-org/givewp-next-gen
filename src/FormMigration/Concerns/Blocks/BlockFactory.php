@@ -74,4 +74,27 @@ class BlockFactory
             ], $attributes),
         ]);
     }
+
+    public static function billingAddress(array $attributes = [])
+    {
+        return BlockModel::make([
+            'name' => 'givewp/billing-address',
+            'attributes' => array_merge([
+                'groupLabel' => 'Billing Address',
+                'country' => [['value' => 'sample', 'label' => __("A full country list will be displayed here...", 'give')]],
+                'countryLabel' => __("Country", 'give'),
+                'address1Label' => __("Address Line 1", 'give'),
+                'address1Placeholder' => __("Address Line 1", 'give'),
+                'address2Label' => __("Address Line 2", 'give'),
+                'address2Placeholder' => __("Address Line 2", 'give'),
+                'requireAddress2' => false,
+                'cityLabel' => __("City", 'give'),
+                'cityPlaceholder' => __("City", 'give'),
+                'stateLabel' => __("State/Province/Country", 'give'),
+                'statePlaceholder' => __("This changes by country selection...", 'give'),
+                'zipLabel' => __("Zip/Postal Code", 'give'),
+                'zipPlaceholder' => __("Zip/Postal Code", 'give'),
+            ], $attributes),
+        ]);
+    }
 }
