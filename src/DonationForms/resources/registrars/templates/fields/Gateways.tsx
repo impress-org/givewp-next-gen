@@ -4,6 +4,22 @@ import {ErrorBoundary} from 'react-error-boundary';
 import {__} from '@wordpress/i18n';
 import {useEffect, useMemo} from 'react';
 
+function GatewayMissingMessage({currencyNotSupported}: {currencyNotSupported?: boolean}) {
+    return (
+        <em>
+            {currencyNotSupported
+                ? __(
+                      'Unfortunately, this currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
+                      'give'
+                  )
+                : __(
+                      'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
+                      'give'
+                  )}
+        </em>
+    );
+}
+
 function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
     return (
         <div role="alert">
@@ -29,6 +45,7 @@ export default function Gateways({defaultValue, inputProps, gateways}: GatewayFi
 
     const currency = useWatch({name: 'currency'});
 
+    // filter gateway options if currency switcher settings are present
     const gatewayOptions = useMemo(() => {
         if (currencySwitcherSettings.length <= 1) {
             return gateways;
@@ -43,6 +60,7 @@ export default function Gateways({defaultValue, inputProps, gateways}: GatewayFi
         return gateways.filter(({id}) => currencySwitcherSetting.gateways.includes(id));
     }, [currency]);
 
+    // reset the default /selected gateway based on the gateway options available
     useEffect(() => {
         if (gatewayOptions.length > 0) {
             const optionsDefaultValue = gatewayOptions.includes(defaultValue) ? defaultValue : gatewayOptions[0].id;
@@ -67,12 +85,7 @@ export default function Gateways({defaultValue, inputProps, gateways}: GatewayFi
                     ))}
                 </ul>
             ) : (
-                <em>
-                    {__(
-                        'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
-                        'give'
-                    )}
-                </em>
+                <GatewayMissingMessage currencyNotSupported={currencySwitcherSettings.length > 1} />
             )}
 
             <ErrorMessage
