@@ -87,7 +87,7 @@ export default function Gateways({defaultValue, inputProps, gateways}: GatewayFi
 function GatewayOption({gateway, defaultChecked, inputProps}: GatewayOptionProps) {
     return (
         <li>
-            <input type="radio" value={gateway.id} id={gateway.id} checked={defaultChecked} {...inputProps} />
+            <input type="radio" value={gateway.id} id={gateway.id} defaultChecked={defaultChecked} {...inputProps} />
             <label htmlFor={gateway.id}> Donate with {gateway.label}</label>
             <div className="givewp-fields-payment-gateway">
                 <ErrorBoundary
