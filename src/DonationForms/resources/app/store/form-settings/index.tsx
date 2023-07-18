@@ -1,11 +1,14 @@
 import {createContext, ReactNode, useContext} from 'react';
+import {CurrencySwitcherSetting} from '@givewp/forms/types';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'DonationFormSettings';
 
 type PropTypes = {
     value: {
-        [key: string]: any
+        [key: string]: unknown;
+        currencySwitcherSettings?: CurrencySwitcherSetting[];
+        currencySwitcherMessage?: string;
     };
     children: ReactNode;
 };
