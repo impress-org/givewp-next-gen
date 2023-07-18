@@ -9,7 +9,7 @@ function GatewayMissingMessage({currencyNotSupported}: {currencyNotSupported?: b
         <em>
             {currencyNotSupported
                 ? __(
-                      'Unfortunately, this currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
+                      'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
                       'give'
                   )
                 : __(
