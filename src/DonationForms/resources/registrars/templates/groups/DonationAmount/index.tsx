@@ -20,7 +20,9 @@ export default function DonationAmount({
     subscriptionDetailsAreFixed,
 }: DonationAmountProps) {
     useDonationType();
-    const {allowLevels, allowCustomAmount, currencySettings, currencySwitcherMessage} = amountProps;
+    const {useDonationFormSettings} = window.givewp.form.hooks;
+    const {allowLevels, allowCustomAmount} = amountProps;
+    const {currencySwitcherSettings, currencySwitcherMessage} = useDonationFormSettings();
 
     return (
         <>
@@ -35,9 +37,9 @@ export default function DonationAmount({
                             subscriptionDetailsAreFixed={subscriptionDetailsAreFixed}
                         />
 
-                        {currencySettings.length > 1 && currencySwitcherMessage && (
+                        {currencySwitcherSettings.length > 1 && currencySwitcherMessage && (
                             <DonationAmountCurrencySwitcherMessage
-                                currencySettings={currencySettings}
+                                currencySettings={currencySwitcherSettings}
                                 message={currencySwitcherMessage}
                             />
                         )}

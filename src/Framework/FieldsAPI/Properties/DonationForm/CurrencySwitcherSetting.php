@@ -1,10 +1,11 @@
 <?php
 
-namespace Give\Framework\FieldsAPI\Properties\Amount;
+namespace Give\Framework\FieldsAPI\Properties\DonationForm;
 
 use JsonSerializable;
 
-class CurrencySetting implements JsonSerializable {
+class CurrencySwitcherSetting implements JsonSerializable
+{
 
     /**
      * @var string
@@ -39,7 +40,7 @@ class CurrencySetting implements JsonSerializable {
     /**
      * @unreleased
      */
-    public function id(string $id): CurrencySetting
+    public function id(string $id): CurrencySwitcherSetting
     {
         $this->id = $id;
 
@@ -49,7 +50,7 @@ class CurrencySetting implements JsonSerializable {
     /**
      * @unreleased
      */
-    public function exchangeRate(float $rate): CurrencySetting
+    public function exchangeRate(float $rate): CurrencySwitcherSetting
     {
         $this->exchangeRate = $rate;
 
@@ -59,7 +60,7 @@ class CurrencySetting implements JsonSerializable {
     /**
      * @unreleased
      */
-    public function gateways(array $gateways): CurrencySetting
+    public function gateways(array $gateways): CurrencySwitcherSetting
     {
         $this->gateways = $gateways;
 

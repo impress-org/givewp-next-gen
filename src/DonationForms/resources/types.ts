@@ -19,7 +19,7 @@ export interface Currency {
 /**
  * @unreleased
  */
-export type CurrencySetting = {
+export type CurrencySwitcherSetting = {
     id: string;
     exchangeRate: number;
     gateways: string[];
@@ -216,6 +216,8 @@ export interface Form extends Group {
         isMultiStep: boolean;
     };
     nodes: Section[];
+    currencySwitcherSettings?: CurrencySwitcherSetting[];
+    currencySwitcherMessage?: string;
 }
 
 export function isField(node: Node): node is Field {

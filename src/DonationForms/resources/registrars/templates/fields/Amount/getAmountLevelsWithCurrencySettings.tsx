@@ -1,4 +1,4 @@
-import {CurrencySetting} from '@givewp/forms/types';
+import {CurrencySwitcherSetting} from '@givewp/forms/types';
 import {isBaseCurrency} from './CurrencySwitcher';
 
 /**
@@ -9,7 +9,7 @@ import {isBaseCurrency} from './CurrencySwitcher';
 export default function getAmountLevelsWithCurrencySettings(
     levels: number[],
     currency: string,
-    currencySettings: CurrencySetting[]
+    currencySettings: CurrencySwitcherSetting[]
 ) {
     const currencySetting = currencySettings.find(({id}) => id === currency);
 

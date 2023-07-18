@@ -13,12 +13,12 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\BillingAddress;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\DonationForm;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
@@ -47,12 +47,14 @@ class ConvertDonationFormBlocksToFieldsApi
      *
      * @throws TypeNotSupported|NameCollisionException
      */
-    public function __invoke(BlockCollection $blocks, int $formId): Form
+    public function __invoke(BlockCollection $blocks, int $formId): DonationForm
     {
         $this->formId = $formId;
         $this->currency = give_get_currency($formId);
 
-        $form = new Form('donation-form');
+        $form = new DonationForm('donation-form');
+        $form->defaultCurrency($this->currency);
+        
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
             $blockIndex++;

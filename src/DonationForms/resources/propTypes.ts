@@ -1,5 +1,4 @@
 import {
-    CurrencySetting,
     Element,
     Field,
     Gateway,
@@ -103,8 +102,6 @@ export interface AmountProps extends FieldProps {
     allowLevels: boolean;
     allowCustomAmount: boolean;
     fixedAmountValue: number;
-    currencySettings?: CurrencySetting[];
-    currencySwitcherMessage?: string;
     messages?: ReactNode;
 }
 

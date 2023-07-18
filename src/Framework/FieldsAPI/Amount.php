@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
-use Give\Framework\FieldsAPI\Properties\Amount\CurrencySetting;
 
 class Amount extends Field
 {
@@ -35,20 +34,6 @@ class Amount extends Field
      * @var float|int
      */
     protected $fixedAmountValue;
-
-    /**
-     * @unreleased
-     *
-     * @var CurrencySetting[]
-     */
-    protected $currencySettings = [];
-
-    /**
-     * @unreleased
-     *
-     * @var string
-     */
-    protected $currencySwitcherMessage;
 
     /**
      * Set the preset donation levels. Provide levels in minor units.
@@ -126,25 +111,5 @@ class Amount extends Field
     public function getFixedAmountValue()
     {
         return $this->fixedAmountValue;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function currencySettings(CurrencySetting ...$settings): Amount
-    {
-        $this->currencySettings = $settings;
-
-        return $this;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function currencySwitcherMessage(string $message): Amount
-    {
-        $this->currencySwitcherMessage = $message;
-
-        return $this;
     }
 }

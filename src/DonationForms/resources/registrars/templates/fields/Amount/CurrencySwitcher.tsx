@@ -1,11 +1,11 @@
-import {CurrencySetting} from '@givewp/forms/types';
+import {CurrencySwitcherSetting} from '@givewp/forms/types';
 import {ChangeEvent, useMemo} from 'react';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 
 /**
  * @unreleased
  */
-const convertCurrencySettingsToOptions = (currencySettings: CurrencySetting[]): CurrencyOption[] => {
+const convertCurrencySettingsToOptions = (currencySettings: CurrencySwitcherSetting[]): CurrencyOption[] => {
     return currencySettings.map(({id}) => {
         const formatter = amountFormatter(id);
         const symbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
@@ -32,15 +32,15 @@ export type CurrencyOption = {
  */
 export const getCurrencySetting = (
     currency: string,
-    currencySettings: CurrencySetting[]
-): CurrencySetting | undefined => {
+    currencySettings: CurrencySwitcherSetting[]
+): CurrencySwitcherSetting | undefined => {
     return currencySettings.find(({id}) => id === currency);
 };
 
 /**
  * @unreleased
  */
-export const isBaseCurrency = (currencySetting: CurrencySetting) => currencySetting.exchangeRate === 0;
+export const isBaseCurrency = (currencySetting: CurrencySwitcherSetting) => currencySetting.exchangeRate === 0;
 
 /**
  * Calculate the amount based on the currency exchange rate, taking into account the from and to currency values
@@ -51,7 +51,7 @@ export const calculateCurrencyAmount = (
     amount: number,
     fromCurrency: string,
     toCurrency: string,
-    currencySettings: CurrencySetting[]
+    currencySettings: CurrencySwitcherSetting[]
 ): number => {
     const fromCurrencySetting = getCurrencySetting(fromCurrency, currencySettings);
     const toCurrencySetting = getCurrencySetting(toCurrency, currencySettings);
@@ -75,7 +75,7 @@ export const calculateCurrencyAmount = (
  */
 type CurrencySwitcherProps = {
     defaultCurrency: string;
-    currencySettings: CurrencySetting[];
+    currencySettings: CurrencySwitcherSetting[];
     onSelect?: (event: ChangeEvent<HTMLSelectElement>) => void;
 };
 

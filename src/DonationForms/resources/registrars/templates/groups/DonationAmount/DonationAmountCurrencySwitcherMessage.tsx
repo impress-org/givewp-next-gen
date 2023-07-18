@@ -1,4 +1,4 @@
-import {CurrencySetting} from '@givewp/forms/types';
+import {CurrencySwitcherSetting} from '@givewp/forms/types';
 import {__} from '@wordpress/i18n';
 
 type CurrencySwitcherMessageProps = {
@@ -8,9 +8,9 @@ type CurrencySwitcherMessageProps = {
     newCurrency: string;
 };
 type DonationAmountCurrencySwitcherMessageProps = {
-    currencySettings: CurrencySetting[];
+    currencySettings: CurrencySwitcherSetting[];
     message: string;
-}
+};
 
 /**
  * @unreleased

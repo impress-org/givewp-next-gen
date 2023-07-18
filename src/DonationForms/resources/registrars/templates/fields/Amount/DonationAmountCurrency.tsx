@@ -1,10 +1,13 @@
-import {CurrencySetting} from '@givewp/forms/types';
+import {CurrencySwitcherSetting} from '@givewp/forms/types';
 import CurrencySwitcher, {calculateCurrencyAmount} from './CurrencySwitcher';
 
 /**
  * @unreleased
  */
-export default function DonationAmountCurrency({currencySettings, onCurrencyAmountChange}: {currencySettings: CurrencySetting[], onCurrencyAmountChange?: (amount: number) => void}) {
+export default function DonationAmountCurrency({currencySettings, onCurrencyAmountChange}: {
+    currencySettings: CurrencySwitcherSetting[],
+    onCurrencyAmountChange?: (amount: number) => void
+}) {
     const {useWatch, useCurrencyFormatter, useFormContext} = window.givewp.form.hooks;
     const {setValue, getValues} = useFormContext();
 
