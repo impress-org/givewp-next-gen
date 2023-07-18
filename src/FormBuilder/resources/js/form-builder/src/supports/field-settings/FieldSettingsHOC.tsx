@@ -35,12 +35,14 @@ const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
         }
 
         return (
-            <FieldSettingsEdit
-                attributes={attributes}
-                setAttributes={setAttributes}
-                fieldSettings={fieldSettings}
-                BlockEdit={() => <BlockEdit {...props} />}
-            />
+            <>
+                <BlockEdit {...props} />
+                <FieldSettingsEdit
+                    attributes={attributes}
+                    setAttributes={setAttributes}
+                    fieldSettings={fieldSettings}
+                />
+            </>
         );
     };
 }, 'withInspectorControl');
@@ -52,7 +54,7 @@ export default FieldSettingsHOC;
  *
  * @unreleased
  */
-function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}) {
+function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
     const validateFieldName = useFieldNameValidator();
     const [fieldNameSet, setFieldNameSet] = useState(attributes.hasOwnProperty('fieldName'));
     const [isNewField] = useState(fieldNameSet);
@@ -105,7 +107,6 @@ function FieldSettingsEdit({attributes, setAttributes, BlockEdit, fieldSettings}
 
     return (
         <>
-            <BlockEdit />
             <InspectorControls>
                 {(fieldSettings.label ||
                     fieldSettings.placeholder ||
