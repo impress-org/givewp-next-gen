@@ -40,6 +40,10 @@ const initialState = {
 
 const formSettings = {...form.settings, ...getDonationFormNodeSettings(form)};
 
+/**
+ * @unreleased add DonationFormSettingsProvider
+ * @since 0.1.0
+ */
 function App() {
     if (form.goal.isAchieved) {
         return (
