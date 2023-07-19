@@ -60,13 +60,5 @@ class MigrationController
         return new WP_REST_Response(array('errors' => [], 'successes' => [
             $payload->formV2->id
         ]));
-//        return new WP_REST_Response([
-//            'success' => true,
-//            'data' => [
-//                'v2' => $payload->formV2->id,
-//                'v3' => $payload->formV3->id,
-//                'debug' => $this->debugContext,
-//            ],
-//        ]);
     }
 }
