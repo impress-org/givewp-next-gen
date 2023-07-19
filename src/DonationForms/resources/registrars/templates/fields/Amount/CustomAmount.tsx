@@ -15,6 +15,7 @@ type CustomAmountProps = {
 };
 
 /**
+ * @unreleased remove forwardRef and use state instead
  * @since 0.2.0
  */
 const CustomAmount = (
