@@ -4,9 +4,11 @@ namespace Give\Framework\FieldsAPI\Properties\DonationForm;
 
 use JsonSerializable;
 
+/**
+ * @unreleased
+ */
 class CurrencySwitcherSetting implements JsonSerializable
 {
-
     /**
      * @var string
      */
@@ -23,7 +25,8 @@ class CurrencySwitcherSetting implements JsonSerializable
     /**
      * @unreleased
      */
-    public function __construct(string $id, float $exchangeRate = 0, array $gateways = []) {
+    public function __construct(string $id, float $exchangeRate = 0, array $gateways = [])
+    {
         $this->id = $id;
         $this->exchangeRate = $exchangeRate;
         $this->gateways = $gateways;
