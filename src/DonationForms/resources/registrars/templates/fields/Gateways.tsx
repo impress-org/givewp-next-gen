@@ -4,22 +4,28 @@ import {ErrorBoundary} from 'react-error-boundary';
 import {__} from '@wordpress/i18n';
 import {useEffect, useMemo} from 'react';
 
+/**
+ * @unreleased
+ */
 function GatewayMissingMessage({currencyNotSupported}: {currencyNotSupported?: boolean}) {
     return (
         <em>
             {currencyNotSupported
                 ? __(
-                      'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
-                      'give'
-                  )
+                    'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
+                    'give'
+                )
                 : __(
-                      'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
-                      'give'
-                  )}
+                    'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
+                    'give'
+                )}
         </em>
     );
 }
 
+/**
+ * @since 0.1.0
+ */
 function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
     return (
         <div role="alert">
@@ -37,6 +43,10 @@ function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
     );
 }
 
+/**
+ * @unreleased update to support currency switcher settings
+ * @since 0.1.0
+ */
 export default function Gateways({defaultValue, inputProps, gateways}: GatewayFieldProps) {
     const {useFormState, useWatch, useFormContext, useDonationFormSettings} = window.givewp.form.hooks;
     const {errors} = useFormState();
@@ -97,6 +107,10 @@ export default function Gateways({defaultValue, inputProps, gateways}: GatewayFi
     );
 }
 
+/**
+ * @unreleased replace index prop with defaultChecked
+ * @since 0.1.0
+ */
 function GatewayOption({gateway, defaultChecked, inputProps}: GatewayOptionProps) {
     return (
         <li>
