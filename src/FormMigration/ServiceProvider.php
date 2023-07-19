@@ -21,6 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         give()->singleton(Pipeline::class, function() {
             return new Pipeline([
+                Steps\MigrateMeta::class,
                 Steps\FormTitle::class,
                 Steps\FormTemplate\ClassicTemplateSettings::class,
                 Steps\FormTemplate\SequoiaTemplateSettings::class,
