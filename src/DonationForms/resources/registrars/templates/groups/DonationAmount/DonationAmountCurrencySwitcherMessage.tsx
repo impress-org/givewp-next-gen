@@ -1,12 +1,19 @@
 import {CurrencySwitcherSetting} from '@givewp/forms/types';
 import {__} from '@wordpress/i18n';
 
+/**
+ * @unreleased
+ */
 type CurrencySwitcherMessageProps = {
     message: string;
     baseCurrency: string;
     newCurrencyRate: string;
     newCurrency: string;
 };
+
+/**
+ * @unreleased
+ */
 type DonationAmountCurrencySwitcherMessageProps = {
     currencySettings: CurrencySwitcherSetting[];
     message: string;
@@ -16,11 +23,11 @@ type DonationAmountCurrencySwitcherMessageProps = {
  * @unreleased
  */
 const CurrencySwitcherMessage = ({
-    message,
-    baseCurrency,
-    newCurrencyRate,
-    newCurrency,
-} : CurrencySwitcherMessageProps) => {
+                                     message,
+                                     baseCurrency,
+                                     newCurrencyRate,
+                                     newCurrency,
+                                 }: CurrencySwitcherMessageProps) => {
     if (baseCurrency === newCurrency) {
         return;
     }
@@ -36,7 +43,7 @@ const CurrencySwitcherMessage = ({
     });
 
     return <div className="givewp-fields-amount__currency-switcher-message">{__(message, 'give')}</div>;
-}
+};
 
 /**
  * @unreleased
@@ -44,13 +51,11 @@ const CurrencySwitcherMessage = ({
 export default function DonationAmountCurrencySwitcherMessage({
     currencySettings,
     message,
-
-}: DonationAmountCurrencySwitcherMessageProps ) {
+}: DonationAmountCurrencySwitcherMessageProps) {
     const {useWatch, useCurrencyFormatter} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
     const newCurrencyFormatter = useCurrencyFormatter(currency);
 
-    // TODO: add base currency identifier to currencySettings
     const baseCurrency = currencySettings.find((setting) => setting.exchangeRate === 0)?.id ?? 'USD';
 
     const baseCurrencyFormatter = useCurrencyFormatter(baseCurrency);
