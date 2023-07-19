@@ -60,7 +60,7 @@ class DonationForm extends Form {
     }
 
     /**
-     * @return string
+     * @unreleased
      */
     public function getDefaultCurrency(): string
     {
