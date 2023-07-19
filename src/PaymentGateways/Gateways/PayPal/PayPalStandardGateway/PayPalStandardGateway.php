@@ -41,6 +41,14 @@ class PayPalStandardGateway extends PayPalStandard
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
+    {
+        return (new PayPalStandardBillingFields())($formId);
+    }
+
+    /**
      * @inheritdoc
      */
     public function formSettings(int $formId): array
