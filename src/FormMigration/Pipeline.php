@@ -18,12 +18,6 @@ class Pipeline
         $this->steps = $steps;
     }
 
-    public function addStep(FormMigrationStep $step): Pipeline
-    {
-        $this->steps[] = $step;
-        return $this;
-    }
-
     public function beforeEach(callable $beforeStep): Pipeline
     {
         $this->beforeStep = $beforeStep;
