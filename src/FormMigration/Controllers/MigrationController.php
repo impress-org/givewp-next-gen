@@ -2,8 +2,7 @@
 
 namespace Give\FormMigration\Controllers;
 
-use Give\DonationForms\Models\DonationForm as DonationFormV3;
-use Give\DonationForms\V2\Models\DonationForm as DonationFormV2;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\FormMigration\Concerns\Blocks\BlockDifference;
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Pipeline;
@@ -26,11 +25,9 @@ class MigrationController
         $this->request = $request;
     }
 
-    public function __invoke($formIdV2)
+    public function __invoke(DonationForm $formV2)
     {
-        $payload = FormMigrationPayload::fromFormV2(
-            DonationFormV2::find($formIdV2)
-        );
+        $payload = FormMigrationPayload::fromFormV2($formV2);
 
         give(Pipeline::class)
             ->afterEach(function($stepClass, $payload, $_payload) {
