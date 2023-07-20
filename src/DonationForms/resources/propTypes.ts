@@ -33,6 +33,7 @@ export interface SelectFieldProps extends FieldProps {
 
 export interface RadioFieldProps extends FieldProps {
     options: Array<RadioOption>;
+    description: string;
 }
 
 export interface CheckboxProps extends FieldProps {
