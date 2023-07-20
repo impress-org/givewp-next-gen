@@ -40,6 +40,10 @@ export interface CheckboxProps extends FieldProps {
     value: string | number;
 }
 
+export interface DateProps extends FieldProps {
+    description: string;
+}
+
 export interface UrlProps extends FieldProps {
     description: string;
 }

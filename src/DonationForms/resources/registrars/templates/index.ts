@@ -5,7 +5,8 @@ import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
 import CheckboxField from './fields/Checkbox';
 import RadioField from './fields/Radio';
-import Url from './fields/Url';
+import DateField from './fields/Date';
+import UrlField from './fields/Url';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
 import NameGroup from './groups/Name';
@@ -15,7 +16,7 @@ import Form from './layouts/Form';
 import AmountField from './fields/Amount';
 import SelectField from './fields/Select';
 import Gateways from './fields/Gateways';
-import Authentication from "./groups/Authentication";
+import Authentication from './groups/Authentication';
 import Paragraph from './elements/Paragraph';
 import FieldLabel from './layouts/FieldLabel';
 import FieldError from './layouts/FieldError';
@@ -41,7 +42,8 @@ const defaultFormTemplates = {
         select: SelectField,
         checkbox: CheckboxField,
         radio: RadioField,
-        url: Url,
+        date: DateField,
+        url: UrlField,
     },
     elements: {
         paragraph: Paragraph,
