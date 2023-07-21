@@ -1,6 +1,13 @@
-import {DateProps} from '@givewp/forms/propTypes';
+import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 
-export default function Date({Label, ErrorMessage, fieldError, placeholder, description, inputProps}: DateProps) {
+export default function Date({
+    Label,
+    ErrorMessage,
+    fieldError,
+    placeholder,
+    description,
+    inputProps,
+}: FieldHasDescriptionProps) {
     return (
         <label>
             <Label />
