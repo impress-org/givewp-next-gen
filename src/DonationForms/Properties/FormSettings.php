@@ -127,6 +127,26 @@ class FormSettings implements Arrayable, Jsonable
     public $emailFromEmail;
 
     /**
+     * @var boolean
+     */
+    public $formGridCustomize;
+
+    /**
+     * @var string
+     */
+    public $formGridRedirectUrl;
+
+    /**
+     * @var string
+     */
+    public $formGridDonateButtonText;
+
+    /**
+     * @var boolean
+     */
+    public $formGridHideDocumentationLink;
+
+    /**
      * @since 0.1.0
      */
     public static function fromArray(array $array): self
