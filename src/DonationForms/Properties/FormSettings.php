@@ -185,8 +185,13 @@ class FormSettings implements Arrayable, Jsonable
             'give'
         );
         $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus($array['formStatus']) : DonationFormStatus::DRAFT();
-        $self->emailTemplateOptions = $array['emailTemplateOptions'] ?? [];
 
+        $self->formGridCustomize = $array['formGridCustomize'] ?? false;
+        $self->formGridRedirectUrl = $array['formGridRedirectUrl'] ?? '';
+        $self->formGridDonateButtonText = $array['formGridDonateButtonText'] ?? '';
+        $self->formGridHideDocumentationLink = $array['formGridHideDocumentationLink'] ?? false;
+
+        $self->emailTemplateOptions = $array['emailTemplateOptions'] ?? [];
 
         $self->emailOptionsStatus = $array['emailOptionsStatus'] ?? 'global';
 
