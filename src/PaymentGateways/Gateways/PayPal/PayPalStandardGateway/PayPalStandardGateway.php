@@ -9,6 +9,7 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
+use Give\PaymentGateways\Gateways\PayPalStandard\Views\PayPalStandardBillingFields;
 
 class PayPalStandardGateway extends PayPalStandard
 {
@@ -16,7 +17,15 @@ class PayPalStandardGateway extends PayPalStandard
     use HasScriptAssetFile;
 
     /**
-     * @unreleased
+     * @inheritDoc
+     */
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
+    {
+        return (new PayPalStandardBillingFields())($formId);
+    }
+
+    /**
+     * @since 0.5.0
      */
     public function enqueueScript(int $formId)
     {
