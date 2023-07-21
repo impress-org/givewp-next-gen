@@ -1,6 +1,14 @@
 import {__} from '@wordpress/i18n';
-import {ExternalLink, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
+import {
+    Button,
+    ExternalLink,
+    PanelBody,
+    PanelRow,
+    TextControl,
+    ToggleControl
+} from '@wordpress/components';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {closeSmall} from "@wordpress/icons";
 
 const FormGridSettings = () => {
     const {
@@ -57,7 +65,12 @@ const FormGridSettings = () => {
                         {__('The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.', 'give')}
                     </p>
                     <ExternalLink href={'https://givewp.com/documentation/core/add-ons/form-grid/'}>{__('Learn more about the Form Grid', 'give')}</ExternalLink>
-                    <button style={{position: 'absolute', top: 'var(--givewp-spacing-4)', right: 'var(--givewp-spacing-4)'}}>Close</button>
+                    <Button
+                        icon={closeSmall}
+                        aria-label={__('Dismiss', 'give')}
+                        style={{position: 'absolute', top: 'var(--givewp-spacing-2)', right: 'var(--givewp-spacing-2)'}}
+                        onClick={() => dispatch(setFormSettings({formGridHideDocumentationLink: true}))}
+                    ></Button>
                 </div>
             )}
 
