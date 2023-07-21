@@ -85,7 +85,7 @@ export default () => {
                                 style={{
                                     display: 'flex',
                                     gap: 'var(--givewp-spacing-10)',
-                                    height: 'calc(100% - 1.5rem)',
+                                    height: '100%',
                                     overflow: 'hidden',
                                     flex: 1,
                                 }}
