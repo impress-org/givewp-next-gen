@@ -118,12 +118,18 @@
 
     .wp-block {
 
-        &.is-selected {
-            padding: 1.5rem;
+        &.is-selected:before {
             border-style: solid;
             border-width: thin;
             border-radius: 0.25rem;
             border-color: var(--wp-admin-theme-color);
+            display: block;
+            content: '';
+            position: absolute;
+            width: calc(100% + 2rem);
+            height: calc(100% + 2rem);
+            left: calc(-2rem / 2);
+            top: calc(-2rem / 2);
         }
     }
 
