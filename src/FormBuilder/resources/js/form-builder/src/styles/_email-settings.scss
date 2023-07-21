@@ -21,6 +21,10 @@
             background: initial; // Remove the underline.
         }
     }
+
+    .components-button {
+        text-align: left;
+    }
 }
 
 .radio-control--email-options {
@@ -77,3 +81,4 @@
 .media-frame {
     z-index: 1 !important;
 }
+
