@@ -6,6 +6,7 @@ import HiddenField from './fields/Hidden';
 import CheckboxField from './fields/Checkbox';
 import RadioField from './fields/Radio';
 import DateField from './fields/Date';
+import PhoneField from './fields/Phone';
 import UrlField from './fields/Url';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
@@ -43,6 +44,7 @@ const defaultFormTemplates = {
         checkbox: CheckboxField,
         radio: RadioField,
         date: DateField,
+        phone: PhoneField,
         url: UrlField,
     },
     elements: {
