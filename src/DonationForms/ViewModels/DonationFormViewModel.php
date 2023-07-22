@@ -14,6 +14,7 @@ use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Hooks;
 
 /**
  * @since 0.1.0
@@ -135,6 +136,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased update form object data to use DonationForm Node
      * @since 0.1.0
      */
     public function exports(): array
@@ -148,7 +150,7 @@ class DonationFormViewModel
         $formApi = $this->donationFormRepository->getFormSchemaFromBlocks(
             $this->donationFormId,
             $this->formBlocks
-        )->jsonSerialize();
+        );
 
         $formDesign = $this->getFormDesign($this->designId());
 
@@ -160,9 +162,9 @@ class DonationFormViewModel
                 'donation-confirmation-receipt-view'
             ],
             'registeredGateways' => $formDataGateways,
-            'form' => array_merge($formApi, [
+            'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
-                'currency' => give_get_currency(),
+                'currency' => $formApi->getDefaultCurrency(),
                 'goal' => $donationFormGoalData->toArray(),
                 'stats' => $this->formStatsData(),
                 'design' => $formDesign ? [
@@ -240,8 +242,8 @@ class DonationFormViewModel
     private function enqueueFormScripts(int $formId, string $formDesignId)
     {
         $this->enqueueRegistrars();
-        $this->enqueueGateways($formId);
         $this->enqueueDesign($formDesignId);
+        $this->enqueueGateways($formId);
         $this->enqueueFormApp();
     }
 
@@ -259,7 +261,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueRegistrars()
     {
@@ -283,10 +285,12 @@ class DonationFormViewModel
             'window.givewpDonationFormExports = ' . wp_json_encode($this->exports()) . ';',
             'before'
         );
+
+        Hooks::doAction('givewp_donation_form_enqueue_scripts');
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueGateways(int $formId)
     {
@@ -302,7 +306,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueDesign(string $formDesignId)
     {
@@ -329,7 +333,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueFormApp()
     {

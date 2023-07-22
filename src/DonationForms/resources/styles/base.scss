@@ -5,11 +5,12 @@
 }
 
 @layer base-components {
-    @import "components/gateways";
-    @import "components/amount";
-    @import "components/donation-summary";
-    @import "components/receipt";
-    @import "components/pagination";
+  @import "components/gateways";
+  @import "components/amount";
+  @import "components/donation-summary";
+  @import "components/receipt";
+  @import "components/pagination";
+    @import "components/billingAddress";
 }
 
 @layer base-elements {
