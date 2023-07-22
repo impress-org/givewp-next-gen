@@ -43,7 +43,7 @@
         "react-hook-form": "^7.42.1",
         "react-input-mask": "^2.0.4",
         "react-quill": "^2.0.0",
-        "react-select": "^5.7.0",
+        "react-select": "^5.7.4",
         "react-shepherd": "^4.2.0",
         "react-use-clipboard": "^1.0.9",
         "swr": "^2.0.1",

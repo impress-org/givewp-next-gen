@@ -4,6 +4,7 @@ import format from 'date-fns/format';
 
 import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
+import styles from '../styles.module.scss';
 
 export default function Date({
     Label,
@@ -24,10 +25,15 @@ export default function Date({
     }, [date]);
 
     return (
-        <label>
+        <label className={styles.dateField}>
             <Label />
             {description && <p style={{fontSize: '0.875rem', margin: '.25rem 0'}}>{description}</p>}
-            <DatePicker dateFormat={dateFormat} selected={date} onChange={(date) => setDate(date)} />
+            <DatePicker
+                dateFormat={dateFormat}
+                selected={date}
+                onChange={(date) => setDate(date)}
+                aria-invalid={fieldError ? 'true' : 'false'}
+            />
 
             <ErrorMessage />
         </label>
