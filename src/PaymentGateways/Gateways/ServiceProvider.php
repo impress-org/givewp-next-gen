@@ -110,13 +110,6 @@ class ServiceProvider implements ServiceProviderInterface
          */
         if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
             add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", StripePaymentElementGateway::id()),
-                static function () {
-                    return StripePaymentElementGatewaySubscriptionModule::class;
-                }
-            );
-
-            add_filter(
                 sprintf("givewp_gateway_%s_subscription_module", PayPalStandardGateway::id()),
                 static function () {
                     return PayPalStandardGatewaySubscriptionModule::class;
