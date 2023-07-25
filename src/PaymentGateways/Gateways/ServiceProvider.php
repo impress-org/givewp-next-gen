@@ -25,7 +25,6 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite;
 use Give\PaymentGateways\Gateways\TestGateway\TestGatewaySubscriptionModule;
-use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
