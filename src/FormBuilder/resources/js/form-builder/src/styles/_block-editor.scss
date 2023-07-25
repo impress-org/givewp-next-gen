@@ -122,15 +122,15 @@
         &.is-selected:before {
             border-style: solid;
             border-width: thin;
-            border-radius: 0.25rem;
+            border-radius: 0.5rem;
             border-color: var(--wp-admin-theme-color);
             display: block;
             content: '';
             position: absolute;
-            width: calc(100% + 2rem);
-            height: calc(100% + 2rem);
-            left: calc(-2rem / 2);
-            top: calc(-2rem / 2);
+            width: calc(100% + 1rem);
+            height: calc(100% + 1rem);
+            left: calc(-1rem / 2);
+            top: calc(-1rem / 2);
         }
     }
 
@@ -179,6 +179,10 @@
 
 .block-editor-inserter__main-area {
     width: 100%;
+}
+
+.components-popover.block-editor-block-popover {
+    top: -0.5rem !important;
 }
 
 .interface-interface-skeleton {
