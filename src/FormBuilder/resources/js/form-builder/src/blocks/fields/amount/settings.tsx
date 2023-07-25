@@ -3,9 +3,9 @@ import {__} from '@wordpress/i18n';
 import {Icon} from '@wordpress/icons';
 import defaultSettings from '../settings';
 import Edit from './Edit';
-import {Path, SVG} from '@wordpress/components';
 
 import getDefaultBlockAttributes from '@givewp/form-builder/common/getDefaultBlockAttributes';
+import {Path, SVG} from '@wordpress/components';
 
 const {
     recurringDonationChoice,
@@ -89,7 +89,7 @@ const settings: FieldBlock['settings'] = {
                 <SVG width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <Path
                         d="M11.5789 4.44118H20M4 7.52941L7.36842 4M7.36842 4V19M11.5789 8.85294H18.3158M11.5789 13.2647H16.6316M11.5789 17.6765H14.9474"
-                        stroke="currentColor"
+                        stroke="#000C00"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
