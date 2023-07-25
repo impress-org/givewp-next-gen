@@ -68,26 +68,21 @@ const FormDesignSettings = () => {
                 {showHeader && (
                     <>
                         <PanelRow>
-                            <TextControl
-                                label={__('Heading', 'give')}
-                                value={heading}
-                                onChange={(heading) => dispatch(setFormSettings({heading}))}
-                            />
-                        </PanelRow>
-                        <PanelRow>
-                            <TextareaControl
-                                label={__('Description', 'give')}
-                                value={description}
-                                onChange={(description) => dispatch(setFormSettings({description}))}
-                            />
-                        </PanelRow>
-                        <PanelRow>
                             <ToggleControl
                                 label={__('Show Heading', 'give')}
                                 checked={showHeading}
                                 onChange={() => dispatch(setFormSettings({showHeading: !showHeading}))}
                             />
                         </PanelRow>
+                        {showHeading && (
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Heading', 'give')}
+                                    value={heading}
+                                    onChange={(heading) => dispatch(setFormSettings({heading}))}
+                                />
+                            </PanelRow>
+                        )}
                         <PanelRow>
                             <ToggleControl
                                 label={__('Show Description', 'give')}
@@ -95,6 +90,15 @@ const FormDesignSettings = () => {
                                 onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
                             />
                         </PanelRow>
+                        {showDescription && (
+                            <PanelRow>
+                                <TextareaControl
+                                    label={__('Description', 'give')}
+                                    value={description}
+                                    onChange={(description) => dispatch(setFormSettings({description}))}
+                                />
+                            </PanelRow>
+                        )}
                     </>
                 )}
             </PanelBody>
