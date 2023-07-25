@@ -188,10 +188,10 @@ function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}) {
                 {isFormDisplay && (
                     <div
                         style={{
-                            marginTop: '0.75rem',
+                            marginTop: '1rem',
                             fontSize: '1rem',
                             lineHeight: '150%',
-                            maxHeight: '16rem',
+                            maxHeight: '20rem',
                             overflowY: 'scroll',
                             border: '1px solid var(--grey-200, #BFBFBF)',
                             borderRadius: 5,
