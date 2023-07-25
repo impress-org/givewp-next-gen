@@ -15,6 +15,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 
 import {MenuIcon} from '@givewp/form-builder/blocks/fields/terms-and-conditions/Icon';
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
+import {Markup} from 'interweave';
 
 export default function Edit({
     attributes: {
@@ -32,10 +33,16 @@ export default function Edit({
     const [showAgreementTextModal, setShowAgreementTextModal] = useState(false);
     const isModalDisplay = displayType === 'showModalTerms';
     const isLinkDisplay = displayType === 'showLinkTerms';
+    const isFormDisplay = displayType === 'showFormTerms';
 
     return (
         <>
-            <Checkbox label={checkboxLabel} linkText={linkText} />
+            <BlockPlaceholder
+                label={checkboxLabel}
+                linkText={linkText}
+                isFormDisplay={isFormDisplay}
+                agreementText={agreementText}
+            />
 
             <InspectorControls>
                 <PanelBody title={__('Field Options', 'give')} initialOpen={true}>
@@ -75,13 +82,15 @@ export default function Edit({
                                 />
                             </PanelRow>
 
-                            <PanelRow>
-                                <TextControl
-                                    label={__('Link Text', 'give')}
-                                    value={linkText}
-                                    onChange={(value) => setAttributes({linkText: value})}
-                                />
-                            </PanelRow>
+                            {isLinkDisplay && (
+                                <PanelRow>
+                                    <TextControl
+                                        label={__('Link Text', 'give')}
+                                        value={linkText}
+                                        onChange={(value) => setAttributes({linkText: value})}
+                                    />
+                                </PanelRow>
+                            )}
 
                             {isLinkDisplay && (
                                 <PanelRow>
@@ -161,29 +170,52 @@ export default function Edit({
     );
 }
 
-function Checkbox({label, linkText}) {
+function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}) {
     return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                gap: 5,
-                width: 'fit-content',
-                border: 'none',
-            }}
-        >
-            <CheckboxControl label={label} onChange={null} disabled={true} />
-
-            <span
+        <>
+            <div
                 style={{
-                    minWidth: 'fit-content',
-                    color: 'var(--givewp-grey-80)',
-                    fontSize: '1rem',
+                    display: isFormDisplay ? 'block' : 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    gap: 5,
+                    width: 'fit-content',
+                    border: 'none',
                 }}
             >
-                {linkText}
-            </span>
-        </div>
+                <CheckboxControl label={label} onChange={null} disabled={true} />
+
+                {isFormDisplay && (
+                    <div
+                        style={{
+                            marginTop: '0.75rem',
+                            fontSize: '1rem',
+                            lineHeight: '150%',
+                            maxHeight: '16rem',
+                            overflowY: 'scroll',
+                            border: '1px solid var(--grey-200, #BFBFBF)',
+                            borderRadius: 5,
+                            padding: '0.5rem 0.75rem',
+                            background: 'var(--givewp-shades-white, #fff)',
+                        }}
+                    >
+                        <Markup content={agreementText} />
+                    </div>
+                )}
+
+                {!isFormDisplay && (
+                    <span
+                        style={{
+                            display: 'inline-block',
+                            minWidth: 'fit-content',
+                            color: 'var(--givewp-grey-80), #595959',
+                            fontSize: '1rem',
+                        }}
+                    >
+                        {linkText}
+                    </span>
+                )}
+            </div>
+        </>
     );
 }

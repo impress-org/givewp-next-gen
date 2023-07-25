@@ -3,7 +3,7 @@ import type {ConsentProps} from '@givewp/forms/propTypes';
 import Checkbox from '../Checkbox';
 import ShowTerms from './ShowTerms';
 import ConsentModal from './ConsentModal';
-import {Interweave} from 'interweave';
+import {Markup} from 'interweave';
 
 export default function ConsentField({
     name,
@@ -20,21 +20,16 @@ export default function ConsentField({
     agreementText,
 }: ConsentProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [revealTerms, setRevealTerms] = useState<boolean>(false);
     const {useFormContext} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
 
     const isModalDisplay = displayType === 'showModalTerms';
     const isFormDisplay = displayType === 'showFormTerms';
+    const isLinkDisplay = displayType === 'showLinkTerms';
 
     const openTerms = (event) => {
         event.preventDefault();
-
-        if (isModalDisplay) {
-            setShowModal(true);
-        } else if (isFormDisplay) {
-            setRevealTerms(!revealTerms);
-        }
+        setShowModal(true);
     };
 
     const acceptTerms = (event) => {
@@ -46,7 +41,7 @@ export default function ConsentField({
     const Label = () => (
         <>
             <span>{checkboxLabel}</span>&nbsp;
-            {(!isFormDisplay || !revealTerms) && (
+            {!isFormDisplay && (
                 <ShowTerms openTerms={openTerms} displayType={displayType} linkText={linkText} linkUrl={linkUrl} />
             )}
         </>
@@ -59,19 +54,22 @@ export default function ConsentField({
             {isModalDisplay && showModal && (
                 <ConsentModal {...{setShowModal, modalHeading, modalAcceptanceText, agreementText, acceptTerms}} />
             )}
-            {isFormDisplay && revealTerms && (
+
+            {isFormDisplay && (
                 <div
                     style={{
+                        marginTop: '0.75rem',
                         fontSize: '1rem',
                         lineHeight: '150%',
                         maxHeight: '16rem',
                         overflowY: 'scroll',
-                        border: '1px solid #BFBFBF',
+                        border: '1px solid var(--grey-200, #BFBFBF)',
                         borderRadius: 5,
-                        padding: '8px 12px',
+                        padding: '0.5rem 0.75rem',
+                        background: 'var(--givewp-shades-white, #fff)',
                     }}
                 >
-                    <Interweave content={agreementText} />
+                    <Markup content={agreementText} />
                 </div>
             )}
         </>
