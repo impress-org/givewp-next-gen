@@ -124,7 +124,7 @@ class FormBuilderResourceController
             return new WP_Error(
                 404,
                 __(
-                    "Required block(s): '$requiredBlockLabels' not found. Please add the missing block(s) and try again.",
+                    "The following required block(s) were not found: '$requiredBlockLabels'. Please add these missing block(s) and try again.",
                     'give'
                 )
             );
