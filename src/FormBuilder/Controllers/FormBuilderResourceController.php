@@ -16,6 +16,7 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
+     * @unreleased add required block validation
      * @since 0.1.0
      *
      * @param  WP_REST_Request  $request
@@ -45,6 +46,7 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
+     * @unreleased add required block validation
      * @since 0.1.0
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
@@ -108,16 +110,24 @@ class FormBuilderResourceController
      */
     protected function validateRequiredBlocks(BlockCollection $blocks)
     {
+        $missingBlockLabels = [];
+
         foreach ($this->getRequiredBlocks() as $requiredBlockName => $requiredBlockLabel) {
             if (!$blocks->findByName($requiredBlockName)) {
-                return new WP_Error(
-                    404,
-                    __(
-                        "Required block '$requiredBlockLabel' not found. Please add the missing block and try again.",
-                        'give'
-                    )
-                );
+                $missingBlockLabels[] = $requiredBlockLabel;
             }
+        }
+
+        if (!empty($missingBlockLabels)) {
+            $requiredBlockLabels = implode("', '", $missingBlockLabels);
+
+            return new WP_Error(
+                404,
+                __(
+                    "Required block(s): '$requiredBlockLabels' not found. Please add the missing block(s) and try again.",
+                    'give'
+                )
+            );
         }
     }
 }
