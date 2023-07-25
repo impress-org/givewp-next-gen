@@ -15,7 +15,6 @@ use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModul
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
-use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGatewaySubscriptionModule;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionDeleted;
@@ -26,7 +25,6 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite;
 use Give\PaymentGateways\Gateways\TestGateway\TestGatewaySubscriptionModule;
-use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
