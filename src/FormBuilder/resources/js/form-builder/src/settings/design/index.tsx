@@ -74,6 +74,13 @@ const FormDesignSettings = () => {
                                 onChange={() => dispatch(setFormSettings({showHeading: !showHeading}))}
                             />
                         </PanelRow>
+                        <PanelRow>
+                            <ToggleControl
+                                label={__('Show Description', 'give')}
+                                checked={showDescription}
+                                onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
+                            />
+                        </PanelRow>
                         {showHeading && (
                             <PanelRow>
                                 <TextControl
@@ -83,13 +90,6 @@ const FormDesignSettings = () => {
                                 />
                             </PanelRow>
                         )}
-                        <PanelRow>
-                            <ToggleControl
-                                label={__('Show Description', 'give')}
-                                checked={showDescription}
-                                onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
-                            />
-                        </PanelRow>
                         {showDescription && (
                             <PanelRow>
                                 <TextareaControl
