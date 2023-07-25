@@ -2,13 +2,10 @@
 
 namespace Give\FormBuilder\Controllers;
 
-use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
-use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\FieldsAPI\Form;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Request;
@@ -35,7 +32,7 @@ class FormBuilderResourceController
             return rest_ensure_response(new WP_Error(404, 'Form not found.'));
         }
 
-        if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
+        if ($requiredFieldsError = $this->validateRequiredBlocks($form->blocks)) {
             return rest_ensure_response($requiredFieldsError);
         }
 
@@ -68,15 +65,15 @@ class FormBuilderResourceController
 
         $blocks = BlockCollection::fromJson($rawBlocks);
 
+        if ($requiredFieldsError = $this->validateRequiredBlocks($blocks)) {
+            return rest_ensure_response($requiredFieldsError);
+        }
+
         $updatedSettings = FormSettings::fromJson($formBuilderSettings);
 
         $form->settings = $updatedSettings;
         $form->title = $updatedSettings->formTitle;
         $form->blocks = $blocks;
-
-        if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
-            return rest_ensure_response($requiredFieldsError);
-        }
 
         do_action('givewp_form_builder_updated', $form);
 
@@ -90,30 +87,36 @@ class FormBuilderResourceController
     }
 
     /**
-     * @since 0.1.0
+     * @unreleased
      *
      * @return string[]
      */
-    protected function getRequiredFieldNames(): array
+    protected function getRequiredBlocks(): array
     {
         return [
-            'amount',
-            'name',
-            'email',
-            'gatewayId',
+            "givewp/donation-amount" => "Donation Amount",
+            "givewp/donor-name" => "Donor Name",
+            "givewp/email" => "Email",
+            "givewp/payment-gateways" => "Payment Gateways",
         ];
     }
 
     /**
-     * @since 0.1.0
+     * @unreleased
      *
      * @return WP_Error|void
      */
-    protected function validateRequiredFields(Form $schema)
+    protected function validateRequiredBlocks(BlockCollection $blocks)
     {
-        foreach ($this->getRequiredFieldNames() as $requiredFieldName) {
-            if (!$schema->getNodeByName($requiredFieldName)) {
-                return new WP_Error(404, __("Required field '$requiredFieldName' not found.", 'give'));
+        foreach ($this->getRequiredBlocks() as $requiredBlockName => $requiredBlockLabel) {
+            if (!$blocks->findByName($requiredBlockName)) {
+                return new WP_Error(
+                    404,
+                    __(
+                        "Required block '$requiredBlockLabel' not found. Please add the missing block and try again.",
+                        'give'
+                    )
+                );
             }
         }
     }
