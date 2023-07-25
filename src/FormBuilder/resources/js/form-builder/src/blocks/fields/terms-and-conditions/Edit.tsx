@@ -16,6 +16,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 import {MenuIcon} from '@givewp/form-builder/blocks/fields/terms-and-conditions/Icon';
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
 import {Markup} from 'interweave';
+import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 
 export default function Edit({
     attributes: {
@@ -59,7 +60,15 @@ export default function Edit({
                         />
                     </PanelRow>
 
-                    {useGlobalSettings === false && (
+                    {useGlobalSettings && (
+                        <GlobalSettingsLink
+                            href={
+                                '`/wp-admin//edit.php?post_type=give_forms&page=give-settings&tab=display&section=terms-and-conditions'
+                            }
+                        />
+                    )}
+
+                    {!useGlobalSettings && (
                         <>
                             <PanelRow>
                                 <TextControl
@@ -170,7 +179,14 @@ export default function Edit({
     );
 }
 
-function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}) {
+type BlockPlaceholderProps = {
+    label: string;
+    linkText: string;
+    isFormDisplay: boolean;
+    agreementText: string;
+};
+
+function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}: BlockPlaceholderProps) {
     return (
         <>
             <div
