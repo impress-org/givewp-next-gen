@@ -49,11 +49,6 @@ class FunctionsTest extends TestCase
         $this->assertEquals($atts['id'], $this->migratedFormIdLookup[2]);
     }
 
-    public function testVariadicValueUpdate()
-    {
-        //
-    }
-
     public function testArrayValueUpdate()
     {
         $ids = [
