@@ -6,8 +6,8 @@ export default function popover() {
             const {top} = popover.getBoundingClientRect();
 
             if (top < 130) {
-                const top = Math.sign(event.deltaY) + 1;
-                popover.style.top = top + 'rem';
+                const styleTop = Math.sign(event.deltaY) + 1;
+                popover.style.top = styleTop + 'rem';
             } else {
                 popover.style.top = '0rem';
             }
