@@ -181,8 +181,9 @@
     width: 100%;
 }
 
-.components-popover.block-editor-block-popover {
-    top: -0.5rem !important;
+.components-popover.block-editor-block-popover .components-popover__content {
+    top: -0.5rem;
+    position: relative;
 }
 
 .interface-interface-skeleton {
