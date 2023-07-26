@@ -32,6 +32,7 @@ export default function Edit({
     setAttributes,
 }: BlockEditProps<any>) {
     const [showAgreementTextModal, setShowAgreementTextModal] = useState(false);
+
     const isModalDisplay = displayType === 'showModalTerms';
     const isLinkDisplay = displayType === 'showLinkTerms';
     const isFormDisplay = displayType === 'showFormTerms';
@@ -127,13 +128,16 @@ export default function Edit({
                                                 justifyContent: 'space-between',
                                             }}
                                         >
-                                            {__('Agreement text')}
+                                            <span>{__('Agreement text')}</span>
                                             <Button
-                                                style={{background: 'transparent', verticalAlign: 'center'}}
+                                                style={{
+                                                    background: showAgreementTextModal ? '#3D5A66' : 'transparent',
+                                                    verticalAlign: 'center',
+                                                }}
                                                 variant={'primary'}
                                                 onClick={() => setShowAgreementTextModal(true)}
                                             >
-                                                <MenuIcon />
+                                                <MenuIcon color={showAgreementTextModal ? '#ffffff' : ' #1e1e1e'} />
                                             </Button>
                                         </div>
                                     </BaseControl>
@@ -195,7 +199,6 @@ function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}: Block
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     gap: 5,
-                    width: 'fit-content',
                     border: 'none',
                 }}
             >
@@ -205,13 +208,13 @@ function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}: Block
                     <div
                         style={{
                             marginTop: '1rem',
-                            fontSize: '1rem',
                             lineHeight: '150%',
-                            maxHeight: '20rem',
+                            maxHeight: '17.5rem',
+                            minHeight: '6.5rem',
                             overflowY: 'scroll',
                             border: '1px solid var(--grey-200, #BFBFBF)',
                             borderRadius: 5,
-                            padding: '0.5rem 0.75rem',
+                            padding: '0 1rem',
                             background: 'var(--givewp-shades-white, #fff)',
                         }}
                     >

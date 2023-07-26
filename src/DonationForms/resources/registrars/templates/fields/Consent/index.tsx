@@ -59,13 +59,13 @@ export default function ConsentField({
                 <div
                     style={{
                         marginTop: '1rem',
-                        fontSize: '1rem',
                         lineHeight: '150%',
-                        maxHeight: '20rem',
+                        maxHeight: '17.5rem',
+                        minHeight: '6.5rem',
                         overflowY: 'scroll',
                         border: '1px solid var(--grey-200, #BFBFBF)',
                         borderRadius: 5,
-                        padding: '0.5rem 0.75rem',
+                        padding: '0 1rem',
                         background: 'var(--givewp-shades-white, #fff)',
                     }}
                 >
