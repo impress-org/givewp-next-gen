@@ -8,6 +8,7 @@ use Give\FormMigration\Commands\MigrationCommand;
 use Give\FormMigration\Commands\TransferCommand;
 use Give\FormMigration\Controllers\MigrationController;
 use Give\FormMigration\Controllers\TransferController;
+use Give\FormMigration\DataTransferObjects\TransferOptions;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use WP_CLI;
 use WP_REST_Request;
@@ -60,9 +61,9 @@ class ServiceProvider implements ServiceProviderInterface
             register_rest_route('give-api/v2', 'admin/forms/migrate', [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => function (WP_REST_Request $request) {
-                    $controller = new MigrationController($request);
-                    $formIdV2 = $request->get_param('ids')[0];
-                    return $controller(DonationFormV2::find($formIdV2));
+                    return (new MigrationController($request))(
+                        DonationFormV2::find($request->get_param('ids')[0])
+                    );
                 },
                 'permission_callback' => function () {
                     return current_user_can('manage_options');
@@ -82,9 +83,10 @@ class ServiceProvider implements ServiceProviderInterface
             register_rest_route('give-api/v2', 'admin/forms/transfer', [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => function (WP_REST_Request $request) {
-                    $controller = new TransferController($request);
-                    $formIdV3 = $request->get_param('ids')[0];
-                    return $controller(DonationFormV3::find($formIdV3));
+                    return (new TransferController($request))(
+                        DonationFormV3::find($request->get_param('ids')[0]),
+                        TransferOptions::fromRequest($request)
+                    );
                 },
                 'permission_callback' => function () {
                     return current_user_can('manage_options');
@@ -96,6 +98,18 @@ class ServiceProvider implements ServiceProviderInterface
                             return array_map('intval', explode(',', $value));
                         },
                         'description' => __('The ID of the form (v3) to transfer donations (from v2).', 'givewp'),
+                    ],
+                    'changeUrl' => [
+                        'type' => 'boolean',
+                        'required' => true,
+                    ],
+                    'delete' => [
+                        'type' => 'boolean',
+                        'required' => true,
+                    ],
+                    'redirect' => [
+                        'type' => 'boolean',
+                        'required' => true,
                     ],
                 ],
             ]);
