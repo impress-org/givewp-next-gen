@@ -73,7 +73,11 @@ class Router
                 $contentType,
                 "multipart/form-data"
             )) {
-            $requestData = give_clean($_REQUEST);
+            $requestData = array_merge(
+                give_clean($_REQUEST),
+                //TODO: check if this is necessary for validation to find the value from the request
+                give_clean($_FILES)
+            );
         }
 
         // this content type is typically used with the fetch api and our custom routes
