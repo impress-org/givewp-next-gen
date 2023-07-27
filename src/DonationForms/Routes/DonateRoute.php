@@ -41,10 +41,6 @@ class DonateRoute
      */
     public function __invoke(array $request)
     {
-        ray('donateRoute', [
-            'post' => $_POST,
-            'files' => $_FILES
-        ]);
         // create DTO from GET request
         $routeData = DonateRouteData::fromRequest(give_clean($_GET));
 
