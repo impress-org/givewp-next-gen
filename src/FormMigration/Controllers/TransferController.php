@@ -4,6 +4,7 @@ namespace Give\FormMigration\Controllers;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\FormMigration\Actions\TransferDonations;
+use Give\FormMigration\Actions\TransferFormUrl;
 use Give\FormMigration\DataTransferObjects\TransferOptions;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -27,15 +28,22 @@ class TransferController
     public function __invoke(DonationForm $formV3, TransferOptions $options)
     {
         DB::transaction(function() use ($formV3, $options) {
-            $action = TransferDonations::from(
-                give_get_meta($formV3->id, 'migratedFormId', true)
-            );
 
-            if($options->shouldChangeUrl()) // ...
-            if($options->shouldDelete()) // ...
-            if($options->shouldRedirect()) // ...
+            $v2FormId = give_get_meta($formV3->id, 'migratedFormId', true);
 
-            $action->to($formV3->id);
+            TransferDonations::from($v2FormId)->to($formV3->id);
+
+            if($options->shouldChangeUrl()) {
+                TransferFormUrl::from($v2FormId)->to($formV3->id);
+            }
+
+            if($options->shouldDelete()) {
+                wp_trash_post($v2FormId);
+            }
+
+            if($options->shouldRedirect()) {
+                give_update_meta($formV3->id, 'redirectedFormId', $v2FormId);
+            }
         });
 
         return new WP_REST_Response(array('errors' => [], 'successes' => [
