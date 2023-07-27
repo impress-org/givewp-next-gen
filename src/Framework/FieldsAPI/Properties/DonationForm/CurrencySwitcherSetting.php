@@ -21,15 +21,24 @@ class CurrencySwitcherSetting implements JsonSerializable
      * @var string[]
      */
     protected $gateways = [];
+    /**
+     * @var int
+     */
+    protected $exchangeRateFractionDigits;
 
     /**
      * @unreleased
      */
-    public function __construct(string $id, float $exchangeRate = 0, array $gateways = [])
-    {
+    public function __construct(
+        string $id,
+        float $exchangeRate = 0,
+        array $gateways = [],
+        int $exchangeRateFractionDigits = 2
+    ) {
         $this->id = $id;
         $this->exchangeRate = $exchangeRate;
         $this->gateways = $gateways;
+        $this->exchangeRateFractionDigits = $exchangeRateFractionDigits;
     }
 
     /**
@@ -53,6 +62,14 @@ class CurrencySwitcherSetting implements JsonSerializable
     /**
      * @unreleased
      */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @unreleased
+     */
     public function exchangeRate(float $rate): CurrencySwitcherSetting
     {
         $this->exchangeRate = $rate;
@@ -63,10 +80,44 @@ class CurrencySwitcherSetting implements JsonSerializable
     /**
      * @unreleased
      */
+    public function getExchangeRate(): float
+    {
+        return $this->exchangeRate;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function exchangeRateFractionDigits(int $exchangeRateFractionDigits): CurrencySwitcherSetting
+    {
+        $this->exchangeRateFractionDigits = $exchangeRateFractionDigits;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getExchangeRateFractionDigits(): int
+    {
+        return $this->exchangeRateFractionDigits;
+    }
+
+    /**
+     * @unreleased
+     */
     public function gateways(array $gateways): CurrencySwitcherSetting
     {
         $this->gateways = $gateways;
 
         return $this;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getGateways(): array
+    {
+        return $this->gateways;
     }
 }

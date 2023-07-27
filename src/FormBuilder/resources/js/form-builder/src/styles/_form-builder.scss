@@ -12,7 +12,7 @@
  */
 
 .givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary {
-    input,
+    input:not([type=radio]):not([type=checkbox]),
     textarea,
     .components-form-token-field__input-container {
         width: 100%;
@@ -67,10 +67,6 @@
         text-transform: uppercase;
         font-size: 0.8em;
         font-weight: 500;
-    }
-
-    .components-panel__row {
-        margin-right: 10px; // Account for scrollbar
     }
 
     > .components-panel {

@@ -16,9 +16,14 @@
         &.is-active {
             background-color: var(--givewp-grey-25);
         }
+
         &:after {
             background: initial; // Remove the underline.
         }
+    }
+
+    .components-button {
+        text-align: left;
     }
 }
 
@@ -34,6 +39,7 @@
     border: 1px solid var(--givewp-grey-100);
 
     scroll-snap-type: y mandatory;
+
     & > li {
         scroll-snap-align: start;
     }
@@ -45,6 +51,7 @@
         &:hover button {
             visibility: visible;
         }
+
         button {
             visibility: hidden;
             position: absolute;
@@ -70,3 +77,8 @@
 [id^='__wp-uploader'] {
     z-index: 9999999999;
 }
+
+.media-frame {
+    z-index: 1 !important;
+}
+
