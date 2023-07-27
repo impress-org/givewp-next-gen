@@ -4,7 +4,10 @@ namespace Give\DonationForms\Listeners;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Form\LegacyConsumer\Actions\UploadFilesAction;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\File;
+use Give\Framework\FieldsAPI\Types;
 
 class StoreCustomFields
 {
@@ -21,20 +24,56 @@ class StoreCustomFields
     {
         $form->schema()->walkFields(
             function (Field $field) use ($customFields, $donation) {
-                if (!array_key_exists($field->getName(), $customFields)) {
+                $fieldName = $field->getName();
+                $fieldType = $field->getType();
+
+                if (!array_key_exists($fieldName, $customFields)) {
                     return;
                 }
 
-                $value = $customFields[$field->getName()];
-
-                if ($field->shouldStoreAsDonorMeta()) {
-                    // save as donor meta
-                    give()->donor_meta->update_meta($donation->donorId, $field->getName(), $value);
+                /** @var File $field */
+                if (($fieldType === Types::FILE) && isset($_FILES[$fieldName])) {
+                    //TODO: let file field provide this storage logic
+                    $this->handleFileUpload($field, $donation);
                 } else {
-                    // save as donation meta
-                    give()->payment_meta->update_meta($donation->id, $field->getName(), $value);
+                    $value = $customFields[$fieldName];
+
+                    // TODO: it would be nice to have a way of serializing the value from the field api
+                    $value = apply_filters("givewp_store_custom_field_value_$fieldName", $value, $field, $donation);
+
+                    // TODO: it would be nice to have a way of customizing the storage from the field api
+                    do_action("givewp_store_custom_field_$fieldName", $value, $field, $donation);
+
+                    $this->handleMetaStorage($field, $donation, $value);
                 }
             }
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function handleFileUpload(File $field, Donation $donation)
+    {
+        $fileUploader = new UploadFilesAction($field);
+        $fileIds = $fileUploader();
+
+        foreach ($fileIds as $fileId) {
+            $this->handleMetaStorage($field, $donation, $fileId);
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function handleMetaStorage(Field $field, Donation $donation, $value)
+    {
+        if ($field->shouldStoreAsDonorMeta()) {
+            // save as donor meta
+            give()->donor_meta->update_meta($donation->donorId, $field->getName(), $value);
+        } else {
+            // save as donation meta
+            give()->payment_meta->update_meta($donation->id, $field->getName(), $value);
+        }
     }
 }

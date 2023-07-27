@@ -1,4 +1,5 @@
 import {FormProvider, useForm, useFormState} from 'react-hook-form';
+import {DevTool} from '@hookform/devtools';
 import {joiResolver} from '@hookform/resolvers/joi';
 
 import getWindowData from '../utilities/getWindowData';
@@ -67,6 +68,8 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                     </FormTemplate>
                 </DonationSummaryProvider>
             </DonationFormErrorBoundary>
+            {/* React Hook Form Dev Tool - disabled when in npm run production build */}
+            <DevTool control={control} />
         </FormProvider>
     );
 }

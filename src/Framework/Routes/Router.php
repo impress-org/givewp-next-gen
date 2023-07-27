@@ -69,12 +69,15 @@ class Router
         $contentType = $_SERVER['CONTENT_TYPE'];
 
         // this content type is typically used throughout legacy with jQuery and wp-ajax
-        if (str_contains($contentType, "application/x-www-form-urlencoded")) {
+        if (str_contains($contentType, "application/x-www-form-urlencoded") || str_contains(
+                $contentType,
+                "multipart/form-data"
+            )) {
             $requestData = give_clean($_REQUEST);
         }
 
         // this content type is typically used with the fetch api and our custom routes
-        if (str_contains($contentType,"application/json")) {
+        if (str_contains($contentType, "application/json")) {
             $requestData = file_get_contents('php://input');
             $requestData = json_decode($requestData, true);
             $requestData = give_clean($requestData);
