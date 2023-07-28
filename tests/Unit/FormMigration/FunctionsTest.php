@@ -9,7 +9,7 @@ class FunctionsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $migratedFormIdLookup = [
+    protected $redirectedFormIdLookup = [
         1 => 101,
         2 => 202,
         3 => 303,
@@ -25,10 +25,10 @@ class FunctionsTest extends TestCase
 
         global $wpdb;
 
-        foreach($this->migratedFormIdLookup as $oldId => $newId) {
+        foreach($this->redirectedFormIdLookup as $oldId => $newId) {
             $wpdb->insert($wpdb->prefix . 'give_formmeta', [
                 'form_id' => $newId,
-                'meta_key' => 'migratedFormId',
+                'meta_key' => 'redirectedFormId',
                 'meta_value' => $oldId,
             ]);
         }
@@ -46,9 +46,9 @@ class FunctionsTest extends TestCase
     {
         $formId = 2;
 
-        givewp_migrated_form_id($formId);
+        give_redirect_form_id($formId);
 
-        $this->assertEquals($formId, $this->migratedFormIdLookup[2]);
+        $this->assertEquals($formId, $this->redirectedFormIdLookup[2]);
     }
 
     public function testMultipleValueUpdate()
@@ -56,10 +56,10 @@ class FunctionsTest extends TestCase
         $formId = 2;
         $atts['id'] = 2;
 
-        givewp_migrated_form_id($formId, $atts['id']);
+        give_redirect_form_id($formId, $atts['id']);
 
-        $this->assertEquals($formId, $this->migratedFormIdLookup[2]);
-        $this->assertEquals($atts['id'], $this->migratedFormIdLookup[2]);
+        $this->assertEquals($formId, $this->redirectedFormIdLookup[2]);
+        $this->assertEquals($atts['id'], $this->redirectedFormIdLookup[2]);
     }
 
     public function testArrayValueUpdate()
@@ -69,10 +69,10 @@ class FunctionsTest extends TestCase
             2 => 2,
         ];
 
-        givewp_migrated_form_id($ids);
+        give_redirect_form_id($ids);
 
-        $this->assertEquals($ids[1], $this->migratedFormIdLookup[1]);
-        $this->assertEquals($ids[2], $this->migratedFormIdLookup[2]);
+        $this->assertEquals($ids[1], $this->redirectedFormIdLookup[1]);
+        $this->assertEquals($ids[2], $this->redirectedFormIdLookup[2]);
     }
 
     public function testIsFormMigrated()
