@@ -56,12 +56,12 @@
       background-color: var(--givewp-grey-5)
     }
 
-    .givewp-currency-switcher-message-settings__copy-button {
+    .givewp-popover-content-settings__copy-button {
       opacity: 0;
     }
 
     &:hover {
-      .givewp-currency-switcher-message-settings__copy-button {
+      .givewp-popover-content-settings__copy-button {
         opacity: 1;
       }
     }
