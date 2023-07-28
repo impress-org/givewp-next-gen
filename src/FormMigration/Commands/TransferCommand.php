@@ -5,6 +5,7 @@ namespace Give\FormMigration\Commands;
 use Give\DonationForms\Models\DonationForm as DonationFormV3;
 use Give\DonationForms\V2\Models\DonationForm as DonationFormV2;
 use Give\FormMigration\Actions\TransferDonations;
+use Give\FormMigration\Actions\TransferFormUrl;
 use Give\FormMigration\Concerns\Blocks\BlockDifference;
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\DataTransferObjects\TransferOptions;
@@ -40,29 +41,44 @@ class TransferCommand
     public function __invoke( $args, $assoc_args )
     {
         [$formIdV3] = $args;
+
         $sourceId = give_get_meta($formIdV3, 'migratedFormId', true);
+
+        $options = TransferOptions::fromArray([
+            'changeUrl' => get_flag_value($assoc_args, 'changeUrl'),
+            'delete' => get_flag_value($assoc_args, 'delete'),
+            'redirect' => get_flag_value($assoc_args, 'redirect'),
+        ]);
+
+        $isDryRun = get_flag_value($assoc_args, 'dry-run');
 
         $count = DB::table('give_revenue')
             ->where('form_id', $sourceId)
             ->count();
 
-        if(get_flag_value($assoc_args, 'dry-run')) {
-            WP_CLI::log(sprintf('Found %s donation(s) to transfer.', $count));
-        } else {
-            try {
-                DB::transaction(function() use ($formIdV3, $sourceId, $assoc_args) {
-                    TransferOptions::fromArray([
-                        'changeUrl' => get_flag_value($assoc_args, 'changeUrl'),
-                        'delete' => get_flag_value($assoc_args, 'delete'),
-                        'redirect' => get_flag_value($assoc_args, 'redirect'),
-                    ]);
-                    TransferDonations::from($sourceId)
-                        ->to($formIdV3);
-                });
-                WP_CLI::success(sprintf('Transferred %s donation(s).', $count));
-            } catch( \Exception $e ) {
-                WP_CLI::error('Failed to transfer donations.');
-            }
+        try {
+            DB::transaction(function() use ($formIdV3, $sourceId, $options, $isDryRun) {
+                TransferDonations::from($sourceId)->to($formIdV3);
+
+                if($options->shouldChangeUrl()) {
+                    TransferFormUrl::from($sourceId)->to($formIdV3);
+                }
+
+                if($options->shouldDelete()) {
+                    wp_trash_post($sourceId);
+                }
+
+                if($options->shouldRedirect()) {
+                    give_update_meta($formIdV3, 'redirectedFormId', $sourceId);
+                }
+
+                if($isDryRun) {
+                    DB::rollback();
+                }
+            });
+            WP_CLI::success(sprintf('Transferred %s donation(s).', $count));
+        } catch( \Exception $e ) {
+            WP_CLI::error('Failed to transfer donations.');
         }
     }
 }
