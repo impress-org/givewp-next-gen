@@ -43,7 +43,7 @@ const DonationConfirmation = () => {
                     {isHeaderMessageSettingsOpen && (
                         <PopoverContentWithTemplateTags
                             onContentChange={(receiptHeading) => dispatch(setFormSettings({receiptHeading}))}
-                            heading={__('Heading', 'give')}
+                            heading={__('Header', 'give')}
                             content={receiptHeading}
                             templateTags={templateTags}
                             onClose={closeHeaderMessageSettings}
