@@ -56,6 +56,7 @@ class Router
     }
 
     /**
+     * @unreleased add support for multipart/form-data content-type
      * @since 0.1.0
      */
     protected function getDataFromPostRequest(): array
@@ -68,7 +69,8 @@ class Router
 
         $contentType = $_SERVER['CONTENT_TYPE'];
 
-        // this content type is typically used throughout legacy with jQuery and wp-ajax
+        // v2 forms use "application/x-www-form-urlencoded"
+        // v3 forms use "multipart/form-data" and/or "application/json"
         if (str_contains($contentType, "application/x-www-form-urlencoded") || str_contains(
                 $contentType,
                 "multipart/form-data"

@@ -16,6 +16,7 @@ class StoreCustomFields
      * schema settings to the request.  Once a field has passed validation, we can determine
      * its storage location from the fields api.  This Action is designed to be triggered post-validation.
      *
+     * @unreleased add support for file fields
      * @since 0.1.0
      *
      * @return void

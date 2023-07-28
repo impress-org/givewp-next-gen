@@ -4,6 +4,7 @@ namespace Give\Framework\FormDesigns;
 
 use Give\Framework\FormDesigns\Actions\RegisterFormDesigns;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -28,7 +29,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $registrar = give()->make(FormDesignRegistrar::class);
 
-        do_action('givewp_register_form_design', $registrar);
-        do_action('givewp_unregister_form_design', $registrar);
+        Hooks::doAction('givewp_register_form_design', $registrar);
+        Hooks::doAction('givewp_unregister_form_design', $registrar);
     }
 }
