@@ -54,7 +54,10 @@ function give_is_form_migrated($formId) {
             "
                     SELECT `form_id`
                     FROM `{$wpdb->prefix}give_formmeta`
-                    WHERE `meta_key` = 'migratedFormId'
+                    JOIN `{$wpdb->posts}`
+                        ON `{$wpdb->posts}`.`ID` = `{$wpdb->prefix}give_formmeta`.`form_id`
+                    WHERE `post_status` != 'trash'
+                      AND `meta_key` = 'migratedFormId'
                       AND `meta_value` = %d",
             $formId
         )
@@ -74,7 +77,10 @@ function give_is_form_donations_transferred($formId) {
             "
                     SELECT `form_id`
                     FROM `{$wpdb->prefix}give_formmeta`
-                    WHERE `meta_key` = 'transferredFormId'
+                    JOIN `{$wpdb->posts}`
+                        ON `{$wpdb->posts}`.`ID` = `{$wpdb->prefix}give_formmeta`.`form_id`
+                    WHERE `post_status` != 'trash'
+                      AND `meta_key` = 'transferredFormId'
                       AND `meta_value` = %d",
             $formId
         )
