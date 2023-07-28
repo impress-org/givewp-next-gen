@@ -2,7 +2,7 @@
 
 namespace Give\FormMigration\Controllers;
 
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\FormMigration\Actions\TransferDonations;
 use Give\FormMigration\Actions\TransferFormUrl;
 use Give\FormMigration\DataTransferObjects\TransferOptions;
@@ -25,29 +25,41 @@ class TransferController
         $this->request = $request;
     }
 
-    public function __invoke(DonationForm $formV3, TransferOptions $options)
+    public function __invoke(DonationForm $formV2, TransferOptions $options)
     {
-        DB::transaction(function() use ($formV3, $options) {
+        DB::transaction(function() use ($formV2, $options) {
+            global $wpdb;
+            $v3FormId = DB::get_var(
+                DB::prepare(
+                    "
+                    SELECT `form_id`
+                    FROM `{$wpdb->prefix}give_formmeta`
+                    JOIN `{$wpdb->posts}`
+                        ON `{$wpdb->posts}`.`ID` = `{$wpdb->prefix}give_formmeta`.`form_id`
+                    WHERE `post_status` != 'trash'
+                      AND `meta_key` = 'migratedFormId'
+                      AND `meta_value` = %d",
+                    $formV2->id
+                )
+            );
 
-            $v2FormId = give_get_meta($formV3->id, 'migratedFormId', true);
-
-            TransferDonations::from($v2FormId)->to($formV3->id);
+            TransferDonations::from($formV2->id)->to($v3FormId);
 
             if($options->shouldChangeUrl()) {
-                TransferFormUrl::from($v2FormId)->to($formV3->id);
+                TransferFormUrl::from($formV2->id)->to($v3FormId);
             }
 
             if($options->shouldDelete()) {
-                wp_trash_post($v2FormId);
+                wp_trash_post($formV2->id);
             }
 
             if($options->shouldRedirect()) {
-                give_update_meta($formV3->id, 'redirectedFormId', $v2FormId);
+                give_update_meta($v3FormId, 'redirectedFormId', $formV2->id);
             }
         });
 
         return new WP_REST_Response(array('errors' => [], 'successes' => [
-            $formV3->id
+            $formV2->id
         ]));
     }
 }

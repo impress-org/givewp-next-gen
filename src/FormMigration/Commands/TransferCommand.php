@@ -44,10 +44,11 @@ class TransferCommand
 
         $sourceId = give_get_meta($formIdV3, 'migratedFormId', true);
 
+
         $options = TransferOptions::fromArray([
-            'changeUrl' => get_flag_value($assoc_args, 'changeUrl'),
-            'delete' => get_flag_value($assoc_args, 'delete'),
-            'redirect' => get_flag_value($assoc_args, 'redirect'),
+            'changeUrl' => (bool) get_flag_value($assoc_args, 'changeUrl'),
+            'delete' => (bool) get_flag_value($assoc_args, 'delete'),
+            'redirect' => (bool) get_flag_value($assoc_args, 'redirect'),
         ]);
 
         $isDryRun = get_flag_value($assoc_args, 'dry-run');

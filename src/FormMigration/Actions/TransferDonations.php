@@ -21,7 +21,7 @@ class TransferDonations extends TransferAction
 
         $updated = DB::table('give_revenue')
             ->where('form_id', $this->sourceId)
-            ->update(['meta_value' => $destinationId]);
+            ->update(['form_id' => $destinationId]);
 
         if(!$updated) {
             throw new Exception('Failed to transfer donations.');

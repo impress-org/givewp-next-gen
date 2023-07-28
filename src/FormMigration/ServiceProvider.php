@@ -82,9 +82,9 @@ class ServiceProvider implements ServiceProviderInterface
             // give-api/v2/admin/forms/transfer
             register_rest_route('give-api/v2', 'admin/forms/transfer', [
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => function (WP_REST_Request $request) {
-                    return (new TransferController($request))(
-                        DonationFormV3::find($request->get_param('ids')[0]),
+		'callback' => function (WP_REST_Request $request) {
+		    return (new TransferController($request))(
+                        DonationFormV2::find($request->get_param('formId')),
                         TransferOptions::fromRequest($request)
                     );
                 },
@@ -92,10 +92,11 @@ class ServiceProvider implements ServiceProviderInterface
                     return current_user_can('manage_options');
                 },
                 'args' => [
-                    'ids' => [
+                    'formId' => [
                         'type' => 'integer',
-                        'sanitize_callback' => function($value) {
-                            return array_map('intval', explode(',', $value));
+			'sanitize_callback' => function($value) {
+                            return intval($value);
+                            // return array_map('intval', explode(',', $value));
                         },
                         'description' => __('The ID of the form (v3) to transfer donations (from v2).', 'givewp'),
                     ],
