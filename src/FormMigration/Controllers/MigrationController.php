@@ -48,7 +48,8 @@ class MigrationController
                     ->diff($payload->formV3->blocks);
             })
             ->process($payload)
-            ->finally(function($payload) {
+            ->finally(function(FormMigrationPayload $payload) {
+                $payload->formV3->save();
                 Log::info(esc_html__('Form migrated from v2 to v3.', 'give'), $this->debugContext);
             });
 

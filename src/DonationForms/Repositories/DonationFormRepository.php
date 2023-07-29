@@ -429,7 +429,7 @@ class DonationFormRepository
             }
         } catch (Exception $exception) {
             Log::error('Failed converting donation form blocks to fields', compact('formId', 'blocks'));
-            
+
             $form = new DonationFormNode('donation-form');
         }
 
