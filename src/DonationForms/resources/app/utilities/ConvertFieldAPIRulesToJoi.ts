@@ -64,6 +64,8 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         }
     } else if (rules.hasOwnProperty('boolean')) {
         joiRules = Joi.boolean();
+    } else if (rules.hasOwnProperty('array')) {
+        joiRules = Joi.array();
     } else {
         joiRules = Joi.string();
 
