@@ -39,7 +39,7 @@ class ArrayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        if (!is_array($value)) {
+        if (!empty($value) && !is_array($value)) {
             $fail(sprintf(__('%s must be an array', 'give'), '{field}'));
         }
     }
