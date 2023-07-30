@@ -39,14 +39,18 @@ class ConvertDonationFormBlocksToFieldsApi
      * @var string
      */
     protected $currency;
+    /**
+     * @var array
+     */
+    protected $blockNodeRelationship = [];
 
     /**
      * @unreleased return DonationForm Node
-     * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
+     * @throws TypeNotSupported|NameCollisionException
      * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0
      *
-     * @throws TypeNotSupported|NameCollisionException
+     * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      */
     public function __invoke(BlockCollection $blocks, int $formId): DonationForm
     {
@@ -55,7 +59,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
         $form = new DonationForm('donation-form');
         $form->defaultCurrency($this->currency);
-        
+
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
             $blockIndex++;
@@ -76,6 +80,10 @@ class ConvertDonationFormBlocksToFieldsApi
             }
 
             $form->append($section);
+        }
+
+        foreach ($this->blockNodeRelationship as $item) {
+            $this->mapConditionalLogicAttributesToNode($item['node'], $item['block']);
         }
 
         return $form;
@@ -104,7 +112,14 @@ class ConvertDonationFormBlocksToFieldsApi
         $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
         if ($node instanceof Node) {
-            return $this->mapGenericBlockAttributesToNode($node, $block);
+            $node = $this->mapGenericBlockAttributesToNode($node, $block);
+
+            $this->blockNodeRelationship[$block->clientId] = [
+                'block' => $block,
+                'node' => $node,
+            ];
+
+            return $node;
         }
 
         return null;
@@ -364,6 +379,64 @@ class ConvertDonationFormBlocksToFieldsApi
             if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
                 $node->showInReceipt($block->getAttribute('displayInReceipt'));
             }
+        }
+
+        return $node;
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function mapConditionalLogicAttributesToNode(Node $node, BlockModel $block): Node
+    {
+        if (!$block->hasAttribute('conditionalLogic') || !method_exists($node, 'showIf')) {
+            return $node;
+        }
+
+        $conditionalLogic = $block->getAttribute('conditionalLogic');
+
+        if ($conditionalLogic['enabled'] !== true || !is_array($conditionalLogic['rules'])) {
+            return $node;
+        }
+
+        $action = $conditionalLogic['action'] ?? 'show';
+        $boolean = $conditionalLogic['boolean'] ?? 'and';
+        $rules = $conditionalLogic['rules'];
+
+        if ('hide' === $action) {
+            $boolean = 'and' === $boolean ? 'or' : 'and';
+        }
+
+        $oppositeOperatorsMap = [
+            '=' => '!=',
+            '!=' => '=',
+            '>' => '<=',
+            '<' => '>=',
+            '>=' => '<',
+            '<=' => '>',
+        ];
+
+        foreach ($rules as $rule) {
+            if (!isset($rule['field'], $rule['operator'], $rule['value'])) {
+                continue;
+            }
+
+            $clientId = $rule['field'];
+            $operator = $rule['operator'];
+            $value = $rule['value'];
+
+            // TODO: Add support for nested fields
+            $fieldName = $this->blockNodeRelationship[$clientId]['node']->getName();
+
+            if ('hide' === $action) {
+                if (isset($oppositeOperatorsMap[$operator])) {
+                    $operator = $oppositeOperatorsMap[$operator];
+                } else {
+                    continue;
+                }
+            }
+
+            $node->showIf($fieldName, $operator, $value, $boolean);
         }
 
         return $node;
