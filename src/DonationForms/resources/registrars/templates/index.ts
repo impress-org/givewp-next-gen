@@ -24,6 +24,7 @@ import Gateways from './fields/Gateways';
 import Authentication from './groups/Authentication';
 import Paragraph from './elements/Paragraph';
 import FieldLabel from './layouts/FieldLabel';
+import FieldDescription from './layouts/FieldDescription';
 import FieldError from './layouts/FieldError';
 import Header from './layouts/Header';
 import HeaderTitle from './layouts/HeaderTitle';
@@ -71,6 +72,7 @@ const defaultFormTemplates = {
         form: Form,
         multiStepForm: MultiStepForm,
         fieldLabel: FieldLabel,
+        fieldDescription: FieldDescription,
         fieldError: FieldError,
         header: Header,
         headerTitle: HeaderTitle,

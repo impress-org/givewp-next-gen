@@ -1,14 +1,14 @@
 import type {RadioFieldProps} from '@givewp/forms/propTypes';
 
 export default function Radio({Label, ErrorMessage, options, description, inputProps}: RadioFieldProps) {
+    const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
+
     return (
         options.length > 0 && (
             <fieldset>
                 <legend>
                     <Label />
-                    {description && (
-                        <p style={{fontSize: '0.875rem', margin: 'var(--givewp-spacing-1) 0'}}>{description}</p>
-                    )}
+                    {description && <FieldDescription description={description} />}
                 </legend>
                 <div className="givewp-fields-radio__options">
                     {options.map(({value, label}, index) => (

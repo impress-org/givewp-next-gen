@@ -1,10 +1,9 @@
 import DatePicker from 'react-datepicker';
-import {useEffect, useState} from '@wordpress/element';
-import format from 'date-fns/format';
 
 import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../styles.module.scss';
+import {Controller} from 'react-hook-form';
 
 export default function Date({
     Label,
@@ -15,24 +14,31 @@ export default function Date({
     inputProps,
 }: Omit<FieldHasDescriptionProps, 'placeholder'> & {dateFormat: string}) {
     const {useFormContext} = window.givewp.form.hooks;
-    const {setValue} = useFormContext();
-    const [date, setDate] = useState<Date>(new window.Date());
+    const {control} = useFormContext();
+    const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     dateFormat = dateFormat.replace('mm', 'MM');
-
-    useEffect(() => {
-        setValue(inputProps.name, format(date, dateFormat));
-    }, [date]);
 
     return (
         <label className={styles.dateField}>
             <Label />
-            {description && <p style={{fontSize: '0.875rem', margin: '.25rem 0'}}>{description}</p>}
-            <DatePicker
-                dateFormat={dateFormat}
-                selected={date}
-                onChange={(date) => setDate(date)}
-                aria-invalid={fieldError ? 'true' : 'false'}
+            {description && <FieldDescription description={description} />}
+            <Controller
+                control={control}
+                {...inputProps}
+                render={({
+                    field: {onChange, onBlur, value, name, ref},
+                    fieldState: {invalid, isTouched, isDirty, error},
+                    formState,
+                }) => (
+                    <DatePicker
+                        ref={ref}
+                        dateFormat={dateFormat}
+                        selected={value}
+                        onChange={onChange}
+                        aria-invalid={invalid ? 'true' : 'false'}
+                    />
+                )}
             />
 
             <ErrorMessage />

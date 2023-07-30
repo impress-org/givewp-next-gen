@@ -10,10 +10,12 @@ export default function Phone({
     phoneFormat,
     inputProps,
 }: Omit<FieldHasDescriptionProps, 'placeholder'> & {phoneFormat: string}) {
+    const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
+
     return (
         <label>
             <Label />
-            {description && <p style={{fontSize: '0.875rem', margin: '.25rem 0'}}>{description}</p>}
+            {description && <FieldDescription description={description} />}
             {phoneFormat === 'domestic' ? (
                 <InputMask type={'phone'} {...inputProps} mask={'(999) 999-9999'} />
             ) : (
