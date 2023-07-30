@@ -269,7 +269,7 @@ class DonationFormViewModel
             'givewp-donation-form-registrars',
             GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.css',
             [],
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_NEXT_GEN_VERSION
         );
 
         wp_enqueue_script(
