@@ -39,12 +39,6 @@ class StoreCustomFields
                 } else {
                     $value = $customFields[$fieldName];
 
-                    // TODO: it would be nice to have a way of serializing the value from the field api
-                    $value = apply_filters("givewp_store_custom_field_value_$fieldName", $value, $field, $donation);
-
-                    // TODO: it would be nice to have a way of customizing the storage from the field api
-                    do_action("givewp_store_custom_field_$fieldName", $value, $field, $donation);
-
                     $this->handleMetaStorage($field, $donation, $value);
                 }
             }

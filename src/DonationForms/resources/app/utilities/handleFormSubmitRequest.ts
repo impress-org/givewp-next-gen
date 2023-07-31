@@ -12,6 +12,7 @@ import {__} from '@wordpress/i18n';
 import handleRedirect from '@givewp/forms/app/utilities/handleFormRedirect';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import postFormData from '@givewp/forms/app/utilities/postFormData';
+import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
 
 export default async function handleSubmitRequest(
     values,
@@ -30,8 +31,6 @@ export default async function handleSubmitRequest(
     }
 
     try {
-        const formData = new FormData();
-
         const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
 
         const formValues = {
@@ -41,9 +40,7 @@ export default async function handleSubmitRequest(
             embedId,
         };
 
-        for (const key in formValues) {
-            formData.append(key, formValues[key]);
-        }
+        const formData = convertValuesToFormData(formValues);
 
         let beforeCreatePaymentGatewayResponse = {};
 
