@@ -67,25 +67,15 @@ class Router
             return $requestData;
         }
 
-        $contentType = $_SERVER['CONTENT_TYPE'];
-
-        // v2 forms use "application/x-www-form-urlencoded"
-        // v3 forms use "multipart/form-data" and/or "application/json"
-        if (str_contains($contentType, "application/x-www-form-urlencoded") || str_contains(
-                $contentType,
-                "multipart/form-data"
-            )) {
+        if (str_contains($_SERVER['CONTENT_TYPE'], "application/json")) {
+            $requestData = file_get_contents('php://input');
+            $requestData = json_decode($requestData, true);
+            $requestData = give_clean($requestData);
+        } else {
             $requestData = array_merge(
                 give_clean($_REQUEST),
                 give_clean($_FILES)
             );
-        }
-
-        // this content type is typically used with the fetch api and our custom routes
-        if (str_contains($contentType, "application/json")) {
-            $requestData = file_get_contents('php://input');
-            $requestData = json_decode($requestData, true);
-            $requestData = give_clean($requestData);
         }
 
         return $requestData;
