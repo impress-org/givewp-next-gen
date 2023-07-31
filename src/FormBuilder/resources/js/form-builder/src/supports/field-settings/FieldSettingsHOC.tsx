@@ -104,7 +104,7 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
     useEffect(() => {
         // The first time the field is rendered set the field name to make sure the default meta key doesn't conflict
         // with any existing meta keys.
-        if (!attributes.hasOwnProperty('fieldName')) {
+        if (isNewField && !attributes.hasOwnProperty('fieldName')) {
             updateFieldName();
             setFieldNameSet(false);
         }
