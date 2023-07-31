@@ -7,15 +7,16 @@ import {
     PanelRow,
     SelectControl,
     TextControl,
+    Icon as WPIcon,
 } from '@wordpress/components';
+import {moreVertical} from "@wordpress/icons";
 import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {InspectorControls} from '@wordpress/block-editor';
-
-import {MenuIcon} from '@givewp/form-builder/blocks/fields/terms-and-conditions/Icon';
-import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
 import {Markup} from 'interweave';
+
+import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 
 export default function Edit({
@@ -39,7 +40,7 @@ export default function Edit({
 
     return (
         <>
-            <BlockPlaceholder
+            <CheckboxPlaceholder
                 label={checkboxLabel}
                 linkText={linkText}
                 isFormDisplay={isFormDisplay}
@@ -131,13 +132,14 @@ export default function Edit({
                                             <span>{__('Agreement text')}</span>
                                             <Button
                                                 style={{
+                                                    color: showAgreementTextModal ? '#ffffff' : ' #1e1e1e',
                                                     background: showAgreementTextModal ? '#3D5A66' : 'transparent',
                                                     verticalAlign: 'center',
                                                 }}
                                                 variant={'primary'}
                                                 onClick={() => setShowAgreementTextModal(true)}
                                             >
-                                                <MenuIcon color={showAgreementTextModal ? '#ffffff' : ' #1e1e1e'} />
+                                                <WPIcon icon={moreVertical} />
                                             </Button>
                                         </div>
                                     </BaseControl>
@@ -183,19 +185,19 @@ export default function Edit({
     );
 }
 
-type BlockPlaceholderProps = {
+type CheckboxPlaceholderProps = {
     label: string;
     linkText: string;
     isFormDisplay: boolean;
     agreementText: string;
 };
 
-function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}: BlockPlaceholderProps) {
+function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: CheckboxPlaceholderProps) {
     return (
-        <>
+        <div style={{display:'block'}}>
             <div
                 style={{
-                    display: isFormDisplay ? 'block' : 'flex',
+                    display: isFormDisplay ? 'block' : 'inline-flex',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     gap: 5,
@@ -212,7 +214,7 @@ function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}: Block
                             maxHeight: '17.5rem',
                             minHeight: '6.5rem',
                             overflowY: 'scroll',
-                            border: '1px solid var(--grey-200, #BFBFBF)',
+                            border: '1px solid var(--givewp-grey-200, #BFBFBF)',
                             borderRadius: 5,
                             padding: '0 1rem',
                             background: 'var(--givewp-shades-white, #fff)',
@@ -223,7 +225,7 @@ function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}: Block
                 )}
 
                 {!isFormDisplay && (
-                    <span
+                    <div
                         style={{
                             display: 'inline-block',
                             minWidth: 'fit-content',
@@ -232,9 +234,9 @@ function BlockPlaceholder({label, linkText, isFormDisplay, agreementText}: Block
                         }}
                     >
                         {linkText}
-                    </span>
+                    </div>
                 )}
             </div>
-        </>
+        </div>
     );
 }
