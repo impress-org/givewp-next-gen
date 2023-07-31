@@ -13,6 +13,9 @@ export default async function postFormData(url: string, data: FormData) {
         credentials: 'same-origin', // include, *same-origin, omit
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer-when-downgrade', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        headers: {
+            accept: 'application/json',
+        },
         body: data, // body data type must match "Content-Type" header
     });
 
