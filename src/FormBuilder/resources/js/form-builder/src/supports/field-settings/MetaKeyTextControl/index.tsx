@@ -57,6 +57,7 @@ export default function MetaKeyTextControl({value, lockValue, onChange, onBlur})
 export function slugifyMeta(value) {
     return value
         .trim()
+        .slice(0, 255) // Limit to 255 characters
         .toLowerCase()
         .replace(/^_/g, '') // Removes leading underscore
         .replace(/\s/g, '_') // Replace spaces and underscores with underscores
