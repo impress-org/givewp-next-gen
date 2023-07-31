@@ -65,7 +65,7 @@ export default function ConsentField({
                         overflowY: 'scroll',
                         border: '1px solid var(--grey-200, #BFBFBF)',
                         borderRadius: 5,
-                        padding: '0 1rem',
+                        padding: '.5rem 1rem',
                         background: 'var(--givewp-shades-white, #fff)',
                     }}
                 >
