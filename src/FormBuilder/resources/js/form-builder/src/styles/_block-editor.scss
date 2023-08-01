@@ -4,7 +4,6 @@
 }
 
 .interface-interface-skeleton__header {
-    position: fixed;
     top: 0;
     right: 0;
     left: 0;
@@ -188,6 +187,7 @@
 
 .interface-interface-skeleton {
     left: 0 !important;
+    top: 0;
 }
 
 .block-editor-block-list__layout {
