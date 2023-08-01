@@ -1,4 +1,26 @@
-import {BlockSupports, registerBlockType} from '@wordpress/blocks';
+import {BlockSupports, registerBlockType, setUnregisteredTypeHandlerName} from '@wordpress/blocks';
+import {__experimentalGetCoreBlocks} from '@wordpress/block-library';
+
+/**
+ * Registers the missing block from WordPress core.
+ *
+ * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/missing
+ *
+ * @unreleased
+ */
+const registerMissingBlock = () => {
+    //TODO: should probably replace this with a custom block
+    const missingBlock = __experimentalGetCoreBlocks().filter((block) => {
+        return block.name === 'core/missing';
+    });
+
+    if (missingBlock && missingBlock.length > 0) {
+        const missingBlockName = missingBlock[0].name;
+        missingBlock[0].init();
+
+        setUnregisteredTypeHandlerName(missingBlockName);
+    }
+};
 
 const blockRegistrar = window.givewp.form.blocks;
 
@@ -14,6 +36,8 @@ const supportOverrides: BlockSupports = {
  * @since 0.4.0
  */
 export default function registerBlocks(): void {
+    registerMissingBlock();
+
     const [sectionBlock] = blockRegistrar.getAll();
 
     blockRegistrar.getAll().forEach(({name, settings}) => {
