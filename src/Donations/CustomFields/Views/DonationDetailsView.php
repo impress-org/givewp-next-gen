@@ -4,6 +4,7 @@ namespace Give\Donations\CustomFields\Views;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Types;
 
 /**
  * @since 0.1.0
@@ -69,6 +70,7 @@ class DonationDetailsView
     }
 
     /**
+     * @unreleased updated to check for file and return link
      * @since 0.1.0
      *
      * @param  Field  $field
@@ -77,6 +79,12 @@ class DonationDetailsView
      */
     protected function getFieldValue(Field $field)
     {
-        return give()->payment_meta->get_meta($this->donation->id, $field->getName(), true);
+        $metaValue = give()->payment_meta->get_meta($this->donation->id, $field->getName(), true);
+
+        if ($field->getType() === Types::FILE) {
+            return wp_get_attachment_link($metaValue);
+        }
+
+        return $metaValue;
     }
 }
