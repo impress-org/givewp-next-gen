@@ -5,6 +5,12 @@ import {Button, Popover} from "@wordpress/components";
 
 import styles from './styles.module.scss'
 
+/**
+ * The text control for meta keys. The key can be optionally locked so the user has to explicitly decide to change it
+ * after being warned.
+ *
+ * @unreleased
+ */
 export default function MetaKeyTextControl({value, lockValue, onChange, onBlur}) {
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
     const [valueIsLocked, setValueIsLocked] = useState<boolean>(lockValue);
@@ -25,7 +31,7 @@ export default function MetaKeyTextControl({value, lockValue, onChange, onBlur})
                     label={[__('Meta Key', 'give'), lockValue ? <EditButton onClick={togglePopover} /> : null]}
                     value={value}
                     help={__(
-                        'The name of the meta key this field will to in the database. This should not have any spaces or special characters',
+                        'The name of the meta key this field will to in the database. Can only be letters, numbers, and underscores.',
                         'give'
                     )}
                     readOnly={valueIsLocked}
@@ -42,12 +48,20 @@ export default function MetaKeyTextControl({value, lockValue, onChange, onBlur})
     );
 }
 
+/**
+ * Takes a string and returns a slugified version of it. This is not intended to be a general purpose slugify function
+ * and is specific to meta keys.
+ *
+ * @unreleased
+ */
 export function slugifyMeta(value) {
     return value
         .trim()
+        .slice(0, 255) // Limit to 255 characters
         .toLowerCase()
+        .replace(/^_/g, '') // Removes leading underscore
         .replace(/\s/g, '_') // Replace spaces and underscores with underscores
-        .replace(/[^a-zA-Z\d\s_-]/g, '') // Replace non-alphanumeric characters (other than dashes and underscores) with nothing
+        .replace(/[^a-zA-Z\d\s_]/g, '') // Replace non-alphanumeric characters (other underscores) with nothing
         .replace(/-$/g, ''); // Remove trailing dash
 }
 
@@ -68,6 +82,11 @@ function EditButton({onClick}) {
     );
 }
 
+/**
+ * The popover that allows the user to override the meta key.
+ *
+ * @unreleased
+ */
 function EditPopover({visible, onCancel, onConfirm}) {
     if ( ! visible ) {
         return null;

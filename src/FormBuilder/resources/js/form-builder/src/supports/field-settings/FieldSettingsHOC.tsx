@@ -11,7 +11,7 @@ import {FieldSettings} from './types';
 import {AfterDisplaySettingsSlot, AfterFieldSettingsSlot, DisplaySettingsSlot, FieldSettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import MetaKeyTextControl, {slugifyMeta} from '@givewp/form-builder/supports/field-settings/MetaKeyTextControl';
 
 /**
@@ -100,6 +100,15 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
             updateFieldName(attributes.fieldName, true);
         }
     }, [attributes.fieldName, updateFieldName]);
+
+    useEffect(() => {
+        // The first time the field is rendered set the field name to make sure the default meta key doesn't conflict
+        // with any existing meta keys.
+        if (isNewField && !attributes.hasOwnProperty('fieldName')) {
+            updateFieldName();
+            setFieldNameSet(false);
+        }
+    }, []);
 
     if (!attributes.hasOwnProperty('fieldName')) {
         updateFieldName();
