@@ -18,6 +18,7 @@ import {Markup} from 'interweave';
 
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
+import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
 
 export default function Edit({
     attributes: {
@@ -33,6 +34,12 @@ export default function Edit({
     setAttributes,
 }: BlockEditProps<any>) {
     const [showAgreementTextModal, setShowAgreementTextModal] = useState(false);
+    const globalSettings = getFormBuilderData().termsAndConditions;
+
+    if (useGlobalSettings) {
+      checkboxLabel = globalSettings.checkboxLabel;
+      agreementText = globalSettings.agreementText;
+    }
 
     const isModalDisplay = displayType === 'showModalTerms';
     const isLinkDisplay = displayType === 'showLinkTerms';
@@ -52,7 +59,7 @@ export default function Edit({
                     <PanelRow>
                         <SelectControl
                             label={__('TERMS AND CONDITIONS', 'give')}
-                            onChange={(value) => setAttributes({useGlobalSettings: !value})}
+                            onChange={() => setAttributes({useGlobalSettings: !useGlobalSettings})}
                             value={useGlobalSettings}
                             options={[
                                 {label: __('Global', 'give'), value: 'true'},
@@ -207,7 +214,7 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
                 <CheckboxControl label={label} onChange={null} disabled={true} />
 
                 {isFormDisplay && (
-                    <div
+                    <p
                         style={{
                             marginTop: '1rem',
                             lineHeight: '150%',
@@ -221,7 +228,7 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
                         }}
                     >
                         <Markup content={agreementText} />
-                    </div>
+                    </p>
                 )}
 
                 {!isFormDisplay && (
