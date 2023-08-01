@@ -27,6 +27,7 @@ const compareBillingPeriods = (val1: string, val2: string): number => {
 const Inspector = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
+        levelOptions,
         levels,
         defaultLevel,
         priceOption,
@@ -149,6 +150,9 @@ const Inspector = ({attributes, setAttributes}) => {
                     </>
                 )}
             </PanelBody>
+            {/*priceOption === 'multi' && levelOptions.length > 0 && (
+                <Options multiple={false} options={levelOptions} setOptions={(options) => setAttributes({options})} />
+            )*/}
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
                     {levels.length > 0 && (
