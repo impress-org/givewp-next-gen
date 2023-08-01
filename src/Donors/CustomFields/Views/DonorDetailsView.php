@@ -4,6 +4,7 @@ namespace Give\Donors\CustomFields\Views;
 
 use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Types;
 
 /**
  * @since 0.1.0
@@ -77,12 +78,19 @@ class DonorDetailsView
     }
 
     /**
+     * @unreleased updated to format file fields
      * @since 0.1.0
      *
      * @return mixed
      */
     protected function getFieldValue(Field $field)
     {
-        return give()->donor_meta->get_meta($this->donor->id, $field->getName(), true);
+        $metaValue = give()->donor_meta->get_meta($this->donor->id, $field->getName(), true);
+
+        if ($field->getType() === Types::FILE) {
+            return wp_get_attachment_link($metaValue);
+        }
+
+        return $metaValue;
     }
 }

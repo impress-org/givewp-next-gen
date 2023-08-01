@@ -70,7 +70,7 @@ class DonationDetailsView
     }
 
     /**
-     * @unreleased updated to check for file and return link
+     * @unreleased updated to format file fields
      * @since 0.1.0
      *
      * @param  Field  $field
