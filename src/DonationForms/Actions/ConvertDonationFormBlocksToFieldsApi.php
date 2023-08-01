@@ -45,12 +45,12 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $blockNodeRelationship = [];
 
     /**
-     * @unreleased return DonationForm Node
-     * @throws TypeNotSupported|NameCollisionException
+     * @unreleased map conditional logic attributes to nodes and return DonationForm Node
+     * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0
      *
-     * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
+     * @throws TypeNotSupported|NameCollisionException
      */
     public function __invoke(BlockCollection $blocks, int $formId): DonationForm
     {
