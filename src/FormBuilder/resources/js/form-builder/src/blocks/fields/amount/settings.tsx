@@ -22,26 +22,9 @@ const {
     defaultLevel,
 } = getDefaultBlockAttributes('givewp/donation-amount');
 
-/*const levelOptions = [
-    {
-        label: '$10',
-        value: '10',
-        checked: true,
-    },
-    {
-        label: '$20',
-        value: '20',
-        checked: false,
-    },
-    {
-        label: '$30',
-        value: '30',
-        checked: false,
-    },
-];*/
-
-console.log('levels: ', levels);
-console.log('levelOptions: ', levelOptions);
+console.log('Settings - levels: ', levels);
+console.log('Settings - levelOptions: ', levelOptions);
+console.log('Inspector - levelOptions.length: ', levelOptions.length);
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
@@ -113,6 +96,7 @@ const settings: FieldBlock['settings'] = {
             default: recurringLengthOfTime, // ongoing
         },
     },
+    edit: Edit,
     icon: () => (
         <Icon
             icon={
@@ -128,7 +112,6 @@ const settings: FieldBlock['settings'] = {
             }
         />
     ),
-    edit: Edit,
 };
 
 export default settings;

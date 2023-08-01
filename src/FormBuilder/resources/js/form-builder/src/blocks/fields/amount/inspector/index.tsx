@@ -16,6 +16,7 @@ import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback} from '@wordpress/element';
+import Options from '@givewp/form-builder/components/OptionsPanel';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -25,6 +26,8 @@ const compareBillingPeriods = (val1: string, val2: string): number => {
 };
 
 const Inspector = ({attributes, setAttributes}) => {
+    console.log('Inspector - Attributes: ', attributes);
+
     const {
         label = __('Donation Amount', 'give'),
         levelOptions,
@@ -43,6 +46,9 @@ const Inspector = ({attributes, setAttributes}) => {
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
     } = attributes;
+
+    console.log('Inspector - levels: ', levels);
+    console.log('Inspector - levelOptions: ', levelOptions);
 
     const addBillingPeriodOption = useCallback(
         (value) => {
@@ -150,9 +156,13 @@ const Inspector = ({attributes, setAttributes}) => {
                     </>
                 )}
             </PanelBody>
-            {/*priceOption === 'multi' && levelOptions.length > 0 && (
-                <Options multiple={false} options={levelOptions} setOptions={(options) => setAttributes({options})} />
-            )*/}
+            {priceOption === 'multi' && levelOptions.length > 0 && (
+                <Options
+                    multiple={false}
+                    options={levelOptions}
+                    setOptions={(options) => setAttributes({levelOptions: options})}
+                />
+            )}
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
                     {levels.length > 0 && (
