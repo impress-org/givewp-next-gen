@@ -1,0 +1,68 @@
+.optionsHeader {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: space-between;
+    width: 100%;
+
+    &Label {
+        margin-bottom: 0;
+    }
+
+    &Button {
+        color: var(--givewp-grey-500);
+        padding: 0 !important;
+        min-width: fit-content !important;
+        height: fit-content !important;
+
+        svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+}
+
+.optionsList {
+
+    &Item {
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: auto auto 1fr auto;
+        grid-template-rows: 1.875rem;
+        margin-top: 0.5rem;
+
+        > * {
+            align-self: center;
+        }
+
+        &Draggable {
+            color: var(--givewp-grey-500);
+            cursor: grab;
+            display: flex;
+            user-select: none;
+        }
+
+        &Checked {
+            margin: 0 !important;
+            width: 1rem !important;
+        }
+
+        &Inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            &Open {
+                grid-row: span 2;
+            }
+        }
+
+        &Button {
+            color: var(--givewp-grey-500);
+            padding: 0 !important;
+            min-width: fit-content !important;
+            height: fit-content !important;
+        }
+    }
+}
