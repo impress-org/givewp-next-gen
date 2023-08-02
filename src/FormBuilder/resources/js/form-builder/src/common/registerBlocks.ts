@@ -10,13 +10,13 @@ import {__experimentalGetCoreBlocks} from '@wordpress/block-library';
  */
 const registerMissingBlock = () => {
     //TODO: should probably replace this with a custom block
-    const missingBlock = __experimentalGetCoreBlocks().filter((block) => {
+    const missingBlock = __experimentalGetCoreBlocks().find((block) => {
         return block.name === 'core/missing';
     });
 
-    if (missingBlock && missingBlock.length > 0) {
-        const missingBlockName = missingBlock[0].name;
-        missingBlock[0].init();
+    if (missingBlock) {
+        const {name: missingBlockName} = missingBlock;
+        missingBlock.init();
 
         setUnregisteredTypeHandlerName(missingBlockName);
     }
