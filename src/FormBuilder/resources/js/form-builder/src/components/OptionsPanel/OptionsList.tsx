@@ -3,7 +3,7 @@ import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import OptionsItem from './OptionsItem';
 import {OptionProps, OptionsListProps} from './types';
 
-export default function OptionsList({options, showValues, multiple, setOptions}: OptionsListProps) {
+export default function OptionsList({currency, options, showValues, multiple, setOptions}: OptionsListProps) {
     const handleRemoveOption = (index: number) => (): void => {
         setOptions(options.filter((option, optionIndex) => optionIndex !== index));
     };
@@ -61,6 +61,7 @@ export default function OptionsList({options, showValues, multiple, setOptions}:
                                 {(provided) => (
                                     <OptionsItem
                                         {...{
+                                            currency,
                                             provided,
                                             option,
                                             index,

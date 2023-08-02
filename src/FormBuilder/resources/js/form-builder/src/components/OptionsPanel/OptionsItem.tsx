@@ -5,8 +5,10 @@ import {Button, Icon} from '@wordpress/components';
 import {draggable, minusCircle} from './icons';
 //import styles from './editor.module.scss';
 import {OptionsItemProps} from './types';
+import {CurrencyControl} from '@givewp/form-builder/common/currency';
 
 export default function OptionsItem({
+    currency,
     provided,
     option,
     showValues,
@@ -32,19 +34,35 @@ export default function OptionsItem({
                     ['optionsListItemInputsOpen']: showValues,
                 })}
             >
-                <input
-                    type={'text'}
-                    value={option.label}
-                    placeholder={__('Label', 'give-form-field-manager')}
-                    onChange={(event) => handleUpdateOptionLabel(event.target.value)}
-                />
-                {showValues && (
-                    <input
-                        type={'text'}
+                {currency ? (
+                    <CurrencyControl
+                        label={__('Donation amount level', 'give')}
+                        hideLabelFromVision
                         value={option.value}
-                        placeholder={__('Value', 'give-form-field-manager')}
-                        onChange={(event) => handleUpdateOptionValue(event.target.value)}
+                        onValueChange={(value) => {
+                            console.log('oi');
+                            handleUpdateOptionLabel(value);
+                            handleUpdateOptionValue(value);
+                        }}
                     />
+                ) : (
+                    <>
+                        <input
+                            type={'text'}
+                            value={option.label}
+                            placeholder={__('Label', 'give-form-field-manager')}
+                            onChange={(event) => handleUpdateOptionLabel(event.target.value)}
+                        />
+
+                        {showValues && (
+                            <input
+                                type={'text'}
+                                value={option.value}
+                                placeholder={__('Value', 'give-form-field-manager')}
+                                onChange={(event) => handleUpdateOptionValue(event.target.value)}
+                            />
+                        )}
+                    </>
                 )}
             </div>
             <Button icon={minusCircle} className={'optionsListItemButton'} onClick={() => handleRemoveOption()} />

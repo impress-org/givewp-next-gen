@@ -165,11 +165,14 @@ const Inspector = ({attributes, setAttributes}) => {
                 )}
             </PanelBody>
             {priceOption === 'multi' && !!levelOptions && levelOptions.length > 0 && (
-                <Options
-                    multiple={false}
-                    options={levelOptions}
-                    setOptions={(options) => setAttributes({levelOptions: options})}
-                />
+                <PanelBody title={__('[NEW] Donation Levels', 'give')}>
+                    <Options
+                        currency={true}
+                        multiple={false}
+                        options={levelOptions}
+                        setOptions={(options) => setAttributes({levelOptions: options})}
+                    />
+                </PanelBody>
             )}
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>

@@ -1,10 +1,12 @@
 export interface OptionsPanelProps {
+    currency: boolean;
     multiple: boolean;
     options: OptionProps[];
     setOptions: (options: OptionProps[]) => void;
 }
 
 export interface OptionsListProps {
+    currency: boolean;
     options: OptionProps[];
     showValues: boolean;
     multiple: boolean;
@@ -12,6 +14,7 @@ export interface OptionsListProps {
 }
 
 export interface OptionsItemProps {
+    currency: boolean;
     provided: any;
     option: OptionProps;
     showValues: boolean;
