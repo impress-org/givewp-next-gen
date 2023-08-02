@@ -3,7 +3,8 @@ import {
     FormPageSettings,
     Gateway,
     TemplateTag,
-    EmailNotification, TermsAndConditions,
+    EmailNotification,
+    TermsAndConditions,
 } from '@givewp/form-builder/types';
 
 declare global {
