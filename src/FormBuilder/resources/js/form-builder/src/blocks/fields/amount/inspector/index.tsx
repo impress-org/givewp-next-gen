@@ -84,6 +84,14 @@ const Inspector = ({attributes, setAttributes}) => {
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
 
+    const checkedLevel = levelOptions.filter((option) => option.checked);
+
+    if (!!checkedLevel && checkedLevel.length === 1) {
+        setAttributes({defaultLevel: checkedLevel[0].value});
+        console.log('RESULT: ', checkedLevel);
+        console.log('defaultLevel: ', defaultLevel);
+    }
+
     return (
         <InspectorControls>
             <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
