@@ -10,7 +10,6 @@ export default function ConsentField({
     ErrorMessage,
     fieldError,
     inputProps,
-    useGlobalSettings,
     checkboxLabel,
     displayType,
     linkText,
@@ -25,7 +24,6 @@ export default function ConsentField({
 
     const isModalDisplay = displayType === 'showModalTerms';
     const isFormDisplay = displayType === 'showFormTerms';
-    const isLinkDisplay = displayType === 'showLinkTerms';
 
     const openTerms = (event) => {
         event.preventDefault();
@@ -63,7 +61,7 @@ export default function ConsentField({
                         maxHeight: '17.5rem',
                         minHeight: '6.5rem',
                         overflowY: 'scroll',
-                        border: '1px solid var(--grey-200, #BFBFBF)',
+                        border: '1px solid var(--givewp-grey-200, #BFBFBF)',
                         borderRadius: 5,
                         padding: '.5rem 1rem',
                         background: 'var(--givewp-shades-white, #fff)',
