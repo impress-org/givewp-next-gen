@@ -165,7 +165,13 @@ const Inspector = ({attributes, setAttributes}) => {
                         currency={true}
                         multiple={false}
                         options={levelOptions}
-                        setOptions={(options) => setAttributes({levelOptions: options})}
+                        setOptions={(options) => {
+                            const newLevels = levelOptions.map((option) => option.value);
+                            console.log('newLevels: ', newLevels);
+                            console.log('levels: ', levels);
+                            setAttributes({levels: newLevels});
+                            setAttributes({levelOptions: options});
+                        }}
                     />
                 </PanelBody>
             )}
