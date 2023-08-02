@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import {Button, Icon} from '@wordpress/components';
 
 import {draggable, minusCircle} from './icons';
-import styles from './editor.module.scss';
+//import styles from './editor.module.scss';
 import {OptionsItemProps} from './types';
 
 export default function OptionsItem({
@@ -17,19 +17,19 @@ export default function OptionsItem({
     handleRemoveOption,
 }: OptionsItemProps) {
     return (
-        <div className={styles.optionsListItem} ref={provided.innerRef} {...provided.draggableProps}>
-            <span className={styles.optionsListItemDraggable} {...provided.dragHandleProps}>
+        <div className={'optionsListItem'} ref={provided.innerRef} {...provided.draggableProps}>
+            <span className={'optionsListItemDraggable'} {...provided.dragHandleProps}>
                 <Icon icon={draggable} />
             </span>
             <input
                 type={multiple ? 'checkbox' : 'radio'}
                 checked={option.checked}
-                className={styles.optionsListItemChecked}
+                className={'optionsListItemChecked'}
                 onClick={() => handleUpdateOptionChecked(!option.checked)}
             />
             <div
-                className={cn(styles.optionsListItemInputs, {
-                    [styles.optionsListItemInputsOpen]: showValues,
+                className={cn('optionsListItemInputs', {
+                    ['optionsListItemInputsOpen']: showValues,
                 })}
             >
                 <input
@@ -47,7 +47,7 @@ export default function OptionsItem({
                     />
                 )}
             </div>
-            <Button icon={minusCircle} className={styles.optionsListItemButton} onClick={() => handleRemoveOption()} />
+            <Button icon={minusCircle} className={'optionsListItemButton'} onClick={() => handleRemoveOption()} />
         </div>
     );
 }

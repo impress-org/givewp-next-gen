@@ -156,7 +156,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     </>
                 )}
             </PanelBody>
-            {priceOption === 'multi' && levelOptions.length > 0 && (
+            {priceOption === 'multi' && !!levelOptions && levelOptions.length > 0 && (
                 <Options
                     multiple={false}
                     options={levelOptions}
