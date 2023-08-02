@@ -214,7 +214,7 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
                 <CheckboxControl label={label} onChange={null} disabled={true} />
 
                 {isFormDisplay && (
-                    <p
+                    <div
                         style={{
                             marginTop: '1rem',
                             lineHeight: '150%',
@@ -228,7 +228,7 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
                         }}
                     >
                         <Markup content={agreementText} />
-                    </p>
+                    </div>
                 )}
 
                 {!isFormDisplay && (
