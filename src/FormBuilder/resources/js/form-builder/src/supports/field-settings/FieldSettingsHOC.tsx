@@ -59,6 +59,14 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
     const [fieldNameSet, setFieldNameSet] = useState(attributes.hasOwnProperty('fieldName'));
     const [isNewField] = useState(fieldNameSet);
 
+    const updateEmailTag = () => {
+        setAttributes({
+            emailTag: attributes.storeAsDonorMeta
+                ? `meta_donor_${attributes.fieldName}`
+                : `meta_donation_${attributes.fieldName}`,
+        });
+    };
+
     const updateFieldName = useCallback(
         (newFieldName = null, bumpUniqueness = false) => {
             let slugifiedName = newFieldName ? slugifyMeta(newFieldName) : null;
@@ -249,7 +257,15 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
                             <ToggleControl
                                 label={__('Save to Donor Record', 'give')}
                                 checked={attributes.storeAsDonorMeta}
-                                onChange={() => setAttributes({storeAsDonorMeta: !attributes.storeAsDonorMeta})}
+                                onChange={() => {
+                                    const storeAsDonorMeta = !attributes.storeAsDonorMeta;
+                                    setAttributes({
+                                        storeAsDonorMeta,
+                                        emailTag: storeAsDonorMeta
+                                            ? `meta_donor_${attributes.fieldName}`
+                                            : `meta_donation_${attributes.fieldName}`,
+                                    });
+                                }}
                                 help={__(
                                     "If enabled, the data collected by this field is saved to the Donor record instead of the Donation record. This is useful for data that doesn't normally change between donations, like a phone number or t-shirt size.",
                                     'give'
