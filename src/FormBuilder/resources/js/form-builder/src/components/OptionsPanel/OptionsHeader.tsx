@@ -7,9 +7,7 @@ import {plusCircle} from './icons';
 export default function OptionsHeader({handleAddOption}: {handleAddOption: () => void}) {
     return (
         <div className={'optionsHeader'}>
-            <BaseControl.VisualLabel className={'optionsHeaderLabel'}>
-                {__('Options', 'give-form-field-manager')}
-            </BaseControl.VisualLabel>
+            <BaseControl.VisualLabel className={'optionsHeaderLabel'}>{__('Options', 'give')}</BaseControl.VisualLabel>
             <Button icon={plusCircle} className={'optionsHeaderButton'} onClick={handleAddOption} />
         </div>
     );

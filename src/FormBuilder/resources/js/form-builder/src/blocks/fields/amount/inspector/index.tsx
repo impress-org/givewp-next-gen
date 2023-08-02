@@ -26,8 +26,6 @@ const compareBillingPeriods = (val1: string, val2: string): number => {
 };
 
 const Inspector = ({attributes, setAttributes}) => {
-    console.log('Inspector - Attributes: ', attributes);
-
     const {
         label = __('Donation Amount', 'give'),
         levelOptions,
@@ -46,9 +44,6 @@ const Inspector = ({attributes, setAttributes}) => {
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
     } = attributes;
-
-    console.log('Inspector - levels: ', levels);
-    console.log('Inspector - levelOptions: ', levelOptions);
 
     const addBillingPeriodOption = useCallback(
         (value) => {
@@ -84,11 +79,11 @@ const Inspector = ({attributes, setAttributes}) => {
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
 
-    const checkedLevel = levelOptions.filter((option) => option.checked);
+    const checkedLevelOption = levelOptions.filter((option) => option.checked);
 
-    if (!!checkedLevel && checkedLevel.length === 1) {
-        setAttributes({defaultLevel: checkedLevel[0].value});
-        console.log('RESULT: ', checkedLevel);
+    if (!!checkedLevelOption && checkedLevelOption.length === 1) {
+        setAttributes({defaultLevel: checkedLevelOption[0].value});
+        console.log('RESULT: ', checkedLevelOption);
         console.log('defaultLevel: ', defaultLevel);
     }
 

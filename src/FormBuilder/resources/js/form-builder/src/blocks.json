@@ -15,30 +15,14 @@
                 "attributes": {
                     "label": "Donation Amount",
                     "levels": [
-                        "11",
-                        "26",
-                        "51",
-                        "101",
-                        "251",
-                        "501"
+                        "10",
+                        "25",
+                        "50",
+                        "100",
+                        "250",
+                        "500"
                     ],
-                    "levelOptions": [
-                        {
-                            "label": "$10",
-                            "value": "10",
-                            "checked": false
-                        },
-                        {
-                            "label": "$20",
-                            "value": "20",
-                            "checked": false
-                        },
-                        {
-                            "label": "$30",
-                            "value": "30",
-                            "checked": false
-                        }
-                    ],
+                    "defaultLevel": "10",
                     "priceOption": "multi",
                     "setPrice": 25,
                     "customAmount": "true",

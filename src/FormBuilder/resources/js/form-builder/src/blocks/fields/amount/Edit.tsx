@@ -12,8 +12,6 @@ import Notice from './notice';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 
 const Edit = ({attributes, setAttributes}) => {
-    console.log('attributes: ', attributes);
-
     const {
         label = __('Donation Amount', 'give'),
         levels,
@@ -32,9 +30,6 @@ const Edit = ({attributes, setAttributes}) => {
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
     } = attributes;
-
-    console.log('Edit - levels: ', levels);
-    console.log('Edit - levelOptions: ', levelOptions);
 
     const {gateways} = getFormBuilderData();
 

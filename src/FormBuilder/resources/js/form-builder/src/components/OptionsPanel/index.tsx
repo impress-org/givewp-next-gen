@@ -27,7 +27,7 @@ export default function Options({currency, multiple, options, setOptions}: Optio
                 </PanelRow>
             )}
             <PanelRow>
-                <BaseControl id={'give-form-field-manager-options'}>
+                <BaseControl id={'give'}>
                     <OptionsHeader handleAddOption={handleAddOption} />
                     <OptionsList
                         {...{

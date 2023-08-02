@@ -40,7 +40,6 @@ export default function OptionsItem({
                         hideLabelFromVision
                         value={option.value}
                         onValueChange={(value) => {
-                            console.log('oi');
                             handleUpdateOptionLabel(value);
                             handleUpdateOptionValue(value);
                         }}
@@ -50,7 +49,7 @@ export default function OptionsItem({
                         <input
                             type={'text'}
                             value={option.label}
-                            placeholder={__('Label', 'give-form-field-manager')}
+                            placeholder={__('Label', 'give')}
                             onChange={(event) => handleUpdateOptionLabel(event.target.value)}
                         />
 
@@ -58,7 +57,7 @@ export default function OptionsItem({
                             <input
                                 type={'text'}
                                 value={option.value}
-                                placeholder={__('Value', 'give-form-field-manager')}
+                                placeholder={__('Value', 'give')}
                                 onChange={(event) => handleUpdateOptionValue(event.target.value)}
                             />
                         )}
