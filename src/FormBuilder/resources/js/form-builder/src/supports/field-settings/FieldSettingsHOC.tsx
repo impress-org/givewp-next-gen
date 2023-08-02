@@ -49,6 +49,10 @@ const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
 
 export default FieldSettingsHOC;
 
+const generateEmailTag = (fieldName, storeAsDonorMeta) => {
+    return storeAsDonorMeta ? `meta_donor_${fieldName}` : `meta_donation_${fieldName}`;
+};
+
 /**
  * Renders the field settings inspector controls.
  *
@@ -56,16 +60,8 @@ export default FieldSettingsHOC;
  */
 function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
     const validateFieldName = useFieldNameValidator();
-    const [fieldNameSet, setFieldNameSet] = useState(attributes.hasOwnProperty('fieldName'));
-    const [isNewField] = useState(fieldNameSet);
-
-    const updateEmailTag = () => {
-        setAttributes({
-            emailTag: attributes.storeAsDonorMeta
-                ? `meta_donor_${attributes.fieldName}`
-                : `meta_donation_${attributes.fieldName}`,
-        });
-    };
+    const [hasFieldNameAttribute, setHasFieldNameAttribute] = useState(attributes.hasOwnProperty('fieldName'));
+    const [isNewField] = useState(hasFieldNameAttribute);
 
     const updateFieldName = useCallback(
         (newFieldName = null, bumpUniqueness = false) => {
@@ -83,9 +79,7 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
 
             setAttributes({
                 fieldName: slugifiedName,
-                emailTag: attributes.storeAsDonorMeta
-                    ? `meta_donor_${slugifiedName}`
-                    : `meta_donation_${slugifiedName}`,
+                emailTag: generateEmailTag(slugifiedName, attributes.storeAsDonorMeta),
             });
         },
         [setAttributes, attributes.label]
@@ -93,12 +87,12 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
 
     const handleLabelBlur = useCallback(
         (event) => {
-            if (!fieldNameSet) {
+            if (!hasFieldNameAttribute) {
                 updateFieldName(event.target.value);
-                setFieldNameSet(true);
+                setHasFieldNameAttribute(true);
             }
         },
-        [fieldNameSet, updateFieldName]
+        [hasFieldNameAttribute, updateFieldName]
     );
 
     const enforceFieldName = useCallback(() => {
@@ -112,9 +106,9 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
     useEffect(() => {
         // The first time the field is rendered set the field name to make sure the default meta key doesn't conflict
         // with any existing meta keys.
-        if (isNewField && !attributes.hasOwnProperty('fieldName')) {
+        if (isNewField) {
             updateFieldName();
-            setFieldNameSet(false);
+            setHasFieldNameAttribute(false);
         }
     }, []);
 
@@ -261,9 +255,7 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
                                     const storeAsDonorMeta = !attributes.storeAsDonorMeta;
                                     setAttributes({
                                         storeAsDonorMeta,
-                                        emailTag: storeAsDonorMeta
-                                            ? `meta_donor_${attributes.fieldName}`
-                                            : `meta_donation_${attributes.fieldName}`,
+                                        emailTag: generateEmailTag(attributes.fieldName, storeAsDonorMeta),
                                     });
                                 }}
                                 help={__(
