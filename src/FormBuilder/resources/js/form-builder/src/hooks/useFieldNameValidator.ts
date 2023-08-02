@@ -57,6 +57,8 @@ const builtInFieldNames = [
     'subscriptionFrequency',
     'subscriptionInstallments',
     'subscriptionPeriod',
+    'subscription_id',
+    'additional_email',
 ];
 
 /**
