@@ -86,7 +86,8 @@ class FormBuilderResourceController
                     400,
                     sprintf(
                         __("A field name with meta key '%s' already exists. Please try a new one.", 'give'),
-                        $e->getNodeNameCollision()
+                        //TODO update with $e->getNodeNameCollision()
+                        str_replace("Node name collision for ", '', $e->getMessage())
                     )
                 )
             );
