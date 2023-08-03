@@ -57,12 +57,7 @@ export default function MultiSelect({
                 <div className="givewp-fields-checkbox__options">
                     {options.map(({value, label}, index) => (
                         <div key={index} className="givewp-fields-checkbox__option--container">
-                            <input
-                                type="checkbox"
-                                {...inputProps}
-                                value={value}
-                                checked={defaultValue && Object.values(defaultValue).includes(value)}
-                            />
+                            <input type="checkbox" value={value} {...inputProps} />
                             <label htmlFor={inputProps.name}>{label}</label>
                         </div>
                     ))}
