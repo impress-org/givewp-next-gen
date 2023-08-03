@@ -19,19 +19,19 @@ export default function OptionsItem({
     handleRemoveOption,
 }: OptionsItemProps) {
     return (
-        <div className={'optionsListItem'} ref={provided.innerRef} {...provided.draggableProps}>
-            <span className={'optionsListItemDraggable'} {...provided.dragHandleProps}>
+        <div className={'givewp-options-list--item'} ref={provided.innerRef} {...provided.draggableProps}>
+            <span className={'givewp-options-list--item--draggable'} {...provided.dragHandleProps}>
                 <Icon icon={draggable} />
             </span>
             <input
                 type={multiple ? 'checkbox' : 'radio'}
                 checked={option.checked}
-                className={'optionsListItemChecked'}
+                className={'givewp-options-list--item--checked'}
                 onClick={() => handleUpdateOptionChecked(!option.checked)}
             />
             <div
-                className={cn('optionsListItemInputs', {
-                    ['optionsListItemInputsOpen']: showValues,
+                className={cn('givewp-options-list--item--inputs', {
+                    ['givewp-options-list--item--inputs--open']: showValues,
                 })}
             >
                 {currency ? (
@@ -64,7 +64,11 @@ export default function OptionsItem({
                     </>
                 )}
             </div>
-            <Button icon={minusCircle} className={'optionsListItemButton'} onClick={() => handleRemoveOption()} />
+            <Button
+                icon={minusCircle}
+                className={'givewp-options-list--item--button'}
+                onClick={() => handleRemoveOption()}
+            />
         </div>
     );
 }
