@@ -5,6 +5,8 @@ import {OptionProps, OptionsListProps} from './types';
 
 export default function OptionsList({currency, options, showValues, multiple, setOptions}: OptionsListProps) {
     const handleRemoveOption = (index: number) => (): void => {
+        options[index].label = '';
+        options[index].value = '';
         setOptions(options.filter((option, optionIndex) => optionIndex !== index));
     };
 
