@@ -1,7 +1,7 @@
 import Select from 'react-select';
 import {Controller} from 'react-hook-form';
 
-import type {SelectFieldProps} from '@givewp/forms/propTypes';
+import {MultiSelectProps} from '@givewp/forms/propTypes';
 import styles from '../styles.module.scss';
 
 export default function MultiSelect({
@@ -13,7 +13,7 @@ export default function MultiSelect({
     fieldType,
     options,
     inputProps,
-}: SelectFieldProps) {
+}: MultiSelectProps) {
     const {useFormContext} = window.givewp.form.hooks;
     const {control} = useFormContext();
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;

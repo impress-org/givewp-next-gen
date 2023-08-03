@@ -1,15 +1,8 @@
 import InputMask from 'react-input-mask';
 
-import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
+import {PhoneProps} from '@givewp/forms/propTypes';
 
-export default function Phone({
-    Label,
-    ErrorMessage,
-    fieldError,
-    description,
-    phoneFormat,
-    inputProps,
-}: Omit<FieldHasDescriptionProps, 'placeholder'> & {phoneFormat: string}) {
+export default function Phone({Label, ErrorMessage, fieldError, description, phoneFormat, inputProps}: PhoneProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     return (

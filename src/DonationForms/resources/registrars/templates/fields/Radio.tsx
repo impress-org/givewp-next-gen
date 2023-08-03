@@ -1,6 +1,6 @@
-import type {RadioFieldProps} from '@givewp/forms/propTypes';
+import {SelectableFieldProps} from '@givewp/forms/propTypes';
 
-export default function Radio({Label, ErrorMessage, options, description, inputProps}: RadioFieldProps) {
+export default function Radio({Label, ErrorMessage, options, description, inputProps}: SelectableFieldProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     return (
