@@ -118,17 +118,6 @@ const Inspector = ({attributes, setAttributes}) => {
                             : __('The donation amount is fixed to the following amount:', 'give')
                     }
                 />
-                {priceOption === 'multi' && (
-                    <SelectControl
-                        label={__('Default Level', 'give')}
-                        options={levels.map((level, index) => ({
-                            label: formatCurrencyAmount(level),
-                            value: level,
-                        }))}
-                        value={defaultLevel}
-                        onChange={(defaultLevel) => setAttributes({defaultLevel})}
-                    />
-                )}
                 {priceOption === 'set' && (
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
