@@ -65,7 +65,6 @@ export default function Edit({
                                 {label: __('Global', 'give'), value: 'true'},
                                 {label: __('Customize', 'give'), value: 'false'},
                             ]}
-                            help={''}
                         />
                     </PanelRow>
 
@@ -96,7 +95,6 @@ export default function Edit({
                                         {label: __('Show terms in form', 'give'), value: 'showFormTerms'},
                                         {label: __('Link to terms', 'give'), value: 'showLinkTerms'},
                                     ]}
-                                    help={''}
                                 />
                             </PanelRow>
 
