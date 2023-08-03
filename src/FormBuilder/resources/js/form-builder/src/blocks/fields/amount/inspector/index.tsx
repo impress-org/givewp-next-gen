@@ -9,8 +9,6 @@ import {
 } from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import DeleteButton from './delete-button';
-import AddButton from './add-button';
 import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
@@ -90,6 +88,8 @@ const Inspector = ({attributes, setAttributes}) => {
     const checkedLevelOption = levelsOptions.filter((option) => option.checked);
     if (!!checkedLevelOption && checkedLevelOption.length === 1) {
         setAttributes({defaultLevel: checkedLevelOption[0].value});
+    } else if (levelsOptions.length > 0) {
+        levelsOptions[0].checked = true;
     }
 
     return (
@@ -154,7 +154,7 @@ const Inspector = ({attributes, setAttributes}) => {
                 )}
             </PanelBody>
             {priceOption === 'multi' && (
-                <PanelBody title={__('[NEW] Donation Levels', 'give')} initialOpen={false}>
+                <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
                     <Options
                         currency={true}
                         multiple={false}
@@ -165,64 +165,6 @@ const Inspector = ({attributes, setAttributes}) => {
                                 .map((option) => option.value);
                             setAttributes({levels: newLevels});
                             setLevelsOptions(options);
-                        }}
-                    />
-                </PanelBody>
-            )}
-            {priceOption === 'multi' && (
-                <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                    {levels.length > 0 && (
-                        <ul
-                            style={{
-                                listStyleType: 'none',
-                                padding: 0,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '16px',
-                            }}
-                        >
-                            {levels.map((amount, index) => {
-                                return (
-                                    <li
-                                        key={'level-option-inspector-' + index}
-                                        style={{
-                                            display: 'flex',
-                                            gap: '16px',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'flex-end',
-                                        }}
-                                        className={'givewp-donation-level-control'}
-                                    >
-                                        <CurrencyControl
-                                            label={__('Donation amount level', 'give')}
-                                            hideLabelFromVision
-                                            value={amount}
-                                            onValueChange={(value) => {
-                                                const newLevels = [...levels];
-
-                                                newLevels[index] = value;
-                                                setAttributes({levels: newLevels});
-                                            }}
-                                        />
-                                        <DeleteButton
-                                            onClick={() => {
-                                                levels.splice(index, 1);
-                                                setAttributes({levels: levels.slice()});
-                                            }}
-                                        />
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    )}
-                    <AddButton
-                        onClick={() => {
-                            const newLevels = [...levels];
-                            const lastLevel = newLevels[newLevels.length - 1];
-                            const nextLevel = lastLevel ? lastLevel * 2 : 10;
-
-                            newLevels.push(nextLevel.toString());
-                            setAttributes({levels: newLevels});
                         }}
                     />
                 </PanelBody>
