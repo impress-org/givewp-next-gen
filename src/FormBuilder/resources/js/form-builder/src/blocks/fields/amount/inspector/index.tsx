@@ -15,8 +15,9 @@ import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/common
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
-import {useCallback} from '@wordpress/element';
+import {useCallback, useState} from '@wordpress/element';
 import Options from '@givewp/form-builder/components/OptionsPanel';
+import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -28,7 +29,6 @@ const compareBillingPeriods = (val1: string, val2: string): number => {
 const Inspector = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
-        levelOptions,
         levels,
         defaultLevel,
         priceOption,
@@ -79,12 +79,17 @@ const Inspector = ({attributes, setAttributes}) => {
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
 
-    const checkedLevelOption = levelOptions.filter((option) => option.checked);
+    const [levelsOptions, setLevelsOptions] = useState<OptionProps[]>(
+        levels.map((level) => ({
+            label: formatCurrencyAmount(level),
+            value: level,
+            checked: defaultLevel === level,
+        }))
+    );
 
+    const checkedLevelOption = levelsOptions.filter((option) => option.checked);
     if (!!checkedLevelOption && checkedLevelOption.length === 1) {
         setAttributes({defaultLevel: checkedLevelOption[0].value});
-        console.log('RESULT: ', checkedLevelOption);
-        console.log('defaultLevel: ', defaultLevel);
     }
 
     return (
@@ -159,20 +164,18 @@ const Inspector = ({attributes, setAttributes}) => {
                     </>
                 )}
             </PanelBody>
-            {priceOption === 'multi' && !!levelOptions && levelOptions.length > 0 && (
+            {priceOption === 'multi' && !!levelsOptions && levelsOptions.length > 0 && (
                 <PanelBody title={__('[NEW] Donation Levels', 'give')} initialOpen={false}>
                     <Options
                         currency={true}
                         multiple={false}
-                        options={levelOptions}
+                        options={levelsOptions}
                         setOptions={(options) => {
-                            const newLevels = levelOptions
-                                .filter((option) => option.value > 0)
+                            const newLevels = levelsOptions
+                                .filter((option) => !!option.value)
                                 .map((option) => option.value);
-                            console.log('newLevels: ', newLevels);
-                            console.log('levels: ', levels);
                             setAttributes({levels: newLevels});
-                            setAttributes({levelOptions: options});
+                            setLevelsOptions(options);
                         }}
                     />
                 </PanelBody>

@@ -16,7 +16,6 @@ const Edit = ({attributes, setAttributes}) => {
         label = __('Donation Amount', 'give'),
         levels,
         defaultLevel,
-        levelOptions,
         priceOption,
         setPrice,
         customAmount,

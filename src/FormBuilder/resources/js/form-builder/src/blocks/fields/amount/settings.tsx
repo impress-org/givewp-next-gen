@@ -5,7 +5,6 @@ import defaultSettings from '../settings';
 import Edit from './Edit';
 
 import getDefaultBlockAttributes from '@givewp/form-builder/common/getDefaultBlockAttributes';
-import {formatCurrencyAmount} from '@givewp/form-builder/common/currency';
 
 const {
     recurringDonationChoice,
@@ -21,14 +20,6 @@ const {
     levels,
     defaultLevel,
 } = getDefaultBlockAttributes('givewp/donation-amount');
-
-const levelOptions = levels.map((level, index) => ({
-    label: formatCurrencyAmount(level),
-    value: level,
-    checked: defaultLevel === level,
-}));
-
-console.log('levelOptions: ', levelOptions);
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
@@ -47,10 +38,6 @@ const settings: FieldBlock['settings'] = {
         levels: {
             type: 'array',
             default: levels,
-        },
-        levelOptions: {
-            type: 'array',
-            default: levelOptions,
         },
         defaultLevel: {
             type: 'number',
