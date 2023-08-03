@@ -2,14 +2,14 @@ import {
     BaseControl,
     Button,
     CheckboxControl,
+    Icon,
     Modal,
     PanelBody,
     PanelRow,
     SelectControl,
     TextControl,
-    Icon,
 } from '@wordpress/components';
-import {moreVertical} from "@wordpress/icons";
+import {moreVertical} from '@wordpress/icons';
 import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
@@ -18,7 +18,13 @@ import {Markup} from 'interweave';
 
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
-import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
+import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+
+const DisplayTypeEnum = {
+    SHOW_MODAL_TERMS: 'showModalTerms',
+    SHOW_FORM_TERMS: 'showFormTerms',
+    SHOW_LINK_TERMS: 'showLinkTerms',
+};
 
 export default function Edit({
     attributes: {
@@ -37,13 +43,13 @@ export default function Edit({
     const globalSettings = getFormBuilderData().termsAndConditions;
 
     if (useGlobalSettings) {
-      checkboxLabel = globalSettings.checkboxLabel;
-      agreementText = globalSettings.agreementText;
+        checkboxLabel = globalSettings.checkboxLabel;
+        agreementText = globalSettings.agreementText;
     }
 
-    const isModalDisplay = displayType === 'showModalTerms';
-    const isLinkDisplay = displayType === 'showLinkTerms';
-    const isFormDisplay = displayType === 'showFormTerms';
+    const isModalDisplay = displayType === DisplayTypeEnum.SHOW_MODAL_TERMS;
+    const isFormDisplay = displayType === DisplayTypeEnum.SHOW_FORM_TERMS;
+    const isLinkDisplay = displayType === DisplayTypeEnum.SHOW_LINK_TERMS;
 
     return (
         <>
@@ -91,9 +97,15 @@ export default function Edit({
                                     onChange={(value) => setAttributes({displayType: value})}
                                     value={displayType}
                                     options={[
-                                        {label: __('Show terms in modal', 'give'), value: 'showModalTerms'},
-                                        {label: __('Show terms in form', 'give'), value: 'showFormTerms'},
-                                        {label: __('Link to terms', 'give'), value: 'showLinkTerms'},
+                                        {
+                                            label: __('Show terms in modal', 'give'),
+                                            value: DisplayTypeEnum.SHOW_MODAL_TERMS,
+                                        },
+                                        {
+                                            label: __('Show terms in form', 'give'),
+                                            value: DisplayTypeEnum.SHOW_FORM_TERMS,
+                                        },
+                                        {label: __('Link to terms', 'give'), value: DisplayTypeEnum.SHOW_LINK_TERMS},
                                     ]}
                                 />
                             </PanelRow>
@@ -199,7 +211,7 @@ type CheckboxPlaceholderProps = {
 
 function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: CheckboxPlaceholderProps) {
     return (
-        <div style={{display:'block'}}>
+        <div style={{display: 'block'}}>
             <div
                 style={{
                     display: isFormDisplay ? 'block' : 'inline-flex',
