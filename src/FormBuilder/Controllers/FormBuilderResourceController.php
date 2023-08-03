@@ -6,6 +6,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Request;
@@ -77,10 +78,24 @@ class FormBuilderResourceController
         $form->title = $updatedSettings->formTitle;
         $form->blocks = $blocks;
 
-        do_action('givewp_form_builder_updated', $form);
+        try {
+            $form->schema();
+        } catch (NameCollisionException $e) {
+            return rest_ensure_response(
+                new WP_Error(
+                    400,
+                    sprintf(
+                        __("A field name with meta key '%s' already exists. Please try a new one.", 'give'),
+                        $e->getNodeNameCollision()
+                    )
+                )
+            );
+        }
 
         $form->status = $updatedSettings->formStatus;
         $form->save();
+
+        do_action('givewp_form_builder_updated', $form);
 
         return rest_ensure_response([
             'settings' => $form->settings->toJson(),
