@@ -186,6 +186,7 @@ export default function Edit({
                                 <Modal
                                     title={__('Agreement Text', 'give')}
                                     onRequestClose={() => setShowAgreementTextModal(false)}
+                                    shouldCloseOnClickOutside={false}
                                     style={{maxWidth: '35rem'}}
                                 >
                                     <Editor
