@@ -269,6 +269,10 @@ This creates a consistent separator between the tabs and the rest of the sidebar
             flex-direction: column;
             gap: 0.25rem;
 
+            .components-base-control {
+                margin-bottom: 0 !important;
+            }
+
             &--open {
                 grid-row: span 2;
             }
