@@ -92,6 +92,15 @@ const Inspector = ({attributes, setAttributes}) => {
         levelsOptions[0].checked = true;
     }
 
+    const setNewLevels = (levelsOptions) => {
+        const newLevels = levelsOptions.filter((option) => option.value).map((option) => option.value);
+        if (JSON.stringify(newLevels) !== JSON.stringify(levels)) {
+            setAttributes({levels: newLevels});
+        }
+    };
+
+    setNewLevels(levelsOptions); //Update levels when the reorder feature is used
+
     return (
         <InspectorControls>
             <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
@@ -160,10 +169,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         multiple={false}
                         options={levelsOptions}
                         setOptions={(options) => {
-                            const newLevels = levelsOptions
-                                .filter((option) => option.value)
-                                .map((option) => option.value);
-                            setAttributes({levels: newLevels});
+                            setNewLevels(levelsOptions);
                             setLevelsOptions(options);
                         }}
                     />
