@@ -164,7 +164,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     </>
                 )}
             </PanelBody>
-            {priceOption === 'multi' && !!levelsOptions && levelsOptions.length > 0 && (
+            {priceOption === 'multi' && (
                 <PanelBody title={__('[NEW] Donation Levels', 'give')} initialOpen={false}>
                     <Options
                         currency={true}
@@ -172,7 +172,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         options={levelsOptions}
                         setOptions={(options) => {
                             const newLevels = levelsOptions
-                                .filter((option) => !!option.value)
+                                .filter((option) => option.value)
                                 .map((option) => option.value);
                             setAttributes({levels: newLevels});
                             setLevelsOptions(options);

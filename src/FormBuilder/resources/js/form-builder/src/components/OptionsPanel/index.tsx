@@ -13,8 +13,6 @@ export default function Options({currency, multiple, options, setOptions}: Optio
         setOptions([...options, {label: '', value: '', checked: false}]);
     };
 
-    console.log('options: ', options);
-
     return (
         <>
             {!currency && (
