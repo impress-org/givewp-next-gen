@@ -4,13 +4,9 @@ import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-
 import PopoverContentWithTemplateTags from '@givewp/form-builder/components/settings/PopoverContentWithTemplateTags';
 import usePopoverState from '@givewp/form-builder/hooks/usePopoverState';
 import ControlForPopover from '@givewp/form-builder/components/settings/ControlForPopover';
+import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 
-//TODO: retrieve from server
-const templateTags = [
-    {id: 'first_name', description: __("The donor's first name.", 'give')},
-    {id: 'last_name', description: __("The donor's last name.", 'give')},
-    {id: 'email', description: __("The donor's email address.", 'give')},
-];
+const {donationConfirmationTemplateTags} = getFormBuilderData();
 
 const DonationConfirmation = () => {
     const {
@@ -45,7 +41,7 @@ const DonationConfirmation = () => {
                             onContentChange={(receiptHeading) => dispatch(setFormSettings({receiptHeading}))}
                             heading={__('Header', 'give')}
                             content={receiptHeading}
-                            templateTags={templateTags}
+                            templateTags={donationConfirmationTemplateTags}
                             onClose={closeHeaderMessageSettings}
                         />
                     )}
@@ -64,7 +60,7 @@ const DonationConfirmation = () => {
                             onContentChange={(receiptDescription) => dispatch(setFormSettings({receiptDescription}))}
                             heading={__('Description', 'give')}
                             content={receiptDescription}
-                            templateTags={templateTags}
+                            templateTags={donationConfirmationTemplateTags}
                             onClose={closeDescriptionMessageSettings}
                         />
                     )}

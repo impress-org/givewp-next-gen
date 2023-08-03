@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {ReceiptDetail} from '@givewp/forms/types';
 import {DonationReceiptProps} from '@givewp/forms/propTypes';
+import {Interweave} from 'interweave';
 
 /**
  * @since 0.1.0
@@ -35,6 +36,7 @@ const Details = ({id, heading, details}: { id: string; heading: string; details:
         </div>
     );
 /**
+ * @unreleased updated to use Interweave for rich text content
  * @since 0.1.0
  */
 export default function DonationReceipt({
@@ -51,8 +53,12 @@ export default function DonationReceipt({
             <div className="receipt-header">
                 <div className="receipt-header-top-wrap">
                     <SecureBadge />
-                    <h1 className="receipt-header-heading">{heading}</h1>
-                    <p className="receipt-header-description">{description}</p>
+                    <h1 className="receipt-header-heading">
+                        <Interweave content={heading} />
+                    </h1>
+                    <p className="receipt-header-description">
+                        <Interweave content={description} />
+                    </p>
                 </div>
             </div>
 

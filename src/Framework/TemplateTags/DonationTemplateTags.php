@@ -15,21 +15,44 @@ class DonationTemplateTags
      * @var string
      */
     protected $content;
+    /**
+     * @var bool
+     */
+    protected $supportsV2FormTags;
 
     /**
      * @since 0.1.0
      */
-    public function __construct(Donation $donation, string $content) {
+    public function __construct(Donation $donation, string $content)
+    {
         $this->donation = $donation;
         $this->content = $content;
     }
 
     /**
+     * @unreleased
+     */
+    public function supportsV2FormTags(bool $supportsV2FormTags = true): self
+    {
+        $this->supportsV2FormTags = $supportsV2FormTags;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased added support for v2 form tags
      * @since 0.1.0
      */
     public function getContent(): string
     {
-        return (new TransformTemplateTags())($this->content, $this->getTags());
+        $content = (new TransformTemplateTags())($this->content, $this->getTags());
+
+        if (!$this->supportsV2FormTags) {
+            return $content;
+        }
+
+        return give_do_email_tags($content, ['payment_id' => $this->donation->id, 'form_id' => $this->donation->formId]
+        );
     }
 
     /**

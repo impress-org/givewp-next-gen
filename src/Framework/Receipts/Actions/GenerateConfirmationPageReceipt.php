@@ -256,12 +256,12 @@ class GenerateConfirmationPageReceipt
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
     {
         if (!$donationForm) {
-            $content = __("Hey {donation.firstName}, thanks for your donation!", 'give');
+            $content = __("Hey {first_name}, thanks for your donation!", 'give');
         } else {
             $content = $donationForm->settings->receiptHeading;
         }
 
-        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
+        return (new DonationTemplateTags($receipt->donation, $content))->supportsV2FormTags()->getContent();
     }
 
     /**
@@ -271,13 +271,13 @@ class GenerateConfirmationPageReceipt
     {
         if (!$donationForm) {
             $content = __(
-                "{donation.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donation.email}.",
+                "{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.",
                 'give'
             );
         } else {
             $content = $donationForm->settings->receiptDescription;
         }
 
-        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
+        return (new DonationTemplateTags($receipt->donation, $content))->supportsV2FormTags()->getContent();
     }
 }

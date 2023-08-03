@@ -50,18 +50,58 @@ class FormBuilderViewModel
             'recurringAddonData' => [
                 'isInstalled' => defined('GIVE_RECURRING_VERSION'),
             ],
-            'emailTemplateTags' => array_map(static function ($tag) {
-                $tag['desc'] = html_entity_decode($tag['desc'], ENT_QUOTES);
-                $tag['description'] = html_entity_decode($tag['description'], ENT_QUOTES);
-
-                return $tag;
-            }, array_values(give()->email_tags->get_tags())),
+            'emailTemplateTags' => $this->getEmailTemplateTags(),
             'emailNotifications' => array_map(static function ($notification) {
                 return EmailNotificationData::fromLegacyNotification($notification);
             }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
             'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
             'emailDefaultAddress' => get_option('admin_email'),
+            'donationConfirmationTemplateTags' => $this->getDonationConfirmationPageTemplateTags(),
         ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getEmailTemplateTags(array $tags = []): array
+    {
+        return array_map(static function ($tag) {
+            $tag['id'] = $tag['tag'];
+            $tag['desc'] = html_entity_decode($tag['desc'], ENT_QUOTES);
+            $tag['description'] = html_entity_decode($tag['description'], ENT_QUOTES);
+
+            return $tag;
+        }, array_merge($tags, array_values(give()->email_tags->get_tags())));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationConfirmationPageTemplateTags(): array
+    {
+        return $this->getEmailTemplateTags([
+            [
+                'tag' => 'first_name',
+                'desc' => __('The first name supplied by the donor during their donation.', 'give'),
+                'description' => __('The first name supplied by the donor during their donation.', 'give'),
+                'func' => null,
+                "context" => 'donation'
+            ],
+            [
+                'tag' => 'last_name',
+                'desc' => __('The last name supplied by the donor during their donation.', 'give'),
+                'description' => __('The last name supplied by the donor during their donation.', 'give'),
+                'func' => null,
+                "context" => 'donation'
+            ],
+            [
+                'tag' => 'email',
+                'desc' => __('The email supplied by the donor during their donation.', 'give'),
+                'description' => __('The email supplied by the donor during their donation.', 'give'),
+                'func' => null,
+                "context" => 'donation'
+            ]
+        ]);
     }
 
     /**
