@@ -7,7 +7,7 @@ import {
     PanelRow,
     SelectControl,
     TextControl,
-    Icon as WPIcon,
+    Icon,
 } from '@wordpress/components';
 import {moreVertical} from "@wordpress/icons";
 import {useState} from '@wordpress/element';
@@ -146,7 +146,7 @@ export default function Edit({
                                                 variant={'primary'}
                                                 onClick={() => setShowAgreementTextModal(true)}
                                             >
-                                                <WPIcon icon={moreVertical} />
+                                                <Icon icon={moreVertical} />
                                             </Button>
                                         </div>
                                     </BaseControl>
