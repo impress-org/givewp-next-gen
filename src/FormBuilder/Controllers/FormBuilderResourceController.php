@@ -85,7 +85,7 @@ class FormBuilderResourceController
                 new WP_Error(
                     400,
                     sprintf(
-                        __("A field name with meta key '%s' already exists. Please try a new one.", 'give'),
+                        __("ERROR: the form was not saved due to a meta key name conflict. A field already exists on this form with the meta key '%s'. Meta key names must be unique. Change the conflicting meta key and try to save again. ", 'give'),
                         //TODO update with $e->getNodeNameCollision()
                         str_replace("Node name collision for ", '', $e->getMessage())
                     )
