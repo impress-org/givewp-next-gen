@@ -136,6 +136,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased update form object data to use DonationForm Node
      * @since 0.1.0
      */
     public function exports(): array
@@ -149,7 +150,7 @@ class DonationFormViewModel
         $formApi = $this->donationFormRepository->getFormSchemaFromBlocks(
             $this->donationFormId,
             $this->formBlocks
-        )->jsonSerialize();
+        );
 
         $formDesign = $this->getFormDesign($this->designId());
 
@@ -161,9 +162,9 @@ class DonationFormViewModel
                 'donation-confirmation-receipt-view'
             ],
             'registeredGateways' => $formDataGateways,
-            'form' => array_merge($formApi, [
+            'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
-                'currency' => give_get_currency(),
+                'currency' => $formApi->getDefaultCurrency(),
                 'goal' => $donationFormGoalData->toArray(),
                 'stats' => $this->formStatsData(),
                 'design' => $formDesign ? [
@@ -260,7 +261,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueRegistrars()
     {
@@ -282,7 +283,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueGateways(int $formId)
     {
@@ -298,7 +299,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueDesign(string $formDesignId)
     {
@@ -325,7 +326,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueFormApp()
     {

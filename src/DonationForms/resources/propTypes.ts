@@ -25,7 +25,7 @@ export interface GatewayFieldProps extends FieldProps {
 export type GatewayOptionProps = {
     inputProps: UseFormRegisterReturn;
     gateway: Gateway;
-    index: number;
+    defaultChecked: boolean;
 };
 
 export interface SelectFieldProps extends FieldProps {
@@ -64,9 +64,22 @@ export interface NameProps extends GroupProps {
     };
 }
 
+export interface BillingAddressProps extends GroupProps {
+    groupLabel: string;
+    fields: {
+        country: FC<Partial<SelectFieldProps> | {}>;
+        address1: FC<FieldProps | {}>;
+        address2: FC<FieldProps | {}>;
+        city: FC<Partial<FieldProps> | {}>;
+        state: FC<FieldProps | {}>;
+        zip: FC<Partial<FieldProps> | {}>;
+    };
+    apiUrl: string;
+}
+
 export interface DonationAmountProps extends GroupProps {
     fields: {
-        amount: FC<AmountProps | {}>;
+        amount: FC<Partial<AmountProps> | {}>;
         donationType: FC<FieldProps | {}>;
         currency: FC<FieldProps | {}>;
         subscriptionFrequency: FC<FieldProps | {}>;
@@ -86,11 +99,11 @@ export interface DonationAmountProps extends GroupProps {
 }
 
 export interface AmountProps extends FieldProps {
-    levels: Number[];
+    levels: number[];
     allowLevels: boolean;
     allowCustomAmount: boolean;
-
     fixedAmountValue: number;
+    messages?: ReactNode;
 }
 
 export interface ParagraphProps extends ElementProps {
@@ -176,4 +189,15 @@ export interface DonationReceiptProps {
     donationDetails: ReceiptDetail[];
     subscriptionDetails: ReceiptDetail[];
     additionalDetails: ReceiptDetail[];
+}
+
+export interface ConsentProps extends FieldProps {
+    useGlobalSettings: boolean;
+    checkboxLabel: string;
+    displayType: string;
+    linkUrl: string;
+    linkText: string;
+    modalHeading: string;
+    modalAcceptanceText: string;
+    agreementText: string;
 }

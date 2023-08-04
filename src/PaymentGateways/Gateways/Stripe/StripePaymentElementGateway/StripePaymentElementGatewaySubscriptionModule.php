@@ -105,6 +105,10 @@ class StripePaymentElementGatewaySubscriptionModule extends SubscriptionModule i
         return new RespondToBrowser([
             'clientSecret' => $stripeSubscription->latest_invoice->payment_intent->client_secret,
             'returnUrl' => $stripeGatewayData->successUrl,
+            'billingDetails' => [
+                'name' => trim("$donation->firstName $donation->lastName"),
+                'email' => $donation->email
+            ],
         ]);
     }
 
@@ -245,6 +249,7 @@ class StripePaymentElementGatewaySubscriptionModule extends SubscriptionModule i
     }
 
     /**
+     * @unreleased no longer store payment intent secret
      * @since 0.3.0
      *
      * @return void
@@ -276,12 +281,6 @@ class StripePaymentElementGatewaySubscriptionModule extends SubscriptionModule i
                 $clientSecret
             )
         ]);
-
-        give_update_meta(
-            $donation->id,
-            '_give_stripe_payment_intent_client_secret',
-            $clientSecret
-        );
     }
 
     /**

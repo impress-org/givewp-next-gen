@@ -30,4 +30,9 @@ export type FormSettings = {
     emailLogo: string;
     emailFromName: string;
     emailFromEmail: string;
+    formGridCustomize: boolean;
+    formGridRedirectUrl: string;
+    formGridDonateButtonText: string;
+    formGridHideDocumentationLink: boolean;
+    offlineDonationsCustomize: boolean;
 };
