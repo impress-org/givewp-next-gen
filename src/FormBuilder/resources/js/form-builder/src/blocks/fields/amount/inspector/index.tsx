@@ -92,7 +92,7 @@ const Inspector = ({attributes, setAttributes}) => {
         levelsOptions[0].checked = true;
     }
 
-    const setNewLevels = (levelsOptions) => {
+    const setNewLevels = (levelsOptions: OptionProps[]) => {
         const newLevels = levelsOptions.filter((option) => option.value).map((option) => option.value);
         if (JSON.stringify(newLevels) !== JSON.stringify(levels)) {
             setAttributes({levels: newLevels});
