@@ -10,22 +10,17 @@ const settings: FieldBlock['settings'] = {
     title: __('Text Field', 'custom-block-editor'),
     category: 'custom',
     description: __('A custom text field that donors can use.', 'give'),
-    attributes: {
-        ...defaultSettings.attributes,
-        storeAsDonorMeta: {
-            type: 'boolean',
-            source: 'attribute',
-            default: false,
-        },
-        displayInAdmin: {
-            type: 'boolean',
-            source: 'attribute',
-            default: true,
-        },
-        displayInReceipt: {
-            type: 'boolean',
-            source: 'attribute',
-            default: true,
+    supports: {
+        // @ts-ignore
+        givewp: {
+            fieldSettings: {
+                label: {
+                    default: __('Text field', 'give'),
+                },
+                placeholder: true,
+                defaultValue: true,
+                emailTag: true,
+            },
         },
     },
     icon: () => (
