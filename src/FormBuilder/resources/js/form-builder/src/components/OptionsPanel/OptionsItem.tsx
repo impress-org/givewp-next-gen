@@ -3,7 +3,6 @@ import {__} from '@wordpress/i18n';
 import {Button, Icon} from '@wordpress/components';
 
 import {draggable, minusCircle} from './icons';
-//import styles from './editor.module.scss';
 import {OptionsItemProps} from './types';
 import {CurrencyControl} from '@givewp/form-builder/common/currency';
 
