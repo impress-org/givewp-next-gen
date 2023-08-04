@@ -13,13 +13,13 @@ function GatewayMissingMessage({currencyNotSupported}: {currencyNotSupported?: b
         <em>
             {currencyNotSupported
                 ? __(
-                    'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
-                    'give'
-                )
+                      'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
+                      'give'
+                  )
                 : __(
-                    'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
-                    'give'
-                )}
+                      'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
+                      'give'
+                  )}
         </em>
     );
 }
@@ -44,6 +44,9 @@ function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
     );
 }
 
+/**
+ * @unreleased
+ */
 const TestModeNotice = () => {
     return (
         <div className={'givewp-test-mode-notice'}>
@@ -71,7 +74,7 @@ const TestModeNotice = () => {
 };
 
 /**
- * @unreleased update to support currency switcher settings
+ * @unreleased update to support currency switcher settings and test mode notice
  * @since 0.1.0
  */
 export default function Gateways({isTestMode, defaultValue, inputProps, gateways}: GatewayFieldProps) {
@@ -113,16 +116,16 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
             {gatewayOptions.length > 0 ? (
                 <>
                     {isTestMode && <TestModeNotice />}
-	                <ul style={{listStyleType: 'none', padding: 0}}>
-	                    {gatewayOptions.map((gateway, index) => (
-	                        <GatewayOption
-	                            gateway={gateway}
-	                            defaultChecked={gateway.id === defaultValue}
-	                            key={gateway.id}
-	                            inputProps={inputProps}
-	                        />
-	                    ))}
-	                </ul>
+                    <ul style={{listStyleType: 'none', padding: 0}}>
+                        {gatewayOptions.map((gateway, index) => (
+                            <GatewayOption
+                                gateway={gateway}
+                                defaultChecked={gateway.id === defaultValue}
+                                key={gateway.id}
+                                inputProps={inputProps}
+                            />
+                        ))}
+                    </ul>
                 </>
             ) : (
                 <GatewayMissingMessage currencyNotSupported={currencySwitcherSettings.length > 1} />
