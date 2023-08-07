@@ -251,6 +251,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased added backwards compatability for v2 forms tags
      * @since 0.1.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -261,10 +262,14 @@ class GenerateConfirmationPageReceipt
             $content = $donationForm->settings->receiptHeading;
         }
 
-        return (new DonationTemplateTags($receipt->donation, $content))->supportsV2FormTags()->getContent();
+        return $this->transformV2FormTags(
+            (new DonationTemplateTags($receipt->donation, $content))->getContent(),
+            $receipt->donation
+        );
     }
 
     /**
+     * @unreleased added backwards compatability for v2 forms tags
      * @since 0.1.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -278,6 +283,18 @@ class GenerateConfirmationPageReceipt
             $content = $donationForm->settings->receiptDescription;
         }
 
-        return (new DonationTemplateTags($receipt->donation, $content))->supportsV2FormTags()->getContent();
+        return $this->transformV2FormTags(
+            (new DonationTemplateTags($receipt->donation, $content))->getContent(),
+            $receipt->donation
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function transformV2FormTags(string $content, Donation $donation): string
+    {
+        return give_do_email_tags($content, ['payment_id' => $donation->id, 'form_id' => $donation->formId]
+        );
     }
 }
