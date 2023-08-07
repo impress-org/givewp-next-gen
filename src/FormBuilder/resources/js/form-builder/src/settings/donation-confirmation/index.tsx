@@ -43,7 +43,6 @@ const DonationConfirmation = () => {
                             content={receiptHeading}
                             templateTags={donationConfirmationTemplateTags}
                             onClose={closeHeaderMessageSettings}
-                            richText={true}
                         />
                     )}
                 </ControlForPopover>
