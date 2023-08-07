@@ -2,7 +2,6 @@ import {
     BaseControl,
     Button,
     CheckboxControl,
-    Modal,
     PanelBody,
     PanelRow,
     SelectControl,
@@ -15,6 +14,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 
 import {MenuIcon} from '@givewp/form-builder/blocks/fields/terms-and-conditions/Icon';
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
+import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 
 export default function Edit({
     attributes: {
@@ -141,18 +141,16 @@ export default function Edit({
                                 </>
                             )}
 
-                            {showAgreementTextModal && (
-                                <Modal
-                                    title={__('Agreement Text', 'give')}
-                                    onRequestClose={() => setShowAgreementTextModal(false)}
-                                    style={{maxWidth: '35rem'}}
-                                >
-                                    <Editor
-                                        value={agreementText}
-                                        onChange={(value) => setAttributes({agreementText: value})}
-                                    />
-                                </Modal>
-                            )}
+                            <StyledPopover
+                                title={__('Agreement Text', 'give')}
+                                visible={showAgreementTextModal}
+                                onClose={() => setShowAgreementTextModal(false)}
+                            >
+                                <Editor
+                                    value={agreementText}
+                                    onChange={(value) => setAttributes({agreementText: value})}
+                                />
+                            </StyledPopover>
                         </>
                     )}
                 </PanelBody>
