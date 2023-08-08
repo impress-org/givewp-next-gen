@@ -162,6 +162,15 @@ class GenerateConfirmationPageReceipt
             );
         }
 
+        if ($receipt->donation->anonymous) {
+            $receipt->additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Anonymous', 'give'),
+                    'Yes'
+                )
+            );
+        }
+
         if ($customFields = $this->getCustomFields($receipt->donation)) {
             $receipt->additionalDetails->addDetails($customFields);
         }
