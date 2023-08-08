@@ -60,6 +60,7 @@ const builtInFieldNames = [
     'subscription_id',
     'additional_email',
     'formId',
+    'comment',
 ];
 
 /**

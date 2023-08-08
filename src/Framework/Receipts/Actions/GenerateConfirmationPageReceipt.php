@@ -162,6 +162,15 @@ class GenerateConfirmationPageReceipt
             );
         }
 
+        if ($receipt->donation->comment) {
+            $receipt->additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Comment', 'give'),
+                    $receipt->donation->comment
+                )
+            );
+        }
+
         if ($customFields = $this->getCustomFields($receipt->donation)) {
             $receipt->additionalDetails->addDetails($customFields);
         }
