@@ -200,7 +200,6 @@ class ConvertDonationFormBlocksToFieldsApi
                     });
 
             case "givewp/anonymous":
-                // TODO add help text tooltip on front-end
                 return Checkbox::make('anonymous')
                     ->label($block->getAttribute('label'))
                     ->helpText($block->getAttribute('description'))
