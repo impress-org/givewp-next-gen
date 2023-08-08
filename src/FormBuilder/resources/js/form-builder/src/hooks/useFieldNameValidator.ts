@@ -34,32 +34,97 @@ export const getFieldNameSuggestion = (name, names) => {
  */
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)];
 
-const builtInFieldNames = [
+/**
+ * @unreleased
+ */
+const donationModelProperties = [
+    'id',
+    'formId',
+    'formTitle',
+    'purchaseKey',
+    'donorIp',
+    'createdAt',
+    'updatedAt',
+    'status',
+    'type',
+    'mode',
     'amount',
-    'currency',
+    'feeAmountRecovered',
+    'exchangeRate',
     'gatewayId',
+    'donorId',
+    'firstName',
+    'lastName',
     'email',
+    'subscriptionId',
+    'billingAddress',
+    'anonymous',
+    'levelId',
+    'gatewayTransactionId',
     'company',
+    'comment',
+];
+
+/**
+ * @unreleased
+ */
+const subscriptionModelProperties = [
+    'id',
+    'donationFormId',
+    'createdAt',
+    'renewsAt',
+    'donorId',
+    'period',
+    'frequency',
+    'installments',
+    'transactionId',
+    'mode',
+    'amount',
+    'feeAmountRecovered',
+    'status',
+    'gatewaySubscriptionId',
+    'gatewayId',
+];
+
+/**
+ * @unreleased
+ */
+const donorModelProperties = [
+    'id',
+    'userId',
+    'createdAt',
     'name',
     'firstName',
     'lastName',
-    'honorific',
-    'billingAddress',
-    'country',
-    'address1',
-    'address2',
-    'city',
-    'state',
-    'zip',
+    'email',
+    'prefix',
+    'additionalEmails',
+    'totalAmountDonated',
+    'totalNumberOfDonations',
+];
+
+/**
+ * @unreleased
+ */
+const builtInFieldNamesAndMeta = [
     'login',
+    'consent',
     'donation-summary',
-    'donationType',
-    'subscriptionFrequency',
-    'subscriptionInstallments',
-    'subscriptionPeriod',
-    'subscription_id',
     'additional_email',
-    'formId',
+    'subscription_id',
+    'fund_id',
+];
+
+/**
+ * @unreleased
+ */
+const disallowedFieldNames = [
+    ...new Set([
+        ...builtInFieldNamesAndMeta,
+        ...donationModelProperties,
+        ...subscriptionModelProperties,
+        ...donorModelProperties,
+    ]),
 ];
 
 /**
@@ -86,7 +151,7 @@ const useFieldNameValidator = () => {
      * @param {boolean} allowOne Whether to allow a single instance of the name — useful for when a field name is being edited
      */
     return (n, allowOne = false): ValidationSet => {
-        if (builtInFieldNames.includes(n)) {
+        if (disallowedFieldNames.includes(n)) {
             return [false, getFieldNameSuggestion(n, fieldNames ?? [])];
         }
 
