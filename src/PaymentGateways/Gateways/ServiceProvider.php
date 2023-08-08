@@ -14,7 +14,6 @@ use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModul
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
-use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGatewaySubscriptionModule;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionDeleted;
@@ -107,13 +106,6 @@ class ServiceProvider implements ServiceProviderInterface
          * This module will eventually live in give-recurring
          */
         if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
-            add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", StripePaymentElementGateway::id()),
-                static function () {
-                    return StripePaymentElementGatewaySubscriptionModule::class;
-                }
-            );
-
             add_filter(
                 sprintf("givewp_gateway_%s_subscription_module", TestGateway::id()),
                 static function () {
