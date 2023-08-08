@@ -7,7 +7,14 @@ export default function Edit({attributes}: BlockEditProps<any>) {
     return (
         <>
             <div>
-                <TextareaControl label={label} readOnly onChange={null} help={description} value="" />
+                <TextareaControl
+                    style={{backgroundColor: '#fff'}}
+                    readOnly
+                    label={label}
+                    help={description}
+                    value=""
+                    onChange={() => null}
+                />
             </div>
         </>
     );
