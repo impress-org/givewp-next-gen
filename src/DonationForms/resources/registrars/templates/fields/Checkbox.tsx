@@ -8,9 +8,13 @@ export default function Checkbox({Label, ErrorMessage, value, helpText, fieldErr
     return (
         <label>
             <input type="checkbox" value={value} aria-invalid={fieldError ? 'true' : 'false'} {...inputProps} />
-            <span data-tooltip={helpText}>
+            {helpText ? (
+                <span data-tooltip={helpText}>
+                    <Label />
+                </span>
+            ) : (
                 <Label />
-            </span>
+            )}
 
             <ErrorMessage />
         </label>
