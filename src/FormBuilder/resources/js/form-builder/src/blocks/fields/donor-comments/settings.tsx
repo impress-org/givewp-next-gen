@@ -4,6 +4,9 @@ import {commentContent} from '@wordpress/icons';
 import Edit from './Edit';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 
+/**
+ * @unreleased
+ */
 const givewp: GiveWPSupports = {
     fieldSettings: {
         label: {
@@ -23,6 +26,9 @@ const givewp: GiveWPSupports = {
     },
 };
 
+/**
+ * @unreleased
+ */
 const settings: FieldBlock['settings'] = {
     title: __('Donor Comments', 'give'),
     description: __(

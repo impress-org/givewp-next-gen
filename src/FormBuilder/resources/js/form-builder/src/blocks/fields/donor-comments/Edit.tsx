@@ -1,7 +1,10 @@
 import {TextareaControl} from '@wordpress/components';
 import {BlockEditProps} from '@wordpress/blocks';
 
-const Label = ({label, helpText}) => (
+/**
+ * @unreleased
+ */
+const Label = ({label, helpText}: { label: string; helpText: string }) => (
     <>
         {label}
         <div className="components-base-control__help">
@@ -10,6 +13,9 @@ const Label = ({label, helpText}) => (
     </>
 );
 
+/**
+ * @unreleased
+ */
 export default function Edit({attributes}: BlockEditProps<any>) {
     const {label, description} = attributes;
 
