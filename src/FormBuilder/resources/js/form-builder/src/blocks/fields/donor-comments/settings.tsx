@@ -9,7 +9,9 @@ const givewp: GiveWPSupports = {
         label: {
             default: __('Comment', 'give'),
         },
-        description: false,
+        description: {
+            default: __('Would you like to add a comment to this donation?', 'give'),
+        },
         metaKey: false,
         placeholder: false,
         required: false,

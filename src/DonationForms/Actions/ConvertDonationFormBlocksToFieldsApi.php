@@ -136,6 +136,7 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/donor-comments":
                 return Textarea::make('comment')
                     ->label($block->getAttribute('label'))
+                    ->helpText($block->getAttribute('description'))
                     ->rules('max:255');
 
             case "givewp/billing-address":
