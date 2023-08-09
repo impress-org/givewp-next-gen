@@ -79,7 +79,7 @@ class FormBuilderViewModel
      */
     public function getDonationConfirmationPageTemplateTags(): array
     {
-        return $this->getEmailTemplateTags([
+        $templateTags = $this->getEmailTemplateTags([
             [
                 'tag' => 'first_name',
                 'desc' => __('The first name supplied by the donor during their donation.', 'give'),
@@ -102,6 +102,18 @@ class FormBuilderViewModel
                 "context" => 'donation'
             ]
         ]);
+
+        $supportedContexts = [
+            "general",
+            "form",
+            "donation",
+            "donor",
+            "subscription",
+        ];
+
+        return array_filter($templateTags, static function ($tag) use ($supportedContexts) {
+            return in_array($tag['context'], $supportedContexts, true);
+        });
     }
 
     /**
