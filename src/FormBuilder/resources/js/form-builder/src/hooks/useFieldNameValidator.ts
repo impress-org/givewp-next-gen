@@ -5,7 +5,6 @@ import {getWindowData} from "@givewp/form-builder/common";
  * @unreleased
  */
 const {disallowedFieldNames} = getWindowData();
-console.log(disallowedFieldNames);
 
 /**
  * @since 0.1.0
