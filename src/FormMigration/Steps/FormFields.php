@@ -22,7 +22,6 @@ class FormFields extends FormMigrationStep
         // @note No corresponding setting in v3 for "Anonymous Donations"
 
         // Donor Comments
-        // @note no corresponding setting in v3 for "Donor Comments"
         $this->handleDonorComments();
     }
 
