@@ -165,7 +165,7 @@ class GenerateConfirmationPageReceipt
         if ($receipt->donation->anonymous) {
             $receipt->additionalDetails->addDetail(
                 new ReceiptDetail(
-                    __('Anonymous', 'give'),
+                    __('Anonymous Donation', 'give'),
                     'Yes'
                 )
             );
