@@ -27,7 +27,7 @@ const DonationConfirmation = () => {
     } = usePopoverState();
 
     return (
-        <PanelBody title={__('Donation Confirmation')} initialOpen={false}>
+        <PanelBody title={__('Donation Confirmation', 'give')} initialOpen={false}>
             <PanelRow>
                 <ControlForPopover
                     id="donation-confirmation-settings-header"
