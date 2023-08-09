@@ -33,9 +33,11 @@ class StoreCustomFields
 
                 $value = $customFields[$fieldName];
 
-                if (isset($_FILES[$fieldName]) && ($field->getType() === Types::FILE || $field->getScope()->isFile())) {
-                    /** @var File $field */
-                    $this->handleFileUpload($field, $donation);
+                if (($field->getType() === Types::FILE || $field->getScope()->isFile())) {
+                    if (isset($_FILES[$fieldName])) {
+                        /** @var File $field */
+                        $this->handleFileUpload($field, $donation);
+                    }
                 } elseif ($field->getScope()->isDonor()) {
                     $this->storeAsDonorMeta($donation->donorId, $field->getMetaKey() ?? $field->getName(), $value);
                 } elseif ($field->getScope()->isDonation()) {
@@ -61,6 +63,10 @@ class StoreCustomFields
     {
         $fileUploader = new UploadFilesAction($field);
         $fileIds = $fileUploader();
+
+        if (empty($fileIds)) {
+            return;
+        }
 
         foreach ($fileIds as $fileId) {
             if ($field->shouldStoreAsDonorMeta()) {
