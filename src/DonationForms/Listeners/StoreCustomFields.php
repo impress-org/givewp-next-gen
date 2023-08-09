@@ -5,6 +5,7 @@ namespace Give\DonationForms\Listeners;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Form\LegacyConsumer\Actions\UploadFilesAction;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Types;
@@ -20,6 +21,7 @@ class StoreCustomFields
      * @since 0.1.0
      *
      * @return void
+     * @throws NameCollisionException
      */
     public function __invoke(DonationForm $form, Donation $donation, array $customFields)
     {
@@ -31,26 +33,22 @@ class StoreCustomFields
                     return;
                 }
 
-                $value = $customFields[$fieldName];
+                // File fields need to upload their file first before persisting the field based on scope.
+                if ($field->getType() === Types::FILE) {
+                    /** @var File $field */
+                    $fileIds = $this->handleFileUpload($field);
 
-                if (($field->getType() === Types::FILE || $field->getScope()->isFile())) {
-                    if (isset($_FILES[$fieldName])) {
-                        /** @var File $field */
-                        $this->handleFileUpload($field, $donation);
+                    if (empty($fileIds)) {
+                        return;
                     }
-                } elseif ($field->getScope()->isDonor()) {
-                    $this->storeAsDonorMeta($donation->donorId, $field->getMetaKey() ?? $field->getName(), $value);
-                } elseif ($field->getScope()->isDonation()) {
-                    $this->storeAsDonationMeta($donation->id, $field->getMetaKey() ?? $field->getName(), $value);
-                } elseif ($field->getScope()->isCallback()) {
-                    $field->getScopeCallback()($field, $value, $donation);
+
+                    foreach ($fileIds as $fileId) {
+                        $this->persistFieldScope($field, $fileId, $donation);
+                    }
                 } else {
-                    do_action(
-                        "givewp_donation_form_persist_field_scope_{$field->getScopeValue()}",
-                        $field,
-                        $value,
-                        $donation
-                    );
+                    $value = $customFields[$fieldName];
+
+                    $this->persistFieldScope($field, $value, $donation);
                 }
             }
         );
@@ -58,23 +56,15 @@ class StoreCustomFields
 
     /**
      * @unreleased
+     * @return array|null
      */
-    protected function handleFileUpload(File $field, Donation $donation)
+    protected function handleFileUpload(File $field)
     {
-        $fileUploader = new UploadFilesAction($field);
-        $fileIds = $fileUploader();
-
-        if (empty($fileIds)) {
-            return;
+        if (!isset($_FILES[$field->getName()])) {
+            return null;
         }
 
-        foreach ($fileIds as $fileId) {
-            if ($field->shouldStoreAsDonorMeta()) {
-                $this->storeAsDonorMeta($donation->donorId, $field->getMetaKey() ?? $field->getName(), $fileId);
-            } else {
-                $this->storeAsDonationMeta($donation->id, $field->getMetaKey() ?? $field->getName(), $fileId);
-            }
-        }
+        return (new UploadFilesAction($field))();
     }
 
     /**
@@ -91,5 +81,26 @@ class StoreCustomFields
     protected function storeAsDonationMeta(int $donationId, string $metaKey, $value)
     {
         give()->payment_meta->update_meta($donationId, $metaKey, $value);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function persistFieldScope(Field $field, $value, Donation $donation)
+    {
+        if ($field->getScope()->isDonor()) {
+            $this->storeAsDonorMeta($donation->donorId, $field->getMetaKey() ?? $field->getName(), $value);
+        } elseif ($field->getScope()->isDonation()) {
+            $this->storeAsDonationMeta($donation->id, $field->getMetaKey() ?? $field->getName(), $value);
+        } elseif ($field->getScope()->isCallback()) {
+            $field->getScopeCallback()($field, $value, $donation);
+        } else {
+            do_action(
+                "givewp_donation_form_persist_field_scope_{$field->getScopeValue()}",
+                $field,
+                $value,
+                $donation
+            );
+        }
     }
 }
