@@ -1,4 +1,11 @@
-import {EmailNotification, FormDesign, FormPageSettings, Gateway, TemplateTag} from '@givewp/form-builder/types';
+import {
+    EmailNotification,
+    FormDesign,
+    FormPageSettings,
+    Gateway,
+    TemplateTag,
+    TermsAndConditions,
+} from '@givewp/form-builder/types';
 
 declare global {
     interface Window {
@@ -19,6 +26,7 @@ declare global {
             emailNotifications: EmailNotification[];
             emailDefaultAddress: string;
             donationConfirmationTemplateTags: TemplateTag[];
+            termsAndConditions: TermsAndConditions;
         };
     }
 }
