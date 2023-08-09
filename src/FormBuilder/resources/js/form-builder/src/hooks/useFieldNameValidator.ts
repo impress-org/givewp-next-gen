@@ -1,4 +1,11 @@
 import {useSelect} from '@wordpress/data';
+import {getWindowData} from "@givewp/form-builder/common";
+
+/**
+ * @unreleased
+ */
+const {disallowedFieldNames} = getWindowData();
+console.log(disallowedFieldNames);
 
 /**
  * @since 0.1.0
@@ -34,98 +41,6 @@ export const getFieldNameSuggestion = (name, names) => {
  */
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)];
 
-/**
- * @unreleased
- */
-const donationModelProperties = [
-    'id',
-    'formId',
-    'formTitle',
-    'purchaseKey',
-    'donorIp',
-    'createdAt',
-    'updatedAt',
-    'status',
-    'type',
-    'mode',
-    'amount',
-    'feeAmountRecovered',
-    'exchangeRate',
-    'gatewayId',
-    'donorId',
-    'firstName',
-    'lastName',
-    'email',
-    'subscriptionId',
-    'billingAddress',
-    'anonymous',
-    'levelId',
-    'gatewayTransactionId',
-    'company',
-    'comment',
-];
-
-/**
- * @unreleased
- */
-const subscriptionModelProperties = [
-    'id',
-    'donationFormId',
-    'createdAt',
-    'renewsAt',
-    'donorId',
-    'period',
-    'frequency',
-    'installments',
-    'transactionId',
-    'mode',
-    'amount',
-    'feeAmountRecovered',
-    'status',
-    'gatewaySubscriptionId',
-    'gatewayId',
-];
-
-/**
- * @unreleased
- */
-const donorModelProperties = [
-    'id',
-    'userId',
-    'createdAt',
-    'name',
-    'firstName',
-    'lastName',
-    'email',
-    'prefix',
-    'additionalEmails',
-    'totalAmountDonated',
-    'totalNumberOfDonations',
-];
-
-/**
- * @unreleased
- */
-const builtInFieldNamesAndMeta = [
-    'login',
-    'consent',
-    'donation-summary',
-    'additional_email',
-    'subscription_id',
-    'fund_id',
-];
-
-/**
- * @unreleased
- */
-const disallowedFieldNames = [
-    ...new Set([
-        ...builtInFieldNamesAndMeta,
-        ...donationModelProperties,
-        ...subscriptionModelProperties,
-        ...donorModelProperties,
-    ]),
-];
 
 /**
  * A hook for validating uniqueness of the 'fieldName' attribute.
