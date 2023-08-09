@@ -67,6 +67,10 @@ class FormBuilderViewModel
             'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
             'emailDefaultAddress' => get_option('admin_email'),
             'disallowedFieldNames' => $this->getDisallowedFieldNames(),
+            'termsAndConditions' => [
+                'checkboxLabel' => give_get_option('agree_to_terms_label'),
+                'agreementText' => give_get_option('agreement_text')
+            ],
         ];
     }
 
