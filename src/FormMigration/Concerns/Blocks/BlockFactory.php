@@ -97,4 +97,18 @@ class BlockFactory
             ], $attributes),
         ]);
     }
+
+    /**
+     * @unreleased
+     */
+    public static function donorComments(): BlockModel
+    {
+        return BlockModel::make([
+            'name' => 'givewp/donor-comments',
+            'attributes' => [
+                'label' => __('Comment', 'give'),
+                'description' => __('Would you like to add a comment to this donation?', 'give'),
+            ],
+        ]);
+    }
 }
