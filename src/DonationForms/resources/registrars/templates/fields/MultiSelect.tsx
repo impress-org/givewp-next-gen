@@ -3,6 +3,7 @@ import {Controller} from 'react-hook-form';
 
 import {MultiSelectProps} from '@givewp/forms/propTypes';
 import styles from '../styles.module.scss';
+import {useDonationFormState} from "@givewp/forms/app/store";
 
 export default function MultiSelect({
     Label,
@@ -15,8 +16,9 @@ export default function MultiSelect({
     inputProps,
 }: MultiSelectProps) {
     const {useFormContext} = window.givewp.form.hooks;
-    const {control} = useFormContext();
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
+    const {name} = inputProps;
+    const {control} = useFormContext();
 
     return (
         <fieldset className={styles.multiSelectField}>
@@ -26,12 +28,11 @@ export default function MultiSelect({
             </label>
             {fieldType === 'dropdown' ? (
                 <Controller
+                    name={name}
                     control={control}
-                    {...inputProps}
                     render={({
-                        field: {onChange, onBlur, value, name, ref},
-                        fieldState: {invalid, isTouched, isDirty, error},
-                        formState,
+                        field: {onChange, value, ref},
+                        fieldState: {invalid},
                     }) => (
                         <Select
                             ref={ref}
