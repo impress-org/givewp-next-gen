@@ -53,12 +53,8 @@ export default function DonationReceipt({
             <div className="receipt-header">
                 <div className="receipt-header-top-wrap">
                     <SecureBadge />
-                    <h1 className="receipt-header-heading">
-                        <Interweave content={heading} />
-                    </h1>
-                    <p className="receipt-header-description">
-                        <Interweave content={description} />
-                    </p>
+                    <Interweave tagName="h1" className="receipt-header-heading" content={heading} />
+                    <Interweave tagName="p" className="receipt-header-description" content={description} />
                 </div>
             </div>
 

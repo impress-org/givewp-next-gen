@@ -223,12 +223,12 @@ class GenerateConfirmationPageReceipt
 
         $receipt->settings->addSetting(
             'heading',
-            $this->getHeading($receipt, $donationForm)
+            nl2br($this->getHeading($receipt, $donationForm))
         );
 
         $receipt->settings->addSetting(
             'description',
-            $this->getDescription($receipt, $donationForm)
+            nl2br($this->getDescription($receipt, $donationForm))
         );
 
         $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
