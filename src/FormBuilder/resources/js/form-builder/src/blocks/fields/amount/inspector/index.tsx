@@ -86,6 +86,12 @@ const Inspector = ({attributes, setAttributes}) => {
     );
 
     const handleLevelsChange = (options: OptionProps[]) => {
+        const lastItem = options.length - 1;
+        if (options[lastItem].value === '') {
+            const values = options.filter((option) => Number(option.value) > 0).map((option) => Number(option.value));
+            options[lastItem].value = String(2 * Math.max(...values));
+        }
+
         const checkedLevel = options.filter((option) => option.checked);
         if (!!checkedLevel && checkedLevel.length === 1) {
             setAttributes({defaultLevel: checkedLevel[0].value});
