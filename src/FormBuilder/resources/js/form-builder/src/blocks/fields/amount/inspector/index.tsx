@@ -16,7 +16,6 @@ import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
 import Options from '@givewp/form-builder/components/OptionsPanel';
 import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
-import {useEffect} from 'react';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -86,17 +85,18 @@ const Inspector = ({attributes, setAttributes}) => {
         }))
     );
 
-    const checkedLevel = donationLevels.filter((option) => option.checked);
-    if (!!checkedLevel && checkedLevel.length === 1) {
-        setAttributes({defaultLevel: checkedLevel[0].value});
-    } else if (donationLevels.length > 0) {
-        donationLevels[0].checked = true;
-    }
+    const handleLevelsChange = (options: OptionProps[]) => {
+        const checkedLevel = options.filter((option) => option.checked);
+        if (!!checkedLevel && checkedLevel.length === 1) {
+            setAttributes({defaultLevel: checkedLevel[0].value});
+        } else if (options.length > 0) {
+            options[0].checked = true;
+        }
 
-    useEffect(() => {
-        const newLevels = donationLevels.filter((option) => option.value).map((option) => option.value);
+        setDonationLevels(options);
+        const newLevels = options.filter((option) => option.value).map((option) => option.value);
         setAttributes({levels: newLevels});
-    }, [donationLevels]);
+    };
 
     return (
         <InspectorControls>
@@ -165,7 +165,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         currency={true}
                         multiple={false}
                         options={donationLevels}
-                        setOptions={(options) => setDonationLevels(options)}
+                        setOptions={handleLevelsChange}
                     />
                 </PanelBody>
             )}
