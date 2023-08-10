@@ -115,9 +115,13 @@ class FormBuilderViewModel
             "subscription",
         ];
 
-        return array_filter($templateTags, static function ($tag) use ($supportedContexts) {
-            return in_array($tag['context'], $supportedContexts, true);
-        });
+        array_multisort($templateTags, SORT_ASC);
+
+        return array_values(
+            array_filter($templateTags, static function ($tag) use ($supportedContexts) {
+                return !empty($tag['description']) && in_array((string)$tag['context'], $supportedContexts, true);
+            })
+        );
     }
 
     /**
