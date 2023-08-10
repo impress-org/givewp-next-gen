@@ -54,6 +54,7 @@ const defaultFormTemplates = {
         phone: PhoneField,
         file: FileField,
         url: UrlField,
+        file: FileField,
     },
     elements: {
         paragraph: Paragraph,
