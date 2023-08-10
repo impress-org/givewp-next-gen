@@ -56,7 +56,7 @@ class ConvertDonationAmountBlockToFieldsApi
 
             /** @var Amount $amountNode */
             $amountNode = $group->getNodeByName('amount');
-            $defaultLevel = $block->getAttribute('defaultLevel') > 0 ? $block->getAttribute('defaultLevel') : 10;
+            $defaultLevel = (float)$block->getAttribute('defaultLevel') > 0 ? (float)$block->getAttribute('defaultLevel') : 10;
             $amountNode
                 ->label($block->getAttribute('label'))
                 ->levels(...array_map('absint', $block->getAttribute('levels')))
