@@ -75,7 +75,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
         }
 
         if ($receipt->donation->anonymous) {
-            $receipt->additionalDetails->addDetail(
+            $additionalDetails->addDetail(
                 new ReceiptDetail(
                     __('Anonymous Donation', 'give'),
                     'Yes'
