@@ -123,6 +123,10 @@ class FormBuilderViewModel
     }
 
     /**
+     * In the Form Builder custom fields have meta keys. These meta keys are used for both the field name and the meta,
+     * as not to be too confusing. This array is used to prevent the user from creating meta keys that conflict with the
+     * existing meta or field names.
+     *
      * @unreleased
      */
     protected function getDisallowedFieldNames(): array
