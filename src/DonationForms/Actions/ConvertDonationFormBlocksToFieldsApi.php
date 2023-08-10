@@ -131,8 +131,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
-
-            //TODO: give_is_donor_comment_field_enabled() prevents this from showing up in admin
+                
             case "givewp/donor-comments":
                 return Textarea::make('comment')
                     ->label($block->getAttribute('label'))
