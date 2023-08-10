@@ -16,6 +16,7 @@ import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
 import Options from '@givewp/form-builder/components/OptionsPanel';
 import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
+import {useEffect} from 'react';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -77,7 +78,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
 
-    const [levelsOptions, setLevelsOptions] = useState<OptionProps[]>(
+    const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level) => ({
             label: formatCurrencyAmount(level),
             value: level,
@@ -85,21 +86,17 @@ const Inspector = ({attributes, setAttributes}) => {
         }))
     );
 
-    const checkedLevelOption = levelsOptions.filter((option) => option.checked);
-    if (!!checkedLevelOption && checkedLevelOption.length === 1) {
-        setAttributes({defaultLevel: checkedLevelOption[0].value});
-    } else if (levelsOptions.length > 0) {
-        levelsOptions[0].checked = true;
+    const checkedLevel = donationLevels.filter((option) => option.checked);
+    if (!!checkedLevel && checkedLevel.length === 1) {
+        setAttributes({defaultLevel: checkedLevel[0].value});
+    } else if (donationLevels.length > 0) {
+        donationLevels[0].checked = true;
     }
 
-    const setNewLevels = (levelsOptions: OptionProps[]) => {
-        const newLevels = levelsOptions.filter((option) => option.value).map((option) => option.value);
-        if (JSON.stringify(newLevels) !== JSON.stringify(levels)) {
-            setAttributes({levels: newLevels});
-        }
-    };
-
-    setNewLevels(levelsOptions); //Update levels when the reorder feature is used
+    useEffect(() => {
+        const newLevels = donationLevels.filter((option) => option.value).map((option) => option.value);
+        setAttributes({levels: newLevels});
+    }, [donationLevels]);
 
     return (
         <InspectorControls>
@@ -167,11 +164,8 @@ const Inspector = ({attributes, setAttributes}) => {
                     <Options
                         currency={true}
                         multiple={false}
-                        options={levelsOptions}
-                        setOptions={(options) => {
-                            setNewLevels(levelsOptions);
-                            setLevelsOptions(options);
-                        }}
+                        options={donationLevels}
+                        setOptions={(options) => setDonationLevels(options)}
                     />
                 </PanelBody>
             )}
