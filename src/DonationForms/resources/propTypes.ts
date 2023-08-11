@@ -30,6 +30,11 @@ export interface MultiSelectProps extends SelectableFieldProps {
 
 export interface CheckboxProps extends FieldProps {
     value: string | number;
+    helpText?: string;
+}
+
+export interface TextareaProps extends FieldProps {
+    helpText?: string;
 }
 
 export interface FieldHasDescriptionProps extends FieldProps {

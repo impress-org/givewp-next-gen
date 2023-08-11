@@ -1,4 +1,10 @@
 import {useSelect} from '@wordpress/data';
+import {getWindowData} from "@givewp/form-builder/common";
+
+/**
+ * @unreleased
+ */
+const {disallowedFieldNames} = getWindowData();
 
 /**
  * @since 0.1.0
@@ -60,6 +66,7 @@ const builtInFieldNames = [
     'subscription_id',
     'additional_email',
     'formId',
+    'comment',
 ];
 
 /**
@@ -86,7 +93,7 @@ const useFieldNameValidator = () => {
      * @param {boolean} allowOne Whether to allow a single instance of the name — useful for when a field name is being edited
      */
     return (n, allowOne = false): ValidationSet => {
-        if (builtInFieldNames.includes(n)) {
+        if (disallowedFieldNames.includes(n)) {
             return [false, getFieldNameSuggestion(n, fieldNames ?? [])];
         }
 

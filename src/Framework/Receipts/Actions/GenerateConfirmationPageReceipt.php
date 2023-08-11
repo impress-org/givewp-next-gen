@@ -147,6 +147,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased added comment field
      * @since 0.1.0
      *
      * @return void
@@ -158,6 +159,24 @@ class GenerateConfirmationPageReceipt
                 new ReceiptDetail(
                     __('Company Name', 'give'),
                     $receipt->donation->company
+                )
+            );
+        }
+
+        if ($receipt->donation->comment) {
+            $receipt->additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Comment', 'give'),
+                    $receipt->donation->comment
+                )
+            );
+        }
+      
+        if ($receipt->donation->anonymous) {
+            $receipt->additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Anonymous Donation', 'give'),
+                    'Yes'
                 )
             );
         }
