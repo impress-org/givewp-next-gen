@@ -19,7 +19,7 @@ class FormFields extends FormMigrationStep
         // @note No corresponding setting in v3 for "Default Gateway"
 
         // Anonymous Donations
-        // @note No corresponding setting in v3 for "Anonymous Donations"
+        $this->handleAnonymousDonations();
 
         // Donor Comments
         $this->handleDonorComments();
@@ -32,6 +32,18 @@ class FormFields extends FormMigrationStep
     {
         if (give_is_donor_comment_field_enabled($this->formV2->id)) {
             $block = BlockFactory::donorComments();
+
+            $this->fieldBlocks->insertAfter('givewp/email', $block);
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function handleAnonymousDonations()
+    {
+        if (give_is_anonymous_donation_field_enabled($this->formV2->id)) {
+            $block = BlockFactory::anonymousDonations();
 
             $this->fieldBlocks->insertAfter('givewp/email', $block);
         }

@@ -25,6 +25,10 @@ class DonateControllerData
      */
     public $amount;
     /**
+     * @var bool
+     */
+    public $anonymous;
+    /**
      * @var string
      */
     public $gatewayId;
@@ -123,6 +127,7 @@ class DonateControllerData
 
     /**
      * @unreleased added support for comment property
+     * @unreleased added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.1.0
      */
@@ -134,6 +139,7 @@ class DonateControllerData
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
             'amount' => $this->amount(),
+            'anonymous' => $this->anonymous,
             'donorId' => $donorId,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
@@ -149,6 +155,7 @@ class DonateControllerData
 
     /**
      * @unreleased added support for comment property
+     * @unreleased added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.3.0
      */
@@ -160,6 +167,7 @@ class DonateControllerData
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
             'amount' => $this->amount(),
+            'anonymous' => $this->anonymous,
             'donorId' => $donorId,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,

@@ -4,12 +4,17 @@ namespace Give\FormBuilder\ViewModels;
 
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
 {
@@ -50,22 +55,79 @@ class FormBuilderViewModel
             'recurringAddonData' => [
                 'isInstalled' => defined('GIVE_RECURRING_VERSION'),
             ],
-            'emailTemplateTags' => array_map(static function ($tag) {
-                $tag['desc'] = html_entity_decode($tag['desc'], ENT_QUOTES);
-                $tag['description'] = html_entity_decode($tag['description'], ENT_QUOTES);
-
-                return $tag;
-            }, array_values(give()->email_tags->get_tags())),
+            'emailTemplateTags' => $this->getEmailTemplateTags(),
             'emailNotifications' => array_map(static function ($notification) {
                 return EmailNotificationData::fromLegacyNotification($notification);
             }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
             'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
             'emailDefaultAddress' => get_option('admin_email'),
+            'disallowedFieldNames' => $this->getDisallowedFieldNames(),
+            'donationConfirmationTemplateTags' => $this->getDonationConfirmationPageTemplateTags(),
             'termsAndConditions' => [
                 'checkboxLabel' => give_get_option('agree_to_terms_label'),
                 'agreementText' => give_get_option('agreement_text')
             ],
         ];
+    }
+
+    /**
+     * @0.6.0
+     */
+    public function getEmailTemplateTags(array $tags = []): array
+    {
+        return array_map(static function ($tag) {
+            $tag['id'] = $tag['tag'];
+            $tag['desc'] = html_entity_decode($tag['desc'], ENT_QUOTES);
+            $tag['description'] = html_entity_decode($tag['description'], ENT_QUOTES);
+
+            return $tag;
+        }, array_merge($tags, array_values(give()->email_tags->get_tags())));
+    }
+
+    /**
+     * @0.6.0
+     */
+    public function getDonationConfirmationPageTemplateTags(): array
+    {
+        $templateTags = $this->getEmailTemplateTags([
+            [
+                'tag' => 'first_name',
+                'desc' => __('The first name supplied by the donor during their donation.', 'give'),
+                'description' => __('The first name supplied by the donor during their donation.', 'give'),
+                'func' => null,
+                "context" => 'donation'
+            ],
+            [
+                'tag' => 'last_name',
+                'desc' => __('The last name supplied by the donor during their donation.', 'give'),
+                'description' => __('The last name supplied by the donor during their donation.', 'give'),
+                'func' => null,
+                "context" => 'donation'
+            ],
+            [
+                'tag' => 'email',
+                'desc' => __('The email supplied by the donor during their donation.', 'give'),
+                'description' => __('The email supplied by the donor during their donation.', 'give'),
+                'func' => null,
+                "context" => 'donation'
+            ]
+        ]);
+
+        $supportedContexts = [
+            "general",
+            "form",
+            "donation",
+            "donor",
+            "subscription",
+        ];
+
+        array_multisort($templateTags, SORT_ASC);
+
+        return array_values(
+            array_filter($templateTags, static function ($tag) use ($supportedContexts) {
+                return !empty($tag['description']) && in_array((string)$tag['context'], $supportedContexts, true);
+            })
+        );
     }
 
     /**
@@ -114,5 +176,31 @@ class FormBuilderViewModel
         }, give(PaymentGatewayRegister::class)->getPaymentGateways(3));
 
         return array_values($builderPaymentGatewayData);
+    }
+
+    /**
+     * In the Form Builder custom fields have meta keys. These meta keys are used for both the field name and the meta,
+     * as not to be too confusing. This array is used to prevent the user from creating meta keys that conflict with the
+     * existing meta or field names.
+     *
+     * @unreleased
+     */
+    protected function getDisallowedFieldNames(): array
+    {
+        $disallowedFieldNames = array_merge(
+            Donation::propertyKeys(),
+            array_values(DonationMetaKeys::toArray()),
+            Donor::propertyKeys(),
+            array_values(DonorMetaKeys::toArray()),
+            Subscription::propertyKeys(),
+            [
+                'fund_id',
+                'login',
+                'consent',
+                'donation-summary',
+            ]
+        );
+
+        return array_values(array_unique($disallowedFieldNames));
     }
 }

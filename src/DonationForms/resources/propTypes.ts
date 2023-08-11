@@ -38,6 +38,7 @@ export interface RadioFieldProps extends FieldProps {
 
 export interface CheckboxProps extends FieldProps {
     value: string | number;
+    helpText?: string;
 }
 
 export interface TextareaProps extends FieldProps {
