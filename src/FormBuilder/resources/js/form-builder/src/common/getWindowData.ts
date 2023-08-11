@@ -26,6 +26,7 @@ declare global {
             emailNotifications: EmailNotification[];
             emailDefaultAddress: string;
             disallowedFieldNames: string[];
+            donationConfirmationTemplateTags: TemplateTag[];
             termsAndConditions: TermsAndConditions;
         };
     }

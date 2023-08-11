@@ -11,7 +11,8 @@ export default async function postData(url: string, data: object = {}) {
         cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            accept: 'application/json',
         },
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer-when-downgrade', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
@@ -19,6 +20,6 @@ export default async function postData(url: string, data: object = {}) {
     });
 
     return {
-        response
-    }
+        response,
+    };
 }
