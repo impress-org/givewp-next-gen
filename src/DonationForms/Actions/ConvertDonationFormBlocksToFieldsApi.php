@@ -26,6 +26,7 @@ use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Textarea;
+use Give\Helpers\Hooks;
 use WP_User;
 
 /**
@@ -106,7 +107,11 @@ class ConvertDonationFormBlocksToFieldsApi
         $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
         if ($node instanceof Node) {
-            return $this->mapGenericBlockAttributesToNode($node, $block);
+            $node = $this->mapGenericBlockAttributesToNode($node, $block);
+
+            Hooks::doAction('givewp_donation_form_block_converted', $node, $block);
+
+            return $node;
         }
 
         return null;
