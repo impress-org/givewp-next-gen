@@ -17,7 +17,7 @@ export interface Currency {
 }
 
 /**
- * @unreleased
+ * @since 0.6.0
  */
 export type CurrencySwitcherSetting = {
     id: string;

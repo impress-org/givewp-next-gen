@@ -1,13 +1,4 @@
-import {
-    Element,
-    Field,
-    Gateway,
-    Group,
-    RadioOption,
-    ReceiptDetail,
-    Section as SectionType,
-    SelectOption,
-} from '@givewp/forms/types';
+import {Element, Field, Gateway, Group, ReceiptDetail, Section as SectionType, SelectOption} from '@givewp/forms/types';
 import {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
 import {FC, FormHTMLAttributes, ReactNode} from 'react';
 
@@ -28,16 +19,34 @@ export type GatewayOptionProps = {
     defaultChecked: boolean;
 };
 
-export interface SelectFieldProps extends FieldProps {
+export interface SelectableFieldProps extends FieldProps {
     options: Array<SelectOption>;
+    description: string;
 }
 
-export interface RadioFieldProps extends FieldProps {
-    options: Array<RadioOption>;
+export interface MultiSelectProps extends SelectableFieldProps {
+    fieldType: string;
 }
 
 export interface CheckboxProps extends FieldProps {
     value: string | number;
+    helpText?: string;
+}
+
+export interface TextareaProps extends FieldProps {
+    helpText?: string;
+}
+
+export interface FieldHasDescriptionProps extends FieldProps {
+    description: string;
+}
+
+export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'> {
+    dateFormat: string;
+}
+
+export interface PhoneProps extends Omit<FieldHasDescriptionProps, 'placeholder'> {
+    phoneFormat: string;
 }
 
 export interface ElementProps extends Element {}
@@ -58,7 +67,7 @@ export interface HtmlProps extends ElementProps {
 
 export interface NameProps extends GroupProps {
     fields: {
-        honorific?: FC<SelectFieldProps | {}>;
+        honorific?: FC<SelectableFieldProps | {}>;
         firstName: FC<FieldProps | {}>;
         lastName: FC<FieldProps | {}>;
     };
@@ -67,7 +76,7 @@ export interface NameProps extends GroupProps {
 export interface BillingAddressProps extends GroupProps {
     groupLabel: string;
     fields: {
-        country: FC<Partial<SelectFieldProps> | {}>;
+        country: FC<Partial<SelectableFieldProps> | {}>;
         address1: FC<FieldProps | {}>;
         address2: FC<FieldProps | {}>;
         city: FC<Partial<FieldProps> | {}>;

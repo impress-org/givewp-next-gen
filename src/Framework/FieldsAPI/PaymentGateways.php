@@ -7,14 +7,14 @@ namespace Give\Framework\FieldsAPI;
 class PaymentGateways extends Field {
 
     /**
-     * @unreleased
+     * @since 0.6.0
      *
      * @type bool
      */
     public $isTestMode;
 
     /**
-     * @unreleased
+     * @since 0.6.0
      */
     public function testMode( bool $isTestMode = true ): PaymentGateways {
         $this->isTestMode = $isTestMode;

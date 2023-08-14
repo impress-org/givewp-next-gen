@@ -26,7 +26,7 @@ class TestDonationReceiptBuilder extends TestCase
 
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
-            'formId' => $donationForm->id
+            'formId' => $donationForm->id,
         ]);
 
         $receipt = new DonationReceipt($donation);
@@ -69,6 +69,25 @@ class TestDonationReceiptBuilder extends TestCase
                 new ReceiptDetail(
                     __('Company Name', 'give'),
                     $receipt->donation->company
+                )
+            );
+        }
+
+
+        if ($donation->comment) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Comment', 'give'),
+                    $receipt->donation->comment
+                )
+            );
+        }
+      
+        if ($receipt->donation->anonymous) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Anonymous Donation', 'give'),
+                    'Yes'
                 )
             );
         }

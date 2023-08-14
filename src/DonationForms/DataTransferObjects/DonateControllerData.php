@@ -25,6 +25,10 @@ class DonateControllerData
      */
     public $amount;
     /**
+     * @var bool
+     */
+    public $anonymous;
+    /**
      * @var string
      */
     public $gatewayId;
@@ -116,8 +120,14 @@ class DonateControllerData
      * @var string
      */
     public $zip;
+    /**
+     * @var string
+     */
+    public $comment;
 
     /**
+     * @unreleased added support for comment property
+     * @unreleased added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.1.0
      */
@@ -129,6 +139,7 @@ class DonateControllerData
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
             'amount' => $this->amount(),
+            'anonymous' => $this->anonymous,
             'donorId' => $donorId,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
@@ -136,12 +147,15 @@ class DonateControllerData
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,
+            'comment' => $this->comment,
             'type' => DonationType::SINGLE(),
             'billingAddress' => $this->getBillingAddress(),
         ]);
     }
 
     /**
+     * @unreleased added support for comment property
+     * @unreleased added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.3.0
      */
@@ -153,6 +167,7 @@ class DonateControllerData
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
             'amount' => $this->amount(),
+            'anonymous' => $this->anonymous,
             'donorId' => $donorId,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
@@ -160,6 +175,7 @@ class DonateControllerData
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,
+            'comment' => $this->comment,
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscriptionId,
             'billingAddress' => $this->getBillingAddress(),

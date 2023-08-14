@@ -6,6 +6,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Request;
@@ -16,7 +17,7 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
-     * @unreleased add required block validation
+     * @since 0.6.0 add required block validation
      * @since 0.1.0
      *
      * @param  WP_REST_Request  $request
@@ -46,7 +47,7 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
-     * @unreleased add required block validation
+     * @since 0.6.0 add required block validation
      * @since 0.1.0
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
@@ -77,10 +78,24 @@ class FormBuilderResourceController
         $form->title = $updatedSettings->formTitle;
         $form->blocks = $blocks;
 
-        do_action('givewp_form_builder_updated', $form);
+        try {
+            $form->schema();
+        } catch (NameCollisionException $e) {
+            return rest_ensure_response(
+                new WP_Error(
+                    400,
+                    sprintf(
+                        __("ERROR: the form was not saved due to a meta key name conflict. A field already exists on this form with the meta key '%s'. Meta key names must be unique. Change the conflicting meta key and try to save again. ", 'give'),
+                        $e->getNodeNameCollision()
+                    )
+                )
+            );
+        }
 
         $form->status = $updatedSettings->formStatus;
         $form->save();
+
+        do_action('givewp_form_builder_updated', $form);
 
         return rest_ensure_response([
             'settings' => $form->settings->toJson(),
@@ -89,7 +104,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @unreleased
+     * @since 0.6.0
      *
      * @return string[]
      */
@@ -104,7 +119,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @unreleased
+     * @since 0.6.0
      *
      * @return WP_Error|void
      */

@@ -12,6 +12,7 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\BillingAddress;
+use Give\Framework\FieldsAPI\Checkbox;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationForm;
 use Give\Framework\FieldsAPI\DonationSummary;
@@ -24,6 +25,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\Framework\FieldsAPI\Textarea;
 use WP_User;
 
 /**
@@ -46,6 +48,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @unreleased map conditional logic attributes to nodes and return DonationForm Node
+     * @since 0.6.0 return DonationForm Node
      * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0
@@ -145,6 +148,12 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
+                
+            case "givewp/donor-comments":
+                return Textarea::make('comment')
+                    ->label($block->getAttribute('label'))
+                    ->helpText($block->getAttribute('description'))
+                    ->rules('max:5000');
 
             case "givewp/billing-address":
                 return $this->createNodeFromBillingAddressBlock($block);
@@ -212,6 +221,14 @@ class ConvertDonationFormBlocksToFieldsApi
                             $field->rules(new AuthenticationRule());
                         }
                     });
+
+            case "givewp/anonymous":
+                return Checkbox::make('anonymous')
+                    ->label($block->getAttribute('label'))
+                    ->helpText($block->getAttribute('description'))
+                    ->showInAdmin()
+                    ->showInReceipt()
+                    ->rules('boolean');
 
             default:
                 $customField = apply_filters(

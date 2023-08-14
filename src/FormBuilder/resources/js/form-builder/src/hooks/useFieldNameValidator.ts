@@ -1,4 +1,10 @@
 import {useSelect} from '@wordpress/data';
+import {getWindowData} from "@givewp/form-builder/common";
+
+/**
+ * @unreleased
+ */
+const {disallowedFieldNames} = getWindowData();
 
 /**
  * @since 0.1.0
@@ -14,7 +20,7 @@ export const hasFieldNameConflict = (fieldName: string, fieldNames: string[]) =>
 };
 
 /**
- * @unreleased switch hyphens to underscores
+ * @since 0.6.0 switch hyphens to underscores
  * @since 0.1.0
  *
  * @returns {`${*}-${number|number}`}
@@ -60,13 +66,14 @@ const builtInFieldNames = [
     'subscription_id',
     'additional_email',
     'formId',
+    'comment',
 ];
 
 /**
  * A hook for validating uniqueness of the 'fieldName' attribute.
  * When a conflict has been found, a new name suggestion will be generated and returned within the array
  *
- * @unreleased name issue with name uniqueness not being reliable; switch hyphens to underscores
+ * @since 0.6.0 name issue with name uniqueness not being reliable; switch hyphens to underscores
  * @since 0.1.0
  *
  * @return {function(fieldName: string): [isUnique: boolean, suggestedName: string]}
@@ -86,7 +93,7 @@ const useFieldNameValidator = () => {
      * @param {boolean} allowOne Whether to allow a single instance of the name — useful for when a field name is being edited
      */
     return (n, allowOne = false): ValidationSet => {
-        if (builtInFieldNames.includes(n)) {
+        if (disallowedFieldNames.includes(n)) {
             return [false, getFieldNameSuggestion(n, fieldNames ?? [])];
         }
 

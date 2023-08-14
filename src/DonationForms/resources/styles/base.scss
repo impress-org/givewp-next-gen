@@ -1,7 +1,7 @@
 @import "@fortawesome/fontawesome-free/css/all.css";
 
 @layer base {
-  @import "pico";
+    @import "pico";
 }
 
 @layer base-components {
@@ -10,17 +10,18 @@
   @import "components/donation-summary";
   @import "components/receipt";
   @import "components/pagination";
-    @import "components/billingAddress";
+  @import "components/billingAddress";
 }
 
 @layer base-elements {
-  @import "elements/header";
-  @import "elements/form";
-  @import "elements/sections";
-  @import "elements/groups";
-  @import "elements/multi-step-form";
+    @import "elements/header";
+    @import "elements/form";
+    @import "elements/sections";
+    @import "elements/groups";
+    @import "elements/fields";
+    @import "elements/multi-step-form";
 }
 
 @layer base-overrides {
-  @import "base-overrides";
+    @import "base-overrides";
 }
