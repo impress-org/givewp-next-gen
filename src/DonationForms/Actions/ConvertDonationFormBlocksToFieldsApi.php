@@ -41,10 +41,6 @@ class ConvertDonationFormBlocksToFieldsApi
      * @var string
      */
     protected $currency;
-    /**
-     * @var array
-     */
-    protected $blockNodeRelationship = [];
 
     /**
      * @unreleased map conditional logic attributes to nodes and return DonationForm Node
@@ -83,10 +79,6 @@ class ConvertDonationFormBlocksToFieldsApi
             }
 
             $form->append($section);
-        }
-
-        foreach ($this->blockNodeRelationship as $item) {
-            $this->mapConditionalLogicAttributesToNode($item['node'], $item['block']);
         }
 
         return $form;
@@ -148,7 +140,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
-                
+
             case "givewp/donor-comments":
                 return Textarea::make('comment')
                     ->label($block->getAttribute('label'))
@@ -397,64 +389,6 @@ class ConvertDonationFormBlocksToFieldsApi
             if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
                 $node->showInReceipt($block->getAttribute('displayInReceipt'));
             }
-        }
-
-        return $node;
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function mapConditionalLogicAttributesToNode(Node $node, BlockModel $block): Node
-    {
-        if (!$block->hasAttribute('conditionalLogic') || !method_exists($node, 'showIf')) {
-            return $node;
-        }
-
-        $conditionalLogic = $block->getAttribute('conditionalLogic');
-
-        if ($conditionalLogic['enabled'] !== true || !is_array($conditionalLogic['rules'])) {
-            return $node;
-        }
-
-        $action = $conditionalLogic['action'] ?? 'show';
-        $boolean = $conditionalLogic['boolean'] ?? 'and';
-        $rules = $conditionalLogic['rules'];
-
-        if ('hide' === $action) {
-            $boolean = 'and' === $boolean ? 'or' : 'and';
-        }
-
-        $oppositeOperatorsMap = [
-            '=' => '!=',
-            '!=' => '=',
-            '>' => '<=',
-            '<' => '>=',
-            '>=' => '<',
-            '<=' => '>',
-        ];
-
-        foreach ($rules as $rule) {
-            if (!isset($rule['field'], $rule['operator'], $rule['value'])) {
-                continue;
-            }
-
-            $clientId = $rule['field'];
-            $operator = $rule['operator'];
-            $value = $rule['value'];
-
-            // TODO: Add support for nested fields
-            $fieldName = $this->blockNodeRelationship[$clientId]['node']->getName();
-
-            if ('hide' === $action) {
-                if (isset($oppositeOperatorsMap[$operator])) {
-                    $operator = $oppositeOperatorsMap[$operator];
-                } else {
-                    continue;
-                }
-            }
-
-            $node->showIf($fieldName, $operator, $value, $boolean);
         }
 
         return $node;
