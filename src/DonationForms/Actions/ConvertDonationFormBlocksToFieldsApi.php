@@ -96,7 +96,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unlreased add `givewp_donation_form_block_converted` action hook
+     * @unlreased add `givewp_donation_form_block_converted_to_node` action hook
      * @since 0.1.0
      *
      * @throws EmptyNameException|NameCollisionException
@@ -110,7 +110,7 @@ class ConvertDonationFormBlocksToFieldsApi
         if ($node instanceof Node) {
             $node = $this->mapGenericBlockAttributesToNode($node, $block);
 
-            Hooks::doAction('givewp_donation_form_block_converted', $node, $block);
+            Hooks::doAction('givewp_donation_form_block_converted_to_node', $node, $block);
 
             return $node;
         }
