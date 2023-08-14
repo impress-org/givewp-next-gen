@@ -43,7 +43,6 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
-     * @unreleased map conditional logic attributes to nodes and return DonationForm Node
      * @since 0.6.0 return DonationForm Node
      * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      * @since 0.3.3 conditionally append blocks if block has inner blocks
@@ -107,14 +106,7 @@ class ConvertDonationFormBlocksToFieldsApi
         $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
         if ($node instanceof Node) {
-            $node = $this->mapGenericBlockAttributesToNode($node, $block);
-
-            $this->blockNodeRelationship[$block->clientId] = [
-                'block' => $block,
-                'node' => $node,
-            ];
-
-            return $node;
+            return $this->mapGenericBlockAttributesToNode($node, $block);
         }
 
         return null;
