@@ -1,4 +1,10 @@
-<h1><p align="center">GiveWP - Visual Donation Form Builder 💚</p></h1>
+# GiveWP 3.0 Feature Plugin (Archived)
+
+🛑 This repo holds historical code for [GiveWP](https://github.com/impress-org/givewp)'s v3.0 journey. Since the core [release](https://github.com/impress-org/givewp/releases/tag/3.0.0) this repo has been archived.
+
+---
+
+## GiveWP - Visual Donation Form Builder 💚
 
 <p align="center">🚨 Warning this project is a work in progress and should not be used on a live site to accept donations. With that disclaimer out of the way, let's answer the question of what the heck this is. The goal of this project is to provide GiveWP admins complete flexibility over the donation form creation process via a brand new visual donation builder.</p>
 
